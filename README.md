@@ -103,7 +103,7 @@ Events will be triggered at various point in the code. You can use a custom scri
 * __Not fully responsive:__ The captcha is only partially responsive and will overflow most webdesigns on screens smaller than 350px wide. Better responsiveness will be added somewhere in the near future.
 
 ## Where is version 1?!
-Version 1 was never created with the intention of it being used on live websites, causing the security to lack and leave massive loopholes around the captcha. 
+Version 1 was never created with the intention of it being used on live websites. This caused the security to lack which left massive loopholes around the captcha. 
 A big part of the captcha validation was performed on the client-side, making it possible to manipulate the captcha by loading in custom scripts. It's design was also horrible and too big to fit with todays websites.
 
 You can still download version 1 <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v1/" target="_blank">here</a>, but remember that it's a bug- and exploit-filled version __AND SHOULD NOT BE USED ON A LIVE WEBSITE.__
@@ -112,4 +112,4 @@ You can still download version 1 <a href="https://www.fabianwennink.nl/projects/
 The icons used in this project are made by <a href="https://www.webalys.com" target="_blank" rel="nofollow">Webalys</a>.
 
 ## License
-This project is licensed under the <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/LICENSE.txt">MIT</a> license.
+This project is licensed under the <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/blob/master/LICENSE">MIT</a> license.
