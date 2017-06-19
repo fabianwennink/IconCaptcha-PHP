@@ -12,6 +12,7 @@ Even developers new to JavaScript and PHP can easily install IconCaptcha. The de
 <img src="http://i.imgur.com/bXvgZvd.jpg" /> <img src="http://i.imgur.com/IrNeqVH.jpg" />
 
 ### <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">Download IconCaptcha now</a>
+### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View Demo</a>
 
 ## Features
 * __User Friendly:__ The captcha uses easily understandable images instead of hard to read texts to complete the captcha.
