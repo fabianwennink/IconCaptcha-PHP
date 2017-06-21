@@ -7,9 +7,9 @@
 
 #captcha-holder {
     position: relative;
-    max-width: 375px;
-    width: 100%;
-    height: 100px;
+    max-width: 300px;
+    width: 99%;
+    height: auto;
     border-radius: 0;
     font-family: 'Roboto', sans-serif;
     text-shadow: none;
@@ -21,7 +21,7 @@
         display: block;
 
         &__header {
-            height: 38px;
+            height: auto;
             padding: 0 10px;
             display: block;
 
@@ -30,25 +30,33 @@
                 display: block;
                 border-bottom: 1px solid;
                 text-align: center;
-                font-size: 14px;
+                font-size: 12px;
                 font-weight: 500;
                 color: #1d1d1d;
+                cursor: default;
+
+                &::selection {
+                    background: none !important;
+                }
+
+                &::-moz-selection {
+                    background: none !important;
+                }
             }
         }
 
         &__icons {
+            display: block;
             overflow: hidden;
-            height: 62px;
-            padding: 0 10px;
+            height: 60px;
+            padding: 0 10px 0 9px;
             text-align: center;
-            position: relative;
-            margin: 0 auto;
             -webkit-box-align: center;
             -webkit-box-pack: center;
             display: -webkit-box;
 
             &-title {
-                font-size: 22px;
+                font-size: 20px;
                 font-weight: 500;
                 display: inline-block;
                 width: 100%;
@@ -62,8 +70,8 @@
 
             .captcha-image {
                 position: relative;
-                height: 50px;
-                width: 50px;
+                height: 48px;
+                width: 12%;
                 float: left;
                 margin: 6px 0;
                 padding: 0 10px;
@@ -100,15 +108,15 @@
 
             .captcha-loader {
                 position: absolute;
-                width: 40px;
-                height: 40px;
+                width: 38px;
+                height: 38px;
                 -ms-border-radius: 50%;
                 -moz-border-radius: 50%;
-                 -webkit-border-radius: 50%;
+                -webkit-border-radius: 50%;
                 border-radius: 50% 50% 50% 50%;
                 border: 10px solid #68C3A3;
                 margin: 11px auto;
-                left: -2px;
+                left: 0;
                 right: 0;
                 opacity: 0.8;
                 z-index: 10;
@@ -139,6 +147,7 @@
             font-size: 10px;
             padding: 3px;
             text-align: center;
+            cursor: default;
 
             &> a {
                 text-decoration: none;
@@ -273,8 +282,6 @@
 
     // Captcha credits
     &.captcha-credits {
-        height: 122px;
-
         #captcha-modal #captcha-modal__credits {
             display: block;
         }
@@ -285,10 +292,21 @@
         display:none;
         visibility: hidden;
     }
+
+    * {
+        &::selection {
+            background: none !important;
+        }
+
+        &::-moz-selection {
+            background: none !important;
+        }
+    }
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 320px) {
     #captcha-holder {
+        width: 100%;
         height: auto;
         box-sizing: border-box;
         -webkit-box-sizing: border-box;
@@ -298,31 +316,36 @@
         }
 
         #captcha-modal {
-            &__header {
-                height: auto;
-
-                span {
-                    font-size:13px;
-                }
-            }
-
             &__icons {
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
                 .captcha-image {
-                    width:12%;
-                    background-size: 65%;
+                    width:11%;
+                    background-size: 75%;
                 }
             }
         }
     }
 }
 
-@media screen and (max-width: 340px) {
+@media screen and (max-width: 320px) {
     #captcha-holder {
+        width: 100%;
+        height: auto;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+
+        &.captcha-credits {
+            height: auto;
+        }
+
         #captcha-modal {
-            &__header {
-                span {
-                    font-size:11px;
-                    padding: 12px 0;
+            &__icons {
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                .captcha-image {
+                    width:11%;
+                    background-size: 50%;
                 }
             }
         }
@@ -331,39 +354,39 @@
 
 // Loading Animation
 @-webkit-keyframes captcha-loader {
-    0%, 100%{ border: solid 20px #68C3A3; }
+    0%, 100%{ border: solid 19px #68C3A3; }
     6.25% { border: solid 2px #68C3A3; }
     12.5% { border: solid 2px #52B3D9; }
-    18.75% { border: solid 20px #52B3D9; }
-    25% { border: solid 20px #52B3D9; }
+    18.75% { border: solid 19px #52B3D9; }
+    25% { border: solid 19px #52B3D9; }
     31.25% { border: solid 2px #52B3D9; }
     37.5% { border: solid 2px #F4D03F; }
-    43.75% { border: solid 20px #F4D03F; }
-    50% { border: solid 20px #F4D03F; }
+    43.75% { border: solid 19px #F4D03F; }
+    50% { border: solid 19px #F4D03F; }
     56.25% { border: solid 2px #F4D03F; }
     62.5% { border: solid 2px #D24D57; }
-    68.75% { border: solid 20px #D24D57; }
-    75% { border: solid 20px #D24D57; }
+    68.75% { border: solid 19px #D24D57; }
+    75% { border: solid 19px #D24D57; }
     81.25% { border: solid 2px #D24D57; }
     87.5% { border: solid 2px #68C3A3; }
-    93.75% { border: solid 20px #68C3A3; }
+    93.75% { border: solid 19px #68C3A3; }
 }
 
 @keyframes captcha-loader {
-    0%, 100%{ border: solid 20px #68C3A3; }
+    0%, 100%{ border: solid 19px #68C3A3; }
     6.25% { border: solid 2px #68C3A3; }
     12.5% { border: solid 2px #52B3D9; }
-    18.75% { border: solid 20px #52B3D9; }
-    25% { border: solid 20px #52B3D9; }
+    18.75% { border: solid 19px #52B3D9; }
+    25% { border: solid 19px #52B3D9; }
     31.25% { border: solid 2px #52B3D9; }
     37.5% { border: solid 2px #F4D03F; }
-    43.75% { border: solid 20px #F4D03F; }
-    50% { border: solid 20px #F4D03F; }
+    43.75% { border: solid 19px #F4D03F; }
+    50% { border: solid 19px #F4D03F; }
     56.25% { border: solid 2px #F4D03F; }
     62.5% { border: solid 2px #D24D57; }
-    68.75% { border: solid 20px #D24D57; }
-    75% { border: solid 20px #D24D57; }
+    68.75% { border: solid 19px #D24D57; }
+    75% { border: solid 19px #D24D57; }
     81.25% { border: solid 2px #D24D57; }
     87.5% { border: solid 2px #68C3A3; }
-    93.75% { border: solid 20px #68C3A3; }
+    93.75% { border: solid 19px #68C3A3; }
 }

@@ -42,7 +42,7 @@
          * @return string			        The JSON encoded array containing the correct icon id, incorrect icon id and hashes.
          */
         public static function getCaptchaData($theme) {
-            $a = rand(1, 62); // Get a random number (correct image)
+            $a = rand(1, 89); // Get a random number (correct image)
             $b = 0; // Get another random number (incorrect image)
 
             // Save the theme to the session
@@ -51,7 +51,7 @@
             // Pick a random number for the incorrect icon.
             // Loop until a number is found which doesn't match the correct icon ID.
             while($b == 0) {
-                $c = rand(1, 62);
+                $c = rand(1, 89);
                 if($c !== $a) $b = $c;
             }
 
@@ -195,7 +195,7 @@
          * @return string                   The image hash.
          */
         private static function getImageHash($image = null) {
-            return (!empty($image)) ? hash('sha256', $image . self::getSalt()) : "";
+            return (!empty($image)) ? hash('tiger192,3', $image . self::getSalt()) : "";
         }
 
         /**
@@ -206,7 +206,7 @@
          * @return string                   The random generated salt.
          */
         private static function getSalt() {
-            return (isset($_SESSION[self::$session_name]['selected']['salt'])) ? $_SESSION[self::$session_name]['selected']['salt'] : hash('sha1', time());
+            return (isset($_SESSION[self::$session_name]['selected']['salt'])) ? $_SESSION[self::$session_name]['selected']['salt'] : hash('crc32', uniqid());
         }
     }
 ?>
