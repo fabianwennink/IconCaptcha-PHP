@@ -48,7 +48,8 @@
             }
 
             input[type="submit"] {
-                width: 375px;
+                max-width: 375px;
+                width: 100%;
                 background: #5f5f5f;
                 border: 0;
                 padding: 10px;
@@ -70,6 +71,8 @@
             <!-- Submit button to test your Captcha input -->
             <input type="submit" value="Submit form to test captcha" >
         </form>
+
+        <p><a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/" target==_blank>View project on GitHub</a></p>
 
         <!-- Include jQuery Library -->
         <!--[if lt IE 9]>

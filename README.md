@@ -100,7 +100,6 @@ Events will be triggered at various point in the code. You can use a custom scri
 
 ## Known problems
 * __Only 1 captcha per page:__ The plugin can only handle 1 captcha per page. Multi-captcha support will be added somewhere in the near future.
-* __Not fully responsive:__ The captcha is only partially responsive and will overflow most webdesigns on screens smaller than 350px wide. Better responsiveness will be added somewhere in the near future.
 
 ## Where is version 1?!
 Version 1 was never created with the intention of it being used on live websites. This caused the security to lack which left massive loopholes around the captcha. 
