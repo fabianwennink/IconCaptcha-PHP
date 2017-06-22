@@ -7,7 +7,7 @@
 
 #captcha-holder {
     position: relative;
-    max-width: 300px;
+    max-width: 323px;
     width: 99%;
     height: auto;
     border-radius: 0;
@@ -319,33 +319,26 @@
             &__icons {
                 box-sizing: border-box;
                 -webkit-box-sizing: border-box;
+
                 .captcha-image {
                     width:11%;
-                    background-size: 75%;
+                    background-size: 50%;
                 }
             }
         }
     }
 }
 
-@media screen and (max-width: 320px) {
+
+@media screen and (max-width: 250px) {
     #captcha-holder {
-        width: 100%;
-        height: auto;
-        box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-
-        &.captcha-credits {
-            height: auto;
-        }
-
         #captcha-modal {
             &__icons {
-                box-sizing: border-box;
-                -webkit-box-sizing: border-box;
+                padding: 0;
+
                 .captcha-image {
-                    width:11%;
-                    background-size: 50%;
+                    width:12%;
+                    padding: 0 5px;
                 }
             }
         }
