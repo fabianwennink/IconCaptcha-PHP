@@ -5,7 +5,7 @@
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
      */
-    class Captcha {
+    class IconCaptcha {
 
         private static $error;
         private static $session_name = "icon_captcha";

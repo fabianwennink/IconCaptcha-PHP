@@ -99,7 +99,7 @@
                     $holder.html("\
                         <div id='captcha-modal' >\
                             <div id='captcha-modal__header'>\
-                                <span>" + $options.captchaMessages.header + "</span>\
+                                <span>" + (($options.captchaMessages.header && $options.captchaMessages.header) ? $options.captchaMessages.header : "Select the image that does not belong in the row") + "</span>\
                             </div>\
                             <div id='captcha-modal__icons'>\
                                 <div class='captcha-image'></div>\
@@ -152,7 +152,7 @@
                     $("#captcha-modal__icons").empty();
 
                     $holder.addClass('captcha-success');
-                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">' + $options.captchaMessages.correct.top + '</div><div id="captcha-modal__icons-subtitle">' + $options.captchaMessages.correct.bottom + '</div>');
+                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.top) ? $options.captchaMessages.correct.top : "Great!") + '</div><div id="captcha-modal__icons-subtitle">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.bottom) ? $options.captchaMessages.correct.bottom : "You do not appear to be a robot.") + '</div>');
 
                     // Trigger: success
                     $holder.trigger('success');
@@ -163,7 +163,7 @@
                     $("#captcha-modal__icons").empty();
 
                     $holder.addClass('captcha-error');
-                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">' + $options.captchaMessages.incorrect.top + '</div><div id="captcha-modal__icons-subtitle">' + $options.captchaMessages.incorrect.bottom + '</div>');
+                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.top) ? $options.captchaMessages.incorrect.top : "Oops!") + '</div><div id="captcha-modal__icons-subtitle">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.bottom) ? $options.captchaMessages.incorrect.bottom : "You've selected the wrong image.") + '</div>');
 
                     // Trigger: error
                     $holder.trigger('error');

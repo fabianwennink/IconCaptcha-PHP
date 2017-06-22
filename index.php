@@ -16,14 +16,14 @@
     // currently in the PHP folder containing the captcha.class.php file.
     // ALWAYS END WITH A /
     // DEFAULT IS SET TO ../icons/
-    Captcha::setIconsFolderPath("../icons/");
+    IconCaptcha::setIconsFolderPath("../icons/");
 
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
-        if(Captcha::validateSubmission($_POST)) {
+        if(IconCaptcha::validateSubmission($_POST)) {
             echo 'The form has been submitted!';
         } else {
-            echo json_decode(Captcha::getErrorMessage())->error;
+            echo json_decode(IconCaptcha::getErrorMessage())->error;
         }
     }
 ?>

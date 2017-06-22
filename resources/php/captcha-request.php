@@ -19,10 +19,10 @@
                 case 1: // Requesting the image hashes
                     $captcha_theme = (isset($_POST['tM']) && ($_POST['tM'] === "light" || $_POST['tM'] === "dark")) ? $_POST['tM'] : "light";
 
-                    echo Captcha::getCaptchaData($captcha_theme);
+                    echo IconCaptcha::getCaptchaData($captcha_theme);
                     exit;
                 case 2: // Setting the user's choice
-                    echo Captcha::setSelectedAnswer($_POST);
+                    echo IconCaptcha::setSelectedAnswer($_POST);
                     exit;
                 default:
                     break;
@@ -32,7 +32,7 @@
 
     // HTTP GET - Requesting the actual images
     if(!empty($_GET) && isset($_GET['hash'])) {
-        Captcha::getIconFromHash($_GET['hash']);
+        IconCaptcha::getIconFromHash($_GET['hash']);
         exit;
     }
 
