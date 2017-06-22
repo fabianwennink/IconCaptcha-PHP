@@ -54,18 +54,27 @@
             -webkit-box-align: center;
             -webkit-box-pack: center;
             display: -webkit-box;
+            position: relative;
 
             &-title {
                 font-size: 20px;
                 font-weight: 500;
                 display: inline-block;
                 width: 100%;
+                position: absolute;
+                left:0;
+                right:0;
+                top: 8px;
             }
 
             &-subtitle {
                 font-size: 13px;
                 display: inline-block;
                 width: 100%;
+                position: absolute;
+                left:0;
+                right:0;
+                top: 35px;
             }
 
             .captcha-image {
