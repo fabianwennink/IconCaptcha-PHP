@@ -1,7 +1,7 @@
-Icon Captcha - jQuery & PHP
+IconCaptcha Plugin - jQuery & PHP
 ===================
 
-[![Version](https://img.shields.io/badge/Version-v2.0.1-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+[![Version](https://img.shields.io/badge/Version-v2.0.2-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
 
 IconCaptcha is a faster and more user-friendly captcha than most other captchas. You no longer have to read any annoying 
 text-images, with IconCaptcha you only have to compare two images and select the image which is only present once.
@@ -49,7 +49,7 @@ PHP form validation:
     // Start a PHP session.
     session_start();
 	
-    // Include the Captcha class.
+    // Include the IconCaptcha class.
     require('resources/php/captcha.class.php');
 
     // Set the path to the captcha icons. Set it as if you were
@@ -71,6 +71,8 @@ PHP form validation:
 
 ## Options
 
+The following options allow you to customize the IconCaptcha to your liking. All of the options are __optional__, however you might still want to take a look at the ```captchaAjaxFile``` option and make sure the path is set correctly.
+
 | Option | Description |
 | ------ | ------ |
 | captchaTheme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. |
@@ -82,6 +84,7 @@ PHP form validation:
 | showBoxShadow | Enable or disable the CSS box-shadow of the captcha holder. The box-shadow will match the selected captcha theme. |
 | showCredits | Enable or disable the credits element of the captcha. <br>_Please leave it enabled so people can find and use the captcha themselved._ |
 | captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or input validation. |
+| captchaMessages | Change the messages used by the captcha. All the changeable strings can be found in the _index.php_. |
 
 ## Events
 Events will be triggered at various point in the code. You can use a custom script to hook into the events and execute your own code if necessary.

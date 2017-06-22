@@ -1,5 +1,5 @@
 /**
- * Icon Captcha Plugin: v2.0.1
+ * Icon Captcha Plugin: v2.0.2
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -19,7 +19,18 @@
                 showCredits: true,
                 enableLoadingAnimation: false,
                 loadingAnimationDelay: 2000,
-                captchaAjaxFile: "../php/captcha-request.php"
+                captchaAjaxFile: "../php/captcha-request.php",
+                captchaMessages: {
+                    header: "Select the image that does not belong in the row",
+                    correct: {
+                        top: "Great!",
+                        bottom: "You do not appear to be a robot."
+                    },
+                    incorrect: {
+                        top: "Oops!",
+                        bottom: "You've selected the wrong image."
+                    }
+                }
             };
 
             var $options =  $.extend(defaults, options);
@@ -88,7 +99,7 @@
                     $holder.html("\
                         <div id='captcha-modal' >\
                             <div id='captcha-modal__header'>\
-                                <span>Select the image that does not belong in the row</span>\
+                                <span>" + $options.captchaMessages.header + "</span>\
                             </div>\
                             <div id='captcha-modal__icons'>\
                                 <div class='captcha-image'></div>\
@@ -141,7 +152,7 @@
                     $("#captcha-modal__icons").empty();
 
                     $holder.addClass('captcha-success');
-                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">Great!</div><div id="captcha-modal__icons-subtitle">You do not appear to be a robot.</div>');
+                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">' + $options.captchaMessages.correct.top + '</div><div id="captcha-modal__icons-subtitle">' + $options.captchaMessages.correct.bottom + '</div>');
 
                     // Trigger: success
                     $holder.trigger('success');
@@ -152,7 +163,7 @@
                     $("#captcha-modal__icons").empty();
 
                     $holder.addClass('captcha-error');
-                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">Oops!</div><div id="captcha-modal__icons-subtitle">You\'ve selected the wrong image.</div>');
+                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">' + $options.captchaMessages.incorrect.top + '</div><div id="captcha-modal__icons-subtitle">' + $options.captchaMessages.incorrect.bottom + '</div>');
 
                     // Trigger: error
                     $holder.trigger('error');

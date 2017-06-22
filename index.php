@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.0.1
+     * IconCaptcha Plugin: v2.0.2
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -9,7 +9,7 @@
     // Start a PHP session.
     session_start();
 
-    // Include the Captcha class.
+    // Include the IconCaptcha class.
     require('resources/php/captcha.class.php');
 
     // Set the path to the captcha icons. Set it as if you were
@@ -23,18 +23,20 @@
         if(Captcha::validateSubmission($_POST)) {
             echo 'The form has been submitted!';
         } else {
-            echo Captcha::getErrorMessage();
+            echo json_decode(Captcha::getErrorMessage())->error;
         }
     }
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Icon Captcha Plugin v2 - By Fabian Wennink</title>
+        <title>IconCaptcha Plugin v2 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Include IconCaptcha stylesheet -->
         <link href="resources/style/css/style.css" rel="stylesheet" type="text/css">
 
         <!-- CSS to style the page a bit - not important, can be deleted -->
@@ -65,10 +67,10 @@
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
         <form action="" method="post">
 
-            <!-- Element that we use to create the Captcha with -->
+            <!-- Element that we use to create the IconCaptcha with -->
             <div id="captcha-holder"></div>
 
-            <!-- Submit button to test your Captcha input -->
+            <!-- Submit button to test your IconCaptcha input -->
             <input type="submit" value="Submit form to test captcha" >
         </form>
 
@@ -83,10 +85,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <!--<![endif]-->
 
-        <!-- Include Captcha jquery script -->
+        <!-- Include IconCaptcha script -->
         <script src="resources/js/script.min.js" type="text/javascript"></script>
 
-        <!-- Initiate the Captcha -->
+        <!-- Initialize the IconCaptcha -->
         <script async type="text/javascript">
             $(window).ready(function() {
                 $('#captcha-holder').iconCaptcha({
@@ -98,7 +100,18 @@
                     showCredits: true, // Show or hide the credits element (please leave it enbled).
                     enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't do anything, just looks cool ;)
                     loadingAnimationDelay: 2500, // How long the fake loading animation should play.
-                    captchaAjaxFile: 'resources/php/captcha-request.php' // The path to the Captcha validation file.
+                    captchaAjaxFile: 'resources/php/captcha-request.php', // The path to the Captcha validation file.
+                    captchaMessages: { // You can put whatever message you want in the captcha.
+                        header: "Select the image that does not belong in the row",
+                        correct: {
+                            top: "Great!",
+                            bottom: "You do not appear to be a robot."
+                        },
+                        incorrect: {
+                            top: "Oops!",
+                            bottom: "You've selected the wrong image."
+                        }
+                    }
                 })
                 .bind('selected.iconCaptcha', function() { // You can bind to custom events, in case you want to execute some custom code.
                     console.log('Event: Icon selected');
