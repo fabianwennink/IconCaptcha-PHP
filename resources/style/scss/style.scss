@@ -5,7 +5,7 @@
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
 
-#captcha-holder {
+.captcha-holder {
     position: relative;
     max-width: 323px;
     width: 99%;
@@ -16,7 +16,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 
-    #captcha-modal {
+    .captcha-modal {
         width: 100%;
         display: block;
 
@@ -80,10 +80,8 @@
             .captcha-image {
                 position: relative;
                 height: 48px;
-                width: 12%;
+                width: 19%;
                 float: left;
-                margin: 6px 0;
-                padding: 0 10px;
                 background-repeat: no-repeat;
                 background-position: 50% 50%;
                 border-right: 1px solid;
@@ -179,7 +177,7 @@
             background: #fff;
             border: 1px solid #d8d8d8;
 
-            #captcha-modal {
+            .captcha-modal {
                 &__header span {
                     border-color: #d8d8d8;
                 }
@@ -213,13 +211,13 @@
             }
 
             &.captcha-success {
-                #captcha-modal__icons #captcha-modal__icons-title {
+                .captcha-modal__icons .captcha-modal__icons-title {
                     color: #5bd25b;
                 }
             }
 
             &.captcha-error {
-                #captcha-modal__icons #captcha-modal__icons-title {
+                .captcha-modal__icons .captcha-modal__icons-title {
                     color: #ef5858;
                 }
             }
@@ -233,7 +231,7 @@
             background: #4c4c4c;
             border: 1px solid #404040;
 
-            #captcha-modal {
+            .captcha-modal {
                 &__header span {
                     color:#fff;
                     border-color: #404040;
@@ -272,13 +270,13 @@
             }
 
             &.captcha-success {
-                #captcha-modal__icons #captcha-modal__icons-title {
+                .captcha-modal__icons .captcha-modal__icons-title {
                     color: #93d293;
                 }
             }
 
             &.captcha-error {
-                #captcha-modal__icons #captcha-modal__icons-title {
+                .captcha-modal__icons .captcha-modal__icons-title {
                     color: #ef5858;
                 }
             }
@@ -291,7 +289,7 @@
 
     // Captcha credits
     &.captcha-credits {
-        #captcha-modal #captcha-modal__credits {
+        .captcha-modal .captcha-modal__credits {
             display: block;
         }
     }
@@ -314,7 +312,7 @@
 }
 
 @media screen and (max-width: 320px) {
-    #captcha-holder {
+    .captcha-holder {
         width: 100%;
         height: auto;
         box-sizing: border-box;
@@ -324,13 +322,12 @@
             height: auto;
         }
 
-        #captcha-modal {
+        .captcha-modal {
             &__icons {
                 box-sizing: border-box;
                 -webkit-box-sizing: border-box;
 
                 .captcha-image {
-                    width:11%;
                     background-size: 50%;
                 }
             }
@@ -340,15 +337,10 @@
 
 
 @media screen and (max-width: 250px) {
-    #captcha-holder {
-        #captcha-modal {
+    .captcha-holder {
+        .captcha-modal {
             &__icons {
                 padding: 0;
-
-                .captcha-image {
-                    width:12%;
-                    padding: 0 5px;
-                }
             }
         }
     }

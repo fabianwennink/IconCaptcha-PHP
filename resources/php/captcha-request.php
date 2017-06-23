@@ -14,12 +14,12 @@
 
     // HTTP POST - Either the captcha has been submitted or the
     if(!empty($_POST) && isAjaxRequest()) {
-        if(isset($_POST['rT']) && is_numeric($_POST['rT'])) {
+        if((isset($_POST['rT']) && is_numeric($_POST['rT'])) && (isset($_POST['cID']) && is_numeric($_POST['cID']))) {
             switch((int)$_POST['rT']) {
                 case 1: // Requesting the image hashes
                     $captcha_theme = (isset($_POST['tM']) && ($_POST['tM'] === "light" || $_POST['tM'] === "dark")) ? $_POST['tM'] : "light";
 
-                    echo IconCaptcha::getCaptchaData($captcha_theme);
+                    echo IconCaptcha::getCaptchaData($captcha_theme, $_POST['cID']);
                     exit;
                 case 2: // Setting the user's choice
                     echo IconCaptcha::setSelectedAnswer($_POST);
@@ -31,8 +31,8 @@
     }
 
     // HTTP GET - Requesting the actual images
-    if(!empty($_GET) && isset($_GET['hash'])) {
-        IconCaptcha::getIconFromHash($_GET['hash']);
+    if((!empty($_GET) && isset($_GET['hash']) && strlen($_GET['hash']) === 48) && (isset($_GET['cid']) && is_numeric($_GET['cid']))) {
+        IconCaptcha::getIconFromHash($_GET['hash'], $_GET['cid']);
         exit;
     }
 

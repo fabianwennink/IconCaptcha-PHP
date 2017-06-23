@@ -9,7 +9,9 @@ text-images, with IconCaptcha you only have to compare two images and select the
 Besides being user-friendly, IconCaptcha is also developer-friendly. With just a few steps you can get the captcha up and running. 
 Even developers new to JavaScript and PHP can easily install IconCaptcha. The demo page contains all the code needed to get the captcha working.
 
-<img src="http://i.imgur.com/bXvgZvd.jpg" /> <img src="http://i.imgur.com/IrNeqVH.jpg" />
+<img src="https://i.imgur.com/IO5XyPV.jpg" /> <img src="https://i.imgur.com/tp7028J.jpg" />
+
+### A WordPress version of the IconCaptcha plugin will soon be available!
 
 ### <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">Download IconCaptcha now</a>
 ### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View Demo</a>
@@ -100,9 +102,6 @@ Events will be triggered at various point in the code. You can use a custom scri
 ## Requirements
 * __PHP 5.2+__
 * __jQuery 1.12.3+__
-
-## Known problems
-* __Only 1 captcha per page:__ The plugin can only handle 1 captcha per page. Multi-captcha support will be added somewhere in the near future.
 
 ## Where is version 1?!
 Version 1 was never created with the intention of it being used on live websites. This caused the security to lack which left massive loopholes around the captcha. 

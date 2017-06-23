@@ -36,12 +36,10 @@
             var $options =  $.extend(defaults, options);
 
             // Loop through all the captcha holder.
-            // Note: You can only have 1 captcha per page!
             return this.each(function(id) {
 
                 var $holder = $(this);
 
-                var form_built = false; // Building the form, false if not build yet
                 var build_time = 0; // Timestamp of when the form was generated.
                 var hovering = false;
 
@@ -60,7 +58,7 @@
                     $.ajax({
                         url: $options.captchaAjaxFile,
                         type: "post",
-                        data: {rT : 1, tM: captchaTheme},
+                        data: {cID: id, rT : 1, tM: captchaTheme},
                         success: function (data) {
                             if(data) {
                                 $data = JSON.parse(data);
@@ -68,15 +66,13 @@
                                 build_time = new Date();
 
                                 // Build the captcha if it hasn't been build yet
-                                if(!form_built) {
-                                    _buildCaptcha();
+                                _buildCaptcha();
 
-                                    // Event: init
-                                    $holder.trigger('init');
-                                }
+                                // Event: init
+                                $holder.trigger('init');
 
-                                $('.captcha-image').each(function(i, obj) {
-                                    $(this).css('background-image', 'url(' + $options.captchaAjaxFile + '?hash=' + $data[i] + ')');
+                                $holder.find('.captcha-image').each(function(i, obj) {
+                                    $(this).css('background-image', 'url(' + $options.captchaAjaxFile + '?cid=' + id + '&hash=' + $data[i] + ')');
                                     $(this).attr('icon-hash', $data[i]);
                                 });
                             }
@@ -97,21 +93,22 @@
                     }
 
                     $holder.html("\
-                        <div id='captcha-modal' >\
-                            <div id='captcha-modal__header'>\
+                        <div class='captcha-modal'>\
+                            <div class='captcha-modal__header'>\
                                 <span>" + (($options.captchaMessages.header && $options.captchaMessages.header) ? $options.captchaMessages.header : "Select the image that does not belong in the row") + "</span>\
                             </div>\
-                            <div id='captcha-modal__icons'>\
+                            <div class='captcha-modal__icons'>\
                                 <div class='captcha-image'></div>\
                                 <div class='captcha-image'></div>\
                                 <div class='captcha-image'></div>\
                                 <div class='captcha-image'></div>\
                                 <div class='captcha-image'></div>\
                             </div>\
-                            <div id='captcha-modal__credits' alt='Captcha provided by Fabian Wennink'>\
+                            <div class='captcha-modal__credits' alt='Captcha provided by Fabian Wennink'>\
                                 Captcha provided by <a href='https://www.fabianwennink.nl/projects/IconCaptcha/v2/' target='_blank' rel='follow'>Fabian Wennink</a> ©\
                             </div>\
-                            <input type='hidden' name='captcha-hidden-field' required />\
+                            <input type='hidden' name='captcha-hf' required />\
+                            <input type='hidden' name='captcha-idhf' value='" + id + "' required />\
                         </div>"
                     );
 
@@ -122,8 +119,6 @@
                     if($options.showCredits) {
                         $holder.addClass('captcha-credits');
                     }
-
-                    form_built = true;
                 }
 
                 // Submit the captcha
@@ -131,12 +126,13 @@
                     var clicked_class = captcha.attr('icon-hash');
 
                     if(clicked_class) {
-                        $holder.find('input').attr('value', clicked_class);
+                        $holder.find('input[name="captcha-hf"]').attr('value', clicked_class);
+                        $holder.find('input[name="captcha-idhf"]').attr('value', id);
 
                         $.ajax({
                             url: $options.captchaAjaxFile,
                             type: "post",
-                            data: {pC: clicked_class, rT : 2},
+                            data: {cID: id, pC: clicked_class, rT : 2},
                             success: function (data) {
                                 (data === '1') ? showSuccess() : showError();
                             },
@@ -149,10 +145,10 @@
 
                 // Show the success popup
                 function showSuccess() {
-                    $("#captcha-modal__icons").empty();
+                    $holder.find(".captcha-modal__icons").empty();
 
                     $holder.addClass('captcha-success');
-                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.top) ? $options.captchaMessages.correct.top : "Great!") + '</div><div id="captcha-modal__icons-subtitle">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.bottom) ? $options.captchaMessages.correct.bottom : "You do not appear to be a robot.") + '</div>');
+                    $holder.find(".captcha-modal__icons").html('<div class="captcha-modal__icons-title">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.top) ? $options.captchaMessages.correct.top : "Great!") + '</div><div class="captcha-modal__icons-subtitle">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.bottom) ? $options.captchaMessages.correct.bottom : "You do not appear to be a robot.") + '</div>');
 
                     // Trigger: success
                     $holder.trigger('success');
@@ -160,10 +156,10 @@
 
                 // Show the error popup
                 function showError() {
-                    $("#captcha-modal__icons").empty();
+                    $holder.find(".captcha-modal__icons").empty();
 
                     $holder.addClass('captcha-error');
-                    $("#captcha-modal__icons").html('<div id="captcha-modal__icons-title">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.top) ? $options.captchaMessages.incorrect.top : "Oops!") + '</div><div id="captcha-modal__icons-subtitle">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.bottom) ? $options.captchaMessages.incorrect.bottom : "You've selected the wrong image.") + '</div>');
+                    $holder.find(".captcha-modal__icons").html('<div class="captcha-modal__icons-title">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.top) ? $options.captchaMessages.incorrect.top : "Oops!") + '</div><div class="captcha-modal__icons-subtitle">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.bottom) ? $options.captchaMessages.incorrect.bottom : "You've selected the wrong image.") + '</div>');
 
                     // Trigger: error
                     $holder.trigger('error');
@@ -176,7 +172,7 @@
                     $holder.removeClass('captcha-error');
                     $holder.find('input').attr('value', null);
 
-                    $("#captcha-modal__icons").html("\
+                    $holder.find(".captcha-modal__icons").html("\
                         <div class='captcha-image'></div>\
                         <div class='captcha-image'></div>\
                         <div class='captcha-image'></div>\
@@ -184,7 +180,7 @@
                         <div class='captcha-image'></div>\
                     ").removeClass('captcha-opacity');;
 
-                    $("#captcha-modal__icons > .captcha-image").attr('icon-hash', null);
+                    $holder.find(".captcha-modal__icons > .captcha-image").attr('icon-hash', null);
 
                     // Rebuild the captcha
                     buildCaptcha();
@@ -194,7 +190,7 @@
                 }
 
                 // On icon click
-                $(document).on('click', '#captcha-modal__icons > .captcha-image', function() {
+                $holder.on('click', '.captcha-modal__icons > .captcha-image', function() {
 
                     // Only allow a user to click after 1.5 seconds
                     if((new Date() - build_time) <= $options.captchaClickDelay) return;
@@ -203,7 +199,7 @@
                     if($options.captchaHoverDetection && !hovering) return;
 
                     var $form = $(this);
-                    var $icon_holder = $("#captcha-modal__icons");
+                    var $icon_holder = $holder.find(".captcha-modal__icons");
 
                     // If an image is clicked, do not allow clicking again until the form has reset
                     if($icon_holder.hasClass('captcha-opacity')) return;
@@ -224,7 +220,7 @@
                 }).on({
                     mouseenter:function() { if(!hovering) hovering = true },
                     mouseleave:function(){ if(hovering) hovering = false },
-                    }, '#captcha-holder'
+                    }, $holder
                 );
             });
         }

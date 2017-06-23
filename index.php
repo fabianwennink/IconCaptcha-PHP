@@ -45,8 +45,12 @@
                 font-family: 'Roboto', sans-serif;
             }
 
-            #captcha-holder {
+            .captcha-holder {
                 margin: 20px 0;
+            }
+
+            form {
+                margin-bottom: 50px;
             }
 
             input[type="submit"] {
@@ -65,14 +69,27 @@
     </head>
     <body>
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
+        <h2>Form #1</h2>
         <form action="" method="post">
 
             <!-- Element that we use to create the IconCaptcha with -->
-            <div id="captcha-holder"></div>
+            <div class="captcha-holder"></div>
 
             <!-- Submit button to test your IconCaptcha input -->
-            <input type="submit" value="Submit form to test captcha" >
+            <input type="submit" value="Submit form #1 to test captcha" >
         </form>
+
+        <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
+        <h2>Form #2</h2>
+        <form action="" method="post">
+
+            <!-- Element that we use to create the IconCaptcha with -->
+            <div class="captcha-holder"></div>
+
+            <!-- Submit button to test your IconCaptcha input -->
+            <input type="submit" value="Submit form #2 to test captcha" >
+        </form>
+
 
         <p><a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/" target==_blank>View project on GitHub</a></p>
 
@@ -91,7 +108,7 @@
         <!-- Initialize the IconCaptcha -->
         <script async type="text/javascript">
             $(window).ready(function() {
-                $('#captcha-holder').iconCaptcha({
+                $('.captcha-holder').iconCaptcha({
                     captchaTheme: 'light', // Select the theme of the Captcha. Available: light, dark
                     captchaFontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
                     captchaClickDelay: 500, // The delay during which the user can't select an image.
