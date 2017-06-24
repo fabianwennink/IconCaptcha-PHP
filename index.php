@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.0.2
+     * IconCaptcha Plugin: v2.1.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -21,9 +21,9 @@
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
         if(IconCaptcha::validateSubmission($_POST)) {
-            echo 'The form has been submitted!';
+            echo '<b>Captcha:</b> The form has been submitted!';
         } else {
-            echo json_decode(IconCaptcha::getErrorMessage())->error;
+            echo '<b>Captcha: </b>' . json_decode(IconCaptcha::getErrorMessage())->error;
         }
     }
 ?>
@@ -41,17 +41,12 @@
 
         <!-- CSS to style the page a bit - not important, can be deleted -->
         <style>
-            body {
-                font-family: 'Roboto', sans-serif;
-            }
+            body { font-family: 'Roboto', sans-serif; }
+            form { margin-bottom: 50px; }
 
-            .captcha-holder {
-                margin: 20px 0;
-            }
-
-            form {
-                margin-bottom: 50px;
-            }
+            .captcha-holder { margin: 20px 0; }
+            .github { margin-bottom: 50px; }
+            .github a { color: #2d2d2d; }
 
             input[type="submit"] {
                 max-width: 325px;
@@ -68,6 +63,13 @@
         </style>
     </head>
     <body>
+        <h1>IconCaptcha Plugin - jQuery & PHP</h1>
+
+        <img src="https://img.shields.io/badge/Version-v2.1.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+        <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
+
+        <p class="github"><a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/" target="_blank">View project on GitHub</a></p>
+
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
         <h2>Form #1</h2>
         <form action="" method="post">
@@ -90,9 +92,6 @@
             <input type="submit" value="Submit form #2 to test captcha" >
         </form>
 
-
-        <p><a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/" target==_blank>View project on GitHub</a></p>
-
         <!-- Include jQuery Library -->
         <!--[if lt IE 9]>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
@@ -109,7 +108,7 @@
         <script async type="text/javascript">
             $(window).ready(function() {
                 $('.captcha-holder').iconCaptcha({
-                    captchaTheme: 'light', // Select the theme of the Captcha. Available: light, dark
+                    captchaTheme: ["light", "dark"], // Select the theme(s) of the Captcha(s). Available: light, dark
                     captchaFontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
                     captchaClickDelay: 500, // The delay during which the user can't select an image.
                     captchaHoverDetection: true, // Enable or disable the cursor hover detection.
@@ -117,6 +116,7 @@
                     showCredits: true, // Show or hide the credits element (please leave it enbled).
                     enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't do anything, just looks cool ;)
                     loadingAnimationDelay: 2500, // How long the fake loading animation should play.
+                    requestIconsDelay: 1500, // How long should the script wait before requesting the hashes and icons? (to prevent a high(er) CPU usage during a DDoS attack)
                     captchaAjaxFile: 'resources/php/captcha-request.php', // The path to the Captcha validation file.
                     captchaMessages: { // You can put whatever message you want in the captcha.
                         header: "Select the image that does not belong in the row",
@@ -130,12 +130,12 @@
                         }
                     }
                 })
-                .bind('selected.iconCaptcha', function() { // You can bind to custom events, in case you want to execute some custom code.
+                .bind('init.iconCaptcha', function() { // You can bind to custom events, in case you want to execute some custom code.
+                    console.log('Event: Captcha initialized');
+                }).bind('selected.iconCaptcha', function() {
                     console.log('Event: Icon selected');
                 }).bind('refreshed.iconCaptcha', function() {
                     console.log('Event: Captcha refreshed');
-                }).bind('init.iconCaptcha', function() {
-                    console.log('Event: Captcha initialized');
                 }).bind('success.iconCaptcha', function() {
                     console.log('Event: Correct input');
                 }).bind('error.iconCaptcha', function() {

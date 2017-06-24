@@ -1,5 +1,5 @@
 /**
- * Icon Captcha Plugin: v2.0.2
+ * Icon Captcha Plugin: v2.1.0
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -11,7 +11,7 @@
 
             // Default plugin options, will be ignored if not set
             var defaults = {
-                captchaTheme: "",
+                captchaTheme: [""],
                 captchaFontFamily: "",
                 captchaClickDelay: 1000,
                 captchaHoverDetection: true,
@@ -19,6 +19,7 @@
                 showCredits: true,
                 enableLoadingAnimation: false,
                 loadingAnimationDelay: 2000,
+                requestIconsDelay: 1500,
                 captchaAjaxFile: "../php/captcha-request.php",
                 captchaMessages: {
                     header: "Select the image that does not belong in the row",
@@ -43,6 +44,7 @@
                 var build_time = 0; // Timestamp of when the form was generated.
                 var hovering = false;
 
+
                 // Build the captcha
                 buildCaptcha();
 
@@ -50,11 +52,40 @@
                 function buildCaptcha() {
                     var captchaTheme = "light";
 
-                    if($options.captchaTheme && ($options.captchaTheme === "dark" || $options.captchaTheme === "light")) {
-                        $holder.addClass('captcha-theme-' + $options.captchaTheme);
-                        captchaTheme = $options.captchaTheme.toLowerCase();
+                    if($options.captchaTheme[id] != undefined && ($options.captchaTheme[id] === "dark" || $options.captchaTheme[id] === "light")) {
+                        captchaTheme = $options.captchaTheme[id].toLowerCase();
                     }
 
+                    $holder.addClass('captcha-theme-' + captchaTheme);
+
+                    // Build the captcha if it hasn't been build yet
+                    _buildCaptchaHolder();
+
+                    // If the requestIconsDelay has been set and is not 0, add the loading delay.
+                    // The loading delay will (possibly) prevent high CPU usage when a page displaying
+                    // one or more captchas gets constantly refreshed during a DDoS attack.
+                    if($options.requestIconsDelay && $options.requestIconsDelay > 0) {
+                        var $icon_holder = $holder.find(".captcha-modal__icons");
+
+                        // Add the loading animation
+                        $icon_holder.addClass('captcha-opacity');
+                        $icon_holder.prepend('<div class="captcha-loader"></div>');
+
+                        // Set the timeout
+                        setTimeout(function() {
+                            loadCaptcha(id, captchaTheme);
+
+                            // Remove the preloader
+                            $icon_holder.removeClass('captcha-opacity');
+                            $icon_holder.find('.captcha-loader').remove();
+                        }, $options.requestIconsDelay)
+                    } else {
+                        loadCaptcha(id, captchaTheme);
+
+                    }
+                }
+
+                function loadCaptcha(id, captchaTheme) {
                     $.ajax({
                         url: $options.captchaAjaxFile,
                         type: "post",
@@ -65,27 +96,24 @@
 
                                 build_time = new Date();
 
-                                // Build the captcha if it hasn't been build yet
-                                _buildCaptcha();
-
-                                // Event: init
-                                $holder.trigger('init');
-
                                 $holder.find('.captcha-image').each(function(i, obj) {
                                     $(this).css('background-image', 'url(' + $options.captchaAjaxFile + '?cid=' + id + '&hash=' + $data[i] + ')');
                                     $(this).attr('icon-hash', $data[i]);
                                 });
+
+                                // Event: init
+                                $holder.trigger('init');
                             }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                           console.log(textStatus, errorThrown);
-                           showError();
+                            console.log(textStatus, errorThrown);
+                            showError();
                         }
                     });
                 }
 
                 // Build the form
-                function _buildCaptcha() {
+                function _buildCaptchaHolder() {
                     if($options.captchaFontFamily) {
                         $holder.css('font-family', $options.captchaFontFamily);
                     } else {

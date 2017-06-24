@@ -1,7 +1,8 @@
 IconCaptcha Plugin - jQuery & PHP
 ===================
 
-[![Version](https://img.shields.io/badge/Version-v2.0.2-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+[![Version](https://img.shields.io/badge/Version-v2.1.0-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+[![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
 
 IconCaptcha is a faster and more user-friendly captcha than most other captchas. You no longer have to read any annoying 
 text-images, with IconCaptcha you only have to compare two images and select the image which is only present once.
@@ -86,7 +87,8 @@ The following options allow you to customize the IconCaptcha to your liking. All
 | showBoxShadow | Enable or disable the CSS box-shadow of the captcha holder. The box-shadow will match the selected captcha theme. |
 | showCredits | Enable or disable the credits element of the captcha. <br>_Please leave it enabled so people can find and use the captcha themselved._ |
 | captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or input validation. |
-| captchaMessages | Change the messages used by the captcha. All the changeable strings can be found in the _index.php_. |
+| captchaMessages <sup>__(new)__</sup> | Change the messages used by the captcha. All the changeable strings can be found in the _index.php_. |
+| requestIconsDelay <sup>__(new)__</sup> | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshes (during an attack?), it will not request the resources right away. |
 
 ## Events
 Events will be triggered at various point in the code. You can use a custom script to hook into the events and execute your own code if necessary.
