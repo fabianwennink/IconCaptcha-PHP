@@ -31,7 +31,7 @@ Even developers new to JavaScript and PHP can easily install IconCaptcha. The de
     ...
 	
     <!-- The captcha will be generated in this element -->
-    <div id="captcha-holder"></div>
+    <div class="captcha-holder"></div>
 
     ...
 </form>
@@ -39,7 +39,7 @@ Even developers new to JavaScript and PHP can easily install IconCaptcha. The de
 ...
 
 <script>
-    $('#captcha-holder').iconCaptcha({
+    $('.captcha-holder').iconCaptcha({
         // The captcha options go here
     });
 </script>
