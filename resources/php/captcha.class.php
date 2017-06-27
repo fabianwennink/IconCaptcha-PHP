@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.1.0
+     * Icon Captcha Plugin: v2.1.1
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -12,6 +12,7 @@
         private static $session_name = "icon_captcha";
 
         protected static $captcha_id = 0;
+        protected static $error_messages = array();
 
         /**
          * Sets the icon folder path variable.
@@ -22,6 +23,25 @@
          */
         public static function setIconsFolderPath($file_path) {
             $_SESSION[self::$session_name]['icon_path'] = $file_path;
+        }
+
+        /**
+         * Sets the custom error messages array. When set, these messages will
+         * be returned by getErrorMessage() instead of the default messages.
+         *
+         * Message 1 = You've selected the wrong image.
+         * Message 2 = No image has been selected.
+         * Message 3 = You've not submitted any form.
+         * Message 4 = The captcha ID was invalid.
+         *
+         * Array format: array('', '', '', '')
+         *
+         * @since 2.1.1                     Function was introduced.
+         *
+         * @param array $messages           The array containing the custom error messages.
+         */
+        public static function setErrorMessages($messages = array()) {
+            if(!empty($messages)) self::$error_messages = $messages;
         }
 
         /**
@@ -98,7 +118,7 @@
 
                 // Check if the captcha ID is set.
                 if(!isset($post['captcha-idhf']) || !is_numeric($post['captcha-idhf']) || !isset($_SESSION[self::$session_name][$post['captcha-idhf']])) {
-                    self::$error = json_encode(array('id' => 4, 'error' => 'The captcha ID was invalid.'));
+                    self::$error = json_encode(array('id' => 4, 'error' => ((!empty(self::$error_messages[3])) ? self::$error_messages[3] : 'The captcha ID was invalid.')));
                     return false;
                 }
 
@@ -110,18 +130,15 @@
 
                     // If the hashes match, unset the session data and allow the form to submit
                     if(($_SESSION[self::$session_name][$post['captcha-idhf']]['selected']['correct'] === true) && (self::getCorrectIconHash() === $post['captcha-hf'])) {
-                        unset($_SESSION[self::$session_name][$post['captcha-idhf']]['selected']['correct']);
-                        unset($_SESSION[self::$session_name][$post['captcha-idhf']]['selected']['answer']);
-
                         return true;
                     } else {
-                        self::$error = json_encode(array('id' => 1, 'error' => 'You\'ve selected the wrong image.'));
+                        self::$error = json_encode(array('id' => 1, 'error' => ((!empty(self::$error_messages[0])) ? self::$error_messages[0] : 'You\'ve selected the wrong image.')));
                     }
                 } else {
-                    self::$error = json_encode(array('id' => 2, 'error' => 'No image has been selected.'));
+                    self::$error = json_encode(array('id' => 2, 'error' => ((!empty(self::$error_messages[1])) ? self::$error_messages[1] : 'No image has been selected.')));
                 }
             } else {
-                self::$error = json_encode(array('id' => 3, 'error' => 'You\'ve not submitted any form.'));
+                self::$error = json_encode(array('id' => 3, 'error' => ((!empty(self::$error_messages[0])) ? self::$error_messages[0] : 'You\'ve not submitted any form.')));
             }
 
             return false;
@@ -227,7 +244,7 @@
          * @return string                   The image hash.
          */
         private static function getImageHash($image = null) {
-            return (!empty($image) && (isset(self::$captcha_id) && is_numeric(self::$captcha_id))) ? hash('tiger192,3', $image . self::getSalt()) : "";
+            return (!empty($image) && (isset(self::$captcha_id) && is_numeric(self::$captcha_id))) ? hash('tiger192,4', $image . self::getSalt()) : "";
         }
 
         /**

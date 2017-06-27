@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.1.0
+     * IconCaptcha Plugin: v2.1.1
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -63,12 +63,12 @@
         </style>
     </head>
     <body>
-        <h1>IconCaptcha Plugin - jQuery & PHP</h1>
+        <h1>IconCaptcha - jQuery & PHP Plugin</h1>
 
-        <img src="https://img.shields.io/badge/Version-v2.1.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+        <img src="https://img.shields.io/badge/Version-v2.1.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
         <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
 
-        <p class="github"><a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/" target="_blank">View project on GitHub</a></p>
+        <p class="github"><a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">View project on GitHub</a></p>
 
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
         <h2>Form #1</h2>
@@ -112,7 +112,6 @@
                     captchaFontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
                     captchaClickDelay: 500, // The delay during which the user can't select an image.
                     captchaHoverDetection: true, // Enable or disable the cursor hover detection.
-                    showBoxShadow: false, // Show or hide the box shadow effect.
                     showCredits: true, // Show or hide the credits element (please leave it enbled).
                     enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't do anything, just looks cool ;)
                     loadingAnimationDelay: 2500, // How long the fake loading animation should play.
@@ -130,18 +129,19 @@
                         }
                     }
                 })
-                .bind('init.iconCaptcha', function() { // You can bind to custom events, in case you want to execute some custom code.
-                    console.log('Event: Captcha initialized');
-                }).bind('selected.iconCaptcha', function() {
-                    console.log('Event: Icon selected');
-                }).bind('refreshed.iconCaptcha', function() {
-                    console.log('Event: Captcha refreshed');
-                }).bind('success.iconCaptcha', function() {
-                    console.log('Event: Correct input');
-                }).bind('error.iconCaptcha', function() {
-                    console.log('Event: Wrong input');
+                .bind('init.iconCaptcha', function(e, id) { // You can bind to custom events, in case you want to execute some custom code.
+                    console.log('Event: Captcha initialized', id);
+                }).bind('selected.iconCaptcha', function(e, id) {
+                    console.log('Event: Icon selected', id);
+                }).bind('refreshed.iconCaptcha', function(e, id) {
+                    console.log('Event: Captcha refreshed', id);
+                }).bind('success.iconCaptcha', function(e, id) {
+                    console.log('Event: Correct input', id);
+                }).bind('error.iconCaptcha', function(e, id) {
+                    console.log('Event: Wrong input', id);
                 });
             });
         </script>
     </body>
 </html>
+

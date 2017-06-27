@@ -1,9 +1,16 @@
 /**
- * Icon Captcha Plugin: v2.1.0
+ * Icon Captcha Plugin: v2.1.1
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
+
+@mixin crossBrowser($property, $css) {
+    -webkit-#{$property} : $css;
+    -moz-#{$property} : $css;
+    -o-#{$property} : $css;
+    #{$property} : $css;
+}
 
 .captcha-holder {
     position: relative;
@@ -13,6 +20,7 @@
     border-radius: 0;
     font-family: 'Roboto', sans-serif;
     text-shadow: none;
+    line-height: 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 
@@ -48,13 +56,17 @@
         &__icons {
             display: block;
             overflow: hidden;
-            height: 60px;
-            padding: 0 10px;
+            position: relative;
+            height: 50px;
+            min-height:50px;
+            padding: 6px 10px;
             text-align: center;
             -webkit-box-align: center;
             -webkit-box-pack: center;
             display: -webkit-box;
-            position: relative;
+            -webkit-box-sizing: initial;
+            -moz-box-sizing: initial;
+            box-sizing: initial;
 
             &-title {
                 font-size: 20px;
@@ -64,7 +76,7 @@
                 position: absolute;
                 left:0;
                 right:0;
-                top: 8px;
+                top: 10px;
             }
 
             &-subtitle {
@@ -74,12 +86,12 @@
                 position: absolute;
                 left:0;
                 right:0;
-                top: 35px;
+                top: 37px;
             }
 
             .captcha-image {
                 position: relative;
-                height: 48px;
+                height: 50px;
                 width: 19%;
                 float: left;
                 background-repeat: no-repeat;
@@ -101,15 +113,11 @@
                     right: 0;
                     top: 0;
                     bottom: 0;
-                    transition: border .1s linear;
-                    -webkit-transition: border .1s linear;
-                    -moz-transition: border .1s linear;
+                    @include crossBrowser(transition, (border .2s linear));
                 }
 
                 &:hover:after {
-                    transition: border .1s linear;
-                    -webkit-transition: border .1s linear;
-                    -moz-transition: border .1s linear;
+                    @include crossBrowser(transition, (border .2s linear));
                 }
             }
 
@@ -117,21 +125,15 @@
                 position: absolute;
                 width: 38px;
                 height: 38px;
-                -ms-border-radius: 50%;
-                -moz-border-radius: 50%;
-                -webkit-border-radius: 50%;
-                border-radius: 50% 50% 50% 50%;
+                @include crossBrowser(border-radius, (50% 50% 50% 50%));
                 border: 10px solid #68C3A3;
-                margin: 11px auto;
+                margin: 6px auto;
                 left: 0;
                 right: 0;
                 opacity: 0.8;
                 z-index: 10;
                 box-sizing: border-box;
-                -webkit-animation: captcha-loader 6s infinite linear;
-                -moz-animation: captcha-loader 6s infinite linear;
-                -o-animation: captcha-loader 6s infinite linear;
-                animation: captcha-loader 6s infinite linear;
+                @include crossBrowser(animation, (captcha-loader 6s infinite linear));
             }
 
             &.captcha-opacity > .captcha-image {
@@ -151,21 +153,17 @@
 
         &__credits {
             display:none;
-            font-size: 10px;
+            font-size: 9px;
             padding: 3px;
             text-align: center;
             cursor: default;
 
             &> a {
                 text-decoration: none;
-                transition: color .1s linear;
-                -webkit-transition: color .1s linear;
-                -moz-transition: color .1s linear;
+                @include crossBrowser(transition, (color .1s linear));
 
                 &:hover {
-                    transition: color .1s linear;
-                    -webkit-transition: color .1s linear;
-                    -moz-transition: color .1s linear;
+                    @include crossBrowser(transition, (color .1s linear));
                 }
             }
         }
@@ -220,10 +218,6 @@
                 .captcha-modal__icons .captcha-modal__icons-title {
                     color: #ef5858;
                 }
-            }
-
-            &.captcha-boxshadow {
-                box-shadow: 3px 3px 0 #ccc;
             }
         }
 
@@ -280,10 +274,6 @@
                     color: #ef5858;
                 }
             }
-
-            &.captcha-boxshadow {
-                box-shadow: 3px 3px 0 #2b2b2b;
-            }
         }
     }
 
@@ -324,11 +314,8 @@
 
         .captcha-modal {
             &__icons {
-                box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-
                 .captcha-image {
-                    background-size: 50%;
+                    @include crossBrowser(background-size, 60%);
                 }
             }
         }
@@ -341,6 +328,10 @@
         .captcha-modal {
             &__icons {
                 padding: 0;
+
+                .captcha-image {
+                    @include crossBrowser(background-size, 50%);
+                }
             }
         }
     }

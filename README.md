@@ -1,7 +1,7 @@
 IconCaptcha Plugin - jQuery & PHP
 ===================
 
-[![Version](https://img.shields.io/badge/Version-v2.1.0-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+[![Version](https://img.shields.io/badge/Version-v2.1.1-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
 
 IconCaptcha is a faster and more user-friendly captcha than most other captchas. You no longer have to read any annoying 
@@ -22,14 +22,14 @@ Even developers new to JavaScript and PHP can easily install IconCaptcha. The de
 * __Server-side validation:__ Any validation done by the captcha will be performed on the server-side instead of the client-side.
 * __Events:__ Events are triggered at various points in the code, allowing you to hook into them and execute custom code if necessary.
 * __Themes:__ Select the design of the captcha without having to ever touch the stylesheet.
-* __SCSS:__  The project contains a SCSS file, allowing you to easily style and compile the stylesheet.
+* __SASS:__  The project contains a SASS file, allowing you to easily style and compile the stylesheet.
 * __Supports IE:__  The captcha _supports_ Internet Explorer 8 and up.
 
 ## Usage
 ```html
 <form action="" method="post">
     ...
-	
+    
     <!-- The captcha will be generated in this element -->
     <div class="captcha-holder"></div>
 
@@ -51,7 +51,7 @@ PHP form validation:
 <?php
     // Start a PHP session.
     session_start();
-	
+    
     // Include the IconCaptcha class.
     require('resources/php/captcha.class.php');
 
@@ -60,7 +60,11 @@ PHP form validation:
     // ALWAYS END WITH A /
     // DEFAULT IS SET TO ../icons/
     IconCaptcha::setIconsFolderPath("../icons/");
-	
+    
+    // Set the custom error messages (optional)
+    // Check the IconCaptcha class (for instructions.
+    // IconCaptcha::setErrorMessages(array(...));
+    
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
         if(IconCaptcha::validateSubmission($_POST)) {
