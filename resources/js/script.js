@@ -1,5 +1,5 @@
 /**
- * Icon Captcha Plugin: v2.1.1
+ * Icon Captcha Plugin: v2.1.2
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -41,7 +41,7 @@
                 var $holder = $(this);
 
                 var build_time = 0;
-                var hovering = false; 
+                var hovering = false;
                 var generated = false;
                 var images_ready = 0;
 
@@ -125,25 +125,25 @@
                         $("body").append('<!-- Icon Captcha default font --><link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">');
                     }
 
-                    $holder.html("\
-                        <div class='captcha-modal'>\
-                            <div class='captcha-modal__header'>\
-                                <span>" + (($options.captchaMessages.header && $options.captchaMessages.header) ? $options.captchaMessages.header : "Select the image that does not belong in the row") + "</span>\
-                            </div>\
-                            <div class='captcha-modal__icons'>\
-                                <div class='captcha-image'></div>\
-                                <div class='captcha-image'></div>\
-                                <div class='captcha-image'></div>\
-                                <div class='captcha-image'></div>\
-                                <div class='captcha-image'></div>\
-                            </div>\
-                            <div class='captcha-modal__credits' alt='IconCaptcha by Fabian Wennink' title='IconCaptcha by Fabian Wennink'>\
-                                <a href='https://www.fabianwennink.nl/projects/IconCaptcha/v2/' target='_blank' rel='follow'>IconCaptcha</a> ©\
-                            </div>\
-                            <input type='hidden' name='captcha-hf' required />\
-                            <input type='hidden' name='captcha-idhf' value='" + id + "' required />\
-                        </div>"
-                    );
+                    $holder.html([
+                        "<div class='captcha-modal'>",
+                        "<div class='captcha-modal__header'>",
+                        "<span>" + (($options.captchaMessages.header && $options.captchaMessages.header) ? $options.captchaMessages.header : "Select the image that does not belong in the row") + "</span>",
+                        "</div>",
+                        "<div class='captcha-modal__icons'>",
+                        "<div class='captcha-image'></div>",
+                        "<div class='captcha-image'></div>",
+                        "<div class='captcha-image'></div>",
+                        "<div class='captcha-image'></div>",
+                        "<div class='captcha-image'></div>",
+                        "</div>",
+                        "<div class='captcha-modal__credits' alt='IconCaptcha by Fabian Wennink' title='IconCaptcha by Fabian Wennink'>",
+                        "<a href='https://www.fabianwennink.nl/projects/IconCaptcha/v2/' target='_blank' rel='follow'>IconCaptcha</a> &copy;",
+                        "</div>",
+                        "<input type='hidden' name='captcha-hf' required />",
+                        "<input type='hidden' name='captcha-idhf' value='" + id + "' required />",
+                        "</div>"
+                    ].join("\n"));
 
                     if($options.showCredits) {
                         $holder.addClass('captcha-credits');
@@ -201,15 +201,16 @@
                     $holder.removeClass("captcha-error");
                     $holder.find("input").attr("value", null);
 
-                    // Reset the images and re-add the loader
-                    $holder.find(".captcha-modal__icons").html("\
-                        <div class='captcha-loader'></div>\
-                        <div class='captcha-image'></div>\
-                        <div class='captcha-image'></div>\
-                        <div class='captcha-image'></div>\
-                        <div class='captcha-image'></div>\
-                        <div class='captcha-image'></div>\
-                    ").find(".captcha-modal__icons > .captcha-image").attr('icon-hash', null);
+                    $holder.find(".captcha-modal__icons").html([
+                        "<div class='captcha-loader'></div>",
+                        "<div class='captcha-image'></div>",
+                        "<div class='captcha-image'></div>",
+                        "<div class='captcha-image'></div>",
+                        "<div class='captcha-image'></div>",
+                        "<div class='captcha-image'></div>"
+                    ].join("\n"));
+
+                    $holder.find(".captcha-modal__icons > .captcha-image").attr('icon-hash', null);
 
                     // Rebuild the captcha
                     buildCaptcha(true);
