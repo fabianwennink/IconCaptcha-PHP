@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.1.1
+     * Icon Captcha Plugin: v2.1.2
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -9,7 +9,7 @@
     class IconCaptcha {
 
         private static $error;
-        private static $session_name = "icon_captcha";
+        public static $session_name = "icon_captcha";
 
         protected static $captcha_id = 0;
         protected static $error_messages = array();
@@ -76,28 +76,38 @@
 
             // Pick a random number for the incorrect icon.
             // Loop until a number is found which doesn't match the correct icon ID.
-            while($b == 0) {
+            while($b === 0) {
                 $c = rand(1, 89);
                 if($c !== $a) $b = $c;
             }
 
-            // Unset the previous session data
-            unset($_SESSION[self::$session_name][$captcha_id]['selected']);
-
-            $d = rand(1, 5); // At which position the correct hash will be stored in the array.
+            $d = -1; // At which position the correct hash will be stored in the array.
             $e = array(); // Array containing the hashes
 
+            // Pick a random number for the correct icon.
+            // Loop until a number is found which doesn't match the previously clicked icon ID.
+            while($d === -1) {
+                $f = rand(1, 5);
+                $g = (isset($_SESSION[self::$session_name][$captcha_id]['selected']['last'])) ? $_SESSION[self::$session_name][$captcha_id]['selected']['last'] : 0;
+
+                if($f !== $g) $d = $f;
+            }
+
             for($i = 1; $i < 6; $i++) {
-                if($i == $d) {
+                if($i === $d) {
                     array_push($e, self::getImageHash('icon-' . $a . '-' . $i));
                 } else {
                     array_push($e, self::getImageHash('icon-' . $b . '-' . $i));
                 }
             }
 
+            // Unset the previous session data
+            unset($_SESSION[self::$session_name][$captcha_id]['selected']);
+
             // Set the new session data
             $_SESSION[self::$session_name][$captcha_id]['selected']['answer'] = $e[$d - 1];
             $_SESSION[self::$session_name][$captcha_id]['selected']['data'] = array($a, $b, $e); // correct id, incorrect id, hashes
+            $_SESSION[self::$session_name][$captcha_id]['selected']['icons'] = 0;
 
             // Return the JSON encoded array
             return json_encode($e);
@@ -171,6 +181,12 @@
                     return true;
                 } else {
                     $_SESSION[self::$session_name][$_POST['cID']]['selected']['correct'] = false;
+
+                    // Set the clicked icon ID
+                    if(in_array($_POST['pC'], $_SESSION[self::$session_name][$_POST['cID']]['selected']['data'][2])) {
+                        $i = array_search($_POST['pC'], $_SESSION[self::$session_name][$_POST['cID']]['selected']['data'][2]);
+                        $_SESSION[self::$session_name][$_POST['cID']]['selected']['last'] = $i + 1;
+                    }
                 }
             }
 
@@ -191,7 +207,14 @@
             if(isset($hash) && isset($captcha_id)) {
                 $a = $_SESSION[self::$session_name][$captcha_id]['selected']['data'];
 
-                //die(var_dump($a));
+                // Check the amount of times an icon has been requested
+                if($_SESSION[self::$session_name][$captcha_id]['selected']['icons'] >= 5) {
+                    header("HTTP/1.1 403 Forbidden");
+                    exit;
+                }
+
+                // Update the request counter
+                $_SESSION[self::$session_name][$captcha_id]['selected']['icons'] += 1;
 
                 // Set the captcha id property
                 self::$captcha_id = $captcha_id;
@@ -217,11 +240,14 @@
                         // Show the image and exit the code
                         header('Content-type: ' . $mime);
                         readfile($file);
+					
                         exit;
                     }
                 }
             }
         }
+
+
 
         /**
          * Returns the correct icon hash. Used to validate the user's input.

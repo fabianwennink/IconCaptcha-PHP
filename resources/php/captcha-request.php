@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.1.1
+     * Icon Captcha Plugin: v2.1.2
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -31,12 +31,14 @@
     }
 
     // HTTP GET - Requesting the actual images
-    if((!empty($_GET) && isset($_GET['hash']) && strlen($_GET['hash']) === 48) && (isset($_GET['cid']) && is_numeric($_GET['cid']))) {
+    if((!empty($_GET) && isset($_GET['hash']) && strlen($_GET['hash']) === 48) &&
+        (isset($_GET['cid']) && is_numeric($_GET['cid'])) && !isAjaxRequest()) {
         IconCaptcha::getIconFromHash($_GET['hash'], $_GET['cid']);
         exit;
     }
 
-    echo 'Invalid request.';
+    header("HTTP/1.1 400 Bad Request");
+    exit;
 
     // Adds another level of security to the Ajax call.
     // Only requests made through Ajax are allowed.

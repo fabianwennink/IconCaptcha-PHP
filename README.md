@@ -1,8 +1,9 @@
-IconCaptcha Plugin - jQuery & PHP
-===================
+# IconCaptcha Plugin - jQuery & PHP
 
-[![Version](https://img.shields.io/badge/Version-v2.1.1-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+[![Version](https://img.shields.io/badge/Version-2.1.2-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
+
+<br><img src="http://i.imgur.com/RMUALSz.png" />
 
 IconCaptcha is a faster and more user-friendly captcha than most other captchas. You no longer have to read any annoying 
 text-images, with IconCaptcha you only have to compare two images and select the image which is only present once.
@@ -88,7 +89,6 @@ The following options allow you to customize the IconCaptcha to your liking. All
 | captchaHoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
 | enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
 | loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
-| showBoxShadow | Enable or disable the CSS box-shadow of the captcha holder. The box-shadow will match the selected captcha theme. |
 | showCredits | Enable or disable the credits element of the captcha. <br>_Please leave it enabled so people can find and use the captcha themselved._ |
 | captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or input validation. |
 | captchaMessages <sup>__(new)__</sup> | Change the messages used by the captcha. All the changeable strings can be found in the _index.php_. |

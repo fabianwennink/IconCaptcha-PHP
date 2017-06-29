@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.1.1
+     * IconCaptcha Plugin: v2.1.2
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -18,6 +18,10 @@
     // DEFAULT IS SET TO ../icons/
     IconCaptcha::setIconsFolderPath("../icons/");
 
+    // Use custom messages as error messages (optional).
+    // Take a look at the IconCaptcha class to see what each string means.
+    // IconCaptcha::setErrorMessages(array('', '', '', ''));
+
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
         if(IconCaptcha::validateSubmission($_POST)) {
@@ -27,7 +31,7 @@
         }
     }
 ?>
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
     <head>
         <title>IconCaptcha Plugin v2 - By Fabian Wennink</title>
@@ -44,6 +48,10 @@
             body { font-family: 'Roboto', sans-serif; }
             form { margin-bottom: 50px; }
 
+            .logo {
+                display:block;
+                margin:25px 0;
+            }
             .captcha-holder { margin: 20px 0; }
             .github { margin-bottom: 50px; }
             .github a { color: #2d2d2d; }
@@ -63,12 +71,12 @@
         </style>
     </head>
     <body>
-        <h1>IconCaptcha - jQuery & PHP Plugin</h1>
+        <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">
+            <img class="logo" src="http://i.imgur.com/RMUALSz.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
+        </a>
 
-        <img src="https://img.shields.io/badge/Version-v2.1.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+        <img src="https://img.shields.io/badge/Version-2.1.2-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
         <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
-
-        <p class="github"><a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">View project on GitHub</a></p>
 
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
         <h2>Form #1</h2>
@@ -80,7 +88,7 @@
             <!-- Submit button to test your IconCaptcha input -->
             <input type="submit" value="Submit form #1 to test captcha" >
         </form>
-
+		
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
         <h2>Form #2</h2>
         <form action="" method="post">
@@ -114,7 +122,7 @@
                     captchaHoverDetection: true, // Enable or disable the cursor hover detection.
                     showCredits: true, // Show or hide the credits element (please leave it enbled).
                     enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't do anything, just looks cool ;)
-                    loadingAnimationDelay: 2500, // How long the fake loading animation should play.
+                    loadingAnimationDelay: 1500, // How long the fake loading animation should play.
                     requestIconsDelay: 1500, // How long should the script wait before requesting the hashes and icons? (to prevent a high(er) CPU usage during a DDoS attack)
                     captchaAjaxFile: 'resources/php/captcha-request.php', // The path to the Captcha validation file.
                     captchaMessages: { // You can put whatever message you want in the captcha.

@@ -1,5 +1,5 @@
 /**
- * Icon Captcha Plugin: v2.1.1
+ * Icon Captcha Plugin: v2.1.2
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -122,16 +122,18 @@
             }
 
             .captcha-loader {
+                margin: auto;
                 position: absolute;
                 width: 38px;
                 height: 38px;
                 @include crossBrowser(border-radius, (50% 50% 50% 50%));
                 border: 10px solid #68C3A3;
-                margin: 6px auto;
-                left: 0;
-                right: 0;
                 opacity: 0.8;
                 z-index: 10;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
                 box-sizing: border-box;
                 @include crossBrowser(animation, (captcha-loader 6s infinite linear));
             }
