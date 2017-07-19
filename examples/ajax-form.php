@@ -82,7 +82,7 @@
             <!-- Submit button to test your IconCaptcha input -->
             <input type="submit" value="Submit form #1 to test captcha" >
         </form>
-		
+
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
         <h2>Form #2</h2>
         <form action="form/ajax-submit.php" method="post" data-captcha-form="1">

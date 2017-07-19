@@ -240,7 +240,7 @@
                         // Show the image and exit the code
                         header('Content-type: ' . $mime);
                         readfile($file);
-					
+
                         exit;
                     }
                 }
