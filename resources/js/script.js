@@ -1,5 +1,5 @@
 /**
- * Icon Captcha Plugin: v2.1.2
+ * Icon Captcha Plugin: v2.1.3
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -143,7 +143,7 @@
                         "<input type='hidden' name='captcha-hf' required />",
                         "<input type='hidden' name='captcha-idhf' value='" + id + "' required />",
                         "</div>"
-                    ].join("\n"));
+                    ].join("\n")).attr('data-captcha-id', id);
 
                     if($options.showCredits) {
                         $holder.addClass('captcha-credits');
@@ -199,7 +199,7 @@
                 // Reset the captcha
                 function resetCaptcha() {
                     $holder.removeClass("captcha-error");
-                    $holder.find("input").attr("value", null);
+                    $holder.find("input[name='captcha-hf']").attr("value", null);
 
                     $holder.find(".captcha-modal__icons").html([
                         "<div class='captcha-loader'></div>",
