@@ -140,7 +140,7 @@
                 // $.ajax({
                 //     type: 'POST',
                 //     url: form.attr('action'),
-                //     data: fd,
+                //     data: formData,
                 //     processData: false,
                 //     contentType: false
                 // }).done(function (data) {
