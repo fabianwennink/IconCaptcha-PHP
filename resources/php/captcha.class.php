@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.1.3
+     * Icon Captcha Plugin: v2.2.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -8,11 +8,26 @@
 
     class IconCaptcha {
 
+        /**
+         * @var string                      A JSON encoded error message, which will be shown to the user.
+         */
         private static $error;
-        public static $session_name = "icon_captcha";
 
-        protected static $captcha_id = 0;
-        protected static $error_messages = array();
+        /**
+         * @var int                         The current captcha identifier.
+         */
+        private static $captcha_id = 0;
+
+        /**
+         * @var array                       The (possible) custom error messages.
+         */
+        private static $error_messages = array();
+
+        /**
+         * @var CaptchaSession              The session containing captcha information.
+         */
+        private static $session;
+
 
         /**
          * Sets the icon folder path variable.
@@ -22,7 +37,7 @@
          * @param string $file_path         The path to the icons folder.
          */
         public static function setIconsFolderPath($file_path) {
-            $_SESSION[self::$session_name]['icon_path'] = $file_path;
+            $_SESSION['icon_captcha']['icon_path'] = $file_path;
         }
 
         /**
@@ -61,8 +76,9 @@
          * @since 2.0.1                     Function was introduced.
          *
          * @param string $theme             The theme of the captcha.
+         * @param int $captcha_id           The captcha identifier.
          *
-         * @return string			        The JSON encoded array containing the correct icon id, incorrect icon id and hashes.
+         * @return string			        The JSON array containing the correct icon, incorrect icon and hashes.
          */
         public static function getCaptchaData($theme, $captcha_id) {
             $a = rand(1, 89); // Get a random number (correct image)
@@ -71,8 +87,9 @@
             // Set the captcha id property
             self::$captcha_id = $captcha_id;
 
-            // Save the theme to the session
-            $_SESSION[self::$session_name][$captcha_id]['theme'] = $theme;
+            // Load the session data, if there is any present.
+            // Default data will be used in case no data exists.
+            self::$session = new CaptchaSession($captcha_id, $theme);
 
             // Pick a random number for the incorrect icon.
             // Loop until a number is found which doesn't match the correct icon ID.
@@ -83,12 +100,13 @@
 
             $d = -1; // At which position the correct hash will be stored in the array.
             $e = array(); // Array containing the hashes
+            $z = -1; // The last
 
             // Pick a random number for the correct icon.
             // Loop until a number is found which doesn't match the previously clicked icon ID.
             while($d === -1) {
                 $f = rand(1, 5);
-                $g = (isset($_SESSION[self::$session_name][$captcha_id]['selected']['last'])) ? $_SESSION[self::$session_name][$captcha_id]['selected']['last'] : 0;
+                $g = (self::$session->last_clicked > -1) ? self::$session->last_clicked : 0;
 
                 if($f !== $g) $d = $f;
             }
@@ -102,12 +120,13 @@
             }
 
             // Unset the previous session data
-            unset($_SESSION[self::$session_name][$captcha_id]['selected']);
+            self::$session->clear();
 
-            // Set the new session data
-            $_SESSION[self::$session_name][$captcha_id]['selected']['answer'] = $e[$d - 1];
-            $_SESSION[self::$session_name][$captcha_id]['selected']['data'] = array($a, $b, $e); // correct id, incorrect id, hashes
-            $_SESSION[self::$session_name][$captcha_id]['selected']['icons'] = 0;
+            // Set (or override) the hashes and reset the icon request count.
+            self::$session->hashes = array($a, $b, $e); // correct id, incorrect id, hashes
+            self::$session->correct_hash = $e[$d - 1];
+            self::$session->icon_requests = 0;
+            self::$session->save();
 
             // Return the JSON encoded array
             return json_encode($e);
@@ -123,32 +142,42 @@
          *
          * @return boolean			        TRUE if the captcha was correct, FALSE if not.
          */
-        public static function validateSubmission($post = null) {
+        public static function validateSubmission($post) {
             if(!empty($post)) {
 
                 // Check if the captcha ID is set.
-                if(!isset($post['captcha-idhf']) || !is_numeric($post['captcha-idhf']) || !isset($_SESSION[self::$session_name][$post['captcha-idhf']])) {
-                    self::$error = json_encode(array('id' => 4, 'error' => ((!empty(self::$error_messages[3])) ? self::$error_messages[3] : 'The captcha ID was invalid.')));
+                if(!isset($post['captcha-idhf']) || !is_numeric($post['captcha-idhf'])
+                    || !CaptchaSession::exists($post['captcha-idhf'])) {
+                    self::$error = json_encode(array('id' => 4, 'error' => ((!empty(self::$error_messages[3]))
+                        ? self::$error_messages[3] : 'The captcha ID was invalid.')));
                     return false;
                 }
 
                 // Set the captcha id property
                 self::$captcha_id = $post['captcha-idhf'];
 
-                // Check if the 'selected' session and hidden captcha field are set
-                if(isset($_SESSION[self::$session_name][$post['captcha-idhf']]['selected']['correct']) && isset($post['captcha-hf'])) {
+                // If the session is not loaded yet, load it.
+                if(!isset(self::$session)) {
+                    self::$session = new CaptchaSession(self::$captcha_id);
+                }
 
-                    // If the hashes match, unset the session data and allow the form to submit
-                    if(($_SESSION[self::$session_name][$post['captcha-idhf']]['selected']['correct'] === true) && (self::getCorrectIconHash() === $post['captcha-hf'])) {
+                // Check if the hidden captcha field is set.
+                if(!empty($post['captcha-hf'])) {
+
+                    // If the hashes match, the form can be submitted. Return true.
+                    if(self::$session->completed === true && self::getCorrectIconHash() === $post['captcha-hf']) {
                         return true;
                     } else {
-                        self::$error = json_encode(array('id' => 1, 'error' => ((!empty(self::$error_messages[0])) ? self::$error_messages[0] : 'You\'ve selected the wrong image.')));
+                        self::$error = json_encode(array('id' => 1, 'error' => ((!empty(self::$error_messages[0]))
+                            ? self::$error_messages[0] : 'You\'ve selected the wrong image.')));
                     }
                 } else {
-                    self::$error = json_encode(array('id' => 2, 'error' => ((!empty(self::$error_messages[1])) ? self::$error_messages[1] : 'No image has been selected.')));
+                    self::$error = json_encode(array('id' => 2, 'error' => ((!empty(self::$error_messages[1]))
+                        ? self::$error_messages[1] : 'No image has been selected.')));
                 }
             } else {
-                self::$error = json_encode(array('id' => 3, 'error' => ((!empty(self::$error_messages[0])) ? self::$error_messages[0] : 'You\'ve not submitted any form.')));
+                self::$error = json_encode(array('id' => 3, 'error' => ((!empty(self::$error_messages[0]))
+                    ? self::$error_messages[0] : 'You\'ve not submitted any form.')));
             }
 
             return false;
@@ -164,7 +193,7 @@
          *
          * @return boolean			        TRUE if the correct image was selected, FALSE if not.
          */
-        public static function setSelectedAnswer($post = null) {
+        public static function setSelectedAnswer($post) {
             if(!empty($post)) {
 
                 // Check if the captcha ID is set.
@@ -175,17 +204,28 @@
                 // Set the captcha id property
                 self::$captcha_id = $_POST['cID'];
 
+                // If the session is not loaded yet, load it.
+                if(!isset(self::$session)) {
+                    self::$session = new CaptchaSession(self::$captcha_id);
+                }
+
                 // Check if the hash is set and matches the correct hash.
                 if(isset($post['pC']) && (self::getCorrectIconHash() === $post['pC'])) {
-                    $_SESSION[self::$session_name][$_POST['cID']]['selected']['correct'] = true;
+                    self::$session->completed = true;
+
+                    // Unset the data to at least save some space in the session.
+                    self::$session->clear();
+                    self::$session->save();
+
                     return true;
                 } else {
-                    $_SESSION[self::$session_name][$_POST['cID']]['selected']['correct'] = false;
+                    self::$session->completed = false;
+                    self::$session->save();
 
                     // Set the clicked icon ID
-                    if(in_array($_POST['pC'], $_SESSION[self::$session_name][$_POST['cID']]['selected']['data'][2])) {
-                        $i = array_search($_POST['pC'], $_SESSION[self::$session_name][$_POST['cID']]['selected']['data'][2]);
-                        $_SESSION[self::$session_name][$_POST['cID']]['selected']['last'] = $i + 1;
+                    if(in_array($_POST['pC'], self::$session->hashes[2])) {
+                        $i = array_search($_POST['pC'], self::$session->hashes[2]);
+                        self::$session->last_clicked = $i + 1;
                     }
                 }
             }
@@ -199,30 +239,37 @@
          *
          * @since 2.0.1                     Function was introduced.
          *
-         * @param null $hash                The icon hash.
+         * @param string|null $hash         The icon hash.
+         * @param int|null $captcha_id      The captcha identifier.
          */
         public static function getIconFromHash($hash = null, $captcha_id = null) {
 
             // Check if the hash and captcha id are set
-            if(isset($hash) && isset($captcha_id)) {
-                $a = $_SESSION[self::$session_name][$captcha_id]['selected']['data'];
+            if(!empty($hash) && (isset($captcha_id) && $captcha_id > -1)) {
+
+                // Set the captcha id property
+                self::$captcha_id = $captcha_id;
+
+                // If the session is not loaded yet, load it.
+                if(!isset(self::$session)) {
+                    self::$session = new CaptchaSession(self::$captcha_id);
+                }
 
                 // Check the amount of times an icon has been requested
-                if($_SESSION[self::$session_name][$captcha_id]['selected']['icons'] >= 5) {
+                if(self::$session->icon_requests >= 5) {
                     header("HTTP/1.1 403 Forbidden");
                     exit;
                 }
 
                 // Update the request counter
-                $_SESSION[self::$session_name][$captcha_id]['selected']['icons'] += 1;
-
-                // Set the captcha id property
-                self::$captcha_id = $captcha_id;
+                self::$session->icon_requests += 1;
 
                 // Check if the hash is present in the session data
-                if(in_array($hash, $a[2])) {
+                if(in_array($hash, self::$session->hashes[2])) {
                     $icons_path = $_SESSION[self::$session_name]['icon_path']; // Icons folder path
-                    $file = $icons_path . ((substr($icons_path, -1) === '/') ? '' : '/') . $_SESSION[self::$session_name][$captcha_id]['theme'] . '/icon-' . ((self::getCorrectIconHash() === $hash) ? $a[0] : $a[1]) . '.png';
+                    $file = $icons_path . ((substr($icons_path, -1) === '/') ? '' : '/') .
+                        $_SESSION[self::$session_name][$captcha_id]['theme'] . '/icon-' .
+                        ((self::getCorrectIconHash() === $hash) ? self::$session->hashes[0] : self::$session->hashes[1]) . '.png';
 
                     // Check if the icon exists
                     if (file_exists($file)) {
@@ -247,8 +294,6 @@
             }
         }
 
-
-
         /**
          * Returns the correct icon hash. Used to validate the user's input.
          *
@@ -257,7 +302,12 @@
          * @return string			        The correct icon hash.
          */
         private static function getCorrectIconHash() {
-            return (isset(self::$captcha_id) && is_numeric(self::$captcha_id)) ? $_SESSION[self::$session_name][self::$captcha_id]['selected']['answer'] : "";
+            if(!isset(self::$session)) {
+                self::$session = new CaptchaSession(self::$captcha_id);
+            }
+
+            return (isset(self::$captcha_id) && is_numeric(self::$captcha_id))
+                ? self::$session->correct_hash : "";
         }
 
         /**
@@ -270,18 +320,12 @@
          * @return string                   The image hash.
          */
         private static function getImageHash($image = null) {
-            return (!empty($image) && (isset(self::$captcha_id) && is_numeric(self::$captcha_id))) ? hash('tiger192,4', $image . self::getSalt()) : "";
-        }
+            if(!isset(self::$session)) {
+                self::$session = new CaptchaSession(self::$captcha_id);
+            }
 
-        /**
-         * Returns a randomly generated temporary salt used to hash the image names with.
-         *
-         * @since 2.0.1                     Function was introduced.
-         *
-         * @return string                   The random generated salt.
-         */
-        private static function getSalt() {
-            return (isset($_SESSION[self::$session_name][self::$captcha_id]['selected']['salt'])) ? $_SESSION[self::$session_name][self::$captcha_id]['selected']['salt'] : hash('crc32', uniqid());
+            return (!empty($image) && (isset(self::$captcha_id) && is_numeric(self::$captcha_id)))
+                ? hash('tiger192,4', $image . hash('crc32', uniqid())) : "";
         }
     }
 ?>

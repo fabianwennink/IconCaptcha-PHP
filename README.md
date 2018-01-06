@@ -1,6 +1,6 @@
 # IconCaptcha Plugin - jQuery & PHP
 
-[![Version](https://img.shields.io/badge/Version-2.1.3-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+[![Version](https://img.shields.io/badge/Version-2.2.0-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
 
 <br><img src="http://i.imgur.com/RMUALSz.png" />
@@ -53,7 +53,8 @@ PHP form validation:
     // Start a PHP session.
     session_start();
     
-    // Include the IconCaptcha class.
+    // Include the IconCaptcha classes.
+    require('resources/php/captcha-session.class.php');
     require('resources/php/captcha.class.php');
 
     // Set the path to the captcha icons. Set it as if you were

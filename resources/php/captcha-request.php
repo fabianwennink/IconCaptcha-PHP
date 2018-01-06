@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.1.3
+     * Icon Captcha Plugin: v2.2.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -9,7 +9,8 @@
     // Start a PHP session
     session_start();
 
-    // Include the captcha class
+    // Include the captcha classes.
+    require('captcha-session.class.php');
     require('captcha.class.php');
 
     // HTTP POST - Either the captcha has been submitted or the

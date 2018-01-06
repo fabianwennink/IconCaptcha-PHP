@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.1.3
+     * IconCaptcha Plugin: v2.2.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -9,7 +9,8 @@
     // Start a PHP session.
     session_start();
 
-    // Include the IconCaptcha class.
+    // Include the IconCaptcha classes.
+    require('../../resources/php/captcha-session.class.php');
     require('../../resources/php/captcha.class.php');
 
     // Set the path to the captcha icons. Set it as if you were
