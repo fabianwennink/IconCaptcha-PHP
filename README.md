@@ -92,8 +92,8 @@ The following options allow you to customize the IconCaptcha to your liking. All
 | loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
 | showCredits | Enable or disable the credits element of the captcha. <br>_Please leave it enabled so people can find and use the captcha themselved._ |
 | captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or input validation. |
-| captchaMessages <sup>__(new)__</sup> | Change the messages used by the captcha. All the changeable strings can be found in the _index.php_. |
-| requestIconsDelay <sup>__(new)__</sup> | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshes (during an attack?), it will not request the resources right away. |
+| captchaMessages | Change the messages used by the captcha. All the changeable strings can be found in the _index.php_. |
+| requestIconsDelay | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshes (during an attack?), it will not request the resources right away. |
 
 ## Events
 Events will be triggered at various point in the code. You can use a custom script to hook into the events and execute your own code if necessary.
