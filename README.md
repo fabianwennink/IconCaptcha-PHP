@@ -12,11 +12,13 @@ Besides being user-friendly, IconCaptcha is also developer-friendly. With just a
 Even developers new to JavaScript and PHP can easily install IconCaptcha. The demo page contains all the code needed to get the captcha working.
 
 <img src="https://i.imgur.com/IO5XyPV.jpg" /> <img src="https://i.imgur.com/tp7028J.jpg" />
-
-### A WordPress version of the IconCaptcha plugin will soon be available!
+___
 
 ### <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">Download IconCaptcha now</a>
 ### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View Demo</a>
+
+#### A WordPress version of the IconCaptcha plugin will soon be available!
+___
 
 ## Features
 * __User Friendly:__ The captcha uses easily understandable images instead of hard to read texts to complete the captcha.
@@ -90,7 +92,6 @@ The following options allow you to customize the IconCaptcha to your liking. All
 | captchaHoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
 | enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
 | loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
-| showCredits | Enable or disable the credits element of the captcha. <br>_Please leave it enabled so people can find and use the captcha themselved._ |
 | captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or input validation. |
 | captchaMessages | Change the messages used by the captcha. All the changeable strings can be found in the _index.php_. |
 | requestIconsDelay | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshes (during an attack?), it will not request the resources right away. |

@@ -100,7 +100,6 @@
 
             $d = -1; // At which position the correct hash will be stored in the array.
             $e = array(); // Array containing the hashes
-            $z = -1; // The last
 
             // Pick a random number for the correct icon.
             // Loop until a number is found which doesn't match the previously clicked icon ID.
@@ -263,12 +262,13 @@
 
                 // Update the request counter
                 self::$session->icon_requests += 1;
+                self::$session->save();
 
                 // Check if the hash is present in the session data
                 if(in_array($hash, self::$session->hashes[2])) {
-                    $icons_path = $_SESSION[self::$session_name]['icon_path']; // Icons folder path
-                    $file = $icons_path . ((substr($icons_path, -1) === '/') ? '' : '/') .
-                        $_SESSION[self::$session_name][$captcha_id]['theme'] . '/icon-' .
+                    $icons_path = $_SESSION['icon_captcha']['icon_path']; // Icons folder path
+
+                    $file = $icons_path . ((substr($icons_path, -1) === '/') ? '' : '/') . self::$session->theme . '/icon-' .
                         ((self::getCorrectIconHash() === $hash) ? self::$session->hashes[0] : self::$session->hashes[1]) . '.png';
 
                     // Check if the icon exists

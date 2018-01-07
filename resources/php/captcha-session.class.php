@@ -9,22 +9,38 @@
     class CaptchaSession {
 
         /**
-         * @var int         The captcha identifier.
+         * @var int             The captcha identifier.
          */
         public $id;
 
         /**
-         * @var array       The array containing all the image hashes used by this captcha.
+         * @var array           The array containing all the image hashes used by this captcha.
          */
         public $hashes;
 
         /**
-         * @var int         The amount of times the images have been requested by the captcha.
+         * @var int             The amount of times the images have been requested by the captcha.
          */
         public $icon_requests;
+
+        /**
+         * @var string          The captcha's theme name.
+         */
         public $theme;
+
+        /**
+         * @var int             The last icon number that was clicked (1-5)
+         */
         public $last_clicked;
+
+        /**
+         * @var string          The correct icon's hash.
+         */
         public $correct_hash;
+
+        /**
+         * @var bool            If the captcha was completed (correct icon selected) or not.
+         */
         public $completed;
 
         /**

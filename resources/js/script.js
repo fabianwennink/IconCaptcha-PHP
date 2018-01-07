@@ -145,10 +145,6 @@
                         "<input type='hidden' name='captcha-idhf' value='" + $captcha_id + "' required />",
                         "</div>"
                     ].join('\n')).attr('data-captcha-id', $captcha_id);
-
-                    if($options.showCredits) {
-                        $holder.addClass('captcha-credits');
-                    }
                 }
 
                 // Submit the captcha

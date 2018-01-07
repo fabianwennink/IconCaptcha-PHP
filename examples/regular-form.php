@@ -76,7 +76,7 @@
             <img class="logo" src="http://i.imgur.com/RMUALSz.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
         </a>
 
-        <img src="https://img.shields.io/badge/Version-2.1.3-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+        <img src="https://img.shields.io/badge/Version-2.2.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
         <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
 
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
@@ -123,7 +123,6 @@
                     captchaFontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
                     captchaClickDelay: 500, // The delay during which the user can't select an image.
                     captchaHoverDetection: true, // Enable or disable the cursor hover detection.
-                    showCredits: true, // Show or hide the credits element (please leave it enbled).
                     enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't do anything, just looks cool ;)
                     loadingAnimationDelay: 1500, // How long the fake loading animation should play.
                     requestIconsDelay: 1500, // How long should the script wait before requesting the hashes and icons? (to prevent a high(er) CPU usage during a DDoS attack)
