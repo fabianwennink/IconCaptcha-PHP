@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.2.0
+     * IconCaptcha Plugin: v2.2.1
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -70,7 +70,7 @@
             <img class="logo" src="http://i.imgur.com/RMUALSz.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
         </a>
 
-        <img src="https://img.shields.io/badge/Version-2.2.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+        <img src="https://img.shields.io/badge/Version-2.2.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
         <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
 
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
@@ -163,8 +163,9 @@
                     captchaFontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
                     captchaClickDelay: 500, // The delay during which the user can't select an image.
                     captchaHoverDetection: true, // Enable or disable the cursor hover detection.
-                    enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't do anything, just looks cool ;)
+                    enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't actually do anything other than look nice.
                     loadingAnimationDelay: 1500, // How long the fake loading animation should play.
+                    showCredits: 'show', // Show, hide or disable the credits element. Valid values: 'show', 'hide', 'disabled' (please leave it enabled).
                     requestIconsDelay: 1500, // How long should the script wait before requesting the hashes and icons? (to prevent a high(er) CPU usage during a DDoS attack)
                     captchaAjaxFile: '../resources/php/captcha-request.php', // The path to the Captcha validation file.
                     captchaMessages: { // You can put whatever message you want in the captcha.

@@ -1,6 +1,6 @@
 # IconCaptcha Plugin - jQuery & PHP
 
-[![Version](https://img.shields.io/badge/Version-2.2.0-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+[![Version](https://img.shields.io/badge/Version-2.2.1-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
 
 <br><img src="http://i.imgur.com/RMUALSz.png" />
@@ -86,15 +86,32 @@ The following options allow you to customize the IconCaptcha to your liking. All
 
 | Option | Description |
 | ------ | ------ |
-| captchaTheme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. |
+| captchaTheme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. You can always add your own custom themes via CSS. |
 | captchaFontFamily | Allows you to select the font family of the captcha. Leaving this option blank will add the default font _(Roboto)_ to the end of your ```<body>``` tag. |
 | captchaClickDelay | The time _(in milliseconds)_ during which the user can't select an image. Set to 0 to disable. |
 | captchaHoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
 | enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
 | loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
-| captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or input validation. |
-| captchaMessages | Change the messages used by the captcha. All the changeable strings can be found in the _index.php_. |
-| requestIconsDelay | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshes (during an attack?), it will not request the resources right away. |
+| showCredits | Show, hide or disable the credits element of the captcha. Hiding the credits will still add the credits to the HTML, but it will not be visible (only to crawlers). 
+Disabling the credits will neither show or add the HTML. Use _'show'_, _'hide'_ or _'disabled'_.<br>_Please leave it enabled so people can find and use the captcha themselves._ |
+| captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or validate the input. |
+| captchaMessages | Change the messages used by the captcha. All the changeable strings can be found down below. |
+| requestIconsDelay | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshed (during an attack?), it will not request the resources right away. |
+
+## Messages
+The following strings will be used by the captcha and can be changed / translated to your liking.
+
+| Error/event | Default | PHP/JS |
+| ------ | ------ | ------ |
+| Captcha Header | Select the icon that does not belong in the row. | JS |
+| Captcha Correct Title | Great! | JS |
+| Captcha Correct Subtitle | You do not appear to be a robot. | JS |
+| Captcha Incorrect Title | Oops! | JS |
+| Captcha Incorrect Subtitle | You've selected the wrong image. | JS |
+| Wrong Image | You've selected the wrong image. | PHP |
+| No Image Selected | No image has been selected. | PHP |
+| Empty Form | You've not submitted any form. | PHP |
+| Invalid Captcha ID | The captcha ID was invalid. | PHP |
 
 ## Events
 Events will be triggered at various point in the code. You can use a custom script to hook into the events and execute your own code if necessary.

@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.2.0
+     * Icon Captcha Plugin: v2.2.1
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -45,6 +45,6 @@
     // Only requests made through Ajax are allowed.
     // NOTE: THE HEADER CAN BE SPOOFED
     function isAjaxRequest() {
-        return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+        return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
     }
 ?>

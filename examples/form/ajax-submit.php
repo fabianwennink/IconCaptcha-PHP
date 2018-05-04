@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.2.0
+     * IconCaptcha Plugin: v2.2.1
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php

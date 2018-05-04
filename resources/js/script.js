@@ -1,5 +1,5 @@
 /**
- * Icon Captcha Plugin: v2.2.0
+ * Icon Captcha Plugin: v2.2.1
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -11,11 +11,11 @@
 
             // Default plugin options, will be ignored if not set
             var defaults = {
-                captchaTheme: [""],
-                captchaFontFamily: "",
+                captchaTheme: [''],
+                captchaFontFamily: '',
                 captchaClickDelay: 1000,
                 captchaHoverDetection: true,
-                showCredits: true,
+                showCredits: 'show',
                 enableLoadingAnimation: false,
                 loadingAnimationDelay: 2000,
                 requestIconsDelay: 1500,
@@ -39,7 +39,7 @@
             return this.each(function(id) {
 
                 var $holder = $(this);
-                var $captcha_id = id;// += '.' + $.now();
+                var $captcha_id = id;
 
                 var build_time = 0;
                 var hovering = false;
@@ -53,7 +53,7 @@
                 function buildCaptcha(loaderActive) {
                     var captchaTheme = 'light';
 
-                    if($options.captchaTheme[$captcha_id] != undefined && ($options.captchaTheme[$captcha_id] === 'dark' || $options.captchaTheme[$captcha_id] === 'light')) {
+                    if($options.captchaTheme[$captcha_id] !== undefined && ($options.captchaTheme[$captcha_id] === 'dark' || $options.captchaTheme[$captcha_id] === 'light')) {
                         captchaTheme = $options.captchaTheme[$captcha_id].toLowerCase();
                     }
 
@@ -63,7 +63,8 @@
                     $holder.addClass('captcha-theme-' + captchaTheme);
 
                     // Build the captcha if it hasn't been build yet
-                    if(!generated) _buildCaptchaHolder();
+                    if(!generated)
+                        _buildCaptchaHolder();
 
                     var $icon_holder = $holder.find('.captcha-modal__icons');
 
@@ -73,7 +74,8 @@
                     if(($options.requestIconsDelay && $options.requestIconsDelay > 0) && !generated) {
 
                         // Add the loading animation
-                        if(!loaderActive) addLoader($icon_holder);
+                        if(!loaderActive)
+                            addLoader($icon_holder);
 
                         // Set the timeout
                         setTimeout(function() {
@@ -94,11 +96,12 @@
                                 $data = JSON.parse(data);
 
                                 // Add the loading animation
-                                if(!loadDelay) addLoader(iconHolder);
+                                if(!loadDelay)
+                                    addLoader(iconHolder);
 
                                 build_time = new Date();
 
-                                $holder.find('.captcha-image').each(function(i, obj) {
+                                $holder.find('.captcha-image').each(function(i) {
                                     $(this).css('background-image', 'url(' + $options.captchaAjaxFile + '?cid=' + $captcha_id + '&hash=' + $data[i] + ')');
                                     $(this).attr('icon-hash', $data[i]);
 
@@ -106,12 +109,13 @@
                                 });
 
                                 // Event: init
-                                if(!generated) $holder.trigger('init', [{captcha_id: id}]);
+                                if(!generated)
+                                    $holder.trigger('init', [{captcha_id: id}]);
 
                                 generated = true;
                             }
                         },
-                        error: function(jqXHR, textStatus, errorThrown) {
+                        error: function() {
                             console.log(textStatus, errorThrown);
                             showError();
                         }
@@ -126,7 +130,10 @@
                         $('body').append('<!-- Icon Captcha default font --><link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">');
                     }
 
-                    $holder.html([
+                    var captchaHTML = [];
+
+                    // Adds the first portion of the HTML to the array.
+                    captchaHTML.push(
                         "<div class='captcha-modal'>",
                         "<div class='captcha-modal__header'>",
                         "<span>" + (($options.captchaMessages.header && $options.captchaMessages.header) ? $options.captchaMessages.header : "Select the image that does not belong in the row") + "</span>",
@@ -137,14 +144,28 @@
                         "<div class='captcha-image'></div>",
                         "<div class='captcha-image'></div>",
                         "<div class='captcha-image'></div>",
-                        "</div>",
-                        "<div class='captcha-modal__credits' alt='IconCaptcha by Fabian Wennink' title='IconCaptcha by Fabian Wennink'>",
-                        "<a href='https://www.fabianwennink.nl/projects/IconCaptcha/v2/' target='_blank' rel='follow'>IconCaptcha</a> &copy;",
-                        "</div>",
+                        "</div>"
+                    );
+
+                    // If the credits option is enabled, push the HTML to the array.
+                    if($options.showCredits === 'show' || $options.showCredits === 'hide') {
+                        var className = 'captcha-modal__credits' + (($options.showCredits === 'hide') ? ' captcha-modal__credits--hide' : '');
+
+                        captchaHTML.push(
+                            "<div class='" + className + "' title='IconCaptcha by Fabian Wennink'>",
+                            "<a href='https://www.fabianwennink.nl/projects/IconCaptcha/v2/' target='_blank' rel='follow'>IconCaptcha</a> &copy;",
+                            "</div>"
+                        );
+                    }
+
+                    // Adds the last portion of the HTML to the array.
+                    captchaHTML.push(
                         "<input type='hidden' name='captcha-hf' required />",
                         "<input type='hidden' name='captcha-idhf' value='" + $captcha_id + "' required />",
                         "</div>"
-                    ].join('\n')).attr('data-captcha-id', $captcha_id);
+                    );
+
+                    $holder.html(captchaHTML.join('')).attr('data-captcha-id', $captcha_id);
                 }
 
                 // Submit the captcha
@@ -162,8 +183,8 @@
                             success: function (data) {
                                 (data === '1') ? showSuccess() : showError();
                             },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                               showError();
+                            error: function() {
+                                showError();
                             }
                         });
                     }
@@ -174,7 +195,7 @@
                     $holder.find('.captcha-modal__icons').empty();
 
                     $holder.addClass('captcha-success');
-                    $holder.find('.captcha-modal__icons').html('<div class="captcha-modal__icons-title">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.top) ? $options.captchaMessages.correct.top : 'Great!') 
+                    $holder.find('.captcha-modal__icons').html('<div class="captcha-modal__icons-title">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.top) ? $options.captchaMessages.correct.top : 'Great!')
                         + '</div><div class="captcha-modal__icons-subtitle">' + (($options.captchaMessages.correct && $options.captchaMessages.correct.bottom) ? $options.captchaMessages.correct.bottom : 'You do not appear to be a robot.') + '</div>');
 
                     // Trigger: success
@@ -186,7 +207,7 @@
                     $holder.find('.captcha-modal__icons').empty();
 
                     $holder.addClass('captcha-error');
-                    $holder.find('.captcha-modal__icons').html('<div class="captcha-modal__icons-title">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.top) ? $options.captchaMessages.incorrect.top : 'Oops!') 
+                    $holder.find('.captcha-modal__icons').html('<div class="captcha-modal__icons-title">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.top) ? $options.captchaMessages.incorrect.top : 'Oops!')
                         + '</div><div class="captcha-modal__icons-subtitle">' + (($options.captchaMessages.incorrect && $options.captchaMessages.incorrect.bottom) ? $options.captchaMessages.incorrect.bottom : 'You\'ve selected the wrong image.') + '</div>');
 
                     // Trigger: error
@@ -232,7 +253,8 @@
                         if(images_ready === 5) {
 
                             // Remove the preloader
-                            if(iconHolder) removeLoader(iconHolder);
+                            if(iconHolder)
+                                removeLoader(iconHolder);
                         }
                     };
 
@@ -257,10 +279,12 @@
                 $holder.on('click', '.captcha-modal__icons > .captcha-image', function(e) {
 
                     // Only allow a user to click after 1.5 seconds
-                    if((new Date() - build_time) <= $options.captchaClickDelay) return;
+                    if((new Date() - build_time) <= $options.captchaClickDelay)
+                        return;
 
                     // if the cursor is not hovering over the element, return
-                    if($options.captchaHoverDetection && !hovering) return;
+                    if($options.captchaHoverDetection && !hovering)
+                        return;
 
                     // Detect if the click coordinates. If not present, it's not a real click.
                     var _x = (e.pageX - $(e.target).offset().left),
@@ -286,8 +310,14 @@
                         submitCaptcha($form);
                     }
                 }).on({
-                    mouseenter:function() { if(!hovering) hovering = true },
-                    mouseleave:function(){ if(hovering) hovering = false },
+                        mouseenter: function() {
+                            if(!hovering)
+                                hovering = true
+                        },
+                        mouseleave: function() {
+                            if(hovering)
+                                hovering = false
+                        }
                     }, $holder
                 );
             });
