@@ -58,7 +58,7 @@
             $this->hashes = array();
             $this->icon_requests = 0;
             $this->last_clicked = -1;
-            $this->correct_hash = "";
+            $this->correct_hash = '';
             $this->completed = false;
 
             // Try to load the captcha data from the session, if any data exists.

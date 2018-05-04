@@ -6,19 +6,19 @@
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
      */
 
-    // Start a PHP session
+    // Start a PHP session.
     session_start();
 
     // Include the captcha classes.
     require('captcha-session.class.php');
     require('captcha.class.php');
 
-    // HTTP POST - Either the captcha has been submitted or the
+    // HTTP POST - Either the captcha has been submitted or an image has been selected by the user.
     if(!empty($_POST) && isAjaxRequest()) {
         if((isset($_POST['rT']) && is_numeric($_POST['rT'])) && (isset($_POST['cID']) && is_numeric($_POST['cID']))) {
             switch((int)$_POST['rT']) {
                 case 1: // Requesting the image hashes
-                    $captcha_theme = (isset($_POST['tM']) && ($_POST['tM'] === "light" || $_POST['tM'] === "dark")) ? $_POST['tM'] : "light";
+                    $captcha_theme = (isset($_POST['tM']) && ($_POST['tM'] === 'light' || $_POST['tM'] === 'dark')) ? $_POST['tM'] : 'light';
 
                     echo IconCaptcha::getCaptchaData($captcha_theme, $_POST['cID']);
                     exit;
@@ -31,14 +31,14 @@
         }
     }
 
-    // HTTP GET - Requesting the actual images
-    if((!empty($_GET) && isset($_GET['hash']) && strlen($_GET['hash']) === 48) &&
+    // HTTP GET - Requesting the actual image.
+    if((isset($_GET['hash']) && strlen($_GET['hash']) === 48) &&
         (isset($_GET['cid']) && is_numeric($_GET['cid'])) && !isAjaxRequest()) {
         IconCaptcha::getIconFromHash($_GET['hash'], $_GET['cid']);
         exit;
     }
 
-    header("HTTP/1.1 400 Bad Request");
+    header('HTTP/1.1 400 Bad Request');
     exit;
 
     // Adds another level of security to the Ajax call.

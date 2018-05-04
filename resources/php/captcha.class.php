@@ -256,7 +256,7 @@
 
                 // Check the amount of times an icon has been requested
                 if(self::$session->icon_requests >= 5) {
-                    header("HTTP/1.1 403 Forbidden");
+                    header('HTTP/1.1 403 Forbidden');
                     exit;
                 }
 
@@ -273,19 +273,9 @@
 
                     // Check if the icon exists
                     if (file_exists($file)) {
-                        $mime = null;
-
-                        // Grab the MIME type of the image (all default images are image/png)
-                        // Use either finfo_open or mime_content_type, depending on the PHP version
-                        if (function_exists("finfo_open")) {
-                            $file_info = finfo_open(FILEINFO_MIME_TYPE);
-                            $mime = finfo_file($file_info, $file);
-                        } else if (function_exists("mime_content_type")) {
-                            $mime = mime_content_type($file);
-                        }
 
                         // Show the image and exit the code
-                        header('Content-type: ' . $mime);
+                        header('Content-type: image/png');
                         readfile($file);
 
                         exit;
@@ -307,7 +297,7 @@
             }
 
             return (isset(self::$captcha_id) && is_numeric(self::$captcha_id))
-                ? self::$session->correct_hash : "";
+                ? self::$session->correct_hash : '';
         }
 
         /**
@@ -325,7 +315,7 @@
             }
 
             return (!empty($image) && (isset(self::$captcha_id) && is_numeric(self::$captcha_id)))
-                ? hash('tiger192,4', $image . hash('crc32', uniqid())) : "";
+                ? hash('tiger192,4', $image . hash('crc32', uniqid())) : '';
         }
     }
 ?>

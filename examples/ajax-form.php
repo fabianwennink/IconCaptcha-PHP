@@ -17,7 +17,7 @@
     // currently in the PHP folder containing the captcha.class.php file.
     // ALWAYS END WITH A /
     // DEFAULT IS SET TO ../icons/
-    IconCaptcha::setIconsFolderPath("../icons/");
+    IconCaptcha::setIconsFolderPath('../icons/');
 
     // Use custom messages as error messages (optional).
     // Take a look at the IconCaptcha class to see what each string means.

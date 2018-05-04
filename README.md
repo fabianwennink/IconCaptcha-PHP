@@ -92,8 +92,7 @@ The following options allow you to customize the IconCaptcha to your liking. All
 | captchaHoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
 | enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
 | loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
-| showCredits | Show, hide or disable the credits element of the captcha. Hiding the credits will still add the credits to the HTML, but it will not be visible (only to crawlers). 
-Disabling the credits will neither show or add the HTML. Use _'show'_, _'hide'_ or _'disabled'_.<br>_Please leave it enabled so people can find and use the captcha themselves._ |
+| showCredits | Show, hide or disable the credits element of the captcha. Hiding the credits will still add the credits to the HTML, but it will not be visible (only to crawlers). Disabling the credits will neither show or add the HTML. Use _'show'_, _'hide'_ or _'disabled'_.<br>_Please leave it enabled so people can find and use the captcha themselves._ |
 | captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or validate the input. |
 | captchaMessages | Change the messages used by the captcha. All the changeable strings can be found down below. |
 | requestIconsDelay | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshed (during an attack?), it will not request the resources right away. |
@@ -132,7 +131,7 @@ Events will be triggered at various point in the code. You can use a custom scri
 Version 1 was never created with the intention of it being used on live websites. This caused the security to lack which left massive loopholes around the captcha. 
 A big part of the captcha validation was performed on the client-side, making it possible to manipulate the captcha by loading in custom scripts. It's design was also horrible and too big to fit with todays websites.
 
-You can still download version 1 <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v1/" target="_blank">here</a>, but remember that it's a bug- and exploit-filled version __AND SHOULD NOT BE USED ON A LIVE WEBSITE.__
+__To protect your website and server from attackers, version 1 is no longer available for download.__
 
 ## Credits
 The icons used in this project are made by <a href="https://www.webalys.com" target="_blank" rel="nofollow">Webalys</a>.
