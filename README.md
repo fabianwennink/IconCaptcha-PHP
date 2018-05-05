@@ -1,6 +1,6 @@
 # IconCaptcha Plugin - jQuery & PHP
 
-[![Version](https://img.shields.io/badge/Version-2.2.1-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+[![Version](https://img.shields.io/badge/Version-2.3.0-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
 [![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
 
 <br><img src="http://i.imgur.com/RMUALSz.png" />
@@ -63,11 +63,18 @@ PHP form validation:
     // currently in the PHP folder containing the captcha.class.php file.
     // ALWAYS END WITH A /
     // DEFAULT IS SET TO ../icons/
-    IconCaptcha::setIconsFolderPath("../icons/");
-    
-    // Set the custom error messages (optional)
-    // Check the IconCaptcha class (for instructions.
-    // IconCaptcha::setErrorMessages(array(...));
+    IconCaptcha::setIconsFolderPath('../icons/');
+
+    // Enable or disable the 'image noise' option.
+    // When enabled, some nearly invisible random pixels will be added to the
+    // icons. This is done to confuse bots who download the icons to compare them
+    // and pick the odd one based on those results.
+    // NOTE: Enabling this might cause a slight increase in CPU usage.
+    IconCaptcha::setIconNoiseEnabled(true);
+
+    // Use custom messages as error messages (optional).
+    // Take a look at the README file to see what each string means.
+    // IconCaptcha::setErrorMessages(array('', '', '', ''));
     
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {

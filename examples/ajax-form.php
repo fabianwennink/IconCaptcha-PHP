@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.2.1
+     * IconCaptcha Plugin: v2.3.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -19,8 +19,15 @@
     // DEFAULT IS SET TO ../icons/
     IconCaptcha::setIconsFolderPath('../icons/');
 
+    // Enable or disable the 'image noise' option.
+    // When enabled, some nearly invisible random pixels will be added to the
+    // icons. This is done to confuse bots who download the icons to compare them
+    // and pick the odd one based on those results.
+    // NOTE: Enabling this might cause a slight increase in CPU usage.
+    IconCaptcha::setIconNoiseEnabled(true);
+
     // Use custom messages as error messages (optional).
-    // Take a look at the IconCaptcha class to see what each string means.
+    // Take a look at the README file to see what each string means.
     // IconCaptcha::setErrorMessages(array('', '', '', ''));
 ?>
 <!DOCTYPE HTML>
@@ -31,7 +38,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+		<link href="../resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		
         <!-- Include IconCaptcha stylesheet -->
         <link href="../resources/style/css/style.css" rel="stylesheet" type="text/css">
 
@@ -67,10 +75,10 @@
         <p class="message"></p>
 
         <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">
-            <img class="logo" src="http://i.imgur.com/RMUALSz.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
+            <img class="logo" src="../resources/images/iconcaptcha-logo.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
         </a>
 
-        <img src="https://img.shields.io/badge/Version-2.2.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+        <img src="https://img.shields.io/badge/Version-2.3.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
         <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
 
         <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->

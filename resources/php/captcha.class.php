@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.2.1
+     * Icon Captcha Plugin: v2.3.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -37,7 +37,23 @@
          * @param string $file_path         The path to the icons folder.
          */
         public static function setIconsFolderPath($file_path) {
-            $_SESSION['icon_captcha']['icon_path'] = $file_path;
+            $_SESSION['icon_captcha']['icon_path'] = (is_string($file_path)) ? $file_path : '';
+        }
+
+        /**
+         * Enables or disables the random pixel noise generator.
+         * Adding random pixels to the icons will make it harder for bots to detect the odd image
+         * by simply downloading and comparing them. Pixels will be added along the sides of the
+         * icons.
+         *
+         * Note: Enabling this might cause a slight increase in CPU usage.
+         *
+         * @since 2.3.0                     Function was introduced.
+         *
+         * @param boolean $noise            TRUE if noise should be added, FALSE if not.
+         */
+        public static function setIconNoiseEnabled($noise) {
+            $_SESSION['icon_captcha']['icon_noise'] = (is_bool($noise)) ? $noise : false;
         }
 
         /**
@@ -81,7 +97,7 @@
          * @return string			        The JSON array containing the correct icon, incorrect icon and hashes.
          */
         public static function getCaptchaData($theme, $captcha_id) {
-            $a = rand(1, 89); // Get a random number (correct image)
+            $a = mt_rand(1, 91); // Get a random number (correct image)
             $b = 0; // Get another random number (incorrect image)
 
             // Set the captcha id property
@@ -94,7 +110,7 @@
             // Pick a random number for the incorrect icon.
             // Loop until a number is found which doesn't match the correct icon ID.
             while($b === 0) {
-                $c = rand(1, 89);
+                $c = mt_rand(1, 91);
                 if($c !== $a) $b = $c;
             }
 
@@ -104,7 +120,7 @@
             // Pick a random number for the correct icon.
             // Loop until a number is found which doesn't match the previously clicked icon ID.
             while($d === -1) {
-                $f = rand(1, 5);
+                $f = mt_rand(1, 5);
                 $g = (self::$session->last_clicked > -1) ? self::$session->last_clicked : 0;
 
                 if($f !== $g) $d = $f;
@@ -255,10 +271,10 @@
                 }
 
                 // Check the amount of times an icon has been requested
-                if(self::$session->icon_requests >= 5) {
-                    header('HTTP/1.1 403 Forbidden');
-                    exit;
-                }
+//                if(self::$session->icon_requests >= 5) {
+//                    header('HTTP/1.1 403 Forbidden');
+//                    exit;
+//                }
 
                 // Update the request counter
                 self::$session->icon_requests += 1;
@@ -268,15 +284,47 @@
                 if(in_array($hash, self::$session->hashes[2])) {
                     $icons_path = $_SESSION['icon_captcha']['icon_path']; // Icons folder path
 
-                    $file = $icons_path . ((substr($icons_path, -1) === '/') ? '' : '/') . self::$session->theme . '/icon-' .
+                    $icon_file = $icons_path . ((substr($icons_path, -1) === '/') ? '' : '/') . self::$session->theme . '/icon-' .
                         ((self::getCorrectIconHash() === $hash) ? self::$session->hashes[0] : self::$session->hashes[1]) . '.png';
 
                     // Check if the icon exists
-                    if (file_exists($file)) {
+                    if (is_file($icon_file)) {
+
+                        // Check if noise is enabled or not.
+                        $add_noise = (isset($_SESSION['icon_captcha']['icon_noise'])
+                            && $_SESSION['icon_captcha']['icon_noise']);
+
+                        // If noise is enabled, add the random pixel noise.
+                        if($add_noise) {
+                            $icon = imagecreatefrompng($icon_file);
+                            $noise_color = imagecolorallocatealpha($icon, 0, 0, 0, 126);
+
+                            // Add some random pixels to the icon
+                            for ($i = 0; $i < 5; $i++) {
+                                $randX = ($i < 3) ? mt_rand(0, 2) : mt_rand(28, 30);
+                                $randY = ($i < 3) ? mt_rand(0, 15) : mt_rand(16, 30);
+
+                                imagesetpixel($icon, $randX, $randY, $noise_color);
+                            }
+                        }
+
+                        // Set the content type header to the PNG MIME-type.
+                        header('Content-type: image/png');
+
+                        // Disable caching of the icon, even though the images might
+                        // be 'random' due to the added pixels.
+                        header('Expires: 0');
+                        header('Cache-Control: no-cache, no-store, must-revalidate');
+                        header('Cache-Control: post-check=0, pre-check=0', false);
+                        header('Pragma: no-cache');
 
                         // Show the image and exit the code
-                        header('Content-type: image/png');
-                        readfile($file);
+                        if($add_noise && isset($icon)) {
+                            imagepng($icon);
+                            imagedestroy($icon);
+                        } else {
+                            readfile($icon_file);
+                        }
 
                         exit;
                     }
@@ -315,7 +363,7 @@
             }
 
             return (!empty($image) && (isset(self::$captcha_id) && is_numeric(self::$captcha_id)))
-                ? hash('tiger192,4', $image . hash('crc32', uniqid())) : '';
+                ? hash('tiger192,3', $image . hash('crc32b', uniqid())) : '';
         }
     }
 ?>

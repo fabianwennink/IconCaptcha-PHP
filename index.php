@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.2.1
+     * IconCaptcha Plugin: v2.3.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -14,7 +14,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+		<link href="resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		
         <!-- Include IconCaptcha stylesheet -->
         <link href="resources/style/css/style.css" rel="stylesheet" type="text/css">
 
@@ -45,10 +46,10 @@
     </head>
     <body>
         <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">
-            <img class="logo" src="http://i.imgur.com/RMUALSz.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
+            <img class="logo" src="resources/images/iconcaptcha-logo.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
         </a>
 
-        <img src="https://img.shields.io/badge/Version-2.2.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+        <img src="https://img.shields.io/badge/Version-2.3.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
         <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
 
         <h2>Examples:</h2>
@@ -57,6 +58,7 @@
 
         <h2>Links</h2>
         <p><a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">GitHub repository</a></p>
+        <p><a href="https://paypal.me/nlgamevideosnl" target="_blank">Buy me a coffee (PayPal)</a></p>
         <p><a href="https://fabianwennink.nl/en/" target="_blank">Fabian Wennink <small>(IconCaptcha developer)</small></a></p>
     </body>
 </html>
