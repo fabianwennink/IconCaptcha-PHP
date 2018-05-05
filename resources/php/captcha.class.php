@@ -271,10 +271,10 @@
                 }
 
                 // Check the amount of times an icon has been requested
-//                if(self::$session->icon_requests >= 5) {
-//                    header('HTTP/1.1 403 Forbidden');
-//                    exit;
-//                }
+                if(self::$session->icon_requests >= 5) {
+                    header('HTTP/1.1 403 Forbidden');
+                    exit;
+                }
 
                 // Update the request counter
                 self::$session->icon_requests += 1;
