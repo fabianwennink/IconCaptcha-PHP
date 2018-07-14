@@ -90,10 +90,10 @@
                     $.ajax({
                         url: $options.captchaAjaxFile,
                         type: 'post',
+						dataType: 'json',
                         data: {cID: $captcha_id, rT : 1, tM: captchaTheme},
                         success: function (data) {
-                            if(data) {
-                                $data = JSON.parse(data);
+                            if(data && typeof data === "object") {
 
                                 // Add the loading animation
                                 if(!loadDelay)
@@ -102,8 +102,8 @@
                                 build_time = new Date();
 
                                 $holder.find('.captcha-image').each(function(i) {
-                                    $(this).css('background-image', 'url(' + $options.captchaAjaxFile + '?cid=' + $captcha_id + '&hash=' + $data[i] + ')');
-                                    $(this).attr('icon-hash', $data[i]);
+                                    $(this).css('background-image', 'url(' + $options.captchaAjaxFile + '?cid=' + $captcha_id + '&hash=' + data[i] + ')');
+                                    $(this).attr('icon-hash', data[i]);
 
                                     loadImage($(this), iconHolder);
                                 });

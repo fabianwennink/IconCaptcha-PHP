@@ -20,6 +20,8 @@
                 case 1: // Requesting the image hashes
                     $captcha_theme = (isset($_POST['tM']) && ($_POST['tM'] === 'light' || $_POST['tM'] === 'dark')) ? $_POST['tM'] : 'light';
 
+                    // Echo the JSON encoded array
+                    header('Content-type: application/json');
                     echo IconCaptcha::getCaptchaData($captcha_theme, $_POST['cID']);
                     exit;
                 case 2: // Setting the user's choice
