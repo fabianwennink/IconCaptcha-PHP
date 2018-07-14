@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.3.0
+     * Icon Captcha Plugin: v2.3.1
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -69,7 +69,7 @@
          *
          * @since 2.1.1                     Function was introduced.
          *
-         * @param array $messages           The array containing the custom error messages.
+         * @param string[] $messages        The array containing the custom error messages.
          */
         public static function setErrorMessages($messages = array()) {
             if(!empty($messages)) self::$error_messages = $messages;
@@ -191,8 +191,8 @@
                         ? self::$error_messages[1] : 'No image has been selected.')));
                 }
             } else {
-                self::$error = json_encode(array('id' => 3, 'error' => ((!empty(self::$error_messages[0]))
-                    ? self::$error_messages[0] : 'You\'ve not submitted any form.')));
+                self::$error = json_encode(array('id' => 3, 'error' => ((!empty(self::$error_messages[2]))
+                    ? self::$error_messages[2] : 'You\'ve not submitted any form.')));
             }
 
             return false;

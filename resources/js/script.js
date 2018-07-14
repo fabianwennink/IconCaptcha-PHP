@@ -1,5 +1,5 @@
 /**
- * Icon Captcha Plugin: v2.3.0
+ * Icon Captcha Plugin: v2.3.1
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -116,7 +116,6 @@
                             }
                         },
                         error: function() {
-                            console.log(textStatus, errorThrown);
                             showError();
                         }
                     });
