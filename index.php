@@ -14,51 +14,47 @@
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-		
-        <!-- Include IconCaptcha stylesheet -->
-        <link href="resources/style/css/style.css" rel="stylesheet" type="text/css">
-
-        <!-- CSS to style the page a bit - not important, can be deleted -->
-        <style>
-            body { font-family: 'Roboto', sans-serif; }
-            form { margin-bottom: 50px; }
-
-            .logo {
-                display:block;
-                margin:25px 0;
-            }
-            .github a { color: #2d2d2d; margin-bottom: 50px; }
-
-            input[type="submit"] {
-                max-width: 325px;
-                width: 100%;
-                background: #5f5f5f;
-                border: 0;
-                padding: 10px;
-                color: #fff;
-                font-size: 14px;
-                border-radius: 3px;
-                cursor: pointer;
-                outline: 0;
-            }
-        </style>
+		<link href="assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="assets/demo.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">
-            <img class="logo" src="resources/images/iconcaptcha-logo.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
+        <div class="container">
+            <div class="logo-text">
+                <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">
+                    Ic<span>o</span>nCaptcha
+                </a>
+            </div>
+
+            <div class="shields">
+                <img src="https://img.shields.io/badge/Version-2.3.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+                <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
+            </div>
+
+            <div class="section">
+                <h2>Examples:</h2>
+                <a href="examples/regular-form.php"><div class="btn">Regular HTML form</div></a>
+                <a href="examples/ajax-form.php"><div class="btn">Ajax form</div></a>
+            </div>
+
+            <div class="section">
+                <h2>Links:</h2>
+                <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank"><div class="btn">GitHub repository</div></a>
+                <a href="https://paypal.me/nlgamevideosnl" target="_blank"><div class="btn">Buy me a coffee</div></a>
+                <a href="https://fabianwennink.nl/en/" target="_blank"><div class="btn">Fabian Wennink <small>(developer)</small></div></a>
+            </div>
+
+            <div class="copyright">
+                <p>Copyright &copy; <?= date('Y'); ?> Fabian Wennink - All rights reserved</p>
+                <p><small>IconCaptcha is licensed under MIT.</small></p>
+            </div>
+        </div>
+
+        <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/">
+            <div class="corner-ribbon top-left">
+                STAR ME ON GITHUB
+            </div>
         </a>
 
-        <img src="https://img.shields.io/badge/Version-2.3.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
-        <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
-
-        <h2>Examples:</h2>
-        <p><a href="examples/regular-form.php">Regular HTML form</a></p>
-        <p><a href="examples/ajax-form.php">Ajax form</a></p>
-
-        <h2>Links</h2>
-        <p><a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">GitHub repository</a></p>
-        <p><a href="https://paypal.me/nlgamevideosnl" target="_blank">Buy me a coffee (PayPal)</a></p>
-        <p><a href="https://fabianwennink.nl/en/" target="_blank">Fabian Wennink <small>(IconCaptcha developer)</small></a></p>
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
     </body>
 </html>

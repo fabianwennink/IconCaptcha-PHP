@@ -10,14 +10,14 @@
     session_start();
 
     // Include the IconCaptcha classes.
-	require('../resources/php/captcha-session.class.php');
-    require('../resources/php/captcha.class.php');
+	require('../src/captcha-session.class.php');
+    require('../src/captcha.class.php');
 
     // Set the path to the captcha icons. Set it as if you were
     // currently in the PHP folder containing the captcha.class.php file.
     // ALWAYS END WITH A /
     // DEFAULT IS SET TO ../icons/
-    IconCaptcha::setIconsFolderPath('../icons/');
+    IconCaptcha::setIconsFolderPath('../assets/icons/');
 
     // Enable or disable the 'image noise' option.
     // When enabled, some nearly invisible random pixels will be added to the
@@ -38,80 +38,71 @@
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="../resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-		
+		<link href="../assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="../assets/demo.css" rel="stylesheet" type="text/css">
+
         <!-- Include IconCaptcha stylesheet -->
-        <link href="../resources/style/css/style.css" rel="stylesheet" type="text/css">
-
-        <!-- CSS to style the page a bit - not important, can be deleted -->
-        <style>
-            body { font-family: 'Roboto', sans-serif; }
-            form { margin-bottom: 50px; }
-
-            .logo {
-                display:block;
-                margin:25px 0;
-            }
-
-            .captcha-holder { margin: 20px 0; }
-            .github a { color: #2d2d2d; margin-bottom: 50px; }
-
-            input[type="submit"] {
-                max-width: 325px;
-                width: 100%;
-                background: #5f5f5f;
-                border: 0;
-                padding: 10px;
-                color: #fff;
-                font-size: 14px;
-                border-radius: 3px;
-                cursor: pointer;
-                outline: 0;
-            }
-        </style>
+        <link href="../assets/css/style.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <!-- Captcha message placeholder -->
-        <p class="message"></p>
+        <div class="container">
 
-        <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">
-            <img class="logo" src="../resources/images/iconcaptcha-logo.png" alt="IconCaptcha - jQuery & PHP Plugin" title="IconCaptcha - jQuery & PHP Plugin" />
+            <div class="logo-text">
+                <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">
+                    Ic<span>o</span>nCaptcha
+                </a>
+            </div>
+
+            <div class="shields">
+                <img src="https://img.shields.io/badge/Version-2.3.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+                <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
+            </div>
+
+            <div class="section">
+
+                <!-- Captcha message placeholder -->
+                <p class="message"></p>
+
+                <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
+                <h2>Form:</h2>
+                <form action="form/ajax-submit.php" method="post">
+
+                    <!-- Element that we use to create the IconCaptcha with -->
+                    <div class="captcha-holder"></div>
+
+                    <!-- Submit button to test your IconCaptcha input -->
+                    <input type="submit" value="Submit demo captcha" class="btn" >
+                </form>
+            </div>
+
+            <div class="copyright">
+                <p>Copyright &copy; <?= date('Y'); ?> Fabian Wennink - All rights reserved</p>
+                <p><small>IconCaptcha is licensed under MIT.</small></p>
+            </div>
+        </div>
+
+        <a href="../">
+            <div class="btn btn-bottom">
+                <span>GO BACK</span>
+            </div>
         </a>
 
-        <img src="https://img.shields.io/badge/Version-2.3.1-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
-        <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
+        <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/">
+            <div class="corner-ribbon top-left">
+                STAR ME ON GITHUB
+            </div>
+        </a>
 
-        <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
-        <h2>Form #1</h2>
-        <form action="form/ajax-submit.php" method="post">
-
-            <!-- Element that we use to create the IconCaptcha with -->
-            <div class="captcha-holder"></div>
-
-            <!-- Submit button to test your IconCaptcha input -->
-            <input type="submit" value="Submit form #1 to test captcha" >
-        </form>
-
-        <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
-        <h2>Form #2</h2>
-        <form action="form/ajax-submit.php" method="post" data-captcha-form="1">
-
-            <!-- Element that we use to create the IconCaptcha with -->
-            <div class="captcha-holder"></div>
-
-            <!-- Submit button to test your IconCaptcha input -->
-            <input type="submit" value="Submit form #2 to test captcha" >
-        </form>
-
-        <p><a href="../">Go back to the examples overview.</a></p>
+        <!-- Include Google Font - Just for demo page -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
         <!-- Include jQuery Library -->
         <!--[if lt IE 9]>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
         <![endif]-->
 
         <!--[if (gte IE 9) | (!IE)]><!-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <!--<![endif]-->
 
         <!--
@@ -161,7 +152,7 @@
         </script>
 
         <!-- Include IconCaptcha script -->
-        <script src="../resources/js/script.min.js" type="text/javascript"></script>
+        <script src="../assets/js/script.min.js" type="text/javascript"></script>
 
         <!-- Initialize the IconCaptcha -->
         <script async type="text/javascript">
@@ -175,7 +166,7 @@
                     loadingAnimationDelay: 1500, // How long the fake loading animation should play.
                     showCredits: 'show', // Show, hide or disable the credits element. Valid values: 'show', 'hide', 'disabled' (please leave it enabled).
                     requestIconsDelay: 1500, // How long should the script wait before requesting the hashes and icons? (to prevent a high(er) CPU usage during a DDoS attack)
-                    captchaAjaxFile: '../resources/php/captcha-request.php', // The path to the Captcha validation file.
+                    captchaAjaxFile: '../src/captcha-request.php', // The path to the Captcha validation file.
                     captchaMessages: { // You can put whatever message you want in the captcha.
                         header: "Select the image that does not belong in the row",
                         correct: {

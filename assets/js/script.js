@@ -179,8 +179,8 @@
                             url: $options.captchaAjaxFile,
                             type: 'post',
                             data: {cID: $captcha_id, pC: clicked_class, rT : 2},
-                            success: function (data) {
-                                (data === '1') ? showSuccess() : showError();
+                            success: function () {
+                                showSuccess();
                             },
                             error: function() {
                                 showError();

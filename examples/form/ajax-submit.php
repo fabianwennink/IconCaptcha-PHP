@@ -10,14 +10,14 @@
     session_start();
 
     // Include the IconCaptcha classes.
-    require('../../resources/php/captcha-session.class.php');
-    require('../../resources/php/captcha.class.php');
+    require('../../src/captcha-session.class.php');
+    require('../../src/captcha.class.php');
 
     // Set the path to the captcha icons. Set it as if you were
     // currently in the PHP folder containing the captcha.class.php file.
     // ALWAYS END WITH A /
     // DEFAULT IS SET TO ../icons/
-    IconCaptcha::setIconsFolderPath("../icons/");
+    IconCaptcha::setIconsFolderPath("../assets/icons/");
 
     // Use custom messages as error messages (optional).
     // Take a look at the IconCaptcha class to see what each string means.
