@@ -51,7 +51,7 @@
         <link href="../assets/demo.css" rel="stylesheet" type="text/css">
 
         <!-- Include IconCaptcha stylesheet -->
-        <link href="../assets/css/style.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/icon-captcha.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div class="container">
@@ -112,7 +112,7 @@
         <!--<![endif]-->
 
         <!-- Include IconCaptcha script -->
-        <script src="../assets/js/script.min.js" type="text/javascript"></script>
+        <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Initialize the IconCaptcha -->
         <script async type="text/javascript">
