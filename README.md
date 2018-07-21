@@ -14,8 +14,11 @@ Even developers new to JavaScript and PHP can easily install IconCaptcha. The de
 <img src="https://i.imgur.com/IO5XyPV.jpg" /> <img src="https://i.imgur.com/tp7028J.jpg" />
 ___
 
-### <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">Download IconCaptcha now</a>
-### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View Demo</a>
+### <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">Download IconCaptcha for PHP now</a>
+### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View live demo</a>
+___
+
+##### <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-ASP.NET">Visit IconCaptcha for ASP.NET here.</a>
 ___
 
 ## Features
@@ -26,7 +29,24 @@ ___
 * __SASS:__  The project contains a SASS file, allowing you to easily style and compile the stylesheet.
 * __Supports IE:__  The captcha _supports_ Internet Explorer 8 and up.
 
+## Requirements
+* __PHP >= 5.2__
+* __jQuery >= 1.12.3__
+
+## Installation
+
+1. Download <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">IconCaptcha for PHP</a>.
+2. Download the <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-Front-End/releases">IconCaptcha Front-End package</a>.
+3. Unpack both repositories to somewhere on your computer.
+4. Drag the content of the ```dist/``` folder of the IconCaptcha Front-End package into the ```assets/``` folder of the IconCaptcha PHP package.
+5. Check the ```assets/``` folder and make sure you see the following sub-folders: ```css/```, ```icons/``` and ```js/```.
+
+_Note: To make it easier to test the example captchas, the Front-End package is already included in this repository. 
+However, these files might not always be up-to-date. To ensure you always have the latest version, please follow the instructions above._
+
 ## Usage
+
+__HTML form:__
 ```html
 <form action="" method="post">
     ...
@@ -46,7 +66,8 @@ ___
 </script>
 ```
 
-PHP form validation:
+
+__PHP form validation:__
 
 ```php
 <?php
@@ -87,12 +108,12 @@ PHP form validation:
 
 ## Options
 
-The following options allow you to customize the IconCaptcha to your liking. All of the options are __optional__, however you might still want to take a look at the ```captchaAjaxFile``` option and make sure the path is set correctly.
+The following options allow you to customize IconCaptcha to your liking. All of the options are __optional__, however you might still want to take a look at the ```captchaAjaxFile``` option and make sure the path is set correctly.
 
 | Option | Description |
 | ------ | ------ |
-| captchaTheme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. You can always add your own custom themes via CSS. |
-| captchaFontFamily | Allows you to select the font family of the captcha. Leaving this option blank will add the default font _(Roboto)_ to the end of your ```<body>``` tag. |
+| captchaTheme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. You can always add your own custom themes by changing the SCSS file. |
+| captchaFontFamily | Allows you to select the font family of the captcha. Leaving this option blank will result in the use of the default font ```Arial```. |
 | captchaClickDelay | The time _(in milliseconds)_ during which the user can't select an image. Set to 0 to disable. |
 | captchaHoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
 | enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
@@ -127,16 +148,6 @@ Events will be triggered at various point in the code. You can use a custom scri
 | selected.iconCaptcha | Will fire when the user selects an icon, regarless of if the icon is correct or not. |
 | success.iconCaptcha | Will fire when the user selected the correct icon. |
 | error.iconCaptcha | Will fire when the user selected the incorrect icon. |
-
-## Requirements
-* __PHP 5.2+__
-* __jQuery 1.12.3+__
-
-## Where is version 1?!
-Version 1 was never created with the intention of it being used on live websites. This caused the security to lack which left massive loopholes around the captcha. 
-A big part of the captcha validation was performed on the client-side, making it possible to manipulate the captcha by loading in custom scripts. It's design was also horrible and too big to fit with todays websites.
-
-__To protect your website and server from attackers, version 1 is no longer available for download.__
 
 ## Credits
 The icons used in this project are made by <a href="https://www.webalys.com" target="_blank" rel="nofollow">Webalys</a>.

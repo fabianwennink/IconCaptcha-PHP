@@ -42,7 +42,7 @@
         <link href="../assets/demo.css" rel="stylesheet" type="text/css">
 
         <!-- Include IconCaptcha stylesheet -->
-        <link href="../assets/css/icon-captcha.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div class="container">

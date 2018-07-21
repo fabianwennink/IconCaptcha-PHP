@@ -51,7 +51,7 @@
         <link href="../assets/demo.css" rel="stylesheet" type="text/css">
 
         <!-- Include IconCaptcha stylesheet -->
-        <link href="../assets/css/icon-captcha.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div class="container">
@@ -100,7 +100,7 @@
         </a>
 
         <!-- Include Google Font - Just for demo page -->
-        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
         <!-- Include jQuery Library -->
         <!--[if lt IE 9]>

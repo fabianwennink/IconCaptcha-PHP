@@ -1,3 +1,10 @@
+/**
+ * Icon Captcha Plugin: v2.4.0
+ * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
+ *
+ * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+ */
+
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -19,9 +26,9 @@ body {
     font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image: url(../assets/polygon-background.png), -webkit-linear-gradient(20deg,#6D1AF3,#51D0EF);
-    background-image: url(../assets/polygon-background.png), -moz-linear-gradient(20deg,#6D1AF3,#51D0EF);
-    background-image: url(../assets/polygon-background.png), linear-gradient(20deg,#6D1AF3,#51D0EF);
+    background-image: url(polygon-background.png), -webkit-linear-gradient(20deg,#6D1AF3,#51D0EF);
+    background-image: url(polygon-background.png), -moz-linear-gradient(20deg,#6D1AF3,#51D0EF);
+    background-image: url(polygon-background.png), linear-gradient(20deg,#6D1AF3,#51D0EF);
 }
 
 a {
