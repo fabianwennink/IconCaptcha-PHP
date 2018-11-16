@@ -1,15 +1,17 @@
+/**
+ * Icon Captcha Plugin: v2.4.0
+ * Copyright © 2018, Fabian Wennink (https://www.fabianwennink.nl)
+ *
+ * @license Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+ *
+ */
 "use strict";
 var _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (a) {
     return typeof a
 } : function (a) {
     return a && "function" == typeof Symbol && a.constructor === Symbol && a !== Symbol.prototype ? "symbol" : typeof a
 };
-/**
- * Icon Captcha Plugin: v2.4.0
- * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
- *
- * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
- */(function (a) {
+(function (a) {
     a.fn.extend({
         iconCaptcha: function (b) {
             var c = a.extend({
