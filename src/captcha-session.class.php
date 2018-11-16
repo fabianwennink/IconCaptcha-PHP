@@ -135,4 +135,3 @@
             return isset($_SESSION['icon_captcha'][$id]);
         }
     }
-?>

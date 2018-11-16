@@ -128,9 +128,9 @@
 
             for($i = 1; $i < 6; $i++) {
                 if($i === $d) {
-                    array_push($e, self::getImageHash('icon-' . $a . '-' . $i));
+                    $e[] = self::getImageHash('icon-' . $a . '-' . $i);
                 } else {
-                    array_push($e, self::getImageHash('icon-' . $b . '-' . $i));
+                    $e[] = self::getImageHash('icon-' . $b . '-' . $i);
                 }
             }
 
@@ -212,12 +212,12 @@
             if(!empty($post)) {
 
                 // Check if the captcha ID is set.
-                if(!isset($_POST['cID']) || !is_numeric($_POST['cID'])) {
+                if(!isset($post['cID']) || !is_numeric($post['cID'])) {
                     return false;
                 }
 
                 // Set the captcha id property
-                self::$captcha_id = $_POST['cID'];
+                self::$captcha_id = $post['cID'];
 
                 // If the session is not loaded yet, load it.
                 if(!isset(self::$session)) {
@@ -238,8 +238,8 @@
                     self::$session->save();
 
                     // Set the clicked icon ID
-                    if(in_array($_POST['pC'], self::$session->hashes[2])) {
-                        $i = array_search($_POST['pC'], self::$session->hashes[2]);
+                    if(in_array($post['pC'], self::$session->hashes[2])) {
+                        $i = array_search($post['pC'], self::$session->hashes[2]);
                         self::$session->last_clicked = $i + 1;
                     }
                 }
@@ -363,7 +363,6 @@
             }
 
             return (!empty($image) && (isset(self::$captcha_id) && is_numeric(self::$captcha_id)))
-                ? hash('tiger192,3', $image . hash('crc32b', uniqid())) : '';
+                ? hash('tiger192,3', $image . hash('crc32b', uniqid('', true))) : '';
         }
     }
-?>
