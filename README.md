@@ -3,9 +3,9 @@
 ![Version](https://img.shields.io/badge/Version-2.5.0-orange.svg?style=flat-square) ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square) ![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
 
-![Sonar Quality](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=alert_status)
-![Sonar Security](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=security_rating)
-![Sonar Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=vulnerabilities)
+[![Sonar Quality](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=alert_status)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
+[![Sonar Security](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=security_rating)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
+[![Sonar Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
 
 <br><img src="http://i.imgur.com/RMUALSz.png" />
 
