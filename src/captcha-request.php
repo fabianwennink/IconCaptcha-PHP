@@ -1,6 +1,6 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.4.0
+     * Icon Captcha Plugin: v2.5.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -13,33 +13,33 @@
     require('captcha-session.class.php');
     require('captcha.class.php');
 
+    // HTTP GET - Requesting the actual image.
+    if((isset($_GET['hash']) && strlen($_GET['hash']) === 48) &&
+        (isset($_GET['cid']) && is_numeric($_GET['cid'])) && !isAjaxRequest()) {
+        IconCaptcha::getIconFromHash($_GET['hash'], $_GET['cid']);
+        exit;
+    }
+    
     // HTTP POST - Either the captcha has been submitted or an image has been selected by the user.
     if(!empty($_POST) && isAjaxRequest()) {
-        if((isset($_POST['rT']) && is_numeric($_POST['rT'])) && (isset($_POST['cID']) && is_numeric($_POST['cID']))) {
+        if(isset($_POST['rT']) && is_numeric($_POST['rT']) && isset($_POST['cID']) && is_numeric($_POST['cID'])) {
             switch((int)$_POST['rT']) {
                 case 1: // Requesting the image hashes
                     $captcha_theme = (isset($_POST['tM']) && ($_POST['tM'] === 'light' || $_POST['tM'] === 'dark')) ? $_POST['tM'] : 'light';
 
                     // Echo the JSON encoded array
                     header('Content-type: application/json');
-                    echo IconCaptcha::getCaptchaData($captcha_theme, $_POST['cID']);
-                    exit;
+                    exit(IconCaptcha::getCaptchaData($captcha_theme, $_POST['cID']));
                 case 2: // Setting the user's choice
                     if(IconCaptcha::setSelectedAnswer($_POST)) {
 						header('HTTP/1.0 200 OK');
 						exit;
 					}
+                    break;
                 default:
                     break;
             }
         }
-    }
-
-    // HTTP GET - Requesting the actual image.
-    if((isset($_GET['hash']) && strlen($_GET['hash']) === 48) &&
-        (isset($_GET['cid']) && is_numeric($_GET['cid'])) && !isAjaxRequest()) {
-        IconCaptcha::getIconFromHash($_GET['hash'], $_GET['cid']);
-        exit;
     }
 
     header('HTTP/1.1 400 Bad Request');
@@ -51,4 +51,3 @@
     function isAjaxRequest() {
         return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
     }
-?>

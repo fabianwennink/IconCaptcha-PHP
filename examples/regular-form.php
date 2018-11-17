@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.4.0
+     * IconCaptcha Plugin: v2.5.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -28,21 +28,21 @@
 
     // Use custom messages as error messages (optional).
     // Take a look at the README file to see what each string means.
-    // IconCaptcha::setErrorMessages(array('', '', '', ''));
+    // IconCaptcha::setErrorMessages('', '', '', '');
 
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
         if(IconCaptcha::validateSubmission($_POST)) {
-            echo '<b>Captcha:</b> The form has been submitted!';
+            $captchaMessage = 'The form has been submitted!';
         } else {
-            echo '<b>Captcha: </b>' . json_decode(IconCaptcha::getErrorMessage())->error;
+            $captchaMessage = json_decode(IconCaptcha::getErrorMessage())->error;
         }
     }
 ?>
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>IconCaptcha Plugin v2 - By Fabian Wennink</title>
+        <title>IconCaptcha Plugin v2.5.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -63,7 +63,7 @@
             </div>
 
             <div class="shields">
-                <img src="https://img.shields.io/badge/Version-2.4.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+                <img src="https://img.shields.io/badge/Version-2.5.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
                 <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
             </div>
 
@@ -71,7 +71,14 @@
 
                 <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
                 <h2>Form:</h2>
-                <form action="form/ajax-submit.php" method="post">
+
+                <?php
+                    if(isset($captchaMessage)) {
+                        echo '<b>Captcha Message: </b>' . $captchaMessage;
+                    }
+                ?>
+
+                <form action="" method="post">
 
                     <!-- Element that we use to create the IconCaptcha with -->
                     <div class="captcha-holder"></div>
@@ -117,18 +124,18 @@
         <!-- Initialize the IconCaptcha -->
         <script async type="text/javascript">
             $(window).ready(function() {
-
                 $('.captcha-holder').iconCaptcha({
-                    captchaTheme: ["light", "dark"], // Select the theme(s) of the Captcha(s). Available: light, dark
-                    captchaFontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
-                    captchaClickDelay: 500, // The delay during which the user can't select an image.
-                    captchaHoverDetection: true, // Enable or disable the cursor hover detection.
-                    enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't actually do anything other than look nice.
-                    loadingAnimationDelay: 1500, // How long the fake loading animation should play.
-                    showCredits: 'show', // Show, hide or disable the credits element. Valid values: 'show', 'hide', 'disabled' (please leave it enabled).
+                    theme: ['light', 'dark'], // Select the theme(s) of the Captcha(s). Available: light, dark
+                    fontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
+                    clickDelay: 500, // The delay during which the user can't select an image.
+                    invalidResetDelay: 3000, // After how many milliseconds the captcha should reset after a wrong icon selection.
                     requestIconsDelay: 1500, // How long should the script wait before requesting the hashes and icons? (to prevent a high(er) CPU usage during a DDoS attack)
-                    captchaAjaxFile: '../src/captcha-request.php', // The path to the Captcha validation file.
-                    captchaMessages: { // You can put whatever message you want in the captcha.
+                    loadingAnimationDelay: 1500, // How long the fake loading animation should play.
+                    hoverDetection: true, // Enable or disable the cursor hover detection.
+                    showCredits: 'show', // Show, hide or disable the credits element. Valid values: 'show', 'hide', 'disabled' (please leave it enabled).
+                    enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't actually do anything other than look nice.
+                    validationPath: '../src/captcha-request.php', // The path to the Captcha validation file.
+                    messages: { // You can put whatever message you want in the captcha.
                         header: "Select the image that does not belong in the row",
                         correct: {
                             top: "Great!",
@@ -140,9 +147,9 @@
                         }
                     }
                 })
-                .bind('init.iconCaptcha', function(e, id) { // You can bind to custom events, in case you want to execute some custom code.
-                    console.log('Event: Captcha initialized', id);
-                }).bind('selected.iconCaptcha', function(e, id) {
+                    .bind('init.iconCaptcha', function(e, id) { // You can bind to custom events, in case you want to execute some custom code.
+                        console.log('Event: Captcha initialized', id);
+                    }).bind('selected.iconCaptcha', function(e, id) {
                     console.log('Event: Icon selected', id);
                 }).bind('refreshed.iconCaptcha', function(e, id) {
                     console.log('Event: Captcha refreshed', id);

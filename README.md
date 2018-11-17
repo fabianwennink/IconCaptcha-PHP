@@ -1,7 +1,11 @@
 # IconCaptcha Plugin - jQuery & PHP
 
-[![Version](https://img.shields.io/badge/Version-2.4.0-orange.svg?style=flat-square)]() [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)]() [![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)]()
+![Version](https://img.shields.io/badge/Version-2.5.0-orange.svg?style=flat-square) ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square) ![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
+
+![Sonar Quality](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=alert_status)
+![Sonar Security](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=security_rating)
+![Sonar Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=vulnerabilities)
 
 <br><img src="http://i.imgur.com/RMUALSz.png" />
 
@@ -93,7 +97,7 @@ __PHP form validation:__
 
     // Use custom messages as error messages (optional).
     // Take a look at the README file to see what each string means.
-    // IconCaptcha::setErrorMessages(array('', '', '', ''));
+    // IconCaptcha::setErrorMessages('', '', '', '');
     
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
@@ -112,16 +116,17 @@ The following options allow you to customize IconCaptcha to your liking. All of 
 
 | Option | Description |
 | ------ | ------ |
-| captchaTheme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. You can always add your own custom themes by changing the SCSS file. |
-| captchaFontFamily | Allows you to select the font family of the captcha. Leaving this option blank will result in the use of the default font ```Arial```. |
-| captchaClickDelay | The time _(in milliseconds)_ during which the user can't select an image. Set to 0 to disable. |
-| captchaHoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
-| enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
-| loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
-| showCredits | Show, hide or disable the credits element of the captcha. Hiding the credits will still add the credits to the HTML, but it will not be visible (only to crawlers). Disabling the credits will neither show or add the HTML. Use _'show'_, _'hide'_ or _'disabled'_.<br>_Please leave it enabled so people can find and use the captcha themselves._ |
-| captchaAjaxFile | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or validate the input. |
-| captchaMessages | Change the messages used by the captcha. All the changeable strings can be found down below. |
+| theme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. You can always add your own custom themes by changing the SCSS file. |
+| fontFamily | Allows you to select the font family of the captcha. Leaving this option blank will result in the use of the default font ```Arial```. |
+| clickDelay | The time _(in milliseconds)_ during which the user can't select an image. Set to 0 to disable. |
+| invalidResetDelay | The time _(in milliseconds)_ it takes to reset the captcha after a wrong icon selection. Set to 0 to disable. |
 | requestIconsDelay | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshed (during an attack?), it will not request the resources right away. |
+| loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
+| hoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
+| showCredits | Show, hide or disable the credits element of the captcha. Hiding the credits will still add the credits to the HTML, but it will not be visible (only to crawlers). Disabling the credits will neither show or add the HTML. Use _'show'_, _'hide'_ or _'disabled'_.<br>_Please leave it enabled so people can find and use the captcha themselves._ |
+| enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
+| validationPath | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or validate the input. |
+| messages | Change the messages used by the captcha. All the changeable strings can be found down below. |
 
 ## Messages
 The following strings will be used by the captcha and can be changed / translated to your liking.

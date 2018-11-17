@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.4.0
+     * IconCaptcha Plugin: v2.5.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -9,7 +9,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>IconCaptcha Plugin v2 - By Fabian Wennink</title>
+        <title>IconCaptcha Plugin v2.5.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -26,7 +26,7 @@
             </div>
 
             <div class="shields">
-                <img src="https://img.shields.io/badge/Version-2.4.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+                <img src="https://img.shields.io/badge/Version-2.5.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
                 <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
             </div>
 

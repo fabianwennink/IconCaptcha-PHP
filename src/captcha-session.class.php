@@ -1,12 +1,20 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.4.0
+     * Icon Captcha Plugin: v2.5.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
      */
 
     class CaptchaSession {
+
+        const ICON_CAPTCHA = 'icon_captcha';
+        const CAPTCHA_THEME = 'theme';
+        const CAPTCHA_HASHES = 'hashes';
+        const CAPTCHA_ICONS = 'icons';
+        const CAPTCHA_LAST_CLICKED = 'last_clicked';
+        const CAPTCHA_CORRECT_HASH = 'correct_hash';
+        const CAPTCHA_COMPLETED = 'completed';
 
         /**
          * @var int             The captcha identifier.
@@ -84,23 +92,29 @@
          */
         public function load() {
             if(self::exists($this->id)) {
-                if(isset($_SESSION['icon_captcha'][$this->id]['theme']))
-                    $this->theme = $_SESSION['icon_captcha'][$this->id]['theme'];
+                if(isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_THEME])) {
+                    $this->theme = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_THEME];
+                }
 
-                if(isset($_SESSION['icon_captcha'][$this->id]['hashes']))
-                    $this->hashes = $_SESSION['icon_captcha'][$this->id]['hashes'];
+                if(isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_HASHES])) {
+                    $this->hashes = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_HASHES];
+                }
 
-                if(isset($_SESSION['icon_captcha'][$this->id]['icons']))
-                    $this->icon_requests = $_SESSION['icon_captcha'][$this->id]['icons'];
+                if(isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICONS])) {
+                    $this->icon_requests = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICONS];
+                }
 
-                if(isset($_SESSION['icon_captcha'][$this->id]['last_clicked']))
-                    $this->last_clicked = $_SESSION['icon_captcha'][$this->id]['last_clicked'];
+                if(isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_LAST_CLICKED])) {
+                    $this->last_clicked = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_LAST_CLICKED];
+                }
 
-                if(isset($_SESSION['icon_captcha'][$this->id]['correct_hash']))
-                    $this->correct_hash = $_SESSION['icon_captcha'][$this->id]['correct_hash'];
+                if(isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_CORRECT_HASH])) {
+                    $this->correct_hash = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_CORRECT_HASH];
+                }
 
-                if(isset($_SESSION['icon_captcha'][$this->id]['completed']))
-                    $this->completed = $_SESSION['icon_captcha'][$this->id]['completed'];
+                if(isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COMPLETED])) {
+                    $this->completed = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COMPLETED];
+                }
             }
         }
 
@@ -111,15 +125,15 @@
          */
         public function save() {
             $data = array(
-                'hashes' 			=> $this->hashes,
-                'icons' 			=> $this->icon_requests,
-                'theme' 			=> $this->theme,
-                'last_clicked' 		=> $this->last_clicked,
-                'correct_hash'      => $this->correct_hash,
-                'completed'         => $this->completed
+                self::CAPTCHA_HASHES 			=> $this->hashes,
+                self::CAPTCHA_ICONS 			=> $this->icon_requests,
+                self::CAPTCHA_THEME 			=> $this->theme,
+                self::CAPTCHA_LAST_CLICKED 		=> $this->last_clicked,
+                self::CAPTCHA_CORRECT_HASH      => $this->correct_hash,
+                self::CAPTCHA_COMPLETED         => $this->completed
             );
 
-            $_SESSION['icon_captcha'][$this->id] = $data;
+            $_SESSION[self::ICON_CAPTCHA][$this->id] = $data;
         }
 
         /**
@@ -132,7 +146,6 @@
          * @return boolean                  TRUE if any session data exists, FALSE if not.
          */
         public static function exists($id) {
-            return isset($_SESSION['icon_captcha'][$id]);
+            return isset($_SESSION[self::ICON_CAPTCHA][$id]);
         }
     }
-?>

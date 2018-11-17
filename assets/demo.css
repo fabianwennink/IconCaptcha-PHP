@@ -1,5 +1,5 @@
-/**
- * Icon Captcha Plugin: v2.4.0
+﻿/**
+ * Icon Captcha Plugin: v2.5.0
  * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
@@ -48,12 +48,10 @@ h2 {
 
 .container {
     position: absolute;
-    top: 40%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -40%);
-    -moz-transform: translate(-50%, -40%);
-    -ms-transform: translate(-50%, -40%);
-    transform: translate(-50%, -40%);
+    top: 10%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     text-align: center;
 }
 
@@ -71,16 +69,6 @@ h2 {
 
 .shields {
     margin-bottom: 40px;
-}
-
-.section {
-    display: block;
-    margin-bottom: 50px;
-}
-
-.section .btn {
-    margin: 20px 10px 0;
-    min-width: 300px;
 }
 
 .btn {
@@ -134,6 +122,16 @@ h2 {
     position: absolute;
     left: 30px;
     bottom: 30px;
+}
+
+.section {
+    display: block;
+    margin-bottom: 50px;
+}
+
+.section .btn {
+    margin: 20px 10px 0;
+    min-width: 300px;
 }
 
 .copyright p {

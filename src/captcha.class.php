@@ -1,12 +1,18 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.4.0
+     * Icon Captcha Plugin: v2.5.0
      * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
      */
 
     class IconCaptcha {
+
+        const ICON_CAPTCHA = 'icon_captcha';
+        const CAPTCHA_NOISE = 'icon_noise';
+        const CAPTCHA_ICON_PATH = 'icon_path';
+        const CAPTCHA_FIELD_HASH = 'captcha-hf';
+        const CAPTCHA_FIELD_ID = 'captcha-idhf';
 
         /**
          * @var string                      A JSON encoded error message, which will be shown to the user.
@@ -21,13 +27,17 @@
         /**
          * @var array                       The (possible) custom error messages.
          */
-        private static $error_messages = array();
+        private static $error_messages = array(
+            'You\'ve selected the wrong image.',
+            'No image has been selected.',
+            'You\'ve not submitted any form.',
+            'The captcha ID was invalid.'
+        );
 
         /**
          * @var CaptchaSession              The session containing captcha information.
          */
         private static $session;
-
 
         /**
          * Sets the icon folder path variable.
@@ -37,7 +47,7 @@
          * @param string $file_path         The path to the icons folder.
          */
         public static function setIconsFolderPath($file_path) {
-            $_SESSION['icon_captcha']['icon_path'] = (is_string($file_path)) ? $file_path : '';
+            $_SESSION[self::ICON_CAPTCHA][self::CAPTCHA_ICON_PATH] = (is_string($file_path)) ? $file_path : '';
         }
 
         /**
@@ -53,7 +63,7 @@
          * @param boolean $noise            TRUE if noise should be added, FALSE if not.
          */
         public static function setIconNoiseEnabled($noise) {
-            $_SESSION['icon_captcha']['icon_noise'] = (is_bool($noise)) ? $noise : false;
+            $_SESSION[self::ICON_CAPTCHA][self::CAPTCHA_NOISE] = (is_bool($noise)) ? $noise : false;
         }
 
         /**
@@ -69,10 +79,24 @@
          *
          * @since 2.1.1                     Function was introduced.
          *
-         * @param string[] $messages        The array containing the custom error messages.
+         * @param string $wrongIcon         Message 1
+         * @param string $noImage           Message 2
+         * @param string $noForm            Message 3
+         * @param string $invalidId         Message 4
          */
-        public static function setErrorMessages($messages = array()) {
-            if(!empty($messages)) self::$error_messages = $messages;
+        public static function setErrorMessages($wrongIcon = '', $noImage = '', $noForm = '', $invalidId = '') {
+            if(!empty($wrongIcon) && is_string($wrongIcon)) {
+                self::$error_messages[0] = $wrongIcon;
+            }
+            if(!empty($noImage) && is_string($noImage)) {
+                self::$error_messages[1] = $noImage;
+            }
+            if(!empty($noForm) && is_string($noForm)) {
+                self::$error_messages[2] = $noForm;
+            }
+            if(!empty($invalidId) && is_string($invalidId)) {
+                self::$error_messages[3] = $invalidId;
+            }
         }
 
         /**
@@ -101,17 +125,16 @@
             $b = 0; // Get another random number (incorrect image)
 
             // Set the captcha id property
-            self::$captcha_id = $captcha_id;
-
-            // Load the session data, if there is any present.
-            // Default data will be used in case no data exists.
-            self::$session = new CaptchaSession($captcha_id, $theme);
+            self::$captcha_id = self::tryCreateSession($captcha_id, $theme);
 
             // Pick a random number for the incorrect icon.
             // Loop until a number is found which doesn't match the correct icon ID.
             while($b === 0) {
                 $c = mt_rand(1, 91);
-                if($c !== $a) $b = $c;
+
+                if($c !== $a) {
+                    $b = $c;
+                }
             }
 
             $d = -1; // At which position the correct hash will be stored in the array.
@@ -123,15 +146,14 @@
                 $f = mt_rand(1, 5);
                 $g = (self::$session->last_clicked > -1) ? self::$session->last_clicked : 0;
 
-                if($f !== $g) $d = $f;
+                if($f !== $g) {
+                    $d = $f;
+                }
             }
 
-            for($i = 1; $i < 6; $i++) {
-                if($i === $d) {
-                    array_push($e, self::getImageHash('icon-' . $a . '-' . $i));
-                } else {
-                    array_push($e, self::getImageHash('icon-' . $b . '-' . $i));
-                }
+            // Hash the icon and push it into the array with hashes.
+            for($i = 1; $i <= 5; $i++) {
+                $e[] = self::getImageHash('icon-' . (($i === $d) ? $a : $b) . '-' . $i);
             }
 
             // Unset the previous session data
@@ -161,38 +183,29 @@
             if(!empty($post)) {
 
                 // Check if the captcha ID is set.
-                if(!isset($post['captcha-idhf']) || !is_numeric($post['captcha-idhf'])
-                    || !CaptchaSession::exists($post['captcha-idhf'])) {
-                    self::$error = json_encode(array('id' => 4, 'error' => ((!empty(self::$error_messages[3]))
-                        ? self::$error_messages[3] : 'The captcha ID was invalid.')));
+                if(!isset($post[self::CAPTCHA_FIELD_ID]) || !is_numeric($post[self::CAPTCHA_FIELD_ID])
+                    || !CaptchaSession::exists($post[self::CAPTCHA_FIELD_ID])) {
+                    self::$error = json_encode(array('id' => 4, 'error' => self::$error_messages[3]));
                     return false;
                 }
 
                 // Set the captcha id property
-                self::$captcha_id = $post['captcha-idhf'];
-
-                // If the session is not loaded yet, load it.
-                if(!isset(self::$session)) {
-                    self::$session = new CaptchaSession(self::$captcha_id);
-                }
+                self::$captcha_id = self::tryCreateSession($post[self::CAPTCHA_FIELD_ID]);
 
                 // Check if the hidden captcha field is set.
-                if(!empty($post['captcha-hf'])) {
+                if(!empty($post[self::CAPTCHA_FIELD_HASH])) {
 
                     // If the hashes match, the form can be submitted. Return true.
-                    if(self::$session->completed === true && self::getCorrectIconHash() === $post['captcha-hf']) {
+                    if(self::$session->completed === true && self::getCorrectIconHash() === $post[self::CAPTCHA_FIELD_HASH]) {
                         return true;
                     } else {
-                        self::$error = json_encode(array('id' => 1, 'error' => ((!empty(self::$error_messages[0]))
-                            ? self::$error_messages[0] : 'You\'ve selected the wrong image.')));
+                        self::$error = json_encode(array('id' => 1, 'error' => self::$error_messages[0]));
                     }
                 } else {
-                    self::$error = json_encode(array('id' => 2, 'error' => ((!empty(self::$error_messages[1]))
-                        ? self::$error_messages[1] : 'No image has been selected.')));
+                    self::$error = json_encode(array('id' => 2, 'error' => self::$error_messages[1]));
                 }
             } else {
-                self::$error = json_encode(array('id' => 3, 'error' => ((!empty(self::$error_messages[2]))
-                    ? self::$error_messages[2] : 'You\'ve not submitted any form.')));
+                self::$error = json_encode(array('id' => 3, 'error' => self::$error_messages[2]));
             }
 
             return false;
@@ -212,17 +225,12 @@
             if(!empty($post)) {
 
                 // Check if the captcha ID is set.
-                if(!isset($_POST['cID']) || !is_numeric($_POST['cID'])) {
+                if(!isset($post['cID']) || !is_numeric($post['cID'])) {
                     return false;
                 }
 
                 // Set the captcha id property
-                self::$captcha_id = $_POST['cID'];
-
-                // If the session is not loaded yet, load it.
-                if(!isset(self::$session)) {
-                    self::$session = new CaptchaSession(self::$captcha_id);
-                }
+                self::$captcha_id = self::tryCreateSession($post['cID']);
 
                 // Check if the hash is set and matches the correct hash.
                 if(isset($post['pC']) && (self::getCorrectIconHash() === $post['pC'])) {
@@ -238,8 +246,8 @@
                     self::$session->save();
 
                     // Set the clicked icon ID
-                    if(in_array($_POST['pC'], self::$session->hashes[2])) {
-                        $i = array_search($_POST['pC'], self::$session->hashes[2]);
+                    if(in_array($post['pC'], self::$session->hashes[2])) {
+                        $i = array_search($post['pC'], self::$session->hashes[2]);
                         self::$session->last_clicked = $i + 1;
                     }
                 }
@@ -263,12 +271,7 @@
             if(!empty($hash) && (isset($captcha_id) && $captcha_id > -1)) {
 
                 // Set the captcha id property
-                self::$captcha_id = $captcha_id;
-
-                // If the session is not loaded yet, load it.
-                if(!isset(self::$session)) {
-                    self::$session = new CaptchaSession(self::$captcha_id);
-                }
+                self::$captcha_id = self::tryCreateSession($captcha_id);
 
                 // Check the amount of times an icon has been requested
                 if(self::$session->icon_requests >= 5) {
@@ -282,7 +285,7 @@
 
                 // Check if the hash is present in the session data
                 if(in_array($hash, self::$session->hashes[2])) {
-                    $icons_path = $_SESSION['icon_captcha']['icon_path']; // Icons folder path
+                    $icons_path = $_SESSION[self::ICON_CAPTCHA][self::CAPTCHA_ICON_PATH]; // Icons folder path
 
                     $icon_file = $icons_path . ((substr($icons_path, -1) === '/') ? '' : '/') . self::$session->theme . '/icon-' .
                         ((self::getCorrectIconHash() === $hash) ? self::$session->hashes[0] : self::$session->hashes[1]) . '.png';
@@ -291,8 +294,8 @@
                     if (is_file($icon_file)) {
 
                         // Check if noise is enabled or not.
-                        $add_noise = (isset($_SESSION['icon_captcha']['icon_noise'])
-                            && $_SESSION['icon_captcha']['icon_noise']);
+                        $add_noise = (isset($_SESSION[self::ICON_CAPTCHA][self::CAPTCHA_NOISE])
+                            && $_SESSION[self::ICON_CAPTCHA][self::CAPTCHA_NOISE]);
 
                         // If noise is enabled, add the random pixel noise.
                         if($add_noise) {
@@ -340,9 +343,7 @@
          * @return string			        The correct icon hash.
          */
         private static function getCorrectIconHash() {
-            if(!isset(self::$session)) {
-                self::$session = new CaptchaSession(self::$captcha_id);
-            }
+            self::tryCreateSession();
 
             return (isset(self::$captcha_id) && is_numeric(self::$captcha_id))
                 ? self::$session->correct_hash : '';
@@ -358,12 +359,34 @@
          * @return string                   The image hash.
          */
         private static function getImageHash($image = null) {
-            if(!isset(self::$session)) {
-                self::$session = new CaptchaSession(self::$captcha_id);
-            }
+            self::tryCreateSession();
 
             return (!empty($image) && (isset(self::$captcha_id) && is_numeric(self::$captcha_id)))
-                ? hash('tiger192,3', $image . hash('crc32b', uniqid())) : '';
+                ? hash('tiger192,3', $image . hash('crc32b', uniqid('ic_', true))) : '';
+        }
+
+        /**
+         * Tries to create a new CaptchaSession if none exist.
+         * Will return the correct captcha ID.
+         *
+         * @since 2.5.0                     Function was introduced.
+         *
+         * @param int $captchaId            The ID of the captcha.
+         * @param string $theme             The theme of the captcha.
+         *
+         * @return int                      The captcha's correct ID.
+         */
+        private static function tryCreateSession($captchaId = -1, $theme = 'light') {
+            // If the given captcha ID if valid, overwrite the stored one.
+            if($captchaId > -1) {
+                self::$captcha_id = $captchaId;
+            }
+
+            // If the session is not loaded yet, load it.
+            if(!isset(self::$session)) {
+                self::$session = new CaptchaSession(self::$captcha_id, $theme);
+            }
+
+            return self::$captcha_id;
         }
     }
-?>
