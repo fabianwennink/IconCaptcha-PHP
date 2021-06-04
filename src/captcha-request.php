@@ -1,7 +1,7 @@
 <?php
     /**
-     * Icon Captcha Plugin: v2.5.0
-     * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
+     * IconCaptcha Plugin: v3.0.0
+     * Copyright © 2021, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
      */
@@ -47,7 +47,6 @@
 
     // Adds another level of security to the Ajax call.
     // Only requests made through Ajax are allowed.
-    // NOTE: THE HEADER CAN BE SPOOFED
     function isAjaxRequest() {
         return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
     }

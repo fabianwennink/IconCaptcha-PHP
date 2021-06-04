@@ -1,6 +1,7 @@
 # IconCaptcha Plugin - jQuery & PHP
 
-![Version](https://img.shields.io/badge/Version-2.5.0-orange.svg?style=flat-square) ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square) ![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)
+![Version](https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square) 
+![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
 
 [![Sonar Quality](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=alert_status)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
@@ -34,7 +35,7 @@ ___
 * __Supports IE:__  The captcha _supports_ Internet Explorer 8 and up.
 
 ## Requirements
-* __PHP >= 5.2__
+* __PHP >= 5.2__ with GD dependency enabled.
 * __jQuery >= 1.12.3__
 
 ## Installation

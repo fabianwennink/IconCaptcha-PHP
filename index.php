@@ -1,7 +1,7 @@
 <?php
     /**
-     * IconCaptcha Plugin: v2.5.0
-     * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
+     * IconCaptcha Plugin: v3.0.0
+     * Copyright © 2021, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
      */
@@ -9,7 +9,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>IconCaptcha Plugin v2.5.0 - By Fabian Wennink</title>
+        <title>IconCaptcha Plugin v3.0.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -26,8 +26,18 @@
             </div>
 
             <div class="shields">
-                <img src="https://img.shields.io/badge/Version-2.5.0-orange.svg?style=flat-square" /> <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
-                <img src="https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square" /> <a href="https://paypal.me/nlgamevideosnl" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square" /></a>
+                <div class="shields-row">
+                    <img src="https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square" />
+                    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
+                    <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" />
+                    <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" />
+                </div>
+                <div class="shields-row">
+                    <img src="https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" />
+                    <img src="https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1" />
+                    <img src="https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" />
+                    <img src="https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" />
+                </div>
             </div>
 
             <div class="section">
@@ -39,7 +49,7 @@
             <div class="section">
                 <h2>Links:</h2>
                 <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank"><div class="btn">GitHub repository</div></a>
-                <a href="https://paypal.me/nlgamevideosnl" target="_blank"><div class="btn">Buy me a coffee</div></a>
+                <a href="https://buymeacoffee.com/fabianwennink" target="_blank"><div class="btn">Buy me a coffee</div></a>
                 <a href="https://fabianwennink.nl/en/" target="_blank"><div class="btn">Fabian Wennink <small>(developer)</small></div></a>
             </div>
 
