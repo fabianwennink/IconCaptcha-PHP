@@ -65,6 +65,12 @@
             </div>
         </a>
 
+        <!-- buy me a coffee -->
+        <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="fabianwennink"
+                data-description="Support me on Buy me a coffee!" data-message="If you like IconCaptcha, consider buying me a coffee!"
+                data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
+        <!-- /buy me a coffee -->
+
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
     </body>
 </html>
