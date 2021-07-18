@@ -7,9 +7,9 @@
      */
 ?>
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
     <head>
-        <title>IconCaptcha Plugin v3.0.0 - By Fabian Wennink</title>
+        <title>IconCaptcha v3.0.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=9" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />

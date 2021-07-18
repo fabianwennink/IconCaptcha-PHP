@@ -13,27 +13,21 @@
 	require('../src/captcha-session.class.php');
     require('../src/captcha.class.php');
 
-    // Set the path to the captcha icons. Set it as if you were
-    // currently in the PHP folder containing the captcha.class.php file.
-    // ALWAYS END WITH A /
-    // DEFAULT IS SET TO ../icons/
-    IconCaptcha::setIconsFolderPath('../assets/icons/');
-
-    // Enable or disable the 'image noise' option.
-    // When enabled, some nearly invisible random pixels will be added to the
-    // icons. This is done to confuse bots who download the icons to compare them
-    // and pick the odd one based on those results.
-    // NOTE: Enabling this might cause a slight increase in CPU usage.
-    IconCaptcha::setIconNoiseEnabled(true);
-
-    // Use custom messages as error messages (optional).
-    // Take a look at the README file to see what each string means.
-    // IconCaptcha::setErrorMessages('', '', '', '');
+    // Take a look at the README file to see every available option.
+    IconCaptcha::options([
+        'iconPath' => '../assets/icons/', // required
+        'messages' => [
+            'wrong_icon' => "You've selected the wrong image.",
+            'no_selection' => 'No image has been selected.',
+            'empty_form' => "You've not submitted any form.",
+            'invalid_id' => 'The captcha ID was invalid.'
+        ]
+    ]);
 ?>
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
     <head>
-        <title>IconCaptcha Plugin v3.0.0 - By Fabian Wennink</title>
+        <title>IconCaptcha v3.0.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -73,12 +67,14 @@
                 <!-- Captcha message placeholder -->
                 <p class="message"></p>
 
-                <!-- Just a basic HTML form, captcha should ALWAYS be placed WITHIN the <form> element -->
-                <h2>Form:</h2>
+                <!-- The IconCaptcha holder should ALWAYS be placed WITHIN the <form> element -->
                 <form action="form/ajax-submit.php" method="post">
 
                     <!-- Element that we use to create the IconCaptcha with -->
-                    <div class="captcha-holder"></div>
+                    <div class="iconcaptcha-holder" data-theme="light"></div>
+
+                    <!-- Element that we use to create the IconCaptcha with -->
+                    <div class="iconcaptcha-holder" data-theme="dark"></div>
 
                     <!-- Submit button to test your IconCaptcha input -->
                     <input type="submit" value="Submit demo captcha" class="btn" >
@@ -103,6 +99,60 @@
             </div>
         </a>
 
+        <!--
+            Script to submit the form(s) with Ajax.
+
+            NOTE: If you want to use FormData instead of .serialize(), make sure to
+            include the inputs 'captcha-idhf' and 'captcha-hf' into your FormData object. Take a
+            look at the commented code down below.
+        -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('form').submit(function(e) {
+                    e.preventDefault();
+
+                    var form = $(this);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: form.attr('action'),
+                        data: form.serialize()
+                    }).done(function (data) {
+                        $('.message').html(data);
+                    }).fail(function (data) {
+                        console.log('Error: Failed to submit form.')
+                    });
+
+                    // FormData example:
+
+                    // var captchaID = form.find('input[name="captcha-idhf"]').val();
+                    // var captchaIcon = form.find('input[name="captcha-hf"]').val();
+
+                    // var formData = new FormData();
+                    // formData.append( 'captcha-idhf', captchaID );
+                    // formData.append( 'captcha-hf', captchaIcon );
+
+                    // $.ajax({
+                    //     type: 'POST',
+                    //     url: form.attr('action'),
+                    //     data: formData,
+                    //     processData: false,
+                    //     contentType: false
+                    // }).done(function (data) {
+                    //     $('.message').html(data);
+                    // }).fail(function (data) {
+                    //     console.log('Error: Failed to submit form.')
+                    // });
+                });
+            });
+        </script>
+
+        <!-- buy me a coffee -->
+        <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="fabianwennink"
+                data-description="Support me on Buy me a coffee!" data-message="If you like IconCaptcha, consider buying me a coffee!"
+                data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
+        <!-- /buy me a coffee -->
+
         <!-- Include Google Font - Just for demo page -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
@@ -115,84 +165,36 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <!--<![endif]-->
 
-        <!--
-            Script to submit the form(s) with Ajax.
-
-            NOTE: If you want to use FormData instead of .serialize(), make sure to
-            include the inputs 'captcha-idhf' and 'captcha-hf' into your FormData object. Take a
-            look at the commented code down below.
-        -->
-        <script type="text/javascript">
-            $('form').submit(function(e) {
-                e.preventDefault();
-
-                var form = $(this);
-
-                $.ajax({
-                    type: 'POST',
-                    url: form.attr('action'),
-                    data: form.serialize()
-                }).done(function (data) {
-                    $('.message').html(data);
-                }).fail(function (data) {
-                    console.log('Error: Failed to submit form.')
-                });
-
-                // FormData example:
-
-                // var captchaID = form.find('input[name="captcha-idhf"]').val();
-                // var captchaIcon = form.find('input[name="captcha-hf"]').val();
-
-                // var formData = new FormData();
-                // formData.append( 'captcha-idhf', captchaID );
-                // formData.append( 'captcha-hf', captchaIcon );
-
-                // $.ajax({
-                //     type: 'POST',
-                //     url: form.attr('action'),
-                //     data: formData,
-                //     processData: false,
-                //     contentType: false
-                // }).done(function (data) {
-                //     $('.message').html(data);
-                // }).fail(function (data) {
-                //     console.log('Error: Failed to submit form.')
-                // });
-            });
-        </script>
-
         <!-- Include IconCaptcha script -->
         <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Initialize the IconCaptcha -->
         <script async type="text/javascript">
             $(window).ready(function() {
-                $('.captcha-holder').iconCaptcha({
-                    theme: ['light', 'dark'], // Select the theme(s) of the Captcha(s). Available: light, dark
+                $('.iconcaptcha-holder').iconCaptcha({
                     fontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
                     clickDelay: 500, // The delay during which the user can't select an image.
                     invalidResetDelay: 3000, // After how many milliseconds the captcha should reset after a wrong icon selection.
-                    requestIconsDelay: 1500, // How long should the script wait before requesting the hashes and icons? (to prevent a high(er) CPU usage during a DDoS attack)
                     loadingAnimationDelay: 1500, // How long the fake loading animation should play.
                     hoverDetection: true, // Enable or disable the cursor hover detection.
                     showCredits: 'show', // Show, hide or disable the credits element. Valid values: 'show', 'hide', 'disabled' (please leave it enabled).
                     enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't actually do anything other than look nice.
                     validationPath: '../src/captcha-request.php', // The path to the Captcha validation file.
                     messages: { // You can put whatever message you want in the captcha.
-                        header: "Select the image that does not belong in the row",
+                        header: "Select the image displayed the least amount of times",
                         correct: {
                             top: "Great!",
                             bottom: "You do not appear to be a robot."
                         },
                         incorrect: {
-                            top: "Oops!",
+                            top: "Uh oh.",
                             bottom: "You've selected the wrong image."
                         }
                     }
                 })
-                    .bind('init.iconCaptcha', function(e, id) { // You can bind to custom events, in case you want to execute some custom code.
-                        console.log('Event: Captcha initialized', id);
-                    }).bind('selected.iconCaptcha', function(e, id) {
+                .bind('init.iconCaptcha', function(e, id) { // You can bind to custom events, in case you want to execute some custom code.
+                    console.log('Event: Captcha initialized', id);
+                }).bind('selected.iconCaptcha', function(e, id) {
                     console.log('Event: Icon selected', id);
                 }).bind('refreshed.iconCaptcha', function(e, id) {
                     console.log('Event: Captcha refreshed', id);

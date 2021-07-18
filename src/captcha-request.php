@@ -14,41 +14,82 @@ session_start();
 require('captcha-session.class.php');
 require('captcha.class.php');
 
-// HTTP GET - Requesting the actual image.
-if ((isset($_GET['hash']) && strlen($_GET['hash']) === 48) &&
-    (isset($_GET['cid']) && is_numeric($_GET['cid'])) && !isAjaxRequest()) {
-    IconCaptcha::getIconFromHash($_GET['hash'], $_GET['cid']);
+header('Access-Control-Allow-Methods: OPTIONS, GET, POST');
+// header("Access-Control-Allow-Origin: *");
+
+// HTTP GET
+if (isset($_GET['payload']) && !isAjaxRequest()) {
+
+    // Decode the payload.
+    $payload = decodePayload($_GET['payload']);
+
+    // Validate the payload content.
+    if(!isset($payload, $payload['i']) || !is_numeric($payload['i'])) {
+        badRequest();
+    }
+
+    IconCaptcha::getImage($payload['i']);
     exit;
 }
 
-// HTTP POST - Either the captcha has been submitted or an image has been selected by the user.
-if (!empty($_POST) && isAjaxRequest()) {
-    if (isset($_POST['rT']) && is_numeric($_POST['rT']) && isset($_POST['cID']) && is_numeric($_POST['cID'])) {
-        switch ((int)$_POST['rT']) {
-            case 1: // Requesting the image hashes
-                $captcha_theme = (isset($_POST['tM']) && ($_POST['tM'] === 'light' || $_POST['tM'] === 'dark')) ? $_POST['tM'] : 'light';
+// HTTP POST
+if (!empty($_POST) && isAjaxRequest() && isset($_POST['payload'])) {
 
-                // Echo the JSON encoded array
-                header('Content-type: application/json');
-                exit(IconCaptcha::getCaptchaData($captcha_theme, $_POST['cID']));
-            case 2: // Setting the user's choice
-                if (IconCaptcha::setSelectedAnswer($_POST)) {
-                    header('HTTP/1.0 200 OK');
-                    exit;
-                }
-                break;
-            default:
-                break;
-        }
+    // Decode the payload.
+    $payload = decodePayload($_POST['payload']);
+
+    // Validate the payload content.
+    if (!isset($payload, $payload['a'], $payload['i']) || !is_numeric($payload['a']) || !is_numeric($payload['i'])) {
+        badRequest();
+    }
+
+    switch ((int)$payload['a']) {
+        case 1: // Requesting the image hashes
+
+            $theme = isset($payload['t']) ? $payload['t'] : 'light';
+
+            // Echo the captcha data.
+            header('HTTP/1.0 200 OK');
+            header('Content-type: text/plain');
+            exit(IconCaptcha::getCaptchaData($theme, $payload['i']));
+        case 2: // Setting the user's choice
+            if (IconCaptcha::setSelectedAnswer($payload)) {
+                header('HTTP/1.0 200 OK');
+                exit;
+            }
+            break;
+        case 3: // Captcha interaction time expired.
+            IconCaptcha::invalidateCaptcha($payload['i']);
+            header('HTTP/1.0 200 OK');
+            exit;
+        default:
+            break;
     }
 }
 
-header('HTTP/1.1 400 Bad Request');
-exit;
+badRequest();
 
 // Adds another level of security to the Ajax call.
 // Only requests made through Ajax are allowed.
-function isAjaxRequest()
-{
+function isAjaxRequest() {
     return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+}
+
+// Tries to decode the given base64 and json encoded payload.
+function decodePayload($payload) {
+
+    // Base64 decode the payload.
+    $payload = base64_decode($payload);
+    if($payload === false) {
+        badRequest();
+    }
+
+    // JSON decode the payload.
+    return json_decode($payload, true);
+}
+
+// Exits the request with a 400 bad request status.
+function badRequest() {
+    header('HTTP/1.1 400 Bad Request');
+    exit;
 }

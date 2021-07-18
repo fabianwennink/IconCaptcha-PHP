@@ -1,4 +1,4 @@
-# IconCaptcha Plugin - jQuery & PHP
+# IconCaptcha - PHP & JS
 
 ![Version](https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square) 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
@@ -10,7 +10,7 @@
 
 <br><img src="http://i.imgur.com/RMUALSz.png" />
 
-IconCaptcha is a faster and more user-friendly captcha than most other captchas. You no longer have to read any annoying 
+IconCaptcha is a self-hosted captcha which is faster and more user-friendly than most other captchas. You no longer have to read any annoying 
 text-images, with IconCaptcha you only have to compare two images and select the image which is only present once.
 
 Besides being user-friendly, IconCaptcha is also developer-friendly. With just a few steps you can get the captcha up and running. 
@@ -29,14 +29,14 @@ ___
 ## Features
 * __User Friendly:__ The captcha uses easily understandable images instead of hard to read texts to complete the captcha.
 * __Server-side validation:__ Any validation done by the captcha will be performed on the server-side instead of the client-side.
+* __No data sharing:__ Unlike captchas such as Google's ReCaptcha, no user data will be stored or sold to third parties.
 * __Events:__ Events are triggered at various points in the code, allowing you to hook into them and execute custom code if necessary.
 * __Themes:__ Select the design of the captcha without having to ever touch the stylesheet.
 * __SASS:__  The project contains a SASS file, allowing you to easily style and compile the stylesheet.
-* __Supports IE:__  The captcha _supports_ Internet Explorer 8 and up.
 
 ## Requirements
-* __PHP >= 5.2__ with GD dependency enabled.
-* __jQuery >= 1.12.3__
+* __PHP__ >= __5.6__ with GD dependency enabled.
+* __jQuery__ >= __1.12.3__
 
 ## Installation
 
@@ -85,7 +85,6 @@ __PHP form validation:__
 
     // Set the path to the captcha icons. Set it as if you were
     // currently in the PHP folder containing the captcha.class.php file.
-    // ALWAYS END WITH A /
     // DEFAULT IS SET TO ../icons/
     IconCaptcha::setIconsFolderPath('../assets/icons/');
 
@@ -117,16 +116,16 @@ The following options allow you to customize IconCaptcha to your liking. All of 
 
 | Option | Description |
 | ------ | ------ |
-| theme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. You can always add your own custom themes by changing the SCSS file. |
-| fontFamily | Allows you to select the font family of the captcha. Leaving this option blank will result in the use of the default font ```Arial```. |
+| theme | Allows you to select the theme of the captcha. At the moment you can only choose between `light`, `dark`, `legacy-light` and `legacy-dark`. You can always add your own custom themes by changing the SCSS file. |
+| fontFamily | Allows you to select the font family of the captcha. Leaving this option blank will result in the use of the default font `Arial`. |
 | clickDelay | The time _(in milliseconds)_ during which the user can't select an image. Set to 0 to disable. |
 | invalidResetDelay | The time _(in milliseconds)_ it takes to reset the captcha after a wrong icon selection. Set to 0 to disable. |
 | requestIconsDelay | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshed (during an attack?), it will not request the resources right away. |
 | loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
 | hoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
-| showCredits | Show, hide or disable the credits element of the captcha. Hiding the credits will still add the credits to the HTML, but it will not be visible (only to crawlers). Disabling the credits will neither show or add the HTML. Use _'show'_, _'hide'_ or _'disabled'_.<br>_Please leave it enabled so people can find and use the captcha themselves._ |
+| showCredits | Show, hide or disable the credits element of the captcha. Hiding the credits will still add the credits to the HTML, but it will not be visible (only to crawlers). Disabling the credits will neither show or add the HTML. Use `show`, `hide` or `disabled`. __Please leave it enabled so people can find and use the captcha themselves.__ |
 | enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
-| validationPath | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or validate the input. |
+| validationPath | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the images or validate the input. |
 | messages | Change the messages used by the captcha. All the changeable strings can be found down below. |
 
 ## Messages
@@ -156,7 +155,7 @@ Events will be triggered at various point in the code. You can use a custom scri
 | error.iconCaptcha | Will fire when the user selected the incorrect icon. |
 
 ## Credits
-The icons used in this project are made by <a href="https://www.webalys.com" target="_blank" rel="nofollow">Webalys</a>.
+The icons used in this project are made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
 
 ## License
 This project is licensed under the <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/blob/master/LICENSE">MIT</a> license.

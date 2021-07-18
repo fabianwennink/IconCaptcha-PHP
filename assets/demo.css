@@ -1,6 +1,6 @@
 ﻿/**
- * Icon Captcha Plugin: v2.5.0
- * Copyright © 2017, Fabian Wennink (https://www.fabianwennink.nl)
+ * IconCaptcha Plugin: v3.0.0
+ * Copyright © 2021, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
@@ -69,6 +69,11 @@ h2 {
 
 .shields {
     margin-bottom: 40px;
+}
+
+.shields .shields-row {
+    display: block;
+    margin-bottom: 20px;
 }
 
 .btn {
@@ -166,7 +171,7 @@ h2 {
     -webkit-transform: rotate(-45deg);
 }
 
-.captcha-holder {
+.iconcaptcha-holder {
     margin: 20px auto !important;
 }
 

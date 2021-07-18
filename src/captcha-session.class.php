@@ -9,44 +9,37 @@
 
 class CaptchaSession
 {
-
     const ICON_CAPTCHA = 'icon_captcha';
-    const CAPTCHA_THEME = 'theme';
-    const CAPTCHA_HASHES = 'hashes';
     const CAPTCHA_ICONS = 'icons';
-    const CAPTCHA_LAST_CLICKED = 'last_clicked';
-    const CAPTCHA_CORRECT_HASH = 'correct_hash';
+    const CAPTCHA_ICON_POSITIONS = 'position';
+    const CAPTCHA_COLOR_MODE = 'mode';
+    const CAPTCHA_REQUESTED = 'requested';
     const CAPTCHA_COMPLETED = 'completed';
 
     /**
-     * @var int The captcha identifier.
+     * @var string The captcha identifier.
      */
     public $id;
 
     /**
-     * @var array The array containing all the image hashes used by this captcha.
+     * @var array The correct icon position.
      */
-    public $hashes;
+    public $icons;
 
     /**
-     * @var int The amount of times the images have been requested by the captcha.
+     * @var array The correct icon positions.
      */
-    public $icon_requests;
+    public $positions;
 
     /**
-     * @var string The captcha's theme name.
+     * @var boolean If the icons image has been requested by the captcha.
      */
-    public $theme;
+    public $requested;
 
     /**
-     * @var int The last icon number that was clicked (1-5)
+     * @var string The captcha's icon color name.
      */
-    public $last_clicked;
-
-    /**
-     * @var string The correct icon's hash.
-     */
-    public $correct_hash;
+    public $mode;
 
     /**
      * @var bool If the captcha was completed (correct icon selected) or not.
@@ -58,19 +51,13 @@ class CaptchaSession
      * captcha (given identifier) will be stored and can be retrieved when necessary.
      *
      * @param int $id The captcha identifier.
-     * @param string $theme The captcha's theme.
-     * @since 2.2.0 Function was introduced.
-     *
      */
-    public function __construct($id = 0, $theme = 'light')
+    public function __construct($id = 0)
     {
         $this->id = $id;
-        $this->theme = $theme;
-        $this->hashes = array();
-        $this->icon_requests = 0;
-        $this->last_clicked = -1;
-        $this->correct_hash = '';
-        $this->completed = false;
+
+        // Clear the session data.
+        $this->clear();
 
         // Try to load the captcha data from the session, if any data exists.
         $this->load();
@@ -79,44 +66,51 @@ class CaptchaSession
     /**
      * This will clear the set hashes, and reset the icon
      * request counter and last clicked icon.
-     *
-     * @since 2.2.0 Function was introduced.
      */
     public function clear()
     {
-        $this->hashes = array();
-        $this->icon_requests = -1;
-        $this->last_clicked = 0;
+        $this->icons = [];
+        $this->positions = [];
+        $this->requested = false;
+        $this->completed = false;
+    }
+
+    /**
+     * Destroys the captcha session.
+     */
+    public function destroy()
+    {
+        unset($_SESSION[self::ICON_CAPTCHA][$this->id]);
     }
 
     /**
      * Loads the captcha's session data based on the earlier set captcha identifier.
-     *
-     * @since 2.2.0 Function was introduced.
      */
     public function load()
     {
         if (self::exists($this->id)) {
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_THEME])) {
-                $this->theme = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_THEME];
-            }
 
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_HASHES])) {
-                $this->hashes = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_HASHES];
-            }
-
+            // Icons
             if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICONS])) {
-                $this->icon_requests = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICONS];
+                $this->icons = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICONS];
             }
 
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_LAST_CLICKED])) {
-                $this->last_clicked = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_LAST_CLICKED];
+            // Position
+            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICON_POSITIONS])) {
+                $this->positions = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICON_POSITIONS];
             }
 
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_CORRECT_HASH])) {
-                $this->correct_hash = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_CORRECT_HASH];
+            // Mode
+            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COLOR_MODE])) {
+                $this->mode = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COLOR_MODE];
             }
 
+            // Requested
+            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_REQUESTED])) {
+                $this->requested = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_REQUESTED];
+            }
+
+            // Completed
             if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COMPLETED])) {
                 $this->completed = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COMPLETED];
             }
@@ -125,20 +119,18 @@ class CaptchaSession
 
     /**
      * Saves the current data to the session. The data will be stored in an array.
-     *
-     * @since 2.2.0 Function was introduced.
      */
     public function save()
     {
-        $data = array(
-            self::CAPTCHA_HASHES => $this->hashes,
-            self::CAPTCHA_ICONS => $this->icon_requests,
-            self::CAPTCHA_THEME => $this->theme,
-            self::CAPTCHA_LAST_CLICKED => $this->last_clicked,
-            self::CAPTCHA_CORRECT_HASH => $this->correct_hash,
+        $data = [
+            self::CAPTCHA_ICONS => $this->icons,
+            self::CAPTCHA_ICON_POSITIONS => $this->positions,
+            self::CAPTCHA_COLOR_MODE => $this->mode,
+            self::CAPTCHA_REQUESTED => $this->requested,
             self::CAPTCHA_COMPLETED => $this->completed
-        );
+        ];
 
+        // Write the data to the session.
         $_SESSION[self::ICON_CAPTCHA][$this->id] = $data;
     }
 
@@ -148,8 +140,6 @@ class CaptchaSession
      * @param int $id The captcha identifier.
      *
      * @return boolean TRUE if any session data exists, FALSE if not.
-     * @since 2.2.0 Function was introduced.
-     *
      */
     public static function exists($id)
     {
