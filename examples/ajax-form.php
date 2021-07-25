@@ -13,6 +13,8 @@
 	require('../src/captcha-session.class.php');
     require('../src/captcha.class.php');
 
+    use IconCaptcha\IconCaptcha;
+
     // Take a look at the README file to see every available option.
     IconCaptcha::options([
         'iconPath' => '../assets/icons/', // required

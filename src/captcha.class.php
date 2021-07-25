@@ -7,9 +7,11 @@
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
 
+namespace IconCaptcha;
+
 class IconCaptcha
 {
-    const ICON_CAPTCHA = 'icon_captcha';
+    const SESSION_NAME = 'icon_captcha';
     const CAPTCHA_ICON_PATH = 'icon_path';
     const CAPTCHA_FIELD_SELECTION = 'ic-hf-se';
     const CAPTCHA_FIELD_ID = 'ic-hf-id';
@@ -17,6 +19,13 @@ class IconCaptcha
     const CAPTCHA_SIZE = 320;
     const CAPTCHA_ICONS_AMOUNT = 91;
     const CAPTCHA_ICON_SIZES = [6 => 40, 7 => 30];
+    const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
+    const CAPTCHA_BORDER_COLORS = [
+        'light' => ['icons' => 'dark', 'color' => self::CAPTCHA_DEFAULT_BORDER_COLOR],
+        'legacy-light' => ['icons' => 'dark', 'color' => self::CAPTCHA_DEFAULT_BORDER_COLOR],
+        'dark' => ['icons' => 'light', 'color' => [64, 64, 64]],
+        'legacy-dark' => ['icons' => 'light', 'color' => [64, 64, 64]],
+    ];
 
     /**
      * @var string A JSON encoded error message, which will be shown to the user.
@@ -33,6 +42,7 @@ class IconCaptcha
      */
     private static $options = [
         'iconPath' => null, // required
+        'themes' => [],
         'messages' => [
             'wrong_icon' => 'You\'ve selected the wrong image.',
             'no_selection' => 'No image has been selected.',
@@ -47,15 +57,16 @@ class IconCaptcha
      */
     public static function options($options)
     {
+        // Merge the given options and default options together.
         self::$options = array_merge(self::$options, $options);
 
         // Update the icon path string.
         self::$options['iconPath'] = (is_string(self::$options['iconPath'])) ? rtrim(self::$options['iconPath'], '/') : '';
 
-        // TODO save options to session, fetch when needed.
+        // TODO Save options to session, fetch when needed.
 
-        // TODO remove when options are saved in session.
-        $_SESSION[self::ICON_CAPTCHA][self::CAPTCHA_ICON_PATH] = self::$options['iconPath'];
+        // TODO Remove this when options are saved in session.
+        $_SESSION[self::SESSION_NAME][self::CAPTCHA_ICON_PATH] = self::$options['iconPath'];
     }
 
     /**
@@ -230,7 +241,7 @@ class IconCaptcha
             self::$session->requested = true;
             self::$session->save();
 
-            $iconsDirectoryPath = $_SESSION[self::ICON_CAPTCHA][self::CAPTCHA_ICON_PATH];
+            $iconsDirectoryPath = $_SESSION[self::SESSION_NAME][self::CAPTCHA_ICON_PATH];
             $placeholder = $iconsDirectoryPath . DIRECTORY_SEPARATOR . 'placeholder.png';
 
             // Check if the placeholder icon exists.
@@ -251,8 +262,22 @@ class IconCaptcha
                 $iconOffsetAdd = (self::CAPTCHA_SIZE / $iconCount) - $iconSize;
                 $iconLineSize = self::CAPTCHA_SIZE / $iconCount;
 
-                // Border color TODO make custom
-                $borderColor = imagecolorallocate($placeholder, 240, 240, 240);
+                // Determine border color.
+                if(key_exists(self::$session->mode, self::CAPTCHA_BORDER_COLORS) && count(self::CAPTCHA_BORDER_COLORS[self::$session->mode]['color']) === 3) {
+                    $color = self::CAPTCHA_BORDER_COLORS[self::$session->mode]['color'];
+                } else {
+                    $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
+                }
+
+                // TODO Use this code when options are saved to session.
+//                if(key_exists(self::$session->mode, self::$options['themes']) && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
+//                    $color = self::$options['themes'][self::$session->mode]['color'];
+//                } else {
+//                    $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
+//                }
+
+                // Create the border color.
+                $borderColor = imagecolorallocate($placeholder, $color[0], $color[1], $color[2]);
 
                 // Copy the icons onto the placeholder.
                 $xOffset = $iconOffset;

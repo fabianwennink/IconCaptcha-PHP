@@ -7,6 +7,8 @@
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
 
+namespace IconCaptcha;
+
 class CaptchaSession
 {
     const ICON_CAPTCHA = 'icon_captcha';

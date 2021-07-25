@@ -14,6 +14,10 @@ session_start();
 require('captcha-session.class.php');
 require('captcha.class.php');
 
+use IconCaptcha\IconCaptcha;
+
+// TODO The options should be available here as well for the captcha.class.php
+
 header('Access-Control-Allow-Methods: OPTIONS, GET, POST');
 // header("Access-Control-Allow-Origin: *");
 
@@ -46,7 +50,8 @@ if (!empty($_POST) && isAjaxRequest() && isset($_POST['payload'])) {
     switch ((int)$payload['a']) {
         case 1: // Requesting the image hashes
 
-            $theme = isset($payload['t']) ? $payload['t'] : 'light';
+            // Validate the theme name. Fallback to light.
+            $theme = (isset($payload['t']) && is_string($payload['t'])) ? $payload['t'] : 'light';
 
             // Echo the captcha data.
             header('HTTP/1.0 200 OK');

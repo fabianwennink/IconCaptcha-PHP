@@ -13,9 +13,17 @@
 	require('../src/captcha-session.class.php');
     require('../src/captcha.class.php');
 
+    use IconCaptcha\IconCaptcha;
+
     // Take a look at the README file to see every available option.
     IconCaptcha::options([
         'iconPath' => '../assets/icons/', // required
+        //'themes' => [
+        //    'black' => [
+        //        'icons' => 'light', // Which icon type should be used: light or dark.
+        //        'color' => [20, 20, 20], // Array contains the icon separator border color, as RGB.
+        //    ]
+        //],
         'messages' => [
             'wrong_icon' => "You've selected the wrong image.",
             'no_selection' => 'No image has been selected.',
