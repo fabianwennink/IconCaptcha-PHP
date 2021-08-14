@@ -154,7 +154,7 @@
                     validationPath: '../src/captcha-request.php', // The path to the Captcha validation file.
                     invalidateTime: 1000 * 60 * 5, // Time after initialization, after which the captcha should invalidate itself. Set to 0 to disable, 5 minutes by default.
                     messages: { // You can put whatever message you want in the captcha.
-                        header: "Select the image displayed the least amount of times",
+                        header: "Select the image displayed the <u>least</u> amount of times",
                         correct: {
                             top: "Great!",
                             bottom: "You do not appear to be a robot."

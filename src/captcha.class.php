@@ -18,7 +18,7 @@ class IconCaptcha
     const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
     const CAPTCHA_SIZE = 320;
     const CAPTCHA_ICONS_AMOUNT = 91;
-    const CAPTCHA_ICON_SIZES = [6 => 40, 7 => 30];
+    const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
     const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
     const CAPTCHA_BORDER_COLORS = [
         'light' => ['icons' => 'dark', 'color' => self::CAPTCHA_DEFAULT_BORDER_COLOR],
@@ -48,7 +48,15 @@ class IconCaptcha
             'no_selection' => 'No image has been selected.',
             'empty_form' => 'You\'ve not submitted any form.',
             'invalid_id' => 'The captcha ID was invalid.'
-        ]
+        ],
+        'image' => [
+            'rotate' => true,
+            'flip' => [
+                'horizontally' => true,
+                'vertically' => true,
+            ],
+            'border' => true
+        ],
     ];
 
     /**
@@ -92,23 +100,25 @@ class IconCaptcha
         // Set the captcha id property
         self::tryCreateSession($captchaIdentifier);
 
-        $a = mt_rand(1, self::CAPTCHA_ICONS_AMOUNT); // Get a random number (correct image)
-        $b = 0; // Incorrect image placeholder.
+        $correctIconId = mt_rand(1, self::CAPTCHA_ICONS_AMOUNT); // Get a random number (correct image)
+        $incorrectIconId = 0; // Incorrect image placeholder.
 
-        $e = mt_rand(6, 7); // Number of icons in image. TODO
-        $f = $e === 7 ? mt_rand(1, 3) : mt_rand(1, 2); // Number of times the incorrect image will be placed onto the placeholder.
+        $iconAmount = mt_rand(5, 8); // Number of icons in image.
 
-        $d = []; // At which position the correct image will be placed.
-        for ($i = 0; $i < $f; $i++) {
-            $d[] = mt_rand(1, $e);
+        // TODO: more icons
+        $correctIconAmount = $iconAmount === 7 ? mt_rand(1, 3) : mt_rand(1, 2); // Number of times the correct image will be placed onto the placeholder.
+
+        $iconPositions = []; // At which position the correct image will be placed.
+        for ($i = 0; $i < $correctIconAmount; $i++) {
+            $iconPositions[] = mt_rand(1, $iconAmount);
         }
 
         // Pick a random number for the incorrect icon.
         // Loop until a number is found which doesn't match the correct icon ID.
-        while ($b === 0) {
-            $c = mt_rand(1, self::CAPTCHA_ICONS_AMOUNT);
-            if ($c !== $a) {
-                $b = $c;
+        while ($incorrectIconId === 0) {
+            $tempIncorrectIconId = mt_rand(1, self::CAPTCHA_ICONS_AMOUNT);
+            if ($tempIncorrectIconId !== $correctIconId) {
+                $incorrectIconId = $tempIncorrectIconId;
             }
         }
 
@@ -117,14 +127,14 @@ class IconCaptcha
 
         // Set the chosen icons and position and reset the requested status.
         self::$session->mode = $theme;
-        self::$session->icons = [$a, $b, $e, $f];
-        self::$session->positions = $d;
+        self::$session->icons = [$correctIconId, $incorrectIconId, $iconAmount];
+        self::$session->positions = $iconPositions;
         self::$session->requested = false;
         self::$session->save();
 
         // Return the captcha details.
         return base64_encode(json_encode([
-            'icons' => $e
+            'icons' => $iconAmount
         ]));
     }
 
@@ -250,59 +260,8 @@ class IconCaptcha
                 // Format the path to the icons directory.
                 $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . self::$session->mode . DIRECTORY_SEPARATOR;
 
-                // Prepare the images.
-                $placeholder = imagecreatefrompng($placeholder);
-                $correctIcon = imagecreatefrompng($iconPath . 'icon-' . self::$session->icons[1] . '.png');
-                $incorrectIcon = imagecreatefrompng($iconPath . 'icon-' . self::$session->icons[0] . '.png');
-
-                // Prepare the image pixel information.
-                $iconCount = self::$session->icons[2];
-                $iconSize = self::CAPTCHA_ICON_SIZES[$iconCount];
-                $iconOffset = ((self::CAPTCHA_SIZE / $iconCount) - 30) / 2;
-                $iconOffsetAdd = (self::CAPTCHA_SIZE / $iconCount) - $iconSize;
-                $iconLineSize = self::CAPTCHA_SIZE / $iconCount;
-
-                // Determine border color.
-                if(key_exists(self::$session->mode, self::CAPTCHA_BORDER_COLORS) && count(self::CAPTCHA_BORDER_COLORS[self::$session->mode]['color']) === 3) {
-                    $color = self::CAPTCHA_BORDER_COLORS[self::$session->mode]['color'];
-                } else {
-                    $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
-                }
-
-                // TODO Use this code when options are saved to session.
-//                if(key_exists(self::$session->mode, self::$options['themes']) && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
-//                    $color = self::$options['themes'][self::$session->mode]['color'];
-//                } else {
-//                    $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
-//                }
-
-                // Create the border color.
-                $borderColor = imagecolorallocate($placeholder, $color[0], $color[1], $color[2]);
-
-                // Copy the icons onto the placeholder.
-                $xOffset = $iconOffset;
-                for($i = 0; $i < $iconCount; $i++) {
-                    $icon = in_array($i + 1, self::$session->positions) ? $correctIcon : $incorrectIcon;
-
-                    // Rotate icon.
-                    $degree = mt_rand(1, 4);
-                    if($degree !== 4) {
-                        $icon = imagerotate($icon, $degree * 90, 0);
-                    }
-
-                    // Flip icon.
-                    if(mt_rand(1, 2) === 1) imageflip($icon, IMG_FLIP_VERTICAL);
-                    if(mt_rand(1, 2) === 1) imageflip($icon, IMG_FLIP_HORIZONTAL);
-
-                    // Copy the icon onto the placeholder.
-                    imagecopy($placeholder, $icon, ($iconSize * $i) + $xOffset, 10, 0, 0, 30, 30);
-                    $xOffset += $iconOffsetAdd;
-
-                    // Add the vertical separator lines to the placeholder (not for first icon).
-                    if($i > 0) {
-                        imageline($placeholder, $iconLineSize * $i, 0, $iconLineSize * $i, 50, $borderColor);
-                    }
-                }
+                // Generate the captcha image.
+                $generatedImage = self::generateImage($iconPath, $placeholder);
 
                 // Set the content type header to the PNG MIME-type.
                 header('Content-type: image/png');
@@ -314,8 +273,8 @@ class IconCaptcha
                 header('Pragma: no-cache');
 
                 // Show the image and exit the code
-                imagepng($placeholder);
-                imagedestroy($placeholder);
+                imagepng($generatedImage);
+                imagedestroy($generatedImage);
             }
         }
     }
@@ -331,6 +290,75 @@ class IconCaptcha
         // Unset the previous session data
         self::tryCreateSession($captchaIdentifier);
         self::$session->destroy();
+    }
+
+    private static function generateImage($iconPath, $placeholderPath)
+    {
+        // Prepare the placeholder and icon images.
+        $placeholder = imagecreatefrompng($placeholderPath);
+        $correctIcon = imagecreatefrompng($iconPath . 'icon-' . self::$session->icons[1] . '.png');
+        $incorrectIcon = imagecreatefrompng($iconPath . 'icon-' . self::$session->icons[0] . '.png');
+
+        // Prepare the image pixel information.
+        $iconCount = self::$session->icons[2];
+        $iconSize = self::CAPTCHA_ICON_SIZES[$iconCount];
+        $iconOffset = ((self::CAPTCHA_SIZE / $iconCount) - 30) / 2;
+        $iconOffsetAdd = (self::CAPTCHA_SIZE / $iconCount) - $iconSize;
+        $iconLineSize = self::CAPTCHA_SIZE / $iconCount;
+
+        // Determine border color.
+        if(key_exists(self::$session->mode, self::CAPTCHA_BORDER_COLORS) && count(self::CAPTCHA_BORDER_COLORS[self::$session->mode]['color']) === 3) {
+            $color = self::CAPTCHA_BORDER_COLORS[self::$session->mode]['color'];
+        } else {
+            $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
+        }
+
+        // TODO Use this code when options are saved to session.
+//                if(key_exists(self::$session->mode, self::$options['themes']) && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
+//                    $color = self::$options['themes'][self::$session->mode]['color'];
+//                } else {
+//                    $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
+//                }
+
+        // Options
+        $rotateEnabled = self::$options['image']['rotate'];
+        $flipHorizontally = self::$options['image']['flip']['horizontally'];
+        $flipVertically = self::$options['image']['flip']['vertically'];
+        $borderEnabled = self::$options['image']['border'];
+
+        // Create the border color.
+        if($borderEnabled) {
+            $borderColor = imagecolorallocate($placeholder, $color[0], $color[1], $color[2]);
+        }
+
+        // Copy the icons onto the placeholder.
+        $xOffset = $iconOffset;
+        for($i = 0; $i < $iconCount; $i++) {
+            $icon = in_array($i + 1, self::$session->positions) ? $correctIcon : $incorrectIcon;
+
+            // Rotate icon.
+            if($rotateEnabled) {
+                $degree = mt_rand(1, 4);
+                if ($degree !== 4) {
+                    $icon = imagerotate($icon, $degree * 90, 0);
+                }
+            }
+
+            // Flip icon.
+            if($flipHorizontally && mt_rand(1, 2) === 1) imageflip($icon, IMG_FLIP_HORIZONTAL);
+            if($flipVertically && mt_rand(1, 2) === 1) imageflip($icon, IMG_FLIP_VERTICAL);
+
+            // Copy the icon onto the placeholder.
+            imagecopy($placeholder, $icon, ($iconSize * $i) + $xOffset, 10, 0, 0, 30, 30);
+            $xOffset += $iconOffsetAdd;
+
+            // Add the vertical separator lines to the placeholder (not for first icon).
+            if($borderEnabled && $i > 0) {
+                imageline($placeholder, $iconLineSize * $i, 0, $iconLineSize * $i, 50, $borderColor);
+            }
+        }
+
+        return $placeholder;
     }
 
     /**
