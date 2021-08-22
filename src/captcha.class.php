@@ -16,11 +16,12 @@ class IconCaptcha
     const CAPTCHA_FIELD_SELECTION = 'ic-hf-se';
     const CAPTCHA_FIELD_ID = 'ic-hf-id';
     const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
-    const CAPTCHA_SIZE = 320;
-    const CAPTCHA_ICONS_AMOUNT = 91;
+    const CAPTCHA_IMAGE_SIZE = 320;
+    const CAPTCHA_ICONS_FOLDER_COUNT = 91;
     const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
+    const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
     const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
-    const CAPTCHA_BORDER_COLORS = [
+    const CAPTCHA_DEFAULT_THEME_BORDER_COLORS = [
         'light' => ['icons' => 'dark', 'color' => self::CAPTCHA_DEFAULT_BORDER_COLOR],
         'legacy-light' => ['icons' => 'dark', 'color' => self::CAPTCHA_DEFAULT_BORDER_COLOR],
         'dark' => ['icons' => 'light', 'color' => [64, 64, 64]],
@@ -50,6 +51,10 @@ class IconCaptcha
             'invalid_id' => 'The captcha ID was invalid.'
         ],
         'image' => [
+            'amount' => [ // min & max can be 5 - 8
+                'min' => 5,
+                'max' => 8
+            ],
             'rotate' => true,
             'flip' => [
                 'horizontally' => true,
@@ -57,6 +62,10 @@ class IconCaptcha
             ],
             'border' => true
         ],
+        'attempts' => [
+            'amount' => 3,
+            'timeout' => 60 // seconds.
+        ]
     ];
 
     /**
@@ -70,6 +79,9 @@ class IconCaptcha
 
         // Update the icon path string.
         self::$options['iconPath'] = (is_string(self::$options['iconPath'])) ? rtrim(self::$options['iconPath'], '/') : '';
+
+        self::$options['image']['amount']['min'] = (is_int(self::$options['image']['amount']['min'])) ? self::$options['image']['amount']['min'] : 5;
+        self::$options['image']['amount']['max'] = (is_int(self::$options['image']['amount']['max'])) ? self::$options['image']['amount']['max'] : 8;
 
         // TODO Save options to session, fetch when needed.
 
@@ -98,38 +110,66 @@ class IconCaptcha
     public static function getCaptchaData($theme, $captchaIdentifier)
     {
         // Set the captcha id property
-        self::tryCreateSession($captchaIdentifier);
+        self::createSession($captchaIdentifier);
 
-        $correctIconId = mt_rand(1, self::CAPTCHA_ICONS_AMOUNT); // Get a random number (correct image)
-        $incorrectIconId = 0; // Incorrect image placeholder.
+        // Check if the max attempts limit has been reached and a timeout is active.
+        // If reached, return an error and the remaining time.
+        if(self::$session->attemptsTimeout > 0) {
+            if(time() <= self::$session->attemptsTimeout) {
+                return base64_encode(json_encode([
+                    'error' => 1,
+                    'data' => self::$session->attemptsTimeout - time() // remaining time in milliseconds.
+                ]));
+            } else {
+                self::$session->attemptsTimeout = 0;
+                self::$session->attempts = 0;
+            }
+        }
 
-        $iconAmount = mt_rand(5, 8); // Number of icons in image.
+        $minIconAmount = self::$options['image']['amount']['min'];
+        $maxIconAmount = self::$options['image']['amount']['max'];
 
-        // TODO: more icons
-        $correctIconAmount = $iconAmount === 7 ? mt_rand(1, 3) : mt_rand(1, 2); // Number of times the correct image will be placed onto the placeholder.
+        // Determine the number of icons to add to the image.
+        $iconAmount = $minIconAmount;
+        if($minIconAmount !== $maxIconAmount) {
+            $iconAmount = mt_rand($minIconAmount, $maxIconAmount);
+        }
 
-        $iconPositions = []; // At which position the correct image will be placed.
+        // Number of times the correct image will be placed onto the placeholder.
+        $correctIconAmount = mt_rand(1, self::CAPTCHA_MAX_LOWEST_ICON_COUNT[$iconAmount]);
+        $incorrectIconAmounts = self::calculateIconAmounts($iconAmount, $correctIconAmount);
+
+        // At which position(s) the correct image will be placed onto the placeholder.
+        $iconPositions = [];
         for ($i = 0; $i < $correctIconAmount; $i++) {
             $iconPositions[] = mt_rand(1, $iconAmount);
         }
 
-        // Pick a random number for the incorrect icon.
+        // Get a random number (correct image)
+        $correctIconId = mt_rand(1, self::CAPTCHA_ICONS_FOLDER_COUNT);
+        $incorrectIconIds = [];
+
+        // Pick random number(s) for the incorrect icon(s).
         // Loop until a number is found which doesn't match the correct icon ID.
-        while ($incorrectIconId === 0) {
-            $tempIncorrectIconId = mt_rand(1, self::CAPTCHA_ICONS_AMOUNT);
+        while (count($incorrectIconIds) < count($incorrectIconAmounts)) {
+            $tempIncorrectIconId = mt_rand(1, self::CAPTCHA_ICONS_FOLDER_COUNT);
             if ($tempIncorrectIconId !== $correctIconId) {
-                $incorrectIconId = $tempIncorrectIconId;
+                $incorrectIconIds[] = $tempIncorrectIconId;
             }
         }
 
-        // Unset the previous session data
+        // Get the last attempts count to restore, after clearing the session.
+        $attemptsCount = self::$session->attempts;
+
+        // Unset the previous session data.
         self::$session->clear();
 
         // Set the chosen icons and position and reset the requested status.
         self::$session->mode = $theme;
-        self::$session->icons = [$correctIconId, $incorrectIconId, $iconAmount];
+        self::$session->icons = [$correctIconId, $incorrectIconIds, $iconAmount, $incorrectIconAmounts];
         self::$session->positions = $iconPositions;
         self::$session->requested = false;
+        self::$session->attempts = $attemptsCount;
         self::$session->save();
 
         // Return the captcha details.
@@ -168,7 +208,7 @@ class IconCaptcha
         }
 
         // Initialize the session.
-        self::tryCreateSession($post[self::CAPTCHA_FIELD_ID]);
+        self::createSession($post[self::CAPTCHA_FIELD_ID]);
 
         // Check if the selection field is set.
         if (!empty($post[self::CAPTCHA_FIELD_SELECTION]) && is_string($post[self::CAPTCHA_FIELD_SELECTION])) {
@@ -210,7 +250,7 @@ class IconCaptcha
             }
 
             // Initialize the session.
-            self::tryCreateSession($payload['i']);
+            self::createSession($payload['i']);
 
             // Check if the selection is set and matches the position from the session.
             if (isset($payload['x'], $payload['y'], $payload['w']) &&
@@ -218,9 +258,20 @@ class IconCaptcha
 
                 self::$session->completed = true;
                 self::$session->save();
+
                 return true;
             } else {
                 self::$session->completed = false;
+
+                // Increase the attempts counter.
+                // If the max amount has been reached, set a timeout (if set).
+                self::$session->attempts = self::$session->attempts + 1;
+
+                if(self::$session->attempts === self::$options['attempts']['amount']
+                    && self::$options['attempts']['timeout'] > 0) {
+                    self::$session->attemptsTimeout = time() + self::$options['attempts']['timeout'];
+                }
+
                 self::$session->save();
             }
         }
@@ -239,7 +290,7 @@ class IconCaptcha
         if (isset($captchaIdentifier) && $captchaIdentifier > -1) {
 
             // Initialize the session.
-            self::tryCreateSession($captchaIdentifier);
+            self::createSession($captchaIdentifier);
 
             // Check the amount of times an icon has been requested
             if (self::$session->requested) {
@@ -247,7 +298,6 @@ class IconCaptcha
                 exit;
             }
 
-            // Update the request counter.
             self::$session->requested = true;
             self::$session->save();
 
@@ -288,37 +338,28 @@ class IconCaptcha
     public static function invalidateCaptcha($captchaIdentifier)
     {
         // Unset the previous session data
-        self::tryCreateSession($captchaIdentifier);
+        self::createSession($captchaIdentifier);
         self::$session->destroy();
     }
 
     private static function generateImage($iconPath, $placeholderPath)
     {
-        // Prepare the placeholder and icon images.
+        // Prepare the placeholder and correct/incorrect images.
         $placeholder = imagecreatefrompng($placeholderPath);
-        $correctIcon = imagecreatefrompng($iconPath . 'icon-' . self::$session->icons[1] . '.png');
-        $incorrectIcon = imagecreatefrompng($iconPath . 'icon-' . self::$session->icons[0] . '.png');
+        $correctIcon = imagecreatefrompng($iconPath . 'icon-' . self::$session->icons[0] . '.png');
+
+        // TODO
+        $incorrectIcons = [];
+        foreach (self::$session->icons[1] as $iconId) {
+            $incorrectIcons[] = imagecreatefrompng($iconPath . 'icon-' . $iconId . '.png');
+        }
 
         // Prepare the image pixel information.
         $iconCount = self::$session->icons[2];
         $iconSize = self::CAPTCHA_ICON_SIZES[$iconCount];
-        $iconOffset = ((self::CAPTCHA_SIZE / $iconCount) - 30) / 2;
-        $iconOffsetAdd = (self::CAPTCHA_SIZE / $iconCount) - $iconSize;
-        $iconLineSize = self::CAPTCHA_SIZE / $iconCount;
-
-        // Determine border color.
-        if(key_exists(self::$session->mode, self::CAPTCHA_BORDER_COLORS) && count(self::CAPTCHA_BORDER_COLORS[self::$session->mode]['color']) === 3) {
-            $color = self::CAPTCHA_BORDER_COLORS[self::$session->mode]['color'];
-        } else {
-            $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
-        }
-
-        // TODO Use this code when options are saved to session.
-//                if(key_exists(self::$session->mode, self::$options['themes']) && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
-//                    $color = self::$options['themes'][self::$session->mode]['color'];
-//                } else {
-//                    $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
-//                }
+        $iconOffset = ((self::CAPTCHA_IMAGE_SIZE / $iconCount) - 30) / 2;
+        $iconOffsetAdd = (self::CAPTCHA_IMAGE_SIZE / $iconCount) - $iconSize;
+        $iconLineSize = self::CAPTCHA_IMAGE_SIZE / $iconCount;
 
         // Options
         $rotateEnabled = self::$options['image']['rotate'];
@@ -328,15 +369,37 @@ class IconCaptcha
 
         // Create the border color.
         if($borderEnabled) {
+
+            // Determine border color.
+            if(key_exists(self::$session->mode, self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS) && count(self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS[self::$session->mode]['color']) === 3) {
+                $color = self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS[self::$session->mode]['color'];
+            } else {
+                $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
+            }
+
+            // TODO Use this code when options are saved to session.
+//        if(key_exists(self::$session->mode, self::$options['themes']) && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
+//            $color = self::$options['themes'][self::$session->mode]['color'];
+//        } else {
+//            $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
+//        }
+
             $borderColor = imagecolorallocate($placeholder, $color[0], $color[1], $color[2]);
         }
 
         // Copy the icons onto the placeholder.
         $xOffset = $iconOffset;
         for($i = 0; $i < $iconCount; $i++) {
-            $icon = in_array($i + 1, self::$session->positions) ? $correctIcon : $incorrectIcon;
 
-            // Rotate icon.
+            // Determine which icon should be used for the current position.
+            if(in_array($i + 1, self::$session->positions)) {
+                $icon = $correctIcon;
+            } else {
+                // TODO
+                $icon = $incorrectIcons[0];
+            }
+
+            // Rotate icon, if enabled.
             if($rotateEnabled) {
                 $degree = mt_rand(1, 4);
                 if ($degree !== 4) {
@@ -344,7 +407,7 @@ class IconCaptcha
                 }
             }
 
-            // Flip icon.
+            // Flip icon, if enabled.
             if($flipHorizontally && mt_rand(1, 2) === 1) imageflip($icon, IMG_FLIP_HORIZONTAL);
             if($flipVertically && mt_rand(1, 2) === 1) imageflip($icon, IMG_FLIP_VERTICAL);
 
@@ -352,7 +415,7 @@ class IconCaptcha
             imagecopy($placeholder, $icon, ($iconSize * $i) + $xOffset, 10, 0, 0, 30, 30);
             $xOffset += $iconOffsetAdd;
 
-            // Add the vertical separator lines to the placeholder (not for first icon).
+            // Add the vertical separator lines to the placeholder, if enabled.
             if($borderEnabled && $i > 0) {
                 imageline($placeholder, $iconLineSize * $i, 0, $iconLineSize * $i, 50, $borderColor);
             }
@@ -367,12 +430,9 @@ class IconCaptcha
      *
      * @param int $captchaIdentifier The identifier of the captcha.
      */
-    private static function tryCreateSession($captchaIdentifier = 0)
+    private static function createSession($captchaIdentifier = 0)
     {
-        // If the session is not loaded yet, load it.
-        if (!isset(self::$session)) {
-            self::$session = new CaptchaSession($captchaIdentifier);
-        }
+        self::$session = new CaptchaSession($captchaIdentifier);
     }
 
     /**
@@ -391,5 +451,28 @@ class IconCaptcha
             return -1;
         }
         return (int)ceil($clickedXPos / ($captchaWidth / $iconAmount));
+    }
+
+    public static function calculateIconAmounts($iconCount, $smallestIconCount = 1)
+    {
+        $remainder = $iconCount - $smallestIconCount;
+        $remainderDivided = $remainder / 2;
+        $pickDivided = mt_rand(1, 2) === 1; // 50/50 chance.
+
+        // If division leads to decimal.
+        if (fmod($remainderDivided, 1) !== 0.0 && $pickDivided) {
+            $left = floor($remainderDivided);
+            $right = ceil($remainderDivided);
+
+            // Only return the divided numbers if both are larger than the smallest number.
+            if ($left > $smallestIconCount && $right > $smallestIconCount) {
+                return [$left, $right];
+            }
+        } else if($pickDivided === true) { // If no decimals, return the division result.
+            return [$remainderDivided, $remainderDivided];
+        }
+
+        // Return the whole remainder.
+        return [$remainder];
     }
 }

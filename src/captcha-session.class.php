@@ -12,41 +12,16 @@ namespace IconCaptcha;
 class CaptchaSession
 {
     const ICON_CAPTCHA = 'icon_captcha';
-    const CAPTCHA_ICONS = 'icons';
-    const CAPTCHA_ICON_POSITIONS = 'position';
-    const CAPTCHA_COLOR_MODE = 'mode';
-    const CAPTCHA_REQUESTED = 'requested';
-    const CAPTCHA_COMPLETED = 'completed';
 
     /**
      * @var string The captcha identifier.
      */
-    public $id;
+    protected $id;
 
     /**
-     * @var array The correct icon position.
+     * @var array The session data.
      */
-    public $icons;
-
-    /**
-     * @var array The correct icon positions.
-     */
-    public $positions;
-
-    /**
-     * @var boolean If the icons image has been requested by the captcha.
-     */
-    public $requested;
-
-    /**
-     * @var string The captcha's icon color name.
-     */
-    public $mode;
-
-    /**
-     * @var bool If the captcha was completed (correct icon selected) or not.
-     */
-    public $completed;
+    protected $session = [];
 
     /**
      * Creates a new CaptchaSession object. Session data regarding the
@@ -58,9 +33,6 @@ class CaptchaSession
     {
         $this->id = $id;
 
-        // Clear the session data.
-        $this->clear();
-
         // Try to load the captcha data from the session, if any data exists.
         $this->load();
     }
@@ -71,10 +43,11 @@ class CaptchaSession
      */
     public function clear()
     {
-        $this->icons = [];
-        $this->positions = [];
-        $this->requested = false;
-        $this->completed = false;
+        $this->session['icons'] = [];
+        $this->session['positions'] = [];
+        $this->session['requested'] = false;
+        $this->session['completed'] = false;
+        $this->session['attempts'] = 0;
     }
 
     /**
@@ -91,31 +64,16 @@ class CaptchaSession
     public function load()
     {
         if (self::exists($this->id)) {
-
-            // Icons
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICONS])) {
-                $this->icons = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICONS];
-            }
-
-            // Position
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICON_POSITIONS])) {
-                $this->positions = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_ICON_POSITIONS];
-            }
-
-            // Mode
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COLOR_MODE])) {
-                $this->mode = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COLOR_MODE];
-            }
-
-            // Requested
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_REQUESTED])) {
-                $this->requested = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_REQUESTED];
-            }
-
-            // Completed
-            if (isset($_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COMPLETED])) {
-                $this->completed = $_SESSION[self::ICON_CAPTCHA][$this->id][self::CAPTCHA_COMPLETED];
-            }
+            $this->session = $_SESSION[self::ICON_CAPTCHA][$this->id];
+        } else {
+            $this->session = [
+                'icons' => [], // The correct icon position.
+                'position' => [], // The correct icon positions.
+                'mode' => 'light', // The captcha's icon color name.
+                'requested' => false, // If the icons image has been requested by the captcha.
+                'completed' => false, // If the captcha was completed (correct icon selected) or not.
+                'attempts' => 0, // The number of times the captcha has failed.
+            ];
         }
     }
 
@@ -124,16 +82,8 @@ class CaptchaSession
      */
     public function save()
     {
-        $data = [
-            self::CAPTCHA_ICONS => $this->icons,
-            self::CAPTCHA_ICON_POSITIONS => $this->positions,
-            self::CAPTCHA_COLOR_MODE => $this->mode,
-            self::CAPTCHA_REQUESTED => $this->requested,
-            self::CAPTCHA_COMPLETED => $this->completed
-        ];
-
         // Write the data to the session.
-        $_SESSION[self::ICON_CAPTCHA][$this->id] = $data;
+        $_SESSION[self::ICON_CAPTCHA][$this->id] = $this->session;
     }
 
     /**
@@ -146,5 +96,25 @@ class CaptchaSession
     public static function exists($id)
     {
         return isset($_SESSION[self::ICON_CAPTCHA][$id]);
+    }
+
+    /**
+     * Retrieves data from the session based on the given property name.
+     * @param string $key The name of the property in the session which should be retrieved.
+     * @return mixed The data in the session, or NULL if the key does not exist.
+     */
+    public function __get($key)
+    {
+        return isset($this->session[$key]) ? $this->session[$key] : null;
+    }
+
+    /**
+     * Set a value of the captcha session.
+     * @param string $key The name of the property in the session which should be set.
+     * @param mixed $value The value which should be stored.
+     */
+    public function __set($key, $value)
+    {
+        $this->session[$key] = $value;
     }
 }
