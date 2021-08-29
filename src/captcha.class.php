@@ -114,11 +114,10 @@ class IconCaptcha
 
         // Check if the max attempts limit has been reached and a timeout is active.
         // If reached, return an error and the remaining time.
-        if(self::$session->attemptsTimeout > 0) {
-            if(time() <= self::$session->attemptsTimeout) {
+        if (self::$session->attemptsTimeout > 0) {
+            if (time() <= self::$session->attemptsTimeout) {
                 return base64_encode(json_encode([
-                    'error' => 1,
-                    'data' => self::$session->attemptsTimeout - time() // remaining time in milliseconds.
+                    'error' => 1, 'data' => self::$session->attemptsTimeout - time() // remaining time in milliseconds.
                 ]));
             } else {
                 self::$session->attemptsTimeout = 0;
@@ -131,30 +130,45 @@ class IconCaptcha
 
         // Determine the number of icons to add to the image.
         $iconAmount = $minIconAmount;
-        if($minIconAmount !== $maxIconAmount) {
+        if ($minIconAmount !== $maxIconAmount) {
             $iconAmount = mt_rand($minIconAmount, $maxIconAmount);
         }
 
         // Number of times the correct image will be placed onto the placeholder.
         $correctIconAmount = mt_rand(1, self::CAPTCHA_MAX_LOWEST_ICON_COUNT[$iconAmount]);
-        $incorrectIconAmounts = self::calculateIconAmounts($iconAmount, $correctIconAmount);
+        $totalIconAmount = self::calculateIconAmounts($iconAmount, $correctIconAmount);
+        $totalIconAmount[] = $correctIconAmount;
 
-        // At which position(s) the correct image will be placed onto the placeholder.
+        // Icon position and ID information.
         $iconPositions = [];
-        for ($i = 0; $i < $correctIconAmount; $i++) {
-            $iconPositions[] = mt_rand(1, $iconAmount);
-        }
+        $iconIds = [];
+        $correctIconId = -1;
 
-        // Get a random number (correct image)
-        $correctIconId = mt_rand(1, self::CAPTCHA_ICONS_FOLDER_COUNT);
-        $incorrectIconIds = [];
+        // Create a random 'icon position' order.
+        $tempPositions = range(1, $iconAmount);
+        shuffle($tempPositions);
 
-        // Pick random number(s) for the incorrect icon(s).
-        // Loop until a number is found which doesn't match the correct icon ID.
-        while (count($incorrectIconIds) < count($incorrectIconAmounts)) {
-            $tempIncorrectIconId = mt_rand(1, self::CAPTCHA_ICONS_FOLDER_COUNT);
-            if ($tempIncorrectIconId !== $correctIconId) {
-                $incorrectIconIds[] = $tempIncorrectIconId;
+        // Generate the icon positions/IDs array.
+        $i = 0;
+        while (count($iconIds) < count($totalIconAmount)) {
+
+            // Generate a random icon ID. If it is not in use yet, process it.
+            $tempIconId = mt_rand(1, self::CAPTCHA_ICONS_FOLDER_COUNT);
+            if (!in_array($tempIconId, $iconIds)) {
+                $iconIds[] = $tempIconId;
+
+                // Assign the current icon ID to one or more positions.
+                for ($j = 0; $j < $totalIconAmount[$i]; $j++) {
+                    $tempKey = array_pop($tempPositions);
+                    $iconPositions[$tempKey] = $tempIconId;
+                }
+
+                // Set the least appearing icon ID as the correct icon ID.
+                if ($correctIconId === -1 && min($totalIconAmount) === $totalIconAmount[$i]) {
+                    $correctIconId = $tempIconId;
+                }
+
+                $i++;
             }
         }
 
@@ -166,8 +180,9 @@ class IconCaptcha
 
         // Set the chosen icons and position and reset the requested status.
         self::$session->mode = $theme;
-        self::$session->icons = [$correctIconId, $incorrectIconIds, $iconAmount, $incorrectIconAmounts];
-        self::$session->positions = $iconPositions;
+        self::$session->icons = $iconPositions;
+        self::$session->iconIds = $iconIds;
+        self::$session->correctId = $correctIconId;
         self::$session->requested = false;
         self::$session->attempts = $attemptsCount;
         self::$session->save();
@@ -216,11 +231,12 @@ class IconCaptcha
             // Parse the selection.
             $selection = explode(',', $post[self::CAPTCHA_FIELD_SELECTION]);
             if(count($selection) === 3) {
-                $clickedPosition = self::determineClickedIcon($selection[0], $selection[1], $selection[2], self::$session->icons[2]);
+                $clickedPosition = self::determineClickedIcon($selection[0], $selection[1], $selection[2], count(self::$session->icons));
             }
 
             // If the clicked position matches the stored position, the form can be submitted.
-            if (self::$session->completed === true && (isset($clickedPosition) && in_array($clickedPosition, self::$session->positions))) {
+            if (self::$session->completed === true &&
+                (isset($clickedPosition) && self::$session->icons[$clickedPosition] === self::$session->correctId)) {
                 return true;
             } else {
                 self::$error = json_encode(['id' => 1, 'error' => self::$options['messages']['wrong_icon']]);
@@ -244,17 +260,19 @@ class IconCaptcha
     {
         if (!empty($payload)) {
 
-            // Check if the captcha ID is set.
-            if (!isset($payload['i']) || !is_numeric($payload['i'])) {
+            // Check if the captcha ID and required other payload data is set.
+            if (!isset($payload['i'], $payload['x'], $payload['y'], $payload['w'])) {
                 return false;
             }
 
             // Initialize the session.
             self::createSession($payload['i']);
 
+            // Get the clicked position.
+            $clickedPosition = self::determineClickedIcon($payload['x'], $payload['y'], $payload['w'], count(self::$session->icons));
+
             // Check if the selection is set and matches the position from the session.
-            if (isset($payload['x'], $payload['y'], $payload['w']) &&
-                (in_array(self::determineClickedIcon($payload['x'], $payload['y'], $payload['w'], self::$session->icons[2]), self::$session->positions))) {
+            if (self::$session->icons[$clickedPosition] === self::$session->correctId) {
 
                 self::$session->completed = true;
                 self::$session->save();
@@ -264,9 +282,9 @@ class IconCaptcha
                 self::$session->completed = false;
 
                 // Increase the attempts counter.
-                // If the max amount has been reached, set a timeout (if set).
-                self::$session->attempts = self::$session->attempts + 1;
+                self::$session->attempts += 1;
 
+                // If the max amount has been reached, set a timeout (if set).
                 if(self::$session->attempts === self::$options['attempts']['amount']
                     && self::$options['attempts']['timeout'] > 0) {
                     self::$session->attemptsTimeout = time() + self::$options['attempts']['timeout'];
@@ -307,7 +325,7 @@ class IconCaptcha
             // Check if the placeholder icon exists.
             if (is_file($placeholder)) {
 
-                // Format the path to the icons directory.
+                // Format the path to the icon directory.
                 $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . self::$session->mode . DIRECTORY_SEPARATOR;
 
                 // Generate the captcha image.
@@ -342,42 +360,42 @@ class IconCaptcha
         self::$session->destroy();
     }
 
-    private static function generateImage($iconPath, $placeholderPath)
+    public static function generateImage($iconPath, $placeholderPath)
     {
-        // Prepare the placeholder and correct/incorrect images.
+        // Prepare the placeholder image.
         $placeholder = imagecreatefrompng($placeholderPath);
-        $correctIcon = imagecreatefrompng($iconPath . 'icon-' . self::$session->icons[0] . '.png');
 
-        // TODO
-        $incorrectIcons = [];
-        foreach (self::$session->icons[1] as $iconId) {
-            $incorrectIcons[] = imagecreatefrompng($iconPath . 'icon-' . $iconId . '.png');
+        // Prepare the icon images.
+        $iconImages = [];
+        foreach (self::$session->iconIds as $id) {
+            $iconImages[$id] = imagecreatefrompng($iconPath . 'icon-' . $id . '.png');
         }
 
-        // Prepare the image pixel information.
-        $iconCount = self::$session->icons[2];
+        // Image pixel information.
+        $iconCount = count(self::$session->icons);
         $iconSize = self::CAPTCHA_ICON_SIZES[$iconCount];
         $iconOffset = ((self::CAPTCHA_IMAGE_SIZE / $iconCount) - 30) / 2;
         $iconOffsetAdd = (self::CAPTCHA_IMAGE_SIZE / $iconCount) - $iconSize;
         $iconLineSize = self::CAPTCHA_IMAGE_SIZE / $iconCount;
 
-        // Options
+        // Options.
         $rotateEnabled = self::$options['image']['rotate'];
         $flipHorizontally = self::$options['image']['flip']['horizontally'];
         $flipVertically = self::$options['image']['flip']['vertically'];
         $borderEnabled = self::$options['image']['border'];
 
-        // Create the border color.
+        // Create the border color, if enabled.
         if($borderEnabled) {
 
             // Determine border color.
-            if(key_exists(self::$session->mode, self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS) && count(self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS[self::$session->mode]['color']) === 3) {
+            if(key_exists(self::$session->mode, self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS)
+                && count(self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS[self::$session->mode]['color']) === 3) {
                 $color = self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS[self::$session->mode]['color'];
             } else {
                 $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
             }
 
-            // TODO Use this code when options are saved to session.
+//        // TODO Use this code when options are saved to session.
 //        if(key_exists(self::$session->mode, self::$options['themes']) && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
 //            $color = self::$options['themes'][self::$session->mode]['color'];
 //        } else {
@@ -391,18 +409,13 @@ class IconCaptcha
         $xOffset = $iconOffset;
         for($i = 0; $i < $iconCount; $i++) {
 
-            // Determine which icon should be used for the current position.
-            if(in_array($i + 1, self::$session->positions)) {
-                $icon = $correctIcon;
-            } else {
-                // TODO
-                $icon = $incorrectIcons[0];
-            }
+            // Get the icon image from the array. Use position to get the icon ID.
+            $icon = $iconImages[self::$session->icons[$i + 1]];
 
             // Rotate icon, if enabled.
             if($rotateEnabled) {
                 $degree = mt_rand(1, 4);
-                if ($degree !== 4) {
+                if ($degree !== 4) { // Only if the 'degree' is not the same as what it would already be at.
                     $icon = imagerotate($icon, $degree * 90, 0);
                 }
             }
@@ -469,7 +482,10 @@ class IconCaptcha
                 return [$left, $right];
             }
         } else if($pickDivided === true) { // If no decimals, return the division result.
-            return [$remainderDivided, $remainderDivided];
+            // Only return the divided numbers if it is larger than the smallest number.
+            if ($remainderDivided > $smallestIconCount) {
+                return [$remainderDivided, $remainderDivided];
+            }
         }
 
         // Return the whole remainder.

@@ -44,7 +44,8 @@ class CaptchaSession
     public function clear()
     {
         $this->session['icons'] = [];
-        $this->session['positions'] = [];
+        $this->session['iconIds'] = [];
+        $this->session['correctId'] = 0;
         $this->session['requested'] = false;
         $this->session['completed'] = false;
         $this->session['attempts'] = 0;
@@ -68,7 +69,8 @@ class CaptchaSession
         } else {
             $this->session = [
                 'icons' => [], // The correct icon position.
-                'position' => [], // The correct icon positions.
+                'iconIds' => [], // List of all used icon IDs.
+                'correctId' => 0, // The correct icon ID.
                 'mode' => 'light', // The captcha's icon color name.
                 'requested' => false, // If the icons image has been requested by the captcha.
                 'completed' => false, // If the captcha was completed (correct icon selected) or not.
