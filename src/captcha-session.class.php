@@ -11,7 +11,7 @@ namespace IconCaptcha;
 
 class CaptchaSession
 {
-    const ICON_CAPTCHA = 'icon_captcha';
+    const ICON_CAPTCHA = 'iconcaptcha';
 
     /**
      * @var string The captcha identifier.

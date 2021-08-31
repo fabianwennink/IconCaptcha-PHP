@@ -11,8 +11,8 @@ namespace IconCaptcha;
 
 class IconCaptcha
 {
-    const SESSION_NAME = 'icon_captcha';
-    const CAPTCHA_ICON_PATH = 'icon_path';
+    const SESSION_NAME = 'iconcaptcha';
+    const SESSION_SETTINGS = 'settings';
     const CAPTCHA_FIELD_SELECTION = 'ic-hf-se';
     const CAPTCHA_FIELD_ID = 'ic-hf-id';
     const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
@@ -69,6 +69,11 @@ class IconCaptcha
     ];
 
     /**
+     * @var bool TRUE if the default $options variable is updated with custom options, FALSE if not.
+     */
+    private static $optionsLoaded = false;
+
+    /**
      * Set the options for the captcha.
      * @param array $options The array of options.
      */
@@ -80,13 +85,9 @@ class IconCaptcha
         // Update the icon path string.
         self::$options['iconPath'] = (is_string(self::$options['iconPath'])) ? rtrim(self::$options['iconPath'], '/') : '';
 
-        self::$options['image']['amount']['min'] = (is_int(self::$options['image']['amount']['min'])) ? self::$options['image']['amount']['min'] : 5;
-        self::$options['image']['amount']['max'] = (is_int(self::$options['image']['amount']['max'])) ? self::$options['image']['amount']['max'] : 8;
-
-        // TODO Save options to session, fetch when needed.
-
-        // TODO Remove this when options are saved in session.
-        $_SESSION[self::SESSION_NAME][self::CAPTCHA_ICON_PATH] = self::$options['iconPath'];
+        // Store the settings in the session.
+        $_SESSION[self::SESSION_NAME][self::SESSION_SETTINGS] = self::$options;
+        self::$optionsLoaded = true;
     }
 
     /**
@@ -319,7 +320,7 @@ class IconCaptcha
             self::$session->requested = true;
             self::$session->save();
 
-            $iconsDirectoryPath = $_SESSION[self::SESSION_NAME][self::CAPTCHA_ICON_PATH];
+            $iconsDirectoryPath = self::$options['iconPath'];
             $placeholder = $iconsDirectoryPath . DIRECTORY_SEPARATOR . 'placeholder.png';
 
             // Check if the placeholder icon exists.
@@ -388,19 +389,12 @@ class IconCaptcha
         if($borderEnabled) {
 
             // Determine border color.
-            if(key_exists(self::$session->mode, self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS)
-                && count(self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS[self::$session->mode]['color']) === 3) {
-                $color = self::CAPTCHA_DEFAULT_THEME_BORDER_COLORS[self::$session->mode]['color'];
+            if(key_exists(self::$session->mode, self::$options['themes'])
+                && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
+                $color = self::$options['themes'][self::$session->mode]['color'];
             } else {
                 $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
             }
-
-//        // TODO Use this code when options are saved to session.
-//        if(key_exists(self::$session->mode, self::$options['themes']) && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
-//            $color = self::$options['themes'][self::$session->mode]['color'];
-//        } else {
-//            $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
-//        }
 
             $borderColor = imagecolorallocate($placeholder, $color[0], $color[1], $color[2]);
         }
@@ -446,6 +440,11 @@ class IconCaptcha
     private static function createSession($captchaIdentifier = 0)
     {
         self::$session = new CaptchaSession($captchaIdentifier);
+
+        // If the general captcha options haven't been loaded/set, load them from the session.
+        if(self::$optionsLoaded === false) {
+            self::$options = $_SESSION[self::SESSION_NAME][self::SESSION_SETTINGS];
+        }
     }
 
     /**
@@ -466,7 +465,7 @@ class IconCaptcha
         return (int)ceil($clickedXPos / ($captchaWidth / $iconAmount));
     }
 
-    public static function calculateIconAmounts($iconCount, $smallestIconCount = 1)
+    private static function calculateIconAmounts($iconCount, $smallestIconCount = 1)
     {
         $remainder = $iconCount - $smallestIconCount;
         $remainderDivided = $remainder / 2;
