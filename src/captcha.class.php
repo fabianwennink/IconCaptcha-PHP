@@ -543,6 +543,11 @@ class IconCaptcha
         if ($options['token'] === true) {
             $sessionToken = self::getToken();
 
+            // If the token is empty but the option is enabled, the token was never requested.
+            if(empty($sessionToken)) {
+                return false;
+            }
+
             // Validate the payload and header token (if set) against the session token.
             if ($headerToken !== null) {
                 return $sessionToken === $payloadToken && $sessionToken === $headerToken;

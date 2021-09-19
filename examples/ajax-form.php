@@ -165,13 +165,63 @@
         <!--[if lt IE 9]>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
         <![endif]-->
-
         <!--[if (gte IE 9) | (!IE)]><!-->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <!--<![endif]-->
 
         <!-- Include IconCaptcha script -->
         <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
+
+        <!-- Initialize the IconCaptcha -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.iconcaptcha-holder').iconCaptcha({
+                    general: {
+                        validationPath: '../src/captcha-request.php',
+                        fontFamily: 'Poppins',
+                        credits: 'show',
+                    },
+                    security: {
+                        clickDelay: 500,
+                        hoverDetection: true,
+                        enableInitialMessage: true,
+                        initializeDelay: 500,
+                        selectionResetDelay: 3000,
+                        loadingAnimationDelay: 1000,
+                        invalidateTime: 1000 * 60 * 2,
+                    },
+                    messages: {
+                        initialization: {
+                            verify: 'Verify that you are human.',
+                            loading: 'Loading challenge...',
+                        },
+                        header: 'Select the image displayed the <u>least</u> amount of times',
+                        correct: 'Verification complete.',
+                        incorrect: {
+                            title: 'Uh oh.',
+                            subtitle: "You've selected the wrong image."
+                        },
+                        timeout: {
+                            title: 'Please wait 60 sec.',
+                            subtitle: 'You made too many incorrect selections.'
+                        }
+                    }
+                })
+                // .bind('init', function(e) { // You can bind to custom events, in case you want to execute custom code.
+                //     console.log('Event: Captcha initialized', e.detail.captchaId);
+                // }).bind('selected', function(e) {
+                //     console.log('Event: Icon selected', e.detail.captchaId);
+                // }).bind('refreshed', function(e) {
+                //     console.log('Event: Captcha refreshed', e.detail.captchaId);
+                // }).bind('invalidated', function(e) {
+                //     console.log('Event: Invalidated', e.detail.captchaId);
+                // }).bind('success', function(e) {
+                //     console.log('Event: Correct input', e.detail.captchaId);
+                // }).bind('error', function(e) {
+                //     console.log('Event: Wrong input', e.detail.captchaId);
+                // });
+            });
+        </script>
 
         <!--
             Script to submit the form(s) with Ajax.
@@ -223,59 +273,6 @@
                     //     console.log('Error: Failed to submit form.')
                     // });
                 });
-            });
-        </script>
-
-        <!-- Initialize the IconCaptcha -->
-        <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function() {
-
-                // Check the README.md for information about the options.
-                IconCaptcha.init('.iconcaptcha-holder', {
-                    general: {
-                        validationPath: '../src/captcha-request.php',
-                        fontFamily: 'Poppins',
-                        credits: 'show',
-                    },
-                    security: {
-                        clickDelay: 500,
-                        hoverDetection: true,
-                        enableInitialMessage: true,
-                        initializeDelay: 500,
-                        selectionResetDelay: 3000,
-                        loadingAnimationDelay: 1000,
-                        invalidateTime: 1000 * 60 * 2,
-                    },
-                    messages: {
-                        initialization: {
-                            verify: 'Verify that you are human.',
-                            loading: 'Loading challenge...',
-                        },
-                        header: 'Select the image displayed the <u>least</u> amount of times',
-                        correct: 'Verification complete.',
-                        incorrect: {
-                            title: 'Uh oh.',
-                            subtitle: "You've selected the wrong image."
-                        },
-                        timeout: {
-                            title: 'Please wait 60 sec.',
-                            subtitle: 'You made too many incorrect selections.'
-                        }
-                    }
-                })
-                // .bind('init', function(e) { // You can bind to custom events, in case you want to execute custom code.
-                //     console.log('Event: Captcha initialized', e.detail.captchaId);
-                // }).bind('selected', function(e) {
-                //     console.log('Event: Icon selected', e.detail.captchaId);
-                // }).bind('refreshed', function(e) {
-                //     console.log('Event: Captcha refreshed', e.detail.captchaId);
-                // }).bind('invalidated', function(e) {
-                //     console.log('Event: Invalidated', e.detail.captchaId);
-                // }).bind('success', function(e) {
-                //     console.log('Event: Correct input', e.detail.captchaId);
-                // }).bind('error', function(e) {
-                //     console.log('Event: Wrong input', e.detail.captchaId);
-                // });
             });
         </script>
     </body>

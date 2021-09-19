@@ -29,7 +29,7 @@ if (isset($_GET['payload']) && !isAjaxRequest()) {
 
     // Validate the captcha token.
     if (!validToken($payload, false)) {
-        badRequest();
+        tokenError();
     }
 
     IconCaptcha::getImage($payload['i']);
@@ -52,7 +52,7 @@ if (!empty($_POST) && isAjaxRequest() && isset($_POST['payload'])) {
 
     // Validate the captcha token.
     if (!validToken($payload, true)) {
-        badRequest();
+        tokenError();
     }
 
     switch ((int)$payload['a']) {
@@ -108,6 +108,14 @@ function validToken($payload, $checkHeader)
 
     // Validate the tokens.
     return IconCaptcha::validateToken($payloadToken, $headerToken);
+}
+
+// Create a error message string for the token validation error.
+function tokenError()
+{
+    header(HTTP_STATUS_OK);
+    header('Content-type: text/plain');
+    exit(base64_encode(json_encode(['error' => 2])));
 }
 
 // Tries to decode the given base64 and json encoded payload.
