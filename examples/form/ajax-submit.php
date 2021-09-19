@@ -16,17 +16,6 @@ require('../../src/captcha.class.php');
 
 use IconCaptcha\IconCaptcha;
 
-// Take a look at the README file to see every available option.
-IconCaptcha::options([
-    'iconPath' => '../assets/icons/', // required
-    'messages' => [
-        'wrong_icon' => "You've selected the wrong image.",
-        'no_selection' => 'No image has been selected.',
-        'empty_form' => "You've not submitted any form.",
-        'invalid_id' => 'The captcha ID was invalid.'
-    ]
-]);
-
 // If the form has been submitted, validate the captcha.
 if(!empty($_POST)) {
     if(IconCaptcha::validateSubmission($_POST)) {
@@ -34,4 +23,6 @@ if(!empty($_POST)) {
     } else {
         echo '<b>Captcha: </b>' . IconCaptcha::getErrorMessage();
     }
+} else {
+    echo '<b>Captcha:</b> No data posted!';
 }

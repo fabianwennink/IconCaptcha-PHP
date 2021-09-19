@@ -17,7 +17,7 @@
 
     // Take a look at the README file to see every available option.
     IconCaptcha::options([
-        'iconPath' => '../assets/icons/', // required
+        'iconPath' => dirname(__FILE__) . '/../assets/icons/', // required
         //'themes' => [
         //    'black' => [
         //        'icons' => 'light', // Which icon type should be used: light or dark.
@@ -25,11 +25,29 @@
         //    ]
         //],
         'messages' => [
-            'wrong_icon' => "You've selected the wrong image.",
+            'wrong_icon' => 'You\'ve selected the wrong image.',
             'no_selection' => 'No image has been selected.',
-            'empty_form' => "You've not submitted any form.",
-            'invalid_id' => 'The captcha ID was invalid.'
-        ]
+            'empty_form' => 'You\'ve not submitted any form.',
+            'invalid_id' => 'The captcha ID was invalid.',
+            'form_token' => 'The form token was invalid.'
+        ],
+        'image' => [
+            'amount' => [ // min & max can be 5 - 8
+                'min' => 5,
+                'max' => 8
+            ],
+            'rotate' => true,
+            'flip' => [
+                'horizontally' => true,
+                'vertically' => true,
+            ],
+            'border' => true
+        ],
+        'attempts' => [
+            'amount' => 3,
+            'timeout' => 60 // seconds.
+        ],
+        'token' => true
     ]);
 
     // If the form has been submitted, validate the captcha.
@@ -50,7 +68,13 @@
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="../assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+        <!-- JUST FOR THE DEMO PAGE -->
         <link href="../assets/demo.css" rel="stylesheet" type="text/css">
+        <script src="../assets/demo.js" type="text/javascript"></script>
+
+        <!-- Include Google Font - JUST FOR THE DEMO PAGE -->
+        <link href="//fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
         <!-- Include IconCaptcha stylesheet -->
         <link href="../assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
@@ -59,23 +83,25 @@
         <div class="container">
 
             <div class="logo-text">
-                <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank">
+                <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank" rel="noopener">
                     Ic<span>o</span>nCaptcha
                 </a>
             </div>
 
             <div class="shields">
                 <div class="shields-row">
-                    <img src="https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square" />
-                    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" />
-                    <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" />
-                    <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" />
+                    <img src="https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square" alt="Version 3.0.0 Badge" />
+                    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
+                    <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" alt="Git Issues Badge" />
+                    <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" alt="Git Stars Badge" />
                 </div>
                 <div class="shields-row">
-                    <img src="https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" />
-                    <img src="https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1" />
-                    <img src="https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" />
-                    <img src="https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" />
+                    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP" target="_blank" rel="nofollow noreferrer noopener">
+                        <img src="https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Status Badge" />
+                        <img src="https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1" alt="SonarCloud Security Rating Badge" />
+                        <img src="https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Bugs Badge" />
+                        <img src="https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Vulnerabilities Badge" />
+                    </a>
                 </div>
             </div>
 
@@ -90,20 +116,30 @@
                 <!-- The IconCaptcha holder should ALWAYS be placed WITHIN the <form> element -->
                 <form action="" method="post">
 
-                    <!-- Element that we use to create the IconCaptcha with -->
-                    <div class="iconcaptcha-holder" data-theme="light"></div>
+                    <!-- Additional security token to prevent CSRF. Optional but highly recommended - disable via IconCaptcha options. -->
+                    <input type="hidden" name="_iconcaptcha-token" value="<?= IconCaptcha::token() ?>"/>
 
-                    <!-- Element that we use to create the IconCaptcha with -->
-                    <div class="iconcaptcha-holder" data-theme="dark"></div>
+                    <!-- The IconCaptcha will be rendered in this element -->
+                    <div class="iconcaptcha-holder" data-theme="light"></div>
 
                     <!-- Submit button to test your IconCaptcha input -->
                     <input type="submit" value="Submit demo captcha" class="btn">
                 </form>
+
+                <!-- Theme selector - JUST FOR THE DEMO PAGE -->
+                <div class="themes">
+                    <div class="theme theme--light"><span data-theme="light"></span><span>Light</span></div>
+                    <div class="theme theme--legacy-light"><span data-theme="legacy-light"></span><span>Legacy Light</span></div>
+                    <div class="theme theme--dark"><span data-theme="dark"></span><span>Dark</span></div>
+                    <div class="theme theme--legacy-dark"><span data-theme="legacy-dark"></span><span>Legacy Dark</span></div>
+                </div>
+                <small>(theme selector only works when the challenge has not been requested yet)</small>
             </div>
 
             <div class="copyright">
                 <p>Copyright &copy; <?= date('Y'); ?> Fabian Wennink - All rights reserved</p>
-                <p><small>IconCaptcha is licensed under MIT.</small></p>
+                <p><small>IconCaptcha is licensed under <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>.
+				Icons made by by <a href="https://streamlinehq.com" target="_blank" rel="nofollow noopener">Streamline</a>.</small></p>
             </div>
         </div>
 
@@ -113,7 +149,7 @@
             </div>
         </a>
 
-        <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/">
+        <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank" rel="noopener">
             <div class="corner-ribbon top-left">
                 STAR ME ON GITHUB
             </div>
@@ -125,56 +161,61 @@
                 data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
         <!-- /buy me a coffee -->
 
-        <!-- Include Google Font - Just for demo page -->
-        <link href="//fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
-
-        <!-- Include jQuery Library -->
-        <!--[if lt IE 9]>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
-        <![endif]-->
-
-        <!--[if (gte IE 9) | (!IE)]><!-->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <!--<![endif]-->
-
         <!-- Include IconCaptcha script -->
         <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Initialize the IconCaptcha -->
-        <script async type="text/javascript">
-            $(window).ready(function() {
-                $('.iconcaptcha-holder').iconCaptcha({
-                    fontFamily: '', // Change the font family of the captcha. Leaving it blank will add the default font to the end of the <body> tag.
-                    clickDelay: 500, // The delay during which the user can't select an image.
-                    invalidResetDelay: 3000, // After how many milliseconds the captcha should reset after a wrong icon selection.
-                    loadingAnimationDelay: 1000, // How long the fake loading animation should play.
-                    hoverDetection: true, // Enable or disable the cursor hover detection.
-                    showCredits: 'show', // Show, hide or disable the credits element. Valid values: 'show', 'hide', 'disabled' (please leave it enabled).
-                    enableLoadingAnimation: true, // Enable of disable the fake loading animation. Doesn't actually do anything other than look nice.
-                    validationPath: '../src/captcha-request.php', // The path to the Captcha validation file.
-                    invalidateTime: 1000 * 60 * 5, // Time after initialization, after which the captcha should invalidate itself. Set to 0 to disable, 5 minutes by default.
-                    messages: { // You can put whatever message you want in the captcha.
-                        header: "Select the image displayed the <u>least</u> amount of times",
-                        correct: {
-                            top: "Great!",
-                            bottom: "You do not appear to be a robot."
+        <script type="text/javascript">
+
+            // Note: jQuery can be used as well. Check the README.md for more information.
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                // Check the README.md for information about the options.
+                IconCaptcha.init('.iconcaptcha-holder', {
+                    general: {
+                        validationPath: '../src/captcha-request.php',
+                        fontFamily: 'Poppins',
+                        credits: 'show',
+                    },
+                    security: {
+                        clickDelay: 500,
+                        hoverDetection: true,
+                        enableInitialMessage: true,
+                        initializeDelay: 500,
+                        selectionResetDelay: 3000,
+                        loadingAnimationDelay: 1000,
+                        invalidateTime: 1000 * 60 * 2,
+                    },
+                    messages: {
+                        initialization: {
+                            verify: 'Verify that you are human.',
+                            loading: 'Loading challenge...',
                         },
+                        header: 'Select the image displayed the <u>least</u> amount of times',
+                        correct: 'Verification complete.',
                         incorrect: {
-                            top: "Uh oh.",
-                            bottom: "You've selected the wrong image."
+                            title: 'Uh oh.',
+                            subtitle: "You've selected the wrong image."
+                        },
+                        timeout: {
+                            title: 'Please wait 60 sec.',
+                            subtitle: 'You made too many incorrect selections.'
                         }
                     }
                 })
-                // .bind('init.iconCaptcha', function(e, id) { // You can bind to custom events, in case you want to execute some custom code.
-                //     console.log('Event: Captcha initialized', id);
-                // }).bind('selected.iconCaptcha', function(e, id) {
-                //     console.log('Event: Icon selected', id);
-                // }).bind('refreshed.iconCaptcha', function(e, id) {
-                //     console.log('Event: Captcha refreshed', id);
-                // }).bind('success.iconCaptcha', function(e, id) {
-                //     console.log('Event: Correct input', id);
-                // }).bind('error.iconCaptcha', function(e, id) {
-                //     console.log('Event: Wrong input', id);
+                // .bind('init', function(e) { // You can bind to custom events, in case you want to execute custom code.
+                //     console.log('Event: Captcha initialized', e.detail.captchaId);
+                // }).bind('selected', function(e) {
+                //     console.log('Event: Icon selected', e.detail.captchaId);
+                // }).bind('refreshed', function(e) {
+                //     console.log('Event: Captcha refreshed', e.detail.captchaId);
+                // }).bind('invalidated', function(e) {
+                //     console.log('Event: Invalidated', e.detail.captchaId);
+                // }).bind('success', function(e) {
+                //     console.log('Event: Correct input', e.detail.captchaId);
+                // }).bind('error', function(e) {
+                //     console.log('Event: Wrong input', e.detail.captchaId);
                 // });
             });
         </script>
