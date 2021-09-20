@@ -27,10 +27,18 @@
 
             <div class="shields">
                 <div class="shields-row">
-                    <img src="https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square" alt="Version 3.0.0 Badge" />
-                    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
-                    <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" alt="Git Issues Badge" />
-                    <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" alt="Git Stars Badge" />
+                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square" alt="Version 3.0.0 Badge" />
+                    </a>
+                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
+                    </a>
+                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/issues" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" alt="Git Issues Badge" />
+                    </a>
+                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" alt="Git Stars Badge" />
+                    </a>
                 </div>
                 <div class="shields-row">
                     <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP" target="_blank" rel="nofollow noreferrer noopener">

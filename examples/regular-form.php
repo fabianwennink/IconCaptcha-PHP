@@ -72,11 +72,9 @@
         <!-- JUST FOR THE DEMO PAGE -->
         <link href="../assets/demo.css" rel="stylesheet" type="text/css">
         <script src="../assets/demo.js" type="text/javascript"></script>
-
-        <!-- Include Google Font - JUST FOR THE DEMO PAGE -->
         <link href="//fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
-        <!-- Include IconCaptcha stylesheet -->
+        <!-- Include IconCaptcha stylesheet - REQUIRED -->
         <link href="../assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -90,10 +88,18 @@
 
             <div class="shields">
                 <div class="shields-row">
-                    <img src="https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square" alt="Version 3.0.0 Badge" />
-                    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
-                    <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" alt="Git Issues Badge" />
-                    <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" alt="Git Stars Badge" />
+                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square" alt="Version 3.0.0 Badge" />
+                    </a>
+                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
+                    </a>
+                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/issues" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" alt="Git Issues Badge" />
+                    </a>
+                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" alt="Git Stars Badge" />
+                    </a>
                 </div>
                 <div class="shields-row">
                     <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP" target="_blank" rel="nofollow noreferrer noopener">
@@ -119,7 +125,7 @@
                     <!-- Additional security token to prevent CSRF. Optional but highly recommended - disable via IconCaptcha options. -->
                     <input type="hidden" name="_iconcaptcha-token" value="<?= IconCaptcha::token() ?>"/>
 
-                    <!-- The IconCaptcha will be rendered in this element -->
+                    <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
                     <div class="iconcaptcha-holder" data-theme="light"></div>
 
                     <!-- Submit button to test your IconCaptcha input -->
@@ -150,21 +156,18 @@
         </a>
 
         <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank" rel="noopener">
-            <div class="corner-ribbon top-left">
-                STAR ME ON GITHUB
-            </div>
+            <div class="corner-ribbon top-left">STAR ME ON GITHUB</div>
         </a>
 
-        <!-- buy me a coffee -->
+        <!-- Buy Me A Coffee widget - JUST FOR THE DEMO PAGE -->
         <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="fabianwennink"
                 data-description="Support me on Buy me a coffee!" data-message="If you like IconCaptcha, consider buying me a coffee!"
                 data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
-        <!-- /buy me a coffee -->
 
-        <!-- Include IconCaptcha script -->
+        <!-- Include IconCaptcha script - REQUIRED -->
         <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
 
-        <!-- Initialize the IconCaptcha -->
+        <!-- Initialize the IconCaptcha - REQUIRED -->
         <script type="text/javascript">
 
             // Note: jQuery can be used as well. Check the README.md for more information.
