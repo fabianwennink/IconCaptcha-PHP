@@ -61,7 +61,7 @@ For information on how to install, set up and configure IconCaptcha, please chec
     * [Requirements](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#requirements) - A list of requirements to get IconCaptcha working properly on your website.
     * [Download](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#download) - Information on how to download the required client-side and server-side packages.
     * [Usage](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#usage) - Details on how to implement IconCaptcha in both the client-side and server-side.
-        * [HTML](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#html-form)
+        * [HTML](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#html)
         * [JavaScript/jQuery](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#javascript--jquery)
         * [PHP](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#php)
     * [Options](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#options) - All available configuration options, including their meaning and default values.
