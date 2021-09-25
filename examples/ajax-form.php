@@ -3,7 +3,7 @@
      * IconCaptcha Plugin: v3.0.0
      * Copyright © 2021, Fabian Wennink (https://www.fabianwennink.nl)
      *
-     * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+     * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
      */
 
     // Start a PHP session.
@@ -64,7 +64,7 @@
     <head>
         <title>IconCaptcha v3.0.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="../assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
@@ -165,12 +165,7 @@
         <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Include jQuery Library -->
-        <!--[if lt IE 9]>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
-        <![endif]-->
-        <!--[if (gte IE 9) | (!IE)]><!-->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <!--<![endif]-->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <!-- Include IconCaptcha script - REQUIRED -->
         <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>

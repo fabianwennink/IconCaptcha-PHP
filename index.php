@@ -3,7 +3,7 @@
      * IconCaptcha Plugin: v3.0.0
      * Copyright © 2021, Fabian Wennink (https://www.fabianwennink.nl)
      *
-     * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+     * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
      */
 ?>
 <!DOCTYPE HTML>
@@ -11,7 +11,7 @@
     <head>
         <title>IconCaptcha v3.0.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=9" />
+        <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
