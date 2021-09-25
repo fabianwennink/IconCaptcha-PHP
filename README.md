@@ -1,161 +1,80 @@
-# IconCaptcha Plugin - jQuery & PHP
+# IconCaptcha - PHP & JavaScript
 
-![Version](https://img.shields.io/badge/Version-2.5.0-orange.svg?style=flat-square) ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square) ![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg?style=flat-square)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
+![Version](https://img.shields.io/badge/Version-3.0.0-orange.svg?style=flat-square) 
+![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
+[![Issues](https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square)](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/issues)
+[![Support](https://img.shields.io/badge/Support-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
+[![Support](https://img.shields.io/badge/Support-Buy_Me_A_Coffee-yellow.svg?style=flat-square)](https://www.buymeacoffee.com/fabianwennink)
 
-[![Sonar Quality](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=alert_status)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
-[![Sonar Security](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=security_rating)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
-[![Sonar Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=fabianwennink_IconCaptcha-Plugin-jQuery-PHP&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
+[![Sonar Quality](https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
+[![Sonar Security](https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
+[![Sonar Bugs](https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
+[![Sonar Vulnerabilities](https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
 
 <br><img src="http://i.imgur.com/RMUALSz.png" />
 
-IconCaptcha is a faster and more user-friendly captcha than most other captchas. You no longer have to read any annoying 
-text-images, with IconCaptcha you only have to compare two images and select the image which is only present once.
+IconCaptcha is a self-hosted captcha which is faster, more user-friendly and more customizable than other captchas. Users no longer have to read any annoying 
+text images, solve difficult math equations or play any puzzle games. IconCaptcha is simple: Compare up to 8 icons and select the icon type shown the least amount of times.
 
-Besides being user-friendly, IconCaptcha is also developer-friendly. With just a few steps you can get the captcha up and running. 
-Even developers new to JavaScript and PHP can easily install IconCaptcha. The demo page contains all the code needed to get the captcha working.
+Aside from being user-friendly, IconCaptcha is also developer-friendly. In just a few steps you can get your own installation of IconCaptcha up and running. 
+Even developers new to JavaScript and PHP can easily install IconCaptcha. The included demo pages in this repository contain all the code required to make IconCaptcha work. 
+For more detailed information, please read the information written on this page.
 
-<img src="https://i.imgur.com/IO5XyPV.jpg" /> <img src="https://i.imgur.com/tp7028J.jpg" />
+<img src="https://i.imgur.com/9RGFZSC.png" title="IconCaptcha" alt="IconCaptcha" />
+
 ___
-
-### <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">Download IconCaptcha for PHP now</a>
 ### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View live demo</a>
+### <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">Download IconCaptcha for PHP now</a>
 ___
 
-##### <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-ASP.NET">Visit IconCaptcha for ASP.NET here.</a>
+**<a href="https://github.com/fabianwennink/IconCaptcha-Plugin-ASP.NET">Visit IconCaptcha for ASP.NET here.</a>** _(no longer maintained, last stable version is 1.0.0)_
 ___
 
 ## Features
 * __User Friendly:__ The captcha uses easily understandable images instead of hard to read texts to complete the captcha.
-* __Server-side validation:__ Any validation done by the captcha will be performed on the server-side instead of the client-side.
+* __Server-side Validation:__ All validation done by the captcha will be performed on the server-side instead of the client-side.
+* __Self Hosted:__ Because IconCaptcha is a self-hosted plugin, you are not relying on any third party.
+* __No Data Sharing:__ Unlike captchas such as Google ReCaptcha, no user data will be stored or sold to third parties.
+* __jQuery Support:__ IconCaptcha is written in plain JavaScript, but hooks into jQuery to allow you to integrate it in your jQuery code.
+* __Modern Design:__ The look and feel of IconCaptcha fits every modern website design.
 * __Events:__ Events are triggered at various points in the code, allowing you to hook into them and execute custom code if necessary.
-* __Themes:__ Select the design of the captcha without having to ever touch the stylesheet.
-* __SASS:__  The project contains a SASS file, allowing you to easily style and compile the stylesheet.
-* __Supports IE:__  The captcha _supports_ Internet Explorer 8 and up.
+* __Themes:__ Select the design of the captcha without having to ever touch a stylesheet, or create your own custom theme.
+* __SASS:__ The project contains a SASS file, allowing you to easily style and compile the stylesheet.
+* __IE 10+ Support:__ IconCaptcha has been tested in Internet Explorer 10 & 11 and is functional in both versions.
 
-## Requirements
-* __PHP >= 5.2__
-* __jQuery >= 1.12.3__
+## New in v3
+In version 3 of IconCaptcha, the whole plugin got an overhaul - both client-side and server-side. With better security features, more customizations/options, new 
+themes, no more jQuery dependency and 180 icons, version 3 is the biggest change to IconCaptcha yet.
 
-## Installation
+* No longer required to use jQuery, although IconCaptcha can still be used with jQuery.
+* More captcha image generation options to increase the difficulty.
+* Automatic captcha invalidation after a period of no user interaction.
+* Automatic timeouts when too many incorrect selections were made by the user.
+* New light and dark themes with more modern designs, with improved support for custom themes.
+* Includes 180 new modern icons, created by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
+* Better stability, general code improvements and bug fixes.
 
-1. Download <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">IconCaptcha for PHP</a>.
-2. Download the <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-Front-End/releases">IconCaptcha Front-End package</a>.
-3. Unpack both repositories to somewhere on your computer.
-4. Drag the content of the ```dist/``` folder of the IconCaptcha Front-End package into the ```assets/``` folder of the IconCaptcha PHP package.
-5. Check the ```assets/``` folder and make sure you see the following sub-folders: ```css/```, ```icons/``` and ```js/```.
+# Wiki
+For information on how to install, set up and configure IconCaptcha, please check the Wiki pages:
 
-_Note: To make it easier to test the example captchas, the Front-End package is already included in this repository. 
-However, these files might not always be up-to-date. To ensure you always have the latest version, please follow the instructions above._
-
-## Usage
-
-__HTML form:__
-```html
-<form action="" method="post">
-    ...
-    
-    <!-- The captcha will be generated in this element -->
-    <div class="captcha-holder"></div>
-
-    ...
-</form>
-
-...
-
-<script>
-    $('.captcha-holder').iconCaptcha({
-        // The captcha options go here
-    });
-</script>
-```
-
-
-__PHP form validation:__
-
-```php
-<?php
-    // Start a PHP session.
-    session_start();
-    
-    // Include the IconCaptcha classes.
-    require('src/captcha-session.class.php');
-    require('src/captcha.class.php');
-
-    // Set the path to the captcha icons. Set it as if you were
-    // currently in the PHP folder containing the captcha.class.php file.
-    // ALWAYS END WITH A /
-    // DEFAULT IS SET TO ../icons/
-    IconCaptcha::setIconsFolderPath('../assets/icons/');
-
-    // Enable or disable the 'image noise' option.
-    // When enabled, some nearly invisible random pixels will be added to the
-    // icons. This is done to confuse bots who download the icons to compare them
-    // and pick the odd one based on those results.
-    // NOTE: Enabling this might cause a slight increase in CPU usage.
-    IconCaptcha::setIconNoiseEnabled(true);
-
-    // Use custom messages as error messages (optional).
-    // Take a look at the README file to see what each string means.
-    // IconCaptcha::setErrorMessages('', '', '', '');
-    
-    // If the form has been submitted, validate the captcha.
-    if(!empty($_POST)) {
-        if(IconCaptcha::validateSubmission($_POST)) {
-            echo 'The form has been submitted!';
-        } else {
-            echo IconCaptcha::getErrorMessage();
-        }
-    }
-?>
-```
-
-## Options
-
-The following options allow you to customize IconCaptcha to your liking. All of the options are __optional__, however you might still want to take a look at the ```captchaAjaxFile``` option and make sure the path is set correctly.
-
-| Option | Description |
-| ------ | ------ |
-| theme | Allows you to select the theme of the captcha. At the moment you can only choose between _light_ and _dark_. You can always add your own custom themes by changing the SCSS file. |
-| fontFamily | Allows you to select the font family of the captcha. Leaving this option blank will result in the use of the default font ```Arial```. |
-| clickDelay | The time _(in milliseconds)_ during which the user can't select an image. Set to 0 to disable. |
-| invalidResetDelay | The time _(in milliseconds)_ it takes to reset the captcha after a wrong icon selection. Set to 0 to disable. |
-| requestIconsDelay | The captcha will not request hashes or images from the server until after this delay _(in milliseconds)_. If a page displaying one or more captchas gets constantly refreshed (during an attack?), it will not request the resources right away. |
-| loadingAnimationDelay | The time _(in milliseconds)_ during which the _fake_ loading animation will play until the user input actually gets validated. |
-| hoverDetection | Prevent clicking on any captcha icon until the cursor hovered over the captcha at least once. |
-| showCredits | Show, hide or disable the credits element of the captcha. Hiding the credits will still add the credits to the HTML, but it will not be visible (only to crawlers). Disabling the credits will neither show or add the HTML. Use _'show'_, _'hide'_ or _'disabled'_.<br>_Please leave it enabled so people can find and use the captcha themselves._ |
-| enableLoadingAnimation | Enable or disable the _fake_ loading animation after clicking on an image.  |
-| validationPath | The path to ```captcha-request.php```. Make sure you use the correct path else the captcha won't be able to request the hashes, images or validate the input. |
-| messages | Change the messages used by the captcha. All the changeable strings can be found down below. |
-
-## Messages
-The following strings will be used by the captcha and can be changed / translated to your liking.
-
-| Error/event | Default | PHP/JS |
-| ------ | ------ | ------ |
-| Captcha Header | Select the icon that does not belong in the row. | JS |
-| Captcha Correct Title | Great! | JS |
-| Captcha Correct Subtitle | You do not appear to be a robot. | JS |
-| Captcha Incorrect Title | Oops! | JS |
-| Captcha Incorrect Subtitle | You've selected the wrong image. | JS |
-| Wrong Image | You've selected the wrong image. | PHP |
-| No Image Selected | No image has been selected. | PHP |
-| Empty Form | You've not submitted any form. | PHP |
-| Invalid Captcha ID | The captcha ID was invalid. | PHP |
-
-## Events
-Events will be triggered at various point in the code. You can use a custom script to hook into the events and execute your own code if necessary.
-
-| Event | Description |
-| ------ | ------ |
-| init.iconCaptcha | Will fire when the captcha has been fully built and the hashes and icons have been requested from the server. |
-| refreshed.iconCaptcha | Will fire when the user selected the incorrect icon and the captcha is done refreshing it's hashes and icons. |
-| selected.iconCaptcha | Will fire when the user selects an icon, regarless of if the icon is correct or not. |
-| success.iconCaptcha | Will fire when the user selected the correct icon. |
-| error.iconCaptcha | Will fire when the user selected the incorrect icon. |
+* [How To Use](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use) - A guide on how to setup and use IconCaptcha.
+    * [Requirements](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#requirements) - A list of requirements to get IconCaptcha working properly on your website.
+    * [Download](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#download) - Information on how to download the required client-side and server-side packages.
+    * [Usage](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#usage) - Details on how to implement IconCaptcha in both the client-side and server-side.
+        * [HTML](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#html)
+        * [JavaScript/jQuery](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#javascript--jquery)
+        * [PHP](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#php)
+    * [Options](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#options) - All available configuration options, including their meaning and default values.
+        * [PHP](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#php-1)
+        * [JavaScript/jQuery](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#javascript--jquery-1)
+    * [Messages](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#messages) - All the localization strings used in IconCaptcha.
+        * [PHP](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#php-2)
+        * [JavaScript/jQuery](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#javascript--jquery-2)
+    * [Events](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#events) - All client-side events which are triggered at various points in the captcha process.
+    * [Custom Themes](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#custom-themes) - Details on how to implement and enable custom themes.
 
 ## Credits
-The icons used in this project are made by <a href="https://www.webalys.com" target="_blank" rel="nofollow">Webalys</a>.
+The icons used in this project are made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
 
 ## License
 This project is licensed under the <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/blob/master/LICENSE">MIT</a> license.
