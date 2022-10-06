@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v3.0.1
+     * IconCaptcha Plugin: v3.1.0
      * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -62,7 +62,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>IconCaptcha v3.0.1 - By Fabian Wennink</title>
+        <title>IconCaptcha v3.1.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -89,7 +89,7 @@
             <div class="shields">
                 <div class="shields-row">
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/badge/Version-3.0.1-orange.svg?style=flat-square" alt="Version 3.0.1 Badge" />
+                        <img src="https://img.shields.io/badge/Version-3.1.0-orange.svg?style=flat-square" alt="Version 3.1.0 Badge" />
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
                         <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
@@ -215,6 +215,8 @@
                 //     console.log('Event: Captcha refreshed', e.detail.captchaId);
                 // }).bind('invalidated', function(e) {
                 //     console.log('Event: Invalidated', e.detail.captchaId);
+                // }).bind('reset', function(e) {
+                //     console.log('Event: Reset', e.detail.captchaId);
                 // }).bind('success', function(e) {
                 //     console.log('Event: Correct input', e.detail.captchaId);
                 // }).bind('error', function(e) {
