@@ -112,7 +112,22 @@ class IconCaptcha
         if (!isset($_SESSION[self::SESSION_NAME], $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN])) {
 
             // Create a secure captcha session token.
-            $token = bin2hex(openssl_random_pseudo_bytes(self::CAPTCHA_TOKEN_LENGTH));
+            if(function_exists('random_bytes')) {
+                // Only available for PHP 7 or higher.
+                try {
+                    $token = bin2hex(random_bytes(self::CAPTCHA_TOKEN_LENGTH));
+                } catch (\Exception $e) {
+                    // Using a fallback in case of an exception.
+                    $token = str_shuffle(md5(uniqid(rand(), true)));
+                }
+            } elseif(function_exists('openssl_random_pseudo_bytes')) {
+                // Only available when the OpenSSL extension is installed.
+                $token = bin2hex(openssl_random_pseudo_bytes(self::CAPTCHA_TOKEN_LENGTH));
+            } else {
+                // If not on PHP 7+ or having the OpenSSL extension installed, use this fallback.
+                $token = str_shuffle(md5(uniqid(rand(), true)));
+            }
+
             $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN] = $token;
         }
 
