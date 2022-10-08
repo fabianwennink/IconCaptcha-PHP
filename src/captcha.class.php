@@ -112,7 +112,7 @@ class IconCaptcha
         if (!isset($_SESSION[self::SESSION_NAME], $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN])) {
 
             // Create a secure captcha session token.
-            if(function_exists('random_bytes')) {
+            if (function_exists('random_bytes')) {
                 // Only available for PHP 7 or higher.
                 try {
                     $token = bin2hex(random_bytes(self::CAPTCHA_TOKEN_LENGTH));
@@ -120,7 +120,7 @@ class IconCaptcha
                     // Using a fallback in case of an exception.
                     $token = str_shuffle(md5(uniqid(rand(), true)));
                 }
-            } elseif(function_exists('openssl_random_pseudo_bytes')) {
+            } elseif (function_exists('openssl_random_pseudo_bytes')) {
                 // Only available when the OpenSSL extension is installed.
                 $token = bin2hex(openssl_random_pseudo_bytes(self::CAPTCHA_TOKEN_LENGTH));
             } else {
@@ -560,7 +560,7 @@ class IconCaptcha
             $sessionToken = self::getToken();
 
             // If the token is empty but the option is enabled, the token was never requested.
-            if(empty($sessionToken)) {
+            if (empty($sessionToken)) {
                 return false;
             }
 
@@ -623,8 +623,8 @@ class IconCaptcha
             if ($left > $smallestIconCount && $right > $smallestIconCount) {
                 return [$left, $right];
             }
-        } // If no decimals: only return the divided numbers if it is larger than the smallest number.
-        else if ($pickDivided === true && $remainderDivided > $smallestIconCount) {
+        } elseif ($pickDivided === true && $remainderDivided > $smallestIconCount) {
+            // If no decimals: only return the divided numbers if it is larger than the smallest number.
             return [$remainderDivided, $remainderDivided];
         }
 
