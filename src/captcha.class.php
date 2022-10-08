@@ -261,7 +261,8 @@ class IconCaptcha
         }
 
         // Check if the captcha ID is set.
-        if (!isset($post[self::CAPTCHA_FIELD_ID]) || !is_numeric($post[self::CAPTCHA_FIELD_ID]) || !CaptchaSession::exists($post[self::CAPTCHA_FIELD_ID])) {
+        if (!isset($post[self::CAPTCHA_FIELD_ID]) || !is_numeric($post[self::CAPTCHA_FIELD_ID])
+            || !CaptchaSession::exists(self::SESSION_NAME, $post[self::CAPTCHA_FIELD_ID])) {
             self::setErrorMessage(4, self::$options['messages']['invalid_id']);
             return false;
         }
@@ -530,7 +531,7 @@ class IconCaptcha
     private static function createSession($identifier = 0)
     {
         // Load the captcha session for the current identifier.
-        self::$session = new CaptchaSession($identifier);
+        self::$session = new CaptchaSession(self::SESSION_NAME, $identifier);
 
         // If the general captcha options haven't been loaded/set, load them from the session.
         self::getOptions();
