@@ -1,7 +1,7 @@
 <?php
 
 /**
- * IconCaptcha Plugin: v3.0.1
+ * IconCaptcha Plugin: v3.1.0
  * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -11,12 +11,15 @@ namespace IconCaptcha;
 
 class CaptchaSession
 {
-    const ICON_CAPTCHA = 'iconcaptcha';
-
     /**
      * @var string The captcha identifier.
      */
     protected $id;
+
+    /**
+     * @var string The name/key of the session.
+     */
+    protected $key;
 
     /**
      * @var array The session data.
@@ -27,11 +30,13 @@ class CaptchaSession
      * Creates a new CaptchaSession object. Session data regarding the
      * captcha (given identifier) will be stored and can be retrieved when necessary.
      *
+     * @param string $key The name of the session key.
      * @param int $id The captcha identifier.
      */
-    public function __construct($id = 0)
+    public function __construct($key, $id = 0)
     {
         $this->id = $id;
+        $this->key = $key;
 
         // Try to load the captcha data from the session, if any data exists.
         $this->load();
@@ -56,7 +61,7 @@ class CaptchaSession
      */
     public function destroy()
     {
-        unset($_SESSION[self::ICON_CAPTCHA][$this->id]);
+        unset($_SESSION[$this->key][$this->id]);
     }
 
     /**
@@ -64,17 +69,17 @@ class CaptchaSession
      */
     public function load()
     {
-        if (self::exists($this->id)) {
-            $this->session = $_SESSION[self::ICON_CAPTCHA][$this->id];
+        if (self::exists($this->key, $this->id)) {
+            $this->session = $_SESSION[$this->key][$this->id];
         } else {
             $this->session = [
-                'icons' => [], // The correct icon position.
-                'iconIds' => [], // List of all used icon IDs.
-                'correctId' => 0, // The correct icon ID.
-                'mode' => 'light', // The captcha's icon color name.
-                'requested' => false, // If the icons image has been requested by the captcha.
+                'icons' => [], // The positions of the icon on the generated image.
+                'iconIds' => [], // List of used icon IDs.
+                'correctId' => 0, // The icon ID of the correct answer/icon.
+                'mode' => 'light', // The name of the theme used by the captcha instance.
+                'requested' => false, // If the captcha image has been requested yet.
                 'completed' => false, // If the captcha was completed (correct icon selected) or not.
-                'attempts' => 0, // The number of times the captcha has failed.
+                'attempts' => 0, // The number of times an incorrect answer was given.
             ];
         }
     }
@@ -85,19 +90,20 @@ class CaptchaSession
     public function save()
     {
         // Write the data to the session.
-        $_SESSION[self::ICON_CAPTCHA][$this->id] = $this->session;
+        $_SESSION[$this->key][$this->id] = $this->session;
     }
 
     /**
      * Checks if the given captcha identifier has session data stored.
      *
+     * @param string $key The name of the session key.
      * @param int $id The captcha identifier.
      *
      * @return boolean TRUE if any session data exists, FALSE if not.
      */
-    public static function exists($id)
+    public static function exists($key, $id)
     {
-        return isset($_SESSION[self::ICON_CAPTCHA][$id]);
+        return isset($_SESSION[$key][$id]);
     }
 
     /**

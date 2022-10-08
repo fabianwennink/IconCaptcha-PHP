@@ -1,7 +1,7 @@
 <?php
 
 /**
- * IconCaptcha Plugin: v3.0.1
+ * IconCaptcha Plugin: v3.1.0
  * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -112,7 +112,22 @@ class IconCaptcha
         if (!isset($_SESSION[self::SESSION_NAME], $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN])) {
 
             // Create a secure captcha session token.
-            $token = bin2hex(openssl_random_pseudo_bytes(self::CAPTCHA_TOKEN_LENGTH));
+            if (function_exists('random_bytes')) {
+                // Only available for PHP 7 or higher.
+                try {
+                    $token = bin2hex(random_bytes(self::CAPTCHA_TOKEN_LENGTH));
+                } catch (\Exception $e) {
+                    // Using a fallback in case of an exception.
+                    $token = str_shuffle(md5(uniqid(rand(), true)));
+                }
+            } elseif (function_exists('openssl_random_pseudo_bytes')) {
+                // Only available when the OpenSSL extension is installed.
+                $token = bin2hex(openssl_random_pseudo_bytes(self::CAPTCHA_TOKEN_LENGTH));
+            } else {
+                // If not on PHP 7+ or having the OpenSSL extension installed, use this fallback.
+                $token = str_shuffle(md5(uniqid(rand(), true)));
+            }
+
             $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN] = $token;
         }
 
@@ -246,7 +261,8 @@ class IconCaptcha
         }
 
         // Check if the captcha ID is set.
-        if (!isset($post[self::CAPTCHA_FIELD_ID]) || !is_numeric($post[self::CAPTCHA_FIELD_ID]) || !CaptchaSession::exists($post[self::CAPTCHA_FIELD_ID])) {
+        if (!isset($post[self::CAPTCHA_FIELD_ID]) || !is_numeric($post[self::CAPTCHA_FIELD_ID])
+            || !CaptchaSession::exists(self::SESSION_NAME, $post[self::CAPTCHA_FIELD_ID])) {
             self::setErrorMessage(4, self::$options['messages']['invalid_id']);
             return false;
         }
@@ -515,7 +531,7 @@ class IconCaptcha
     private static function createSession($identifier = 0)
     {
         // Load the captcha session for the current identifier.
-        self::$session = new CaptchaSession($identifier);
+        self::$session = new CaptchaSession(self::SESSION_NAME, $identifier);
 
         // If the general captcha options haven't been loaded/set, load them from the session.
         self::getOptions();
@@ -544,7 +560,7 @@ class IconCaptcha
             $sessionToken = self::getToken();
 
             // If the token is empty but the option is enabled, the token was never requested.
-            if(empty($sessionToken)) {
+            if (empty($sessionToken)) {
                 return false;
             }
 
@@ -607,8 +623,8 @@ class IconCaptcha
             if ($left > $smallestIconCount && $right > $smallestIconCount) {
                 return [$left, $right];
             }
-        } // If no decimals: only return the divided numbers if it is larger than the smallest number.
-        else if ($pickDivided === true && $remainderDivided > $smallestIconCount) {
+        } elseif ($pickDivided === true && $remainderDivided > $smallestIconCount) {
+            // If no decimals: only return the divided numbers if it is larger than the smallest number.
             return [$remainderDivided, $remainderDivided];
         }
 
