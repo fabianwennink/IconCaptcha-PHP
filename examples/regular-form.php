@@ -10,8 +10,8 @@
     session_start();
 
     // Include the IconCaptcha classes.
-	require('../src/captcha-session.class.php');
-    require('../src/captcha.class.php');
+	require('../src/IconCaptchaSession.php');
+    require('../src/IconCaptcha.php');
 
     use IconCaptcha\IconCaptcha;
 
@@ -177,7 +177,7 @@
                 // Check the README.md for information about the options.
                 IconCaptcha.init('.iconcaptcha-holder', {
                     general: {
-                        validationPath: '../src/captcha-request.php',
+                        validationPath: 'captcha-request.php',
                         fontFamily: 'Poppins',
                         credits: 'show',
                     },

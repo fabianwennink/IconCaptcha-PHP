@@ -175,7 +175,7 @@
             $(document).ready(function() {
                 $('.iconcaptcha-holder').iconCaptcha({
                     general: {
-                        validationPath: '../src/captcha-request.php',
+                        validationPath: 'captcha-request.php',
                         fontFamily: 'Poppins',
                         credits: 'show',
                     },
