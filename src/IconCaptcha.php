@@ -37,7 +37,7 @@ class IconCaptcha
     private static $error;
 
     /**
-     * @var CaptchaSession The session containing captcha information.
+     * @var IconCaptchaSession The session containing captcha information.
      */
     private static $session;
 
@@ -147,7 +147,7 @@ class IconCaptcha
     /**
      * Initializes the state of a captcha. The amount of icons shown in the captcha image, their positions,
      * which icon is correct and which icon identifiers should be used will all be determined in this function.
-     * This information will be stored in the {@see CaptchaSession}. The details required to initialize the client
+     * This information will be stored in the {@see IconCaptchaSession}. The details required to initialize the client
      * will be returned as a base64 encoded JSON string.
      *
      * In case a timeout is detected, no state will be initialized and an error message
@@ -262,7 +262,7 @@ class IconCaptcha
 
         // Check if the captcha ID is set.
         if (!isset($post[self::CAPTCHA_FIELD_ID]) || !is_numeric($post[self::CAPTCHA_FIELD_ID])
-            || !CaptchaSession::exists(self::SESSION_NAME, $post[self::CAPTCHA_FIELD_ID])) {
+            || !IconCaptchaSession::exists(self::SESSION_NAME, $post[self::CAPTCHA_FIELD_ID])) {
             self::setErrorMessage(4, self::$options['messages']['invalid_id']);
             return false;
         }
@@ -316,7 +316,7 @@ class IconCaptcha
      * Checks if the by the user selected icon is the correct icon. Whether the clicked icon is correct or not
      * will be determined based on the clicked X and Y coordinates and the width of the IconCaptcha DOM element.
      *
-     * If the selected icon is indeed the correct icon, the {@see CaptchaSession} linked to the captcha identifier
+     * If the selected icon is indeed the correct icon, the {@see IconCaptchaSession} linked to the captcha identifier
      * will be marked as completed and TRUE will be returned. If an incorrect icon was selected, the session will
      * be marked as incomplete, the 'attempts' counter will be incremented by 1 and FALSE will be returned.
      *
@@ -510,7 +510,7 @@ class IconCaptcha
     }
 
     /**
-     * Invalidates the {@see CaptchaSession} linked to the given captcha identifier.
+     * Invalidates the {@see IconCaptchaSession} linked to the given captcha identifier.
      * The data stored inside the session will be destroyed, as the session will be unset.
      *
      * @param int $identifier The identifier of the captcha.
@@ -523,7 +523,7 @@ class IconCaptcha
     }
 
     /**
-     * Tries to load/initialize a {@see CaptchaSession} with the given captcha identifier.
+     * Tries to load/initialize a {@see IconCaptchaSession} with the given captcha identifier.
      * When an existing session is found, it's data will be loaded, else a new session will be created.
      *
      * @param int $identifier The identifier of the captcha.
@@ -531,7 +531,7 @@ class IconCaptcha
     private static function createSession($identifier = 0)
     {
         // Load the captcha session for the current identifier.
-        self::$session = new CaptchaSession(self::SESSION_NAME, $identifier);
+        self::$session = new IconCaptchaSession(self::SESSION_NAME, $identifier);
 
         // If the general captcha options haven't been loaded/set, load them from the session.
         self::getOptions();

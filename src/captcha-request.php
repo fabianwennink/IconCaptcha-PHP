@@ -11,8 +11,8 @@
 session_start();
 
 // Include the captcha classes.
-require('captcha-session.class.php');
-require('captcha.class.php');
+require('IconCaptchaSession.php');
+require('IconCaptcha.php');
 
 use IconCaptcha\IconCaptcha;
 

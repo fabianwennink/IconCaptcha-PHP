@@ -9,7 +9,7 @@
 
 namespace IconCaptcha;
 
-class CaptchaSession
+class IconCaptchaSession
 {
     /**
      * @var string The captcha identifier.
