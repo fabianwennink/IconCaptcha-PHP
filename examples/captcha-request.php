@@ -15,6 +15,9 @@ require('../src/IconCaptchaRequest.php');
 
 use IconCaptcha\IconCaptchaRequest;
 
+// Start a PHP session.
+session_start();
+
 // Create an instance of the IconCaptcha request processing class.
 $captchaRequest = new IconCaptchaRequest();
 

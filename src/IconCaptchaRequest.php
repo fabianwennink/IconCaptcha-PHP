@@ -28,9 +28,6 @@ class IconCaptchaRequest
         // HTTP GET
         if ($this->isCaptchaImageGenerationRequest()) {
 
-            // Make sure a session is started.
-            $this->startSession();
-
             // Decode the payload.
             $payload = $this->decodePayload($_GET['payload']);
 
@@ -54,9 +51,6 @@ class IconCaptchaRequest
     public function processAjaxCall()
     {
         if ($this->isCaptchaAjaxRequest()) {
-
-            // Make sure a session is started.
-            $this->startSession();
 
             // Decode the payload.
             $payload = $this->decodePayload($_POST['payload']);
@@ -169,12 +163,5 @@ class IconCaptchaRequest
     private function isAjaxRequest()
     {
         return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
-    }
-
-    private function startSession()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
     }
 }
