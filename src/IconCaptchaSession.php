@@ -9,42 +9,34 @@
 
 namespace IconCaptcha;
 
-class IconCaptchaSession
+class IconCaptchaSession implements IconCaptchaSessionInterface
 {
+    const SESSION_NAME = 'iconcaptcha';
+
     /**
      * @var string The captcha identifier.
      */
     protected $id;
 
     /**
-     * @var string The name/key of the session.
-     */
-    protected $key;
-
-    /**
      * @var array The session data.
      */
-    protected $session = [];
+    private $session = [];
 
     /**
      * Creates a new CaptchaSession object. Session data regarding the
      * captcha (given identifier) will be stored and can be retrieved when necessary.
      *
-     * @param string $key The name of the session key.
      * @param int $id The captcha identifier.
      */
-    public function __construct($key, $id = 0)
+    public function __construct($id = 0)
     {
         $this->id = $id;
-        $this->key = $key;
-
-        // Try to load the captcha data from the session, if any data exists.
         $this->load();
     }
 
     /**
-     * This will clear the set hashes, and reset the icon
-     * request counter and last clicked icon.
+     * @inheritDoc
      */
     public function clear()
     {
@@ -57,20 +49,20 @@ class IconCaptchaSession
     }
 
     /**
-     * Destroys the captcha session.
+     * @inheritDoc
      */
     public function destroy()
     {
-        unset($_SESSION[$this->key][$this->id]);
+        unset($_SESSION[self::SESSION_NAME][$this->id]);
     }
 
     /**
-     * Loads the captcha's session data based on the earlier set captcha identifier.
+     * @inheritDoc
      */
     public function load()
     {
-        if (self::exists($this->key, $this->id)) {
-            $this->session = $_SESSION[$this->key][$this->id];
+        if (self::exists($this->id)) {
+            $this->session = $_SESSION[self::SESSION_NAME][$this->id];
         } else {
             $this->session = [
                 'icons' => [], // The positions of the icon on the generated image.
@@ -85,31 +77,24 @@ class IconCaptchaSession
     }
 
     /**
-     * Saves the current data to the session. The data will be stored in an array.
+     * @inheritDoc
      */
     public function save()
     {
         // Write the data to the session.
-        $_SESSION[$this->key][$this->id] = $this->session;
+        $_SESSION[self::SESSION_NAME][$this->id] = $this->session;
     }
 
     /**
-     * Checks if the given captcha identifier has session data stored.
-     *
-     * @param string $key The name of the session key.
-     * @param int $id The captcha identifier.
-     *
-     * @return boolean TRUE if any session data exists, FALSE if not.
+     * @inheritDoc
      */
-    public static function exists($key, $id)
+    public static function exists($id)
     {
-        return isset($_SESSION[$key][$id]);
+        return isset($_SESSION[self::SESSION_NAME][$id]);
     }
 
     /**
-     * Retrieves data from the session based on the given property name.
-     * @param string $key The name of the property in the session which should be retrieved.
-     * @return mixed The data in the session, or NULL if the key does not exist.
+     * @inheritDoc
      */
     public function __get($key)
     {
@@ -117,9 +102,7 @@ class IconCaptchaSession
     }
 
     /**
-     * Set a value of the captcha session.
-     * @param string $key The name of the property in the session which should be set.
-     * @param mixed $value The value which should be stored.
+     * @inheritDoc
      */
     public function __set($key, $value)
     {

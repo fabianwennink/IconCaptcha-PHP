@@ -9,6 +9,7 @@
 
 // Include the captcha classes.
 require('../src/IconCaptcha.php');
+require('../src/IconCaptchaSessionInterface.php');
 require('../src/IconCaptchaSession.php');
 require('../src/IconCaptchaRequest.php');
 

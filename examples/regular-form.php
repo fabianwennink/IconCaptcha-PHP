@@ -10,6 +10,7 @@
     session_start();
 
     // Include the IconCaptcha classes.
+    require('../src/IconCaptchaSessionInterface.php');
 	require('../src/IconCaptchaSession.php');
     require('../src/IconCaptcha.php');
 

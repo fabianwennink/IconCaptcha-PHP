@@ -37,7 +37,7 @@ class IconCaptcha
     private static $error;
 
     /**
-     * @var IconCaptchaSession The session containing captcha information.
+     * @var IconCaptchaSessionInterface The session containing captcha information.
      */
     private static $session;
 
@@ -147,8 +147,8 @@ class IconCaptcha
     /**
      * Initializes the state of a captcha. The amount of icons shown in the captcha image, their positions,
      * which icon is correct and which icon identifiers should be used will all be determined in this function.
-     * This information will be stored in the {@see IconCaptchaSession}. The details required to initialize the client
-     * will be returned as a base64 encoded JSON string.
+     * This information will be stored a captcha session, implementing {@see IconCaptchaSessionInterface}.
+     * The details required to initialize the client will be returned as a base64 encoded JSON string.
      *
      * In case a timeout is detected, no state will be initialized and an error message
      * will be returned, also as a base64 encoded JSON string.
@@ -316,7 +316,7 @@ class IconCaptcha
      * Checks if the by the user selected icon is the correct icon. Whether the clicked icon is correct or not
      * will be determined based on the clicked X and Y coordinates and the width of the IconCaptcha DOM element.
      *
-     * If the selected icon is indeed the correct icon, the {@see IconCaptchaSession} linked to the captcha identifier
+     * If the selected icon is indeed the correct icon, the captcha session linked to the captcha identifier
      * will be marked as completed and TRUE will be returned. If an incorrect icon was selected, the session will
      * be marked as incomplete, the 'attempts' counter will be incremented by 1 and FALSE will be returned.
      *
@@ -510,7 +510,7 @@ class IconCaptcha
     }
 
     /**
-     * Invalidates the {@see IconCaptchaSession} linked to the given captcha identifier.
+     * Invalidates the captcha session linked to the given captcha identifier.
      * The data stored inside the session will be destroyed, as the session will be unset.
      *
      * @param int $identifier The identifier of the captcha.
