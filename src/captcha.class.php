@@ -396,7 +396,7 @@ class IconCaptcha
             self::$session->save();
 
             $iconsDirectoryPath = self::$options['iconPath'];
-            $placeholder = $iconsDirectoryPath . DIRECTORY_SEPARATOR . 'placeholder.png';
+            $placeholder = $iconsDirectoryPath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'placeholder.png';
 
             // Check if the placeholder icon exists.
             if (is_file($placeholder)) {
