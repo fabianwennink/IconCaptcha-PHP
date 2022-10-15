@@ -70,7 +70,8 @@ class IconCaptcha
             'amount' => 5,
             'timeout' => 30 // seconds.
         ],
-        'token' => true
+        'token' => true,
+        'session' => IconCaptchaSession::class,
     ];
 
     /**
@@ -262,7 +263,7 @@ class IconCaptcha
 
         // Check if the captcha ID is set.
         if (!isset($post[self::CAPTCHA_FIELD_ID]) || !is_numeric($post[self::CAPTCHA_FIELD_ID])
-            || !IconCaptchaSession::exists(self::SESSION_NAME, $post[self::CAPTCHA_FIELD_ID])) {
+            || !self::$options['session']::exists($post[self::CAPTCHA_FIELD_ID])) {
             self::setErrorMessage(4, self::$options['messages']['invalid_id']);
             return false;
         }
@@ -523,21 +524,6 @@ class IconCaptcha
     }
 
     /**
-     * Tries to load/initialize a {@see IconCaptchaSession} with the given captcha identifier.
-     * When an existing session is found, it's data will be loaded, else a new session will be created.
-     *
-     * @param int $identifier The identifier of the captcha.
-     */
-    private static function createSession($identifier = 0)
-    {
-        // Load the captcha session for the current identifier.
-        self::$session = new IconCaptchaSession(self::SESSION_NAME, $identifier);
-
-        // If the general captcha options haven't been loaded/set, load them from the session.
-        self::getOptions();
-    }
-
-    /**
      * Validates the global captcha session token against the given payload token and sometimes against a header token
      * as well. All the given tokens must match the global captcha session token to pass the check. This function
      * will only validate the given tokens if the 'token' option is set to TRUE. If the 'token' option is set to anything
@@ -630,6 +616,21 @@ class IconCaptcha
 
         // Return the whole remainder.
         return [$remainder];
+    }
+
+    /**
+     * Tries to load/initialize a captcha session with the given captcha identifier.
+     * When an existing session is found, it's data will be loaded, else a new session will be created.
+     *
+     * @param int $identifier The identifier of the captcha.
+     */
+    private static function createSession($identifier = 0)
+    {
+        // Load the captcha session for the current identifier.
+        self::$session = new self::$options['session']($identifier);
+
+        // If the general captcha options haven't been loaded/set, load them from the session.
+        self::getOptions();
     }
 
     /**

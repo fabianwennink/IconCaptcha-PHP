@@ -14,9 +14,11 @@
     require('../src/IconCaptchaSession.php');
     require('../src/IconCaptcha.php');
 
+    use IconCaptcha\IconCaptchaSession;
     use IconCaptcha\IconCaptcha;
 
     // Take a look at the README file to see every available option.
+    // All options are optional using default values, apart from the 'iconPath'.
     IconCaptcha::options([
         'iconPath' => dirname(__FILE__) . '/../assets/icons/', // required
         //'themes' => [
@@ -48,7 +50,8 @@
             'amount' => 3,
             'timeout' => 60 // seconds.
         ],
-        'token' => true
+        'token' => true,
+        'session' => IconCaptchaSession::class, // optional
     ]);
 
     // If the form has been submitted, validate the captcha.
