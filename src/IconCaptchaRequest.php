@@ -13,7 +13,7 @@ class IconCaptchaRequest
 {
     const CUSTOM_TOKEN_HEADER = 'HTTP_X_ICONCAPTCHA_TOKEN';
 
-    public function isCaptchaImageGenerationRequest()
+    public function isChallengeRenderRequest()
     {
         return !$this->isAjaxRequest() && isset($_GET['payload']);
     }
@@ -23,10 +23,10 @@ class IconCaptchaRequest
         return $this->isAjaxRequest() && !empty($_POST) && isset($_POST['payload']);
     }
 
-    public function generateCaptchaImage()
+    public function renderChallenge()
     {
         // HTTP GET
-        if ($this->isCaptchaImageGenerationRequest()) {
+        if ($this->isChallengeRenderRequest()) {
 
             // Decode the payload.
             $payload = $this->decodePayload($_GET['payload']);

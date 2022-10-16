@@ -27,8 +27,8 @@ if($captchaRequest->isCaptchaAjaxRequest()) {
 }
 
 // HTTP GET, used when requesting the captcha image.
-if($captchaRequest->isCaptchaImageGenerationRequest()) {
-    $captchaRequest->generateCaptchaImage();
+if($captchaRequest->isChallengeRenderRequest()) {
+    $captchaRequest->renderChallenge();
 }
 
 // Request made to file was not supported.
