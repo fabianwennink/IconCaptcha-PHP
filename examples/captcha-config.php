@@ -33,6 +33,6 @@ return [
         'amount' => 3,
         'timeout' => 60 // seconds.
     ],
-    'token' => true,
+    'token' => false, // TODO token check no longer works right now.
     'session' => IconCaptchaSession::class,
 ];

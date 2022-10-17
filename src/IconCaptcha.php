@@ -12,7 +12,6 @@ namespace IconCaptcha;
 class IconCaptcha
 {
     const SESSION_NAME = 'iconcaptcha';
-    const SESSION_SETTINGS = 'settings';
     const SESSION_TOKEN = 'csrf';
     const CAPTCHA_FIELD_SELECTION = 'ic-hf-se';
     const CAPTCHA_FIELD_ID = 'ic-hf-id';
@@ -24,78 +23,44 @@ class IconCaptcha
     const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
     const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
     const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
-    const CAPTCHA_DEFAULT_THEME_COLORS = [
-        'light' => ['icons' => 'light', 'color' => self::CAPTCHA_DEFAULT_BORDER_COLOR],
-        'legacy-light' => ['icons' => 'light', 'color' => self::CAPTCHA_DEFAULT_BORDER_COLOR],
-        'dark' => ['icons' => 'dark', 'color' => [64, 64, 64]],
-        'legacy-dark' => ['icons' => 'dark', 'color' => [64, 64, 64]],
-    ];
 
     /**
      * @var string A JSON encoded error message, which will be shown to the user.
      */
-    private static $error;
+    private $error;
 
     /**
      * @var IconCaptchaSessionInterface The session containing captcha information.
      */
-    private static $session;
+    private $session;
 
     /**
      * @var mixed Default values for all the server-side options.
      */
-    private static $options = [
-        'iconPath' => null, // required
-        'themes' => self::CAPTCHA_DEFAULT_THEME_COLORS,
-        'messages' => [
-            'wrong_icon' => 'You\'ve selected the wrong image.',
-            'no_selection' => 'No image has been selected.',
-            'empty_form' => 'You\'ve not submitted any form.',
-            'invalid_id' => 'The captcha ID was invalid.',
-            'form_token' => 'The form token was invalid.'
-        ],
-        'image' => [
-            'amount' => [ // min & max can be 5 - 8
-                'min' => 5,
-                'max' => 8
-            ],
-            'rotate' => true,
-            'flip' => [
-                'horizontally' => true,
-                'vertically' => true,
-            ],
-            'border' => true
-        ],
-        'attempts' => [
-            'amount' => 5,
-            'timeout' => 30 // seconds.
-        ],
-        'token' => true,
-        'session' => IconCaptchaSession::class,
-    ];
+    private $options;
+
+    public function __construct($options = [])
+    {
+        $this->options = IconCaptchaOptions::prepare($options);
+    }
 
     /**
-     * @var bool TRUE if the default $options variable is updated with custom options, FALSE if not.
-     */
-    private static $optionsLoaded = false;
-
-    /**
-     * Set the options for the captcha. The given options will be merged together with the
+     * Overwrite the options for the captcha. The given options will be merged together with the
      * default options and overwrite the default values. If any of the options are missing
      * in the given options array, they will be set with their default value.
      * @param array $options The array of options.
      */
-    public static function options($options)
+    public function options($options)
     {
-        // Merge the given options and default options together.
-        self::$options = array_merge(self::$options, $options);
+        $this->options = IconCaptchaOptions::prepare($options);
+    }
 
-        // Update the icon path string.
-        self::$options['iconPath'] = (is_string(self::$options['iconPath'])) ? rtrim(self::$options['iconPath'], '/') : '';
-
-        // Store the settings in the session.
-        $_SESSION[self::SESSION_NAME][self::SESSION_SETTINGS] = self::$options;
-        self::$optionsLoaded = true;
+    /**
+     * @return IconCaptchaRequest
+     */
+    public function request()
+    {
+        return new IconCaptchaRequest($this);
     }
 
     /**
@@ -140,9 +105,9 @@ class IconCaptcha
      *
      * @return string|null The JSON encoded error message containing the error ID and message, or NULL.
      */
-    public static function getErrorMessage()
+    public function getErrorMessage()
     {
-        return !empty(self::$error) ? json_decode(self::$error)->error : null;
+        return !empty($this->error) ? json_decode($this->error)->error : null;
     }
 
     /**
@@ -159,26 +124,26 @@ class IconCaptcha
      *
      * @return string Captcha details required to initialize the client.
      */
-    public static function getCaptchaData($theme, $identifier)
+    public function getCaptchaData($theme, $identifier)
     {
         // Set the captcha id property
-        self::createSession($identifier);
+        $this->createSession($identifier);
 
         // Check if the max attempts limit has been reached and a timeout is active.
         // If reached, return an error and the remaining time.
-        if (self::$session->attemptsTimeout > 0) {
-            if (time() <= self::$session->attemptsTimeout) {
+        if ($this->session->attemptsTimeout > 0) {
+            if (time() <= $this->session->attemptsTimeout) {
                 return base64_encode(json_encode([
-                    'error' => 1, 'data' => (self::$session->attemptsTimeout - time()) * 1000 // remaining time.
+                    'error' => 1, 'data' => ($this->session->attemptsTimeout - time()) * 1000 // remaining time.
                 ]));
             } else {
-                self::$session->attemptsTimeout = 0;
-                self::$session->attempts = 0;
+                $this->session->attemptsTimeout = 0;
+                $this->session->attempts = 0;
             }
         }
 
-        $minIconAmount = self::$options['image']['amount']['min'];
-        $maxIconAmount = self::$options['image']['amount']['max'];
+        $minIconAmount = $this->options['image']['amount']['min'];
+        $maxIconAmount = $this->options['image']['amount']['max'];
 
         // Determine the number of icons to add to the image.
         $iconAmount = $minIconAmount;
@@ -188,7 +153,7 @@ class IconCaptcha
 
         // Number of times the correct image will be placed onto the placeholder.
         $correctIconAmount = mt_rand(1, self::CAPTCHA_MAX_LOWEST_ICON_COUNT[$iconAmount]);
-        $totalIconAmount = self::calculateIconAmounts($iconAmount, $correctIconAmount);
+        $totalIconAmount = $this->calculateIconAmounts($iconAmount, $correctIconAmount);
         $totalIconAmount[] = $correctIconAmount;
 
         // Icon position and ID information.
@@ -225,19 +190,19 @@ class IconCaptcha
         }
 
         // Get the last attempts count to restore, after clearing the session.
-        $attemptsCount = self::$session->attempts;
+        $attemptsCount = $this->session->attempts;
 
         // Unset the previous session data.
-        self::$session->clear();
+        $this->session->clear();
 
         // Set the chosen icons and position and reset the requested status.
-        self::$session->mode = $theme;
-        self::$session->icons = $iconPositions;
-        self::$session->iconIds = $iconIds;
-        self::$session->correctId = $correctIconId;
-        self::$session->requested = false;
-        self::$session->attempts = $attemptsCount;
-        self::$session->save();
+        $this->session->mode = $theme;
+        $this->session->icons = $iconPositions;
+        $this->session->iconIds = $iconIds;
+        $this->session->correctId = $correctIconId;
+        $this->session->requested = false;
+        $this->session->attempts = $attemptsCount;
+        $this->session->save();
 
         // Return the captcha details.
         return base64_encode(json_encode([
@@ -249,65 +214,65 @@ class IconCaptcha
      * Validates the user form submission. If the captcha is incorrect, it
      * will set the global error variable and return FALSE, else TRUE.
      *
-     * @param array $post The HTTP POST request variable ($_POST).
+     * @param array $request The HTTP POST request variable ($_POST).
      *
      * @return boolean TRUE if the captcha was correct, FALSE if not.
      */
-    public static function validateSubmission($post)
+    public function validateSubmission($request)
     {
         // Make sure the form data is set.
-        if (empty($post)) {
-            self::setErrorMessage(3, self::$options['messages']['empty_form']);
+        if (empty($request)) {
+            $this->setErrorMessage(3, $this->options['messages']['empty_form']);
             return false;
         }
 
         // Check if the captcha ID is set.
-        if (!isset($post[self::CAPTCHA_FIELD_ID]) || !is_numeric($post[self::CAPTCHA_FIELD_ID])
-            || !self::$options['session']::exists($post[self::CAPTCHA_FIELD_ID])) {
-            self::setErrorMessage(4, self::$options['messages']['invalid_id']);
+        if (!isset($request[self::CAPTCHA_FIELD_ID]) || !is_numeric($request[self::CAPTCHA_FIELD_ID])
+            || !$this->options['session']::exists($request[self::CAPTCHA_FIELD_ID])) {
+            $this->setErrorMessage(4, $this->options['messages']['invalid_id']);
             return false;
         }
 
         // Check if the honeypot value is set.
-        if (!isset($post[self::CAPTCHA_FIELD_HONEYPOT]) || !empty($post[self::CAPTCHA_FIELD_HONEYPOT])) {
-            self::setErrorMessage(5, self::$options['messages']['invalid_id']);
+        if (!isset($request[self::CAPTCHA_FIELD_HONEYPOT]) || !empty($request[self::CAPTCHA_FIELD_HONEYPOT])) {
+            $this->setErrorMessage(5, $this->options['messages']['invalid_id']);
             return false;
         }
 
         // Verify if the captcha token is correct.
-        $token = (isset($post[self::CAPTCHA_FIELD_TOKEN])) ? $post[self::CAPTCHA_FIELD_TOKEN] : null;
-        if (!self::validateToken($token)) {
-            self::setErrorMessage(6, self::$options['messages']['form_token']);
+        $token = (isset($request[self::CAPTCHA_FIELD_TOKEN])) ? $request[self::CAPTCHA_FIELD_TOKEN] : null;
+        if (!$this->validateToken($token)) {
+            $this->setErrorMessage(6, $this->options['messages']['form_token']);
             return false;
         }
 
         // Get the captcha identifier.
-        $identifier = $post[self::CAPTCHA_FIELD_ID];
+        $identifier = $request[self::CAPTCHA_FIELD_ID];
 
         // Initialize the session.
-        self::createSession($identifier);
+        $this->createSession($identifier);
 
         // Check if the selection field is set.
-        if (!empty($post[self::CAPTCHA_FIELD_SELECTION]) && is_string($post[self::CAPTCHA_FIELD_SELECTION])) {
+        if (!empty($request[self::CAPTCHA_FIELD_SELECTION]) && is_string($request[self::CAPTCHA_FIELD_SELECTION])) {
 
             // Parse the selection.
-            $selection = explode(',', $post[self::CAPTCHA_FIELD_SELECTION]);
+            $selection = explode(',', $request[self::CAPTCHA_FIELD_SELECTION]);
             if (count($selection) === 3) {
-                $clickedPosition = self::determineClickedIcon($selection[0], $selection[1], $selection[2], count(self::$session->icons));
+                $clickedPosition = $this->determineClickedIcon($selection[0], $selection[1], $selection[2], count($this->session->icons));
             }
 
             // If the clicked position matches the stored position, the form can be submitted.
-            if (self::$session->completed === true &&
-                (isset($clickedPosition) && self::$session->icons[$clickedPosition] === self::$session->correctId)) {
+            if ($this->session->completed === true &&
+                (isset($clickedPosition) && $this->session->icons[$clickedPosition] === $this->session->correctId)) {
 
                 // Invalidate the captcha to prevent resubmission of a form on the same captcha.
-                self::invalidateSession($identifier);
+                $this->invalidateSession($identifier);
                 return true;
             } else {
-                self::setErrorMessage(1, self::$options['messages']['wrong_icon']);
+                $this->setErrorMessage(1, $this->options['messages']['wrong_icon']);
             }
         } else {
-            self::setErrorMessage(2, self::$options['messages']['no_selection']);
+            $this->setErrorMessage(2, $this->options['messages']['no_selection']);
         }
 
         return false;
@@ -328,7 +293,7 @@ class IconCaptcha
      *
      * @return boolean TRUE if the correct icon was selected, FALSE if not.
      */
-    public static function setSelectedAnswer($payload)
+    public function setSelectedAnswer($payload)
     {
         if (!empty($payload)) {
 
@@ -338,32 +303,32 @@ class IconCaptcha
             }
 
             // Initialize the session.
-            self::createSession($payload['i']);
+            $this->createSession($payload['i']);
 
             // Get the clicked position.
-            $clickedPosition = self::determineClickedIcon($payload['x'], $payload['y'], $payload['w'], count(self::$session->icons));
+            $clickedPosition = $this->determineClickedIcon($payload['x'], $payload['y'], $payload['w'], count($this->session->icons));
 
             // Check if the selection is set and matches the position from the session.
-            if (self::$session->icons[$clickedPosition] === self::$session->correctId) {
-                self::$session->attempts = 0;
-                self::$session->attemptsTimeout = 0;
-                self::$session->completed = true;
-                self::$session->save();
+            if ($this->session->icons[$clickedPosition] === $this->session->correctId) {
+                $this->session->attempts = 0;
+                $this->session->attemptsTimeout = 0;
+                $this->session->completed = true;
+                $this->session->save();
 
                 return true;
             } else {
-                self::$session->completed = false;
+                $this->session->completed = false;
 
                 // Increase the attempts counter.
-                self::$session->attempts += 1;
+                $this->session->attempts += 1;
 
                 // If the max amount has been reached, set a timeout (if set).
-                if (self::$session->attempts === self::$options['attempts']['amount']
-                    && self::$options['attempts']['timeout'] > 0) {
-                    self::$session->attemptsTimeout = time() + self::$options['attempts']['timeout'];
+                if ($this->session->attempts === $this->options['attempts']['amount']
+                    && $this->options['attempts']['timeout'] > 0) {
+                    $this->session->attemptsTimeout = time() + $this->options['attempts']['timeout'];
                 }
 
-                self::$session->save();
+                $this->session->save();
             }
         }
 
@@ -379,35 +344,35 @@ class IconCaptcha
      *
      * @param int $identifier The identifier of the captcha.
      */
-    public static function getImage($identifier = null)
+    public function getImage($identifier = null)
     {
         // Check if the captcha id is set
         if (isset($identifier) && $identifier > -1) {
 
             // Initialize the session.
-            self::createSession($identifier);
+            $this->createSession($identifier);
 
             // Check the amount of times an icon has been requested
-            if (self::$session->requested) {
+            if ($this->session->requested) {
                 header('HTTP/1.1 403 Forbidden');
                 exit;
             }
 
-            self::$session->requested = true;
-            self::$session->save();
+            $this->session->requested = true;
+            $this->session->save();
 
-            $iconsDirectoryPath = self::$options['iconPath'];
+            $iconsDirectoryPath = $this->options['iconPath'];
             $placeholder = $iconsDirectoryPath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'placeholder.png';
 
             // Check if the placeholder icon exists.
             if (is_file($placeholder)) {
 
                 // Format the path to the icon directory.
-                $themeIconColor = self::$options['themes'][self::$session->mode]['icons'];
+                $themeIconColor = $this->options['themes'][$this->session->mode]['icons'];
                 $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . $themeIconColor . DIRECTORY_SEPARATOR;
 
                 // Generate the captcha image.
-                $generatedImage = self::generateImage($iconPath, $placeholder);
+                $generatedImage = $this->generateImage($iconPath, $placeholder);
 
                 // Set the content type header to the PNG MIME-type.
                 header('Content-type: image/png');
@@ -434,37 +399,37 @@ class IconCaptcha
      * @param string $placeholderPath The path to the placeholder image, with the name of the file included.
      * @return false|\GdImage|resource The generated image.
      */
-    public static function generateImage($iconPath, $placeholderPath)
+    public function generateImage($iconPath, $placeholderPath)
     {
         // Prepare the placeholder image.
         $placeholder = imagecreatefrompng($placeholderPath);
 
         // Prepare the icon images.
         $iconImages = [];
-        foreach (self::$session->iconIds as $id) {
+        foreach ($this->session->iconIds as $id) {
             $iconImages[$id] = imagecreatefrompng($iconPath . 'icon-' . $id . '.png');
         }
 
         // Image pixel information.
-        $iconCount = count(self::$session->icons);
+        $iconCount = count($this->session->icons);
         $iconSize = self::CAPTCHA_ICON_SIZES[$iconCount];
         $iconOffset = ((self::CAPTCHA_IMAGE_SIZE / $iconCount) - 30) / 2;
         $iconOffsetAdd = (self::CAPTCHA_IMAGE_SIZE / $iconCount) - $iconSize;
         $iconLineSize = self::CAPTCHA_IMAGE_SIZE / $iconCount;
 
         // Options.
-        $rotateEnabled = self::$options['image']['rotate'];
-        $flipHorizontally = self::$options['image']['flip']['horizontally'];
-        $flipVertically = self::$options['image']['flip']['vertically'];
-        $borderEnabled = self::$options['image']['border'];
+        $rotateEnabled = $this->options['image']['rotate'];
+        $flipHorizontally = $this->options['image']['flip']['horizontally'];
+        $flipVertically = $this->options['image']['flip']['vertically'];
+        $borderEnabled = $this->options['image']['border'];
 
         // Create the border color, if enabled.
         if ($borderEnabled) {
 
             // Determine border color.
-            if (key_exists(self::$session->mode, self::$options['themes'])
-                && count(self::$options['themes'][self::$session->mode]['color']) === 3) {
-                $color = self::$options['themes'][self::$session->mode]['color'];
+            if (key_exists($this->session->mode, $this->options['themes'])
+                && count($this->options['themes'][$this->session->mode]['color']) === 3) {
+                $color = $this->options['themes'][$this->session->mode]['color'];
             } else {
                 $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
             }
@@ -477,7 +442,7 @@ class IconCaptcha
         for ($i = 0; $i < $iconCount; $i++) {
 
             // Get the icon image from the array. Use position to get the icon ID.
-            $icon = $iconImages[self::$session->icons[$i + 1]];
+            $icon = $iconImages[$this->session->icons[$i + 1]];
 
             // Rotate icon, if enabled.
             if ($rotateEnabled) {
@@ -516,11 +481,11 @@ class IconCaptcha
      *
      * @param int $identifier The identifier of the captcha.
      */
-    public static function invalidateSession($identifier)
+    public function invalidateSession($identifier)
     {
         // Unset the previous session data
-        self::createSession($identifier);
-        self::$session->destroy();
+        $this->createSession($identifier);
+        $this->session->destroy();
     }
 
     /**
@@ -537,13 +502,11 @@ class IconCaptcha
      * @return bool TRUE if the captcha session token matches the given tokens or if the token option is disabled,
      * FALSE if the captcha session token does not match the given tokens.
      */
-    public static function validateToken($payloadToken, $headerToken = null)
+    public function validateToken($payloadToken, $headerToken = null)
     {
-        $options = self::getOptions();
-
         // Only validate if the token option is enabled.
-        if ($options['token'] === true) {
-            $sessionToken = self::getToken();
+        if ($this->options['token'] === true) {
+            $sessionToken = $this->getToken();
 
             // If the token is empty but the option is enabled, the token was never requested.
             if (empty($sessionToken)) {
@@ -570,7 +533,7 @@ class IconCaptcha
      *
      * @return int The selected icon position.
      */
-    private static function determineClickedIcon($clickedXPos, $clickedYPos, $captchaWidth, $iconAmount)
+    private function determineClickedIcon($clickedXPos, $clickedYPos, $captchaWidth, $iconAmount)
     {
         // Check if the clicked position is valid.
         if ($clickedXPos < 0 || $clickedXPos > $captchaWidth || $clickedYPos < 0 || $clickedYPos > 50) {
@@ -594,7 +557,7 @@ class IconCaptcha
      * @return int[] The number of times an icon should be rendered onto the captcha image. Each value in the returned
      * array represents a new unique icon.
      */
-    private static function calculateIconAmounts($iconCount, $smallestIconCount = 1)
+    private function calculateIconAmounts($iconCount, $smallestIconCount = 1)
     {
         $remainder = $iconCount - $smallestIconCount;
         $remainderDivided = $remainder / 2;
@@ -624,34 +587,17 @@ class IconCaptcha
      *
      * @param int $identifier The identifier of the captcha.
      */
-    private static function createSession($identifier = 0)
+    private function createSession($identifier = 0)
     {
         // Load the captcha session for the current identifier.
-        self::$session = new self::$options['session']($identifier);
-
-        // If the general captcha options haven't been loaded/set, load them from the session.
-        self::getOptions();
-    }
-
-    /**
-     * Returns the captcha options array. In case the options are not yet loaded ({@see $optionsLoaded} will be FALSE),
-     * an attempt will be made to load the options from the session. When this happens, the {@see $options} property
-     * will be set with the options array.
-     * @return array The captcha options.
-     */
-    private static function getOptions()
-    {
-        if (self::$optionsLoaded === false) {
-            self::$options = $_SESSION[self::SESSION_NAME][self::SESSION_SETTINGS];
-        }
-        return self::$options;
+        $this->session = new $this->options['session']($identifier);
     }
 
     /**
      * Returns the captcha session/CSRF token.
      * @return string|null A token as a string, or NULL if no token exists.
      */
-    private static function getToken()
+    private function getToken()
     {
         if (isset($_SESSION[self::SESSION_NAME], $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN])) {
             return $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN];
@@ -664,8 +610,8 @@ class IconCaptcha
      * @param int $id The identifier of the error message.
      * @param string $message The error message to set.
      */
-    private static function setErrorMessage($id, $message)
+    private function setErrorMessage($id, $message)
     {
-        self::$error = json_encode(['id' => $id, 'error' => $message]);
+        $this->error = json_encode(['id' => $id, 'error' => $message]);
     }
 }

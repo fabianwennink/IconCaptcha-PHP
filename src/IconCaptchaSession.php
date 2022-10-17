@@ -61,6 +61,9 @@ class IconCaptchaSession implements IconCaptchaSessionInterface
      */
     public function load()
     {
+        // Make sure a session has been started.
+        IconCaptchaSession::startSession();
+
         if (self::exists($this->id)) {
             $this->session = $_SESSION[self::SESSION_NAME][$this->id];
         } else {
@@ -90,6 +93,8 @@ class IconCaptchaSession implements IconCaptchaSessionInterface
      */
     public static function exists($id)
     {
+        self::startSession();
+
         return isset($_SESSION[self::SESSION_NAME][$id]);
     }
 
@@ -107,5 +112,16 @@ class IconCaptchaSession implements IconCaptchaSessionInterface
     public function __set($key, $value)
     {
         $this->session[$key] = $value;
+    }
+
+    /**
+     * Attempts to start a session, if none has been started yet.
+     * @return void
+     */
+    private static function startSession()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 }

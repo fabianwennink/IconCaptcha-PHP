@@ -11,15 +11,16 @@
 require('../src/IconCaptcha.php');
 require('../src/IconCaptchaSessionInterface.php');
 require('../src/IconCaptchaSession.php');
+require('../src/IconCaptchaOptions.php');
 require('../src/IconCaptchaRequest.php');
 
-use IconCaptcha\IconCaptchaRequest;
+use IconCaptcha\IconCaptcha;
 
-// Start a PHP session.
-session_start();
+// To prevent having to copy the options to every file, a 'config' file was created.
+$options = require('captcha-config.php');
 
 // Create an instance of the IconCaptcha request processing class.
-$captchaRequest = new IconCaptchaRequest();
+$captchaRequest = (new IconCaptcha($options))->request();
 
 // HTTP POST, used when generating and (in)validating the captcha.
 if($captchaRequest->isCaptchaAjaxRequest()) {

@@ -6,29 +6,29 @@
      * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
      */
 
-    // Start a PHP session.
-    session_start();
-
     // Include the IconCaptcha classes.
     require('../src/IconCaptchaSessionInterface.php');
 	require('../src/IconCaptchaSession.php');
+    require('../src/IconCaptchaOptions.php');
     require('../src/IconCaptcha.php');
 
     use IconCaptcha\IconCaptcha;
 
-    // To prevent having to copy the options to every file, a 'config' file was created.
-    $options = require('captcha-config.php');
-
-    // Take a look at the README file to see every available option.
-    // All options are optional using default values, apart from the 'iconPath'.
-    IconCaptcha::options($options);
-
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
-        if(IconCaptcha::validateSubmission($_POST)) {
+
+        // To prevent having to copy the options to every file, a 'config' file was created.
+        $options = require('captcha-config.php');
+
+        // Take a look at the README file to see every available option.
+        // All options are optional using default values, apart from the 'iconPath'.
+        $captcha = new IconCaptcha($options);
+
+        // Validate the captcha/form submission.
+        if($captcha->validateSubmission($_POST)) {
             $captchaMessage = 'The form has been submitted!';
         } else {
-            $captchaMessage = IconCaptcha::getErrorMessage();
+            $captchaMessage = $captcha->getErrorMessage();
         }
     }
 ?>

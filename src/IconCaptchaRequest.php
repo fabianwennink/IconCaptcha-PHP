@@ -13,6 +13,13 @@ class IconCaptchaRequest
 {
     const CUSTOM_TOKEN_HEADER = 'HTTP_X_ICONCAPTCHA_TOKEN';
 
+    private $captcha;
+
+    public function __construct(IconCaptcha $captcha)
+    {
+        $this->captcha = $captcha;
+    }
+
     public function isChallengeRenderRequest()
     {
         return !$this->isAjaxRequest() && isset($_GET['payload']);
@@ -41,7 +48,7 @@ class IconCaptchaRequest
                 $this->tokenError();
             }
 
-            IconCaptcha::getImage($payload['i']);
+            $this->captcha->getImage($payload['i']);
             exit;
         }
 
@@ -74,15 +81,15 @@ class IconCaptchaRequest
                     // Echo the captcha data.
                     http_response_code(200);
                     header('Content-type: text/plain');
-                    exit(IconCaptcha::getCaptchaData($theme, $payload['i']));
+                    exit($this->captcha->getCaptchaData($theme, $payload['i']));
                 case 2: // Setting the user's choice
-                    if (IconCaptcha::setSelectedAnswer($payload)) {
+                    if ($this->captcha->setSelectedAnswer($payload)) {
                         http_response_code(200);
                         exit;
                     }
                     break;
                 case 3: // Captcha interaction time expired.
-                    IconCaptcha::invalidateSession($payload['i']);
+                    $this->captcha->invalidateSession($payload['i']);
                     http_response_code(200);
                     exit;
                 default:
@@ -125,7 +132,7 @@ class IconCaptchaRequest
         }
 
         // Validate the tokens.
-        return IconCaptcha::validateToken($payloadToken, $headerToken);
+        return $this->captcha->validateToken($payloadToken, $headerToken);
     }
 
     /**
