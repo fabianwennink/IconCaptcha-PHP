@@ -9,10 +9,13 @@
     // Include the IconCaptcha classes.
     require('../src/IconCaptchaSessionInterface.php');
     require('../src/IconCaptchaSession.php');
+    require('../src/IconCaptchaTokenInterface.php');
+    require('../src/IconCaptchaToken.php');
     require('../src/IconCaptchaOptions.php');
     require('../src/IconCaptcha.php');
 
     use IconCaptcha\IconCaptcha;
+    use IconCaptcha\IconCaptchaToken;
 
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
@@ -92,8 +95,9 @@
                 <!-- The IconCaptcha holder should ALWAYS be placed WITHIN the <form> element -->
                 <form action="form/ajax-submit.php" method="post">
 
-                    <!-- Additional security token to prevent CSRF. Optional but highly recommended - disable via IconCaptcha options. -->
-                    <input type="hidden" name="_iconcaptcha-token" value="<?= IconCaptcha::token() ?>"/>
+                    <!-- Additional security token to prevent CSRF. -->
+                    <!-- Optional, but highly recommended - disable via IconCaptcha options. -->
+                    <?= IconCaptchaToken::render() ?>
 
                     <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
                     <div class="iconcaptcha-holder" data-theme="light"></div>

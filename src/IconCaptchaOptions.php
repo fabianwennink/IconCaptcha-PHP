@@ -47,7 +47,7 @@ class IconCaptchaOptions
             'amount' => 5,
             'timeout' => 30 // seconds.
         ],
-        'token' => true,
+        'token' => IconCaptchaToken::class,
         'session' => IconCaptchaSession::class,
     ];
 

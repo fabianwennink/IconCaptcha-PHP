@@ -11,13 +11,10 @@ namespace IconCaptcha;
 
 class IconCaptcha
 {
-    const SESSION_NAME = 'iconcaptcha';
-    const SESSION_TOKEN = 'csrf';
     const CAPTCHA_FIELD_SELECTION = 'ic-hf-se';
     const CAPTCHA_FIELD_ID = 'ic-hf-id';
     const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
     const CAPTCHA_FIELD_TOKEN = '_iconcaptcha-token';
-    const CAPTCHA_TOKEN_LENGTH = 20;
     const CAPTCHA_IMAGE_SIZE = 320;
     const CAPTCHA_ICONS_FOLDER_COUNT = 180;
     const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
@@ -61,43 +58,6 @@ class IconCaptcha
     public function request()
     {
         return new IconCaptchaRequest($this);
-    }
-
-    /**
-     * Generates and returns a secure random string which will serve as a CSRF token for the current session. After
-     * generating the token, it will be saved in the global session variable. The length of the token will be
-     * determined by the value of the global constant {@see CAPTCHA_TOKEN_LENGTH}. A token will only be generated
-     * when no token has been generated before in the current session. If a token already exists, this token will
-     * be returned instead.
-     *
-     * @return string The captcha token.
-     */
-    public static function token()
-    {
-        // Make sure to only generate a token if none exists.
-        if (!isset($_SESSION[self::SESSION_NAME], $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN])) {
-
-            // Create a secure captcha session token.
-            if (function_exists('random_bytes')) {
-                // Only available for PHP 7 or higher.
-                try {
-                    $token = bin2hex(random_bytes(self::CAPTCHA_TOKEN_LENGTH));
-                } catch (\Exception $e) {
-                    // Using a fallback in case of an exception.
-                    $token = str_shuffle(md5(uniqid(rand(), true)));
-                }
-            } elseif (function_exists('openssl_random_pseudo_bytes')) {
-                // Only available when the OpenSSL extension is installed.
-                $token = bin2hex(openssl_random_pseudo_bytes(self::CAPTCHA_TOKEN_LENGTH));
-            } else {
-                // If not on PHP 7+ or having the OpenSSL extension installed, use this fallback.
-                $token = str_shuffle(md5(uniqid(rand(), true)));
-            }
-
-            $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN] = $token;
-        }
-
-        return $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN];
     }
 
     /**
@@ -505,22 +465,9 @@ class IconCaptcha
     public function validateToken($payloadToken, $headerToken = null)
     {
         // Only validate if the token option is enabled.
-        if ($this->options['token'] === true) {
-            $sessionToken = $this->getToken();
-
-            // If the token is empty but the option is enabled, the token was never requested.
-            if (empty($sessionToken)) {
-                return false;
-            }
-
-            // Validate the payload and header token (if set) against the session token.
-            if ($headerToken !== null) {
-                return $sessionToken === $payloadToken && $sessionToken === $headerToken;
-            } else {
-                return $sessionToken === $payloadToken;
-            }
+        if (!empty($this->options['token'])) {
+            return (new $this->options['token'])->validate($payloadToken, $headerToken);
         }
-
         return true;
     }
 
@@ -591,18 +538,6 @@ class IconCaptcha
     {
         // Load the captcha session for the current identifier.
         $this->session = new $this->options['session']($identifier);
-    }
-
-    /**
-     * Returns the captcha session/CSRF token.
-     * @return string|null A token as a string, or NULL if no token exists.
-     */
-    private function getToken()
-    {
-        if (isset($_SESSION[self::SESSION_NAME], $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN])) {
-            return $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN];
-        }
-        return null;
     }
 
     /**
