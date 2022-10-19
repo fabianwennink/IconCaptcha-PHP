@@ -28,7 +28,7 @@ if(!empty($_POST)) {
     // All options are optional using default values, apart from the 'iconPath'.
     $captcha = new IconCaptcha($options);
 
-    if($captcha->validateSubmission($_POST)) {
+    if($captcha->validate($_POST)) {
         echo '<b>Captcha:</b> The form has been submitted!';
     } else {
         echo '<b>Captcha: </b>' . $captcha->getErrorMessage();

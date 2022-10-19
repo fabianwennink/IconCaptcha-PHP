@@ -28,7 +28,7 @@
         $captcha = new IconCaptcha($options);
 
         // Validate the captcha/form submission.
-        if($captcha->validateSubmission($_POST)) {
+        if($captcha->validate($_POST)) {
             $captchaMessage = 'The form has been submitted!';
         } else {
             $captchaMessage = $captcha->getErrorMessage();

@@ -178,7 +178,7 @@ class IconCaptcha
      *
      * @return boolean TRUE if the captcha was correct, FALSE if not.
      */
-    public function validateSubmission($request)
+    public function validate($request)
     {
         // Make sure the form data is set.
         if (empty($request)) {
