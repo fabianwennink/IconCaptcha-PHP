@@ -62,7 +62,7 @@ class IconCaptchaSession implements IconCaptchaSessionInterface
     public function load()
     {
         // Make sure a session has been started.
-        IconCaptchaSession::startSession();
+        self::startSession();
 
         if (self::exists($this->id)) {
             $this->session = $_SESSION[self::SESSION_NAME][$this->id];

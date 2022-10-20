@@ -48,7 +48,7 @@ class IconCaptchaRequest
                 $this->tokenError();
             }
 
-            $this->captcha->getImage($payload['i']);
+            $this->captcha->getChallenge($payload['i']);
             exit;
         }
 
@@ -83,13 +83,13 @@ class IconCaptchaRequest
                     header('Content-type: text/plain');
                     exit($this->captcha->getCaptchaData($theme, $payload['i']));
                 case 2: // Setting the user's choice
-                    if ($this->captcha->setSelectedAnswer($payload)) {
+                    if ($this->captcha->makeSelection($payload)) {
                         http_response_code(200);
                         exit;
                     }
                     break;
                 case 3: // Captcha interaction time expired.
-                    $this->captcha->invalidateSession($payload['i']);
+                    $this->captcha->invalidate($payload['i']);
                     http_response_code(200);
                     exit;
                 default:

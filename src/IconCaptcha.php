@@ -171,74 +171,6 @@ class IconCaptcha
     }
 
     /**
-     * Validates the user form submission. If the captcha is incorrect, it
-     * will set the global error variable and return FALSE, else TRUE.
-     *
-     * @param array $request The HTTP POST request variable ($_POST).
-     *
-     * @return boolean TRUE if the captcha was correct, FALSE if not.
-     */
-    public function validate($request)
-    {
-        // Make sure the form data is set.
-        if (empty($request)) {
-            $this->setErrorMessage(3, $this->options['messages']['empty_form']);
-            return false;
-        }
-
-        // Check if the captcha ID is set.
-        if (!isset($request[self::CAPTCHA_FIELD_ID]) || !is_numeric($request[self::CAPTCHA_FIELD_ID])
-            || !$this->options['session']::exists($request[self::CAPTCHA_FIELD_ID])) {
-            $this->setErrorMessage(4, $this->options['messages']['invalid_id']);
-            return false;
-        }
-
-        // Check if the honeypot value is set.
-        if (!isset($request[self::CAPTCHA_FIELD_HONEYPOT]) || !empty($request[self::CAPTCHA_FIELD_HONEYPOT])) {
-            $this->setErrorMessage(5, $this->options['messages']['invalid_id']);
-            return false;
-        }
-
-        // Verify if the captcha token is correct.
-        $token = (isset($request[self::CAPTCHA_FIELD_TOKEN])) ? $request[self::CAPTCHA_FIELD_TOKEN] : null;
-        if (!$this->validateToken($token)) {
-            $this->setErrorMessage(6, $this->options['messages']['form_token']);
-            return false;
-        }
-
-        // Get the captcha identifier.
-        $identifier = $request[self::CAPTCHA_FIELD_ID];
-
-        // Initialize the session.
-        $this->createSession($identifier);
-
-        // Check if the selection field is set.
-        if (!empty($request[self::CAPTCHA_FIELD_SELECTION]) && is_string($request[self::CAPTCHA_FIELD_SELECTION])) {
-
-            // Parse the selection.
-            $selection = explode(',', $request[self::CAPTCHA_FIELD_SELECTION]);
-            if (count($selection) === 3) {
-                $clickedPosition = $this->determineClickedIcon($selection[0], $selection[1], $selection[2], count($this->session->icons));
-            }
-
-            // If the clicked position matches the stored position, the form can be submitted.
-            if ($this->session->completed === true &&
-                (isset($clickedPosition) && $this->session->icons[$clickedPosition] === $this->session->correctId)) {
-
-                // Invalidate the captcha to prevent resubmission of a form on the same captcha.
-                $this->invalidateSession($identifier);
-                return true;
-            } else {
-                $this->setErrorMessage(1, $this->options['messages']['wrong_icon']);
-            }
-        } else {
-            $this->setErrorMessage(2, $this->options['messages']['no_selection']);
-        }
-
-        return false;
-    }
-
-    /**
      * Checks if the by the user selected icon is the correct icon. Whether the clicked icon is correct or not
      * will be determined based on the clicked X and Y coordinates and the width of the IconCaptcha DOM element.
      *
@@ -253,7 +185,7 @@ class IconCaptcha
      *
      * @return boolean TRUE if the correct icon was selected, FALSE if not.
      */
-    public function setSelectedAnswer($payload)
+    public function makeSelection($payload)
     {
         if (!empty($payload)) {
 
@@ -304,7 +236,7 @@ class IconCaptcha
      *
      * @param int $identifier The identifier of the captcha.
      */
-    public function getImage($identifier = null)
+    public function getChallenge($identifier = null)
     {
         // Check if the captcha id is set
         if (isset($identifier) && $identifier > -1) {
@@ -332,7 +264,7 @@ class IconCaptcha
                 $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . $themeIconColor . DIRECTORY_SEPARATOR;
 
                 // Generate the captcha image.
-                $generatedImage = $this->generateImage($iconPath, $placeholder);
+                $generatedImage = $this->generateChallengeImage($iconPath, $placeholder);
 
                 // Set the content type header to the PNG MIME-type.
                 header('Content-type: image/png');
@@ -351,6 +283,111 @@ class IconCaptcha
     }
 
     /**
+     * Validates the user form submission. If the captcha is incorrect, it
+     * will set the global error variable and return FALSE, else TRUE.
+     *
+     * @param array $request The HTTP POST request variable ($_POST).
+     *
+     * @return boolean TRUE if the captcha was correct, FALSE if not.
+     */
+    public function validate($request)
+    {
+        // Make sure the form data is set.
+        if (empty($request)) {
+            $this->setErrorMessage(3, $this->options['messages']['empty_form']);
+            return false;
+        }
+
+        // Check if the captcha ID is set.
+        if (!isset($request[self::CAPTCHA_FIELD_ID]) || !is_numeric($request[self::CAPTCHA_FIELD_ID])
+            || !$this->options['session']::exists($request[self::CAPTCHA_FIELD_ID])) {
+            $this->setErrorMessage(4, $this->options['messages']['invalid_id']);
+            return false;
+        }
+
+        // Check if the honeypot value is set.
+        if (!isset($request[self::CAPTCHA_FIELD_HONEYPOT]) || !empty($request[self::CAPTCHA_FIELD_HONEYPOT])) {
+            $this->setErrorMessage(5, $this->options['messages']['invalid_id']);
+            return false;
+        }
+
+        // Verify if the captcha token is correct.
+        // TODO check missing for token validation.
+        $token = (isset($request[self::CAPTCHA_FIELD_TOKEN])) ? $request[self::CAPTCHA_FIELD_TOKEN] : null;
+        if (!$this->validateToken($token)) {
+            $this->setErrorMessage(6, $this->options['messages']['form_token']);
+            return false;
+        }
+
+        // Get the captcha identifier.
+        $identifier = $request[self::CAPTCHA_FIELD_ID];
+
+        // Initialize the session.
+        $this->createSession($identifier);
+
+        // Check if the selection field is set.
+        if (!empty($request[self::CAPTCHA_FIELD_SELECTION]) && is_string($request[self::CAPTCHA_FIELD_SELECTION])) {
+
+            // Parse the selection.
+            $selection = explode(',', $request[self::CAPTCHA_FIELD_SELECTION]);
+            if (count($selection) === 3) {
+                $clickedPosition = $this->determineClickedIcon($selection[0], $selection[1], $selection[2], count($this->session->icons));
+            }
+
+            // If the clicked position matches the stored position, the form can be submitted.
+            if ($this->session->completed === true &&
+                (isset($clickedPosition) && $this->session->icons[$clickedPosition] === $this->session->correctId)) {
+
+                // Invalidate the captcha to prevent resubmission of a form on the same captcha.
+                $this->invalidate($identifier);
+                return true;
+            } else {
+                $this->setErrorMessage(1, $this->options['messages']['wrong_icon']);
+            }
+        } else {
+            $this->setErrorMessage(2, $this->options['messages']['no_selection']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Invalidates the captcha session linked to the given captcha identifier.
+     * The data stored inside the session will be destroyed, as the session will be unset.
+     *
+     * @param int $identifier The identifier of the captcha.
+     */
+    public function invalidate($identifier)
+    {
+        // Unset the previous session data
+        $this->createSession($identifier);
+        $this->session->destroy();
+    }
+
+    /**
+     * Validates the global captcha session token against the given payload token and sometimes against a header token
+     * as well. All the given tokens must match the global captcha session token to pass the check. This function
+     * will only validate the given tokens if the 'token' option is set to TRUE. If the 'token' option is set to anything
+     * else other than TRUE, the check will be skipped.
+     *
+     * @param string $payloadToken The token string received via the HTTP request body.
+     * @param string|null $headerToken The token string received via the HTTP request headers. This value is optional,
+     * as not every request will contain custom HTTP headers and thus this token should be able to be skipped. Default
+     * value is NULL. When the value is set to anything else other than NULL, the given value will be checked against
+     * the captcha session token.
+     * @return bool TRUE if the captcha session token matches the given tokens or if the token option is disabled,
+     * FALSE if the captcha session token does not match the given tokens.
+     */
+    public function validateToken($payloadToken, $headerToken = null)
+    {
+        // Only validate if the token option is enabled.
+        if (!empty($this->options['token'])) {
+            return (new $this->options['token'])->validate($payloadToken, $headerToken);
+        }
+        return true;
+    }
+
+    /**
      * Returns a generated image containing the icons for the current captcha instance. The icons will be copied
      * onto a placeholder image, located at the $placeholderPath. The icons will be randomly rotated and flipped
      * based on the captcha options.
@@ -359,7 +396,7 @@ class IconCaptcha
      * @param string $placeholderPath The path to the placeholder image, with the name of the file included.
      * @return false|\GdImage|resource The generated image.
      */
-    public function generateImage($iconPath, $placeholderPath)
+    private function generateChallengeImage($iconPath, $placeholderPath)
     {
         // Prepare the placeholder image.
         $placeholder = imagecreatefrompng($placeholderPath);
@@ -433,42 +470,6 @@ class IconCaptcha
         }
 
         return $placeholder;
-    }
-
-    /**
-     * Invalidates the captcha session linked to the given captcha identifier.
-     * The data stored inside the session will be destroyed, as the session will be unset.
-     *
-     * @param int $identifier The identifier of the captcha.
-     */
-    public function invalidateSession($identifier)
-    {
-        // Unset the previous session data
-        $this->createSession($identifier);
-        $this->session->destroy();
-    }
-
-    /**
-     * Validates the global captcha session token against the given payload token and sometimes against a header token
-     * as well. All the given tokens must match the global captcha session token to pass the check. This function
-     * will only validate the given tokens if the 'token' option is set to TRUE. If the 'token' option is set to anything
-     * else other than TRUE, the check will be skipped.
-     *
-     * @param string $payloadToken The token string received via the HTTP request body.
-     * @param string|null $headerToken The token string received via the HTTP request headers. This value is optional,
-     * as not every request will contain custom HTTP headers and thus this token should be able to be skipped. Default
-     * value is NULL. When the value is set to anything else other than NULL, the given value will be checked against
-     * the captcha session token.
-     * @return bool TRUE if the captcha session token matches the given tokens or if the token option is disabled,
-     * FALSE if the captcha session token does not match the given tokens.
-     */
-    public function validateToken($payloadToken, $headerToken = null)
-    {
-        // Only validate if the token option is enabled.
-        if (!empty($this->options['token'])) {
-            return (new $this->options['token'])->validate($payloadToken, $headerToken);
-        }
-        return true;
     }
 
     /**
