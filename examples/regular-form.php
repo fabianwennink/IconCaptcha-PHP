@@ -7,12 +7,7 @@
      */
 
     // Include the IconCaptcha classes.
-    require('../src/IconCaptchaSessionInterface.php');
-    require('../src/IconCaptchaSession.php');
-    require('../src/IconCaptchaTokenInterface.php');
-    require('../src/IconCaptchaToken.php');
-    require('../src/IconCaptchaOptions.php');
-    require('../src/IconCaptcha.php');
+    require_once '../vendor/autoload.php';
 
     use IconCaptcha\IconCaptcha;
     use IconCaptcha\IconCaptchaToken;

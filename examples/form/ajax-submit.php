@@ -7,14 +7,8 @@
  * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
  */
 
-// Start a PHP session.
-session_start();
-
 // Include the IconCaptcha classes.
-require('../../src/IconCaptchaSessionInterface.php');
-require('../../src/IconCaptchaSession.php');
-require('../../src/IconCaptchaOptions.php');
-require('../../src/IconCaptcha.php');
+require_once '../../vendor/autoload.php';
 
 use IconCaptcha\IconCaptcha;
 
