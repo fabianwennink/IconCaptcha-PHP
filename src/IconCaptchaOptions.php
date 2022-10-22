@@ -9,6 +9,9 @@
 
 namespace IconCaptcha;
 
+use IconCaptcha\Session\IconCaptchaSession;
+use IconCaptcha\Token\IconCaptchaToken;
+
 class IconCaptchaOptions
 {
     /**

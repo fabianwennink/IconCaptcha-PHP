@@ -7,7 +7,7 @@
  * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
  */
 
-namespace IconCaptcha;
+namespace IconCaptcha\Session;
 
 class IconCaptchaSession implements IconCaptchaSessionInterface
 {

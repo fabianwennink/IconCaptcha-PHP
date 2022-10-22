@@ -10,13 +10,13 @@
 // Include the captcha classes.
 require_once '../vendor/autoload.php';
 
-use IconCaptcha\IconCaptcha;
+use IconCaptcha\IconCaptchaFacade;
 
 // To prevent having to copy the options to every file, a 'config' file was created.
 $options = require('captcha-config.php');
 
 // Create an instance of the IconCaptcha request processing class.
-$captchaRequest = (new IconCaptcha($options))->request();
+$captchaRequest = (new IconCaptchaFacade($options))->request();
 
 // HTTP POST, used when generating and (in)validating the captcha.
 if($captchaRequest->isCaptchaAjaxRequest()) {

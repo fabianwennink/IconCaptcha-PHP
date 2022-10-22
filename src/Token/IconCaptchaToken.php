@@ -1,6 +1,8 @@
 <?php
 
-namespace IconCaptcha;
+namespace IconCaptcha\Token;
+
+use IconCaptcha\IconCaptcha;
 
 class IconCaptchaToken implements IconCaptchaTokenInterface
 {

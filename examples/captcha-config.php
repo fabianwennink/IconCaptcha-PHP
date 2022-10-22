@@ -1,6 +1,6 @@
 <?php
 
-use IconCaptcha\IconCaptchaSession;
+use IconCaptcha\Session\IconCaptchaSession;
 use IconCaptcha\Token\IconCaptchaToken;
 
 // All options are optional, and are using their default values.

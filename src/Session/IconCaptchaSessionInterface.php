@@ -1,6 +1,6 @@
 <?php
 
-namespace IconCaptcha;
+namespace IconCaptcha\Session;
 
 interface IconCaptchaSessionInterface
 {

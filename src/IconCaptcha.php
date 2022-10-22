@@ -9,16 +9,26 @@
 
 namespace IconCaptcha;
 
+use IconCaptcha\Session\IconCaptchaSessionInterface;
+
 class IconCaptcha
 {
     const CAPTCHA_FIELD_SELECTION = 'ic-hf-se';
+
     const CAPTCHA_FIELD_ID = 'ic-hf-id';
+
     const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
+
     const CAPTCHA_FIELD_TOKEN = '_iconcaptcha-token';
+
     const CAPTCHA_IMAGE_SIZE = 320;
+
     const CAPTCHA_ICONS_FOLDER_COUNT = 180;
+
     const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
+
     const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
+
     const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
 
     /**
@@ -50,14 +60,6 @@ class IconCaptcha
     public function options($options)
     {
         $this->options = IconCaptchaOptions::prepare($options);
-    }
-
-    /**
-     * @return IconCaptchaRequest
-     */
-    public function request()
-    {
-        return new IconCaptchaRequest($this);
     }
 
     /**
