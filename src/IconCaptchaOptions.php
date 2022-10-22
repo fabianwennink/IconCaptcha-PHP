@@ -11,16 +11,14 @@ namespace IconCaptcha;
 
 class IconCaptchaOptions
 {
-    const DEFAULT_BORDER_COLOR = [240, 240, 240];
-
     /**
      * @var mixed Default values for all the server-side options.
      */
     const DEFAULT_OPTIONS = [
-        'iconPath' => null, // required
+        'iconPath' => null,
         'themes' => [
-            'light' => ['icons' => 'light', 'color' => self::DEFAULT_BORDER_COLOR],
-            'legacy-light' => ['icons' => 'light', 'color' => self::DEFAULT_BORDER_COLOR],
+            'light' => ['icons' => 'light', 'color' => [240, 240, 240]],
+            'legacy-light' => ['icons' => 'light', 'color' => [240, 240, 240]],
             'dark' => ['icons' => 'dark', 'color' => [64, 64, 64]],
             'legacy-dark' => ['icons' => 'dark', 'color' => [64, 64, 64]],
         ],
@@ -61,12 +59,20 @@ class IconCaptchaOptions
     {
         // Merge the given options and default options together.
         $mergedOptions = array_merge(self::DEFAULT_OPTIONS, $options);
-        $mergedOptions['themes'] = array_merge(self::DEFAULT_OPTIONS['themes'], $options['themes']);
 
-        // TODO improve the option merging.
+        // Merge the extra themes with the default themes.
+        if(isset($options['themes']) && is_array($options['themes'])) {
+            $mergedOptions['themes'] = array_merge(self::DEFAULT_OPTIONS['themes'], $options['themes']);
+        }
 
-        // Update the icon path string.
-        $mergedOptions['iconPath'] = (is_string($mergedOptions['iconPath'])) ? rtrim($mergedOptions['iconPath'], '/') : '';
+        // Trim the custom icon folder path of slashes. If no custom path is set, use the default path.
+        // When using Composer, the 'iconPath' option always points to the default path in the vendor folder.
+        if(isset($options['iconPath'])) {
+            $mergedOptions['iconPath'] = rtrim($mergedOptions['iconPath'], DIRECTORY_SEPARATOR);
+        } else {
+            $mergedOptions['iconPath'] = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'
+                . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'icons';
+        }
 
         return $mergedOptions;
     }
