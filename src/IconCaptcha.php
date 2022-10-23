@@ -1,7 +1,7 @@
 <?php
 
 /**
- * IconCaptcha Plugin: v3.1.0
+ * IconCaptcha Plugin: v3.1.1
  * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -412,9 +412,9 @@ class IconCaptcha
         // Image pixel information.
         $iconCount = count($this->session->icons);
         $iconSize = self::CAPTCHA_ICON_SIZES[$iconCount];
-        $iconOffset = ((self::CAPTCHA_IMAGE_SIZE / $iconCount) - 30) / 2;
-        $iconOffsetAdd = (self::CAPTCHA_IMAGE_SIZE / $iconCount) - $iconSize;
-        $iconLineSize = self::CAPTCHA_IMAGE_SIZE / $iconCount;
+        $iconOffset = (int)(((self::CAPTCHA_IMAGE_SIZE / $iconCount) - 30) / 2);
+        $iconOffsetAdd = (int)((self::CAPTCHA_IMAGE_SIZE / $iconCount) - $iconSize);
+        $iconLineSize = (int)(self::CAPTCHA_IMAGE_SIZE / $iconCount);
 
         // Options.
         $rotateEnabled = $this->options['image']['rotate'];
