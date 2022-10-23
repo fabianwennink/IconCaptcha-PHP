@@ -232,7 +232,7 @@ class IconCaptcha
     /**
      * Displays an image containing multiple icons in a random order for the current captcha instance, linked
      * to the given captcha identifier. Headers will be set to prevent caching of the image. In case the captcha
-     * image was already requested once, a HTTP status '403 Forbidden' will be set and no image will be returned.
+     * image was already requested once, an HTTP status '403 Forbidden' will be set and no image will be returned.
      *
      * The image will only be rendered once as a PNG, and be destroyed right after rendering.
      *

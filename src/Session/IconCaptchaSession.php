@@ -9,6 +9,16 @@
 
 namespace IconCaptcha\Session;
 
+/**
+ * @property array icons The positions of the icon on the generated image.
+ * @property array iconIds List of used icon IDs.
+ * @property int correctId The icon ID of the correct answer/icon.
+ * @property string mode The name of the theme used by the captcha instance.
+ * @property bool requested If the captcha image has been requested yet.
+ * @property bool completed If the captcha was completed (correct icon selected) or not.
+ * @property int attempts The number of times an incorrect answer was given.
+ * @property int attemptsTimeout The timestamp, at which the timeout for entering too many incorrect guesses expires.
+ */
 class IconCaptchaSession implements IconCaptchaSessionInterface
 {
     const SESSION_NAME = 'iconcaptcha';
@@ -46,6 +56,7 @@ class IconCaptchaSession implements IconCaptchaSessionInterface
         $this->session['requested'] = false;
         $this->session['completed'] = false;
         $this->session['attempts'] = 0;
+        $this->session['attemptsTimeout'] = 0;
     }
 
     /**
@@ -68,13 +79,14 @@ class IconCaptchaSession implements IconCaptchaSessionInterface
             $this->session = $_SESSION[self::SESSION_NAME][$this->id];
         } else {
             $this->session = [
-                'icons' => [], // The positions of the icon on the generated image.
-                'iconIds' => [], // List of used icon IDs.
-                'correctId' => 0, // The icon ID of the correct answer/icon.
-                'mode' => 'light', // The name of the theme used by the captcha instance.
-                'requested' => false, // If the captcha image has been requested yet.
-                'completed' => false, // If the captcha was completed (correct icon selected) or not.
-                'attempts' => 0, // The number of times an incorrect answer was given.
+                'icons' => [],
+                'iconIds' => [],
+                'correctId' => 0,
+                'mode' => 'light',
+                'requested' => false,
+                'completed' => false,
+                'attempts' => 0,
+                'attemptsTimeout' => 0,
             ];
         }
     }
