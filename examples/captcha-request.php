@@ -13,7 +13,7 @@ require_once '../vendor/autoload.php';
 use IconCaptcha\IconCaptchaFacade;
 
 // To prevent having to copy the options to every file, a 'config' file was created.
-$options = require('captcha-config.php');
+$options = require_once 'captcha-config.php';
 
 // Create an instance of the IconCaptcha request processing class.
 $captchaRequest = (new IconCaptchaFacade($options))->request();

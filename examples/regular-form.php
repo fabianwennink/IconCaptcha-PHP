@@ -16,7 +16,7 @@
     if(!empty($_POST)) {
 
         // To prevent having to copy the options to every file, a 'config' file was created.
-        $options = require('captcha-config.php');
+        $options = require_once 'captcha-config.php';
 
         // Take a look at the README file to see every available option.
         // All options are optional using default values, apart from the 'iconPath'.
