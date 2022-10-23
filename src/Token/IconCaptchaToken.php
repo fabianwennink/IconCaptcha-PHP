@@ -4,14 +4,15 @@ namespace IconCaptcha\Token;
 
 use IconCaptcha\IconCaptcha;
 
-class IconCaptchaToken implements IconCaptchaTokenInterface
+class IconCaptchaToken extends AbstractCaptchaToken implements IconCaptchaTokenInterface
 {
     const SESSION_NAME = 'iconcaptcha';
 
     const SESSION_TOKEN = 'token';
 
-    const CAPTCHA_TOKEN_LENGTH = 20;
-
+    /**
+     * @inheritDoc
+     */
     public static function get()
     {
         $self = new self();
@@ -25,9 +26,17 @@ class IconCaptchaToken implements IconCaptchaTokenInterface
         }
 
         // When no token exists, generate one.
-        return $self->generate();
+        $token = $self->generate();
+
+        // Save the token to the session.
+        $self->store($token);
+
+        return $token;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function render()
     {
         $token = self::get();
@@ -43,42 +52,8 @@ class IconCaptchaToken implements IconCaptchaTokenInterface
     {
         $sessionToken = $this->retrieve();
 
-        // If the token is empty but the option is enabled, the token was never requested.
-        if (empty($sessionToken)) {
-            return false;
-        }
-
-        // Validate the payload and header token (if set) against the session token.
-        if ($headerToken !== null) {
-            return $sessionToken === $payloadToken && $sessionToken === $headerToken;
-        } else {
-            return $sessionToken === $payloadToken;
-        }
-    }
-
-    private function generate()
-    {
-        // Create a secure captcha session token.
-        if (function_exists('random_bytes')) {
-            // Only available for PHP 7 or higher.
-            try {
-                $token = bin2hex(random_bytes(self::CAPTCHA_TOKEN_LENGTH));
-            } catch (\Exception $e) {
-                // Using a fallback in case of an exception.
-                $token = str_shuffle(md5(uniqid(rand(), true)));
-            }
-        } elseif (function_exists('openssl_random_pseudo_bytes')) {
-            // Only available when the OpenSSL extension is installed.
-            $token = bin2hex(openssl_random_pseudo_bytes(self::CAPTCHA_TOKEN_LENGTH));
-        } else {
-            // If not on PHP 7+ or having the OpenSSL extension installed, use this fallback.
-            $token = str_shuffle(md5(uniqid(rand(), true)));
-        }
-
-        // Save the token to the session.
-        $this->store($token);
-
-        return $token;
+        // Validate the token.
+        return $this->compareToken($sessionToken, $payloadToken, $headerToken);
     }
 
     private function store($token)
