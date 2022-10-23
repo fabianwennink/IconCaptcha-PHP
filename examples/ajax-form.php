@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v3.1.0
+     * IconCaptcha Plugin: v3.1.1
      * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -62,20 +62,20 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>IconCaptcha v3.1.0 - By Fabian Wennink</title>
+        <title>IconCaptcha v3.1.1 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="../assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
         <!-- JUST FOR THE DEMO PAGE -->
-        <link href="../assets/demo.css" rel="stylesheet" type="text/css">
-        <script src="../assets/demo.js" type="text/javascript"></script>
-        <link href="//fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
+        <link href="assets/demo.css" rel="stylesheet" type="text/css">
+        <script src="assets/demo.js" type="text/javascript"></script>
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
         <!-- Include IconCaptcha stylesheet - REQUIRED -->
-        <link href="../assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
+        <link href="assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div class="container">
@@ -89,7 +89,7 @@
             <div class="shields">
                 <div class="shields-row">
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/badge/Version-3.1.0-orange.svg?style=flat-square" alt="Version 3.1.0 Badge" />
+                        <img src="https://img.shields.io/badge/Version-3.1.1-orange.svg?style=flat-square" alt="Version 3.1.1 Badge" />
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
                         <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
@@ -162,13 +162,13 @@
                 data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
 
         <!-- Include IconCaptcha script - REQUIRED -->
-        <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
+        <script src="assets/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Include jQuery Library -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <!-- Include IconCaptcha script - REQUIRED -->
-        <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
+        <script src="assets/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Initialize the IconCaptcha - REQUIRED -->
         <script type="text/javascript">

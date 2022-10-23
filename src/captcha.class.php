@@ -1,7 +1,7 @@
 <?php
 
 /**
- * IconCaptcha Plugin: v3.1.0
+ * IconCaptcha Plugin: v3.1.1
  * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -396,7 +396,7 @@ class IconCaptcha
             self::$session->save();
 
             $iconsDirectoryPath = self::$options['iconPath'];
-            $placeholder = $iconsDirectoryPath . DIRECTORY_SEPARATOR . 'placeholder.png';
+            $placeholder = $iconsDirectoryPath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'placeholder.png';
 
             // Check if the placeholder icon exists.
             if (is_file($placeholder)) {
@@ -447,9 +447,9 @@ class IconCaptcha
         // Image pixel information.
         $iconCount = count(self::$session->icons);
         $iconSize = self::CAPTCHA_ICON_SIZES[$iconCount];
-        $iconOffset = ((self::CAPTCHA_IMAGE_SIZE / $iconCount) - 30) / 2;
-        $iconOffsetAdd = (self::CAPTCHA_IMAGE_SIZE / $iconCount) - $iconSize;
-        $iconLineSize = self::CAPTCHA_IMAGE_SIZE / $iconCount;
+        $iconOffset = (int)(((self::CAPTCHA_IMAGE_SIZE / $iconCount) - 30) / 2);
+        $iconOffsetAdd = (int)((self::CAPTCHA_IMAGE_SIZE / $iconCount) - $iconSize);
+        $iconLineSize = (int)(self::CAPTCHA_IMAGE_SIZE / $iconCount);
 
         // Options.
         $rotateEnabled = self::$options['image']['rotate'];
