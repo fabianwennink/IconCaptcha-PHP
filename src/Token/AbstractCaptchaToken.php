@@ -2,7 +2,7 @@
 
 namespace IconCaptcha\Token;
 
-class AbstractCaptchaToken
+abstract class AbstractCaptchaToken
 {
     const CAPTCHA_TOKEN_LENGTH = 20;
 
