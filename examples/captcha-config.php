@@ -35,5 +35,5 @@ return [
     ],
     'token' => \IconCaptcha\Token\IconCaptchaToken::class, // to disable, replace with 'null'.
     'session' => \IconCaptcha\Session\IconCaptchaSession::class,
-    'generator' => \IconCaptcha\Challenge\Generators\GD::class,
+    'generator' => \IconCaptcha\Challenge\Generators\GD::class, // a generator for ImageMagick (Imagick::class) is also available.
 ];
