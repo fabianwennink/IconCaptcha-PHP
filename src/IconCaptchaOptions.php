@@ -9,6 +9,7 @@
 
 namespace IconCaptcha;
 
+use IconCaptcha\Challenge\Generators\GD;
 use IconCaptcha\Session\IconCaptchaSession;
 use IconCaptcha\Token\IconCaptchaToken;
 
@@ -50,6 +51,7 @@ class IconCaptchaOptions
         ],
         'token' => IconCaptchaToken::class,
         'session' => IconCaptchaSession::class,
+        'generator' => GD::class,
     ];
 
     /**

@@ -1,8 +1,5 @@
 <?php
 
-use IconCaptcha\Session\IconCaptchaSession;
-use IconCaptcha\Token\IconCaptchaToken;
-
 // All options are optional, and are using their default values.
 // Take a look at the GitHub Wiki for information about every option.
 return [
@@ -36,6 +33,7 @@ return [
         'amount' => 3,
         'timeout' => 60 // seconds.
     ],
-    'token' => IconCaptchaToken::class, // to disable, replace with 'null'.
-    'session' => IconCaptchaSession::class,
+    'token' => \IconCaptcha\Token\IconCaptchaToken::class, // to disable, replace with 'null'.
+    'session' => \IconCaptcha\Session\IconCaptchaSession::class,
+    'generator' => \IconCaptcha\Challenge\Generators\GD::class,
 ];

@@ -21,15 +21,9 @@ class IconCaptcha
 
     const CAPTCHA_FIELD_TOKEN = '_iconcaptcha-token';
 
-    const CAPTCHA_IMAGE_SIZE = 320;
-
     const CAPTCHA_ICONS_FOLDER_COUNT = 180;
 
-    const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
-
     const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
-
-    const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
 
     /**
      * @var string A JSON encoded error message, which will be shown to the user.
@@ -93,6 +87,7 @@ class IconCaptcha
 
         // Check if the max attempts limit has been reached and a timeout is active.
         // If reached, return an error and the remaining time.
+        // TODO timeout check should move to request class.
         if ($this->session->attemptsTimeout > 0) {
             if (time() <= $this->session->attemptsTimeout) {
                 return base64_encode(json_encode([
@@ -265,21 +260,13 @@ class IconCaptcha
                 $themeIconColor = $this->options['themes'][$this->session->mode]['icons'];
                 $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . $themeIconColor . DIRECTORY_SEPARATOR;
 
-                // Generate the captcha image.
-                $generatedImage = $this->generateChallengeImage($iconPath, $placeholder);
+                // Instantiate the challenge image generator.
+                $imageGenerator = new $this->options['generator']($this->session, $this->options);
 
-                // Set the content type header to the PNG MIME-type.
-                header('Content-type: image/png');
-
-                // Disable caching of the image.
-                header('Expires: 0');
-                header('Cache-Control: no-cache, no-store, must-revalidate');
-                header('Cache-Control: post-check=0, pre-check=0', false);
-                header('Pragma: no-cache');
-
-                // Show the image and exit the code
-                imagepng($generatedImage);
-                imagedestroy($generatedImage);
+                // Generate and render the challenge.
+                $imageGenerator->render(
+                    $imageGenerator->generate($iconPath, $placeholder)
+                );
             }
         }
     }
@@ -387,91 +374,6 @@ class IconCaptcha
             return (new $this->options['token'])->validate($payloadToken, $headerToken);
         }
         return true;
-    }
-
-    /**
-     * Returns a generated image containing the icons for the current captcha instance. The icons will be copied
-     * onto a placeholder image, located at the $placeholderPath. The icons will be randomly rotated and flipped
-     * based on the captcha options.
-     *
-     * @param string $iconPath The path to the folder holding the icons.
-     * @param string $placeholderPath The path to the placeholder image, with the name of the file included.
-     * @return false|\GdImage|resource The generated image.
-     */
-    private function generateChallengeImage($iconPath, $placeholderPath)
-    {
-        // Prepare the placeholder image.
-        $placeholder = imagecreatefrompng($placeholderPath);
-
-        // Prepare the icon images.
-        $iconImages = [];
-        foreach ($this->session->iconIds as $id) {
-            $iconImages[$id] = imagecreatefrompng($iconPath . 'icon-' . $id . '.png');
-        }
-
-        // Image pixel information.
-        $iconCount = count($this->session->icons);
-        $iconSize = self::CAPTCHA_ICON_SIZES[$iconCount];
-        $iconOffset = (int)(((self::CAPTCHA_IMAGE_SIZE / $iconCount) - 30) / 2);
-        $iconOffsetAdd = (int)((self::CAPTCHA_IMAGE_SIZE / $iconCount) - $iconSize);
-        $iconLineSize = (int)(self::CAPTCHA_IMAGE_SIZE / $iconCount);
-
-        // Options.
-        $rotateEnabled = $this->options['image']['rotate'];
-        $flipHorizontally = $this->options['image']['flip']['horizontally'];
-        $flipVertically = $this->options['image']['flip']['vertically'];
-        $borderEnabled = $this->options['image']['border'];
-
-        // Create the border color, if enabled.
-        if ($borderEnabled) {
-
-            // Determine border color.
-            if (key_exists($this->session->mode, $this->options['themes'])
-                && count($this->options['themes'][$this->session->mode]['color']) === 3) {
-                $color = $this->options['themes'][$this->session->mode]['color'];
-            } else {
-                $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
-            }
-
-            $borderColor = imagecolorallocate($placeholder, $color[0], $color[1], $color[2]);
-        }
-
-        // Copy the icons onto the placeholder.
-        $xOffset = $iconOffset;
-        for ($i = 0; $i < $iconCount; $i++) {
-
-            // Get the icon image from the array. Use position to get the icon ID.
-            $icon = $iconImages[$this->session->icons[$i + 1]];
-
-            // Rotate icon, if enabled.
-            if ($rotateEnabled) {
-                $degree = mt_rand(1, 4);
-                if ($degree !== 4) { // Only if the 'degree' is not the same as what it would already be at.
-                    $icon = imagerotate($icon, $degree * 90, 0);
-                }
-            }
-
-            // Flip icon horizontally, if enabled.
-            if ($flipHorizontally && mt_rand(1, 2) === 1) {
-                imageflip($icon, IMG_FLIP_HORIZONTAL);
-            }
-
-            // Flip icon vertically, if enabled.
-            if ($flipVertically && mt_rand(1, 2) === 1) {
-                imageflip($icon, IMG_FLIP_VERTICAL);
-            }
-
-            // Copy the icon onto the placeholder.
-            imagecopy($placeholder, $icon, ($iconSize * $i) + $xOffset, 10, 0, 0, 30, 30);
-            $xOffset += $iconOffsetAdd;
-
-            // Add the vertical separator lines to the placeholder, if enabled.
-            if ($borderEnabled && $i > 0) {
-                imageline($placeholder, $iconLineSize * $i, 0, $iconLineSize * $i, 50, $borderColor);
-            }
-        }
-
-        return $placeholder;
     }
 
     /**
