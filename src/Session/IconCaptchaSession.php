@@ -48,6 +48,14 @@ class IconCaptchaSession implements IconCaptchaSessionInterface
     /**
      * @inheritDoc
      */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function clear()
     {
         $this->session['icons'] = [];

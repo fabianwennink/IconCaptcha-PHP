@@ -10,8 +10,14 @@ abstract class AbstractImageGenerator implements GeneratorInterface
 
     const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
 
+    /**
+     * @var \IconCaptcha\Session\IconCaptchaSession $session
+     */
     private $session;
 
+    /**
+     * @var array $options
+     */
     private $options;
 
     public function __construct($session, $options)

@@ -5,6 +5,12 @@ namespace IconCaptcha\Session;
 interface IconCaptchaSessionInterface
 {
     /**
+     * Returns the identifier of the session.
+     * @return string
+     */
+    public function getId();
+
+    /**
      * This will clear the set hashes, and reset the icon
      * request counter and last clicked icon.
      */

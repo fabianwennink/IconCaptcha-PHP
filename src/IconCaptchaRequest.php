@@ -32,14 +32,13 @@ class IconCaptchaRequest
 
     public function renderChallenge()
     {
-        // HTTP GET
         if ($this->isChallengeRenderRequest()) {
 
             // Decode the payload.
             $payload = $this->decodePayload($_GET['payload']);
 
             // Validate the payload content.
-            if (!isset($payload, $payload['i']) || !is_numeric($payload['i'])) {
+            if (!isset($payload, $payload['i']) || !is_numeric($payload['i']) || (int)$payload['i'] < 0) {
                 $this->badRequest();
             }
 
@@ -48,7 +47,7 @@ class IconCaptchaRequest
                 $this->tokenError();
             }
 
-            $this->captcha->getChallenge($payload['i']);
+            $this->captcha->challenge($payload['i'])->render();
             exit;
         }
 
@@ -72,6 +71,8 @@ class IconCaptchaRequest
                 $this->tokenError();
             }
 
+            $identifier = $payload['i'];
+
             switch ((int)$payload['a']) {
                 case 1: // Requesting the image hashes
 
@@ -81,9 +82,15 @@ class IconCaptchaRequest
                     // Echo the captcha data.
                     http_response_code(200);
                     header('Content-type: text/plain');
-                    exit($this->captcha->getCaptchaData($theme, $payload['i']));
+                    exit($this->captcha->challenge($identifier)->initialize($theme));
                 case 2: // Setting the user's choice
-                    if ($this->captcha->makeSelection($payload)) {
+
+                    // Check if the captcha ID and required other payload data is set.
+                    if (!isset($payload['x'], $payload['y'], $payload['w'])) {
+                        $this->badRequest();
+                    }
+
+                    if ($this->captcha->challenge($identifier)->makeSelection($payload)) {
                         http_response_code(200);
                         exit;
                     }

@@ -9,21 +9,16 @@
 
 namespace IconCaptcha;
 
+use IconCaptcha\Challenge\Challenge;
 use IconCaptcha\Session\IconCaptchaSessionInterface;
 
 class IconCaptcha
 {
-    const CAPTCHA_FIELD_SELECTION = 'ic-hf-se';
-
     const CAPTCHA_FIELD_ID = 'ic-hf-id';
 
     const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
 
     const CAPTCHA_FIELD_TOKEN = '_iconcaptcha-token';
-
-    const CAPTCHA_ICONS_FOLDER_COUNT = 180;
-
-    const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
 
     /**
      * @var string A JSON encoded error message, which will be shown to the user.
@@ -46,7 +41,7 @@ class IconCaptcha
     }
 
     /**
-     * Overwrite the options for the captcha. The given options will be merged together with the
+     * Override the options for the captcha. The given options will be merged together with the
      * default options and overwrite the default values. If any of the options are missing
      * in the given options array, they will be set with their default value.
      * @param array $options The array of options.
@@ -54,6 +49,12 @@ class IconCaptcha
     public function options($options)
     {
         $this->options = IconCaptchaOptions::prepare($options);
+    }
+
+    public function challenge($identifier)
+    {
+        $this->createSession($identifier);
+        return new Challenge($this->session, $this->options);
     }
 
     /**
@@ -64,211 +65,6 @@ class IconCaptcha
     public function getErrorMessage()
     {
         return !empty($this->error) ? json_decode($this->error)->error : null;
-    }
-
-    /**
-     * Initializes the state of a captcha. The amount of icons shown in the captcha image, their positions,
-     * which icon is correct and which icon identifiers should be used will all be determined in this function.
-     * This information will be stored a captcha session, implementing {@see IconCaptchaSessionInterface}.
-     * The details required to initialize the client will be returned as a base64 encoded JSON string.
-     *
-     * In case a timeout is detected, no state will be initialized and an error message
-     * will be returned, also as a base64 encoded JSON string.
-     *
-     * @param string $theme The theme of the captcha.
-     * @param int $identifier The identifier of the captcha.
-     *
-     * @return string Captcha details required to initialize the client.
-     */
-    public function getCaptchaData($theme, $identifier)
-    {
-        // Set the captcha id property
-        $this->createSession($identifier);
-
-        // Check if the max attempts limit has been reached and a timeout is active.
-        // If reached, return an error and the remaining time.
-        // TODO timeout check should move to request class.
-        if ($this->session->attemptsTimeout > 0) {
-            if (time() <= $this->session->attemptsTimeout) {
-                return base64_encode(json_encode([
-                    'error' => 1, 'data' => ($this->session->attemptsTimeout - time()) * 1000 // remaining time.
-                ]));
-            } else {
-                $this->session->attemptsTimeout = 0;
-                $this->session->attempts = 0;
-            }
-        }
-
-        $minIconAmount = $this->options['image']['amount']['min'];
-        $maxIconAmount = $this->options['image']['amount']['max'];
-
-        // Determine the number of icons to add to the image.
-        $iconAmount = $minIconAmount;
-        if ($minIconAmount !== $maxIconAmount) {
-            $iconAmount = mt_rand($minIconAmount, $maxIconAmount);
-        }
-
-        // Number of times the correct image will be placed onto the placeholder.
-        $correctIconAmount = mt_rand(1, self::CAPTCHA_MAX_LOWEST_ICON_COUNT[$iconAmount]);
-        $totalIconAmount = $this->calculateIconAmounts($iconAmount, $correctIconAmount);
-        $totalIconAmount[] = $correctIconAmount;
-
-        // Icon position and ID information.
-        $iconPositions = [];
-        $iconIds = [];
-        $correctIconId = -1;
-
-        // Create a random 'icon position' order.
-        $tempPositions = range(1, $iconAmount);
-        shuffle($tempPositions);
-
-        // Generate the icon positions/IDs array.
-        $i = 0;
-        while (count($iconIds) < count($totalIconAmount)) {
-
-            // Generate a random icon ID. If it is not in use yet, process it.
-            $tempIconId = mt_rand(1, self::CAPTCHA_ICONS_FOLDER_COUNT);
-            if (!in_array($tempIconId, $iconIds)) {
-                $iconIds[] = $tempIconId;
-
-                // Assign the current icon ID to one or more positions.
-                for ($j = 0; $j < $totalIconAmount[$i]; $j++) {
-                    $tempKey = array_pop($tempPositions);
-                    $iconPositions[$tempKey] = $tempIconId;
-                }
-
-                // Set the least appearing icon ID as the correct icon ID.
-                if ($correctIconId === -1 && min($totalIconAmount) === $totalIconAmount[$i]) {
-                    $correctIconId = $tempIconId;
-                }
-
-                $i++;
-            }
-        }
-
-        // Get the last attempts count to restore, after clearing the session.
-        $attemptsCount = $this->session->attempts;
-
-        // Unset the previous session data.
-        $this->session->clear();
-
-        // Set the chosen icons and position and reset the requested status.
-        $this->session->mode = $theme;
-        $this->session->icons = $iconPositions;
-        $this->session->iconIds = $iconIds;
-        $this->session->correctId = $correctIconId;
-        $this->session->requested = false;
-        $this->session->attempts = $attemptsCount;
-        $this->session->save();
-
-        // Return the captcha details.
-        return base64_encode(json_encode([
-            'id' => $identifier
-        ]));
-    }
-
-    /**
-     * Checks if the by the user selected icon is the correct icon. Whether the clicked icon is correct or not
-     * will be determined based on the clicked X and Y coordinates and the width of the IconCaptcha DOM element.
-     *
-     * If the selected icon is indeed the correct icon, the captcha session linked to the captcha identifier
-     * will be marked as completed and TRUE will be returned. If an incorrect icon was selected, the session will
-     * be marked as incomplete, the 'attempts' counter will be incremented by 1 and FALSE will be returned.
-     *
-     * A check will also take place to see if a timeout should set for the user, based on the options and attempts counter.
-     *
-     * @param array $payload The payload of the HTTP Post request, containing the captcha identifier, clicked X
-     * and X coordinates and the width of the captcha element.
-     *
-     * @return boolean TRUE if the correct icon was selected, FALSE if not.
-     */
-    public function makeSelection($payload)
-    {
-        if (!empty($payload)) {
-
-            // Check if the captcha ID and required other payload data is set.
-            if (!isset($payload['i'], $payload['x'], $payload['y'], $payload['w'])) {
-                return false;
-            }
-
-            // Initialize the session.
-            $this->createSession($payload['i']);
-
-            // Get the clicked position.
-            $clickedPosition = $this->determineClickedIcon($payload['x'], $payload['y'], $payload['w'], count($this->session->icons));
-
-            // Check if the selection is set and matches the position from the session.
-            if ($this->session->icons[$clickedPosition] === $this->session->correctId) {
-                $this->session->attempts = 0;
-                $this->session->attemptsTimeout = 0;
-                $this->session->completed = true;
-                $this->session->save();
-
-                return true;
-            } else {
-                $this->session->completed = false;
-
-                // Increase the attempts counter.
-                $this->session->attempts += 1;
-
-                // If the max amount has been reached, set a timeout (if set).
-                if ($this->session->attempts === $this->options['attempts']['amount']
-                    && $this->options['attempts']['timeout'] > 0) {
-                    $this->session->attemptsTimeout = time() + $this->options['attempts']['timeout'];
-                }
-
-                $this->session->save();
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Displays an image containing multiple icons in a random order for the current captcha instance, linked
-     * to the given captcha identifier. Headers will be set to prevent caching of the image. In case the captcha
-     * image was already requested once, an HTTP status '403 Forbidden' will be set and no image will be returned.
-     *
-     * The image will only be rendered once as a PNG, and be destroyed right after rendering.
-     *
-     * @param int $identifier The identifier of the captcha.
-     */
-    public function getChallenge($identifier = null)
-    {
-        // Check if the captcha id is set
-        if (isset($identifier) && $identifier > -1) {
-
-            // Initialize the session.
-            $this->createSession($identifier);
-
-            // Check the amount of times an icon has been requested
-            if ($this->session->requested) {
-                header('HTTP/1.1 403 Forbidden');
-                exit;
-            }
-
-            $this->session->requested = true;
-            $this->session->save();
-
-            $iconsDirectoryPath = $this->options['iconPath'];
-            $placeholder = $iconsDirectoryPath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'placeholder.png';
-
-            // Check if the placeholder icon exists.
-            if (is_file($placeholder)) {
-
-                // Format the path to the icon directory.
-                $themeIconColor = $this->options['themes'][$this->session->mode]['icons'];
-                $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . $themeIconColor . DIRECTORY_SEPARATOR;
-
-                // Instantiate the challenge image generator.
-                $imageGenerator = new $this->options['generator']($this->session, $this->options);
-
-                // Generate and render the challenge.
-                $imageGenerator->render(
-                    $imageGenerator->generate($iconPath, $placeholder)
-                );
-            }
-        }
     }
 
     /**
@@ -301,7 +97,6 @@ class IconCaptcha
         }
 
         // Verify if the captcha token is correct.
-        // TODO check missing for token validation.
         $token = (isset($request[self::CAPTCHA_FIELD_TOKEN])) ? $request[self::CAPTCHA_FIELD_TOKEN] : null;
         if (!$this->validateToken($token)) {
             $this->setErrorMessage(6, $this->options['messages']['form_token']);
@@ -314,27 +109,15 @@ class IconCaptcha
         // Initialize the session.
         $this->createSession($identifier);
 
-        // Check if the selection field is set.
-        if (!empty($request[self::CAPTCHA_FIELD_SELECTION]) && is_string($request[self::CAPTCHA_FIELD_SELECTION])) {
+        // Check if the captcha was completed.
+        if ($this->session->completed === true) {
 
-            // Parse the selection.
-            $selection = explode(',', $request[self::CAPTCHA_FIELD_SELECTION]);
-            if (count($selection) === 3) {
-                $clickedPosition = $this->determineClickedIcon($selection[0], $selection[1], $selection[2], count($this->session->icons));
-            }
-
-            // If the clicked position matches the stored position, the form can be submitted.
-            if ($this->session->completed === true &&
-                (isset($clickedPosition) && $this->session->icons[$clickedPosition] === $this->session->correctId)) {
-
-                // Invalidate the captcha to prevent resubmission of a form on the same captcha.
-                $this->invalidate($identifier);
-                return true;
-            } else {
-                $this->setErrorMessage(1, $this->options['messages']['wrong_icon']);
-            }
+            // Invalidate the captcha to prevent resubmission of a form on the same captcha.
+            $this->invalidate($identifier);
+            return true;
         } else {
-            $this->setErrorMessage(2, $this->options['messages']['no_selection']);
+            // TODO create new error message stating the form wasn't completed.
+            $this->setErrorMessage(1, $this->options['messages']['wrong_icon']);
         }
 
         return false;
@@ -374,63 +157,6 @@ class IconCaptcha
             return (new $this->options['token'])->validate($payloadToken, $headerToken);
         }
         return true;
-    }
-
-    /**
-     * Returns the clicked icon position based on the X and Y position and the captcha width.
-     *
-     * @param $clickedXPos int The X position of the click.
-     * @param $clickedYPos int The Y position of the click.
-     * @param $captchaWidth int The width of the captcha.
-     *
-     * @return int The selected icon position.
-     */
-    private function determineClickedIcon($clickedXPos, $clickedYPos, $captchaWidth, $iconAmount)
-    {
-        // Check if the clicked position is valid.
-        if ($clickedXPos < 0 || $clickedXPos > $captchaWidth || $clickedYPos < 0 || $clickedYPos > 50) {
-            return -1;
-        }
-        return (int)ceil($clickedXPos / ($captchaWidth / $iconAmount));
-    }
-
-    /**
-     * Calculates the amount of times 1 or more other icons can be present in the captcha image besides the correct icon.
-     * Each other icons should be at least present 1 time more than the correct icon. When calculating the icon
-     * amount(s), the remainder of the calculation ($iconCount - $smallestIconCount) will be used.
-     *
-     * Example 1: When $smallestIconCount is 1, and the $iconCount is 8, the return value can be [3, 4].
-     * Example 2: When $smallestIconCount is 2, and the $iconCount is 6, the return value can be [4]. This is because
-     * dividing the remainder (4 / 2 = 2) is equal to the $smallestIconCount, which is not possible.
-     * Example 3: When the $smallestIconCount is 2, and the $iconCount is 8, the return value will be [3, 3].
-     *
-     * @param int $iconCount The total amount of icons which will be present in the generated image.
-     * @param int $smallestIconCount The amount of times the correct icon will be present in the generated image.
-     * @return int[] The number of times an icon should be rendered onto the captcha image. Each value in the returned
-     * array represents a new unique icon.
-     */
-    private function calculateIconAmounts($iconCount, $smallestIconCount = 1)
-    {
-        $remainder = $iconCount - $smallestIconCount;
-        $remainderDivided = $remainder / 2;
-        $pickDivided = mt_rand(1, 2) === 1; // 50/50 chance.
-
-        // If division leads to decimal.
-        if (fmod($remainderDivided, 1) !== 0.0 && $pickDivided) {
-            $left = floor($remainderDivided);
-            $right = ceil($remainderDivided);
-
-            // Only return the divided numbers if both are larger than the smallest number.
-            if ($left > $smallestIconCount && $right > $smallestIconCount) {
-                return [$left, $right];
-            }
-        } elseif ($pickDivided === true && $remainderDivided > $smallestIconCount) {
-            // If no decimals: only return the divided numbers if it is larger than the smallest number.
-            return [$remainderDivided, $remainderDivided];
-        }
-
-        // Return the whole remainder.
-        return [$remainder];
     }
 
     /**

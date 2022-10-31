@@ -60,7 +60,7 @@ class IconCaptchaOptions
      * in the given options array, they will be set with their default value.
      * @param array $options The array of options.
      */
-    public static function prepare($options = [])
+    public static function prepare($options)
     {
         // Merge the given options and default options together.
         $mergedOptions = array_merge(self::DEFAULT_OPTIONS, $options);
