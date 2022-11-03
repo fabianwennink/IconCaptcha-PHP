@@ -2,6 +2,8 @@
 
 namespace IconCaptcha\Challenge;
 
+use IconCaptcha\Session\IconCaptchaSessionInterface;
+
 class Challenge
 {
     const MAX_HEIGHT_OF_CHALLENGE = 50;
@@ -11,7 +13,7 @@ class Challenge
     const CAPTCHA_ICONS_FOLDER_COUNT = 180;
 
     /**
-     * @var \IconCaptcha\Session\IconCaptchaSession $session
+     * @var IconCaptchaSessionInterface The session containing captcha information.
      */
     private $session;
 
@@ -20,10 +22,15 @@ class Challenge
      */
     private $options;
 
-    public function __construct($session, $options)
+    public function __construct($options)
     {
-        $this->session = $session;
         $this->options = $options;
+    }
+
+    public function initialize($identifier)
+    {
+        $this->session = new $this->options['session']($identifier);
+        return $this;
     }
 
     /**
@@ -39,11 +46,11 @@ class Challenge
      *
      * @return string Captcha details required to initialize the client.
      */
-    public function initialize($theme)
+    public function generate($theme)
     {
         // Check if the max attempts limit has been reached and a timeout is active.
         // If reached, return an error and the remaining time.
-        // TODO timeout check should move to request class.
+        // TODO timeout check should be extracted to class method.
         if ($this->session->attemptsTimeout > 0) {
             if (time() <= $this->session->attemptsTimeout) {
                 return base64_encode(json_encode([

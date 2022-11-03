@@ -22,11 +22,14 @@
         // All options are optional using default values, apart from the 'iconPath'.
         $captcha = new IconCaptchaFacade($options);
 
-        // Validate the captcha/form submission.
-        if($captcha->validate($_POST)) {
+        // Validate the captcha.
+        $response = $captcha->validate($_POST);
+
+        // Confirm the captcha was validated.
+        if($response->success === true) {
             $captchaMessage = 'The form has been submitted!';
         } else {
-            $captchaMessage = $captcha->error();
+            $captchaMessage = $response->error['message'];
         }
     }
 ?>

@@ -2,43 +2,57 @@
 
 namespace IconCaptcha;
 
+use IconCaptcha\Challenge\Challenge;
+use IconCaptcha\Challenge\Validator;
+
 class IconCaptchaFacade
 {
     /**
-     * @var IconCaptcha
+     * @var mixed Default values for all the server-side options.
      */
-    private $iconCaptcha;
+    private $options;
+
+    /**
+     * @var Validator
+     */
+    private $validator;
 
     /**
      * @var IconCaptchaRequest
      */
-    private $iconCaptchaRequest;
+    private $request;
 
     public function __construct($options)
     {
-        $this->iconCaptcha = new IconCaptcha($options);
+        $this->options($options);
+        $this->validator = new Validator($options);
     }
 
     public function options($options)
     {
-        $this->iconCaptcha->options($options);
+        $this->options = IconCaptchaOptions::prepare($options);
     }
 
+    /**
+     * @return IconCaptchaRequest
+     */
     public function request()
     {
-        if(!isset($this->iconCaptchaRequest)) {
-            $this->iconCaptchaRequest = new IconCaptchaRequest($this->iconCaptcha);
+        if(!isset($this->request)) {
+            $this->request = new IconCaptchaRequest(
+                new Challenge($this->options),
+                $this->validator
+            );
         }
-        return $this->iconCaptchaRequest;
+        return $this->request;
     }
 
+    /**
+     * @param $request
+     * @return object
+     */
     public function validate($request)
     {
-        return $this->iconCaptcha->validate($request);
-    }
-
-    public function error()
-    {
-        return $this->iconCaptcha->getErrorMessage();
+        return $this->validator->validate($request);
     }
 }

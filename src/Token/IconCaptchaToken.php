@@ -2,7 +2,7 @@
 
 namespace IconCaptcha\Token;
 
-use IconCaptcha\IconCaptcha;
+use IconCaptcha\Challenge\Validator;
 
 class IconCaptchaToken extends AbstractCaptchaToken implements IconCaptchaTokenInterface
 {
@@ -40,7 +40,7 @@ class IconCaptchaToken extends AbstractCaptchaToken implements IconCaptchaTokenI
     public static function render()
     {
         $token = self::get();
-        $name = IconCaptcha::CAPTCHA_FIELD_TOKEN;
+        $name = Validator::CAPTCHA_FIELD_TOKEN;
 
         return "<input type='hidden' name='$name' value='$token' />";
     }

@@ -9,15 +9,21 @@
 
 namespace IconCaptcha;
 
+use IconCaptcha\Challenge\Challenge;
+use IconCaptcha\Challenge\Validator;
+
 class IconCaptchaRequest
 {
     const CUSTOM_TOKEN_HEADER = 'HTTP_X_ICONCAPTCHA_TOKEN';
 
-    private $captcha;
+    private $challenge;
 
-    public function __construct(IconCaptcha $captcha)
+    private $validator;
+
+    public function __construct(Challenge $challenge, Validator $validator)
     {
-        $this->captcha = $captcha;
+        $this->challenge = $challenge;
+        $this->validator = $validator;
     }
 
     public function isChallengeRenderRequest()
@@ -47,7 +53,7 @@ class IconCaptchaRequest
                 $this->tokenError();
             }
 
-            $this->captcha->challenge($payload['i'])->render();
+            $this->challenge->initialize($payload['i'])->render();
             exit;
         }
 
@@ -82,7 +88,7 @@ class IconCaptchaRequest
                     // Echo the captcha data.
                     http_response_code(200);
                     header('Content-type: text/plain');
-                    exit($this->captcha->challenge($identifier)->initialize($theme));
+                    exit($this->challenge->initialize($identifier)->generate($theme));
                 case 2: // Setting the user's choice
 
                     // Check if the captcha ID and required other payload data is set.
@@ -90,13 +96,13 @@ class IconCaptchaRequest
                         $this->badRequest();
                     }
 
-                    if ($this->captcha->challenge($identifier)->makeSelection($payload)) {
+                    if ($this->challenge->initialize($identifier)->makeSelection($payload)) {
                         http_response_code(200);
                         exit;
                     }
                     break;
                 case 3: // Captcha interaction time expired.
-                    $this->captcha->invalidate($payload['i']);
+                    $this->validator->invalidate($payload['i']);
                     http_response_code(200);
                     exit;
                 default:
@@ -139,7 +145,7 @@ class IconCaptchaRequest
         }
 
         // Validate the tokens.
-        return $this->captcha->validateToken($payloadToken, $headerToken);
+        return $this->validator->validateToken($payloadToken, $headerToken);
     }
 
     /**
