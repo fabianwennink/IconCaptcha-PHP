@@ -2,7 +2,9 @@
 
 namespace IconCaptcha\Challenge\Image;
 
-abstract class AbstractImageGenerator implements GeneratorInterface
+use IconCaptcha\Session\Session;
+
+abstract class AbstractImageGenerator implements ImageGeneratorInterface
 {
     const CAPTCHA_IMAGE_SIZE = 320;
 
@@ -11,7 +13,7 @@ abstract class AbstractImageGenerator implements GeneratorInterface
     const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
 
     /**
-     * @var \IconCaptcha\Session\IconCaptchaSession $session
+     * @var Session $session
      */
     private $session;
 

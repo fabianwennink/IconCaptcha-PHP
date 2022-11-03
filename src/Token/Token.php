@@ -4,7 +4,7 @@ namespace IconCaptcha\Token;
 
 use IconCaptcha\Challenge\Validator;
 
-class IconCaptchaToken extends AbstractCaptchaToken implements IconCaptchaTokenInterface
+class Token extends AbstractToken implements TokenInterface
 {
     const SESSION_NAME = 'iconcaptcha';
 

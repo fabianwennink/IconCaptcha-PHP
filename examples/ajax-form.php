@@ -8,8 +8,6 @@
 
     // Include the IconCaptcha classes.
     require_once '../vendor/autoload.php';
-
-    use IconCaptcha\Token\IconCaptchaToken;
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -73,7 +71,7 @@
 
                     <!-- Additional security token to prevent CSRF. -->
                     <!-- Optional, but highly recommended - disable via IconCaptcha options. -->
-                    <?= IconCaptchaToken::render() ?>
+                    <?= \IconCaptcha\Token\Token::render() ?>
 
                     <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
                     <div class="iconcaptcha-holder" data-theme="light"></div>

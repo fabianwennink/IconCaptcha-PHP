@@ -2,7 +2,7 @@
 
 namespace IconCaptcha\Challenge;
 
-use IconCaptcha\Session\IconCaptchaSessionInterface;
+use IconCaptcha\Session\SessionInterface;
 
 class Challenge
 {
@@ -13,7 +13,7 @@ class Challenge
     const CAPTCHA_ICONS_FOLDER_COUNT = 180;
 
     /**
-     * @var IconCaptchaSessionInterface The session containing captcha information.
+     * @var SessionInterface The session containing captcha information.
      */
     private $session;
 
@@ -36,7 +36,7 @@ class Challenge
     /**
      * Initializes the state of a captcha. The amount of icons shown in the captcha image, their positions,
      * which icon is correct and which icon identifiers should be used will all be determined in this function.
-     * This information will be stored a captcha session, implementing {@see IconCaptchaSessionInterface}.
+     * This information will be stored a captcha session, implementing {@see SessionInterface}.
      * The details required to initialize the client will be returned as a base64 encoded JSON string.
      *
      * In case a timeout is detected, no state will be initialized and an error message

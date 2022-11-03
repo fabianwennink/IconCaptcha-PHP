@@ -10,10 +10,10 @@
 namespace IconCaptcha;
 
 use IconCaptcha\Challenge\Generators\GD;
-use IconCaptcha\Session\IconCaptchaSession;
-use IconCaptcha\Token\IconCaptchaToken;
+use IconCaptcha\Session\Session;
+use IconCaptcha\Token\Token;
 
-class IconCaptchaOptions
+class Options
 {
     /**
      * @var mixed Default values for all the server-side options.
@@ -49,8 +49,8 @@ class IconCaptchaOptions
             'amount' => 5,
             'timeout' => 30 // seconds.
         ],
-        'token' => IconCaptchaToken::class,
-        'session' => IconCaptchaSession::class,
+        'token' => Token::class,
+        'session' => Session::class,
         'generator' => GD::class,
     ];
 

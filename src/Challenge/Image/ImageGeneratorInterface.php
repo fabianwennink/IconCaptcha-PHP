@@ -2,7 +2,7 @@
 
 namespace IconCaptcha\Challenge\Image;
 
-interface GeneratorInterface
+interface ImageGeneratorInterface
 {
     /**
      * Returns an image resource/object containing the image at the given path.

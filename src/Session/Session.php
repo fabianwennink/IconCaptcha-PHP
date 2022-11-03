@@ -19,7 +19,7 @@ namespace IconCaptcha\Session;
  * @property int attempts The number of times an incorrect answer was given.
  * @property int attemptsTimeout The timestamp, at which the timeout for entering too many incorrect guesses expires.
  */
-class IconCaptchaSession implements IconCaptchaSessionInterface
+class Session implements SessionInterface
 {
     const SESSION_NAME = 'iconcaptcha';
 

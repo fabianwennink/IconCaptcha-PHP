@@ -33,7 +33,7 @@ return [
         'amount' => 3,
         'timeout' => 60 // seconds.
     ],
-    'token' => \IconCaptcha\Token\IconCaptchaToken::class, // to disable, replace with 'null'.
-    'session' => \IconCaptcha\Session\IconCaptchaSession::class,
+    'token' => \IconCaptcha\Token\Token::class, // to disable, replace with 'null'.
+    'session' => \IconCaptcha\Session\Session::class,
     'generator' => \IconCaptcha\Challenge\Generators\GD::class, // a generator for ImageMagick (Imagick::class) is also available.
 ];

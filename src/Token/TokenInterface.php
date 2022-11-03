@@ -2,7 +2,7 @@
 
 namespace IconCaptcha\Token;
 
-interface IconCaptchaTokenInterface
+interface TokenInterface
 {
     /**
      * Returns the captcha token for the current request.

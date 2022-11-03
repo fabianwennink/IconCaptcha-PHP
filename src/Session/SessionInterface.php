@@ -2,7 +2,7 @@
 
 namespace IconCaptcha\Session;
 
-interface IconCaptchaSessionInterface
+interface SessionInterface
 {
     /**
      * Returns the identifier of the session.

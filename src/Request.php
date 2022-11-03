@@ -12,7 +12,7 @@ namespace IconCaptcha;
 use IconCaptcha\Challenge\Challenge;
 use IconCaptcha\Challenge\Validator;
 
-class IconCaptchaRequest
+class Request
 {
     const CUSTOM_TOKEN_HEADER = 'HTTP_X_ICONCAPTCHA_TOKEN';
 

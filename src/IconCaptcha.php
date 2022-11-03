@@ -5,7 +5,7 @@ namespace IconCaptcha;
 use IconCaptcha\Challenge\Challenge;
 use IconCaptcha\Challenge\Validator;
 
-class IconCaptchaFacade
+class IconCaptcha
 {
     /**
      * @var mixed Default values for all the server-side options.
@@ -18,7 +18,7 @@ class IconCaptchaFacade
     private $validator;
 
     /**
-     * @var IconCaptchaRequest
+     * @var Request
      */
     private $request;
 
@@ -30,16 +30,16 @@ class IconCaptchaFacade
 
     public function options($options)
     {
-        $this->options = IconCaptchaOptions::prepare($options);
+        $this->options = Options::prepare($options);
     }
 
     /**
-     * @return IconCaptchaRequest
+     * @return Request
      */
     public function request()
     {
         if(!isset($this->request)) {
-            $this->request = new IconCaptchaRequest(
+            $this->request = new Request(
                 new Challenge($this->options),
                 $this->validator
             );
