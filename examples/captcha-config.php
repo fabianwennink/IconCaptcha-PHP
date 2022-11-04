@@ -18,6 +18,7 @@ return [
         'form_token' => 'The form token was invalid.'
     ],
     'image' => [
+        'icons' => 180,
         'amount' => [ // min & max can be 5 - 8
             'min' => 5,
             'max' => 8

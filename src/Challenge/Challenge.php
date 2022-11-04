@@ -10,8 +10,6 @@ class Challenge
 
     const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
 
-    const CAPTCHA_ICONS_FOLDER_COUNT = 180;
-
     /**
      * @var SessionInterface The session containing captcha information.
      */
@@ -64,6 +62,7 @@ class Challenge
 
         $minIconAmount = $this->options['image']['amount']['min'];
         $maxIconAmount = $this->options['image']['amount']['max'];
+        $availableIconAmount = $this->options['image']['icons'];
 
         // Determine the number of icons to add to the image.
         $iconAmount = $minIconAmount;
@@ -90,7 +89,7 @@ class Challenge
         while (count($iconIds) < count($totalIconAmount)) {
 
             // Generate a random icon ID. If it is not in use yet, process it.
-            $tempIconId = mt_rand(1, self::CAPTCHA_ICONS_FOLDER_COUNT);
+            $tempIconId = mt_rand(1, $availableIconAmount);
             if (!in_array($tempIconId, $iconIds)) {
                 $iconIds[] = $tempIconId;
 
