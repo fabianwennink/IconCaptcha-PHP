@@ -6,58 +6,11 @@
      * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
      */
 
-    // Start a PHP session.
-    session_start();
-
     // Include the IconCaptcha classes.
-    require('../src/captcha-session.class.php');
-    require('../src/captcha.class.php');
+    require_once '../vendor/autoload.php';
 
-    use IconCaptcha\IconCaptcha;
-
-    // Take a look at the README file to see every available option.
-    IconCaptcha::options([
-        'iconPath' => dirname(__FILE__) . '/../assets/icons/', // required
-        //'themes' => [
-        //    'black' => [
-        //        'icons' => 'light', // Which icon type should be used: light or dark.
-        //        'color' => [20, 20, 20], // Array contains the icon separator border color, as RGB.
-        //    ]
-        //],
-        'messages' => [
-            'wrong_icon' => 'You\'ve selected the wrong image.',
-            'no_selection' => 'No image has been selected.',
-            'empty_form' => 'You\'ve not submitted any form.',
-            'invalid_id' => 'The captcha ID was invalid.',
-            'form_token' => 'The form token was invalid.'
-        ],
-        'image' => [
-            'amount' => [ // min & max can be 5 - 8
-                'min' => 5,
-                'max' => 8
-            ],
-            'rotate' => true,
-            'flip' => [
-                'horizontally' => true,
-                'vertically' => true,
-            ],
-            'border' => true
-        ],
-        'attempts' => [
-            'amount' => 3,
-            'timeout' => 60 // seconds.
-        ],
-        'token' => true
-    ]);
-
-    // If the form has been submitted, validate the captcha.
-    if(!empty($_POST)) {
-        if(IconCaptcha::validateSubmission($_POST)) {
-            $captchaMessage = 'The form has been submitted!';
-        } else {
-            $captchaMessage = IconCaptcha::getErrorMessage();
-        }
-    }
+    // Start a session (required when using the IconCaptcha Token, see form below).
+    session_start();
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -119,8 +72,10 @@
                 <!-- The IconCaptcha holder should ALWAYS be placed WITHIN the <form> element -->
                 <form action="form/ajax-submit.php" method="post">
 
-                    <!-- Additional security token to prevent CSRF. Optional but highly recommended - disable via IconCaptcha options. -->
-                    <input type="hidden" name="_iconcaptcha-token" value="<?= IconCaptcha::token() ?>"/>
+                    <!-- Additional security token to prevent CSRF. -->
+                    <!-- Optional, but highly recommended - disable via IconCaptcha options. -->
+                    <!-- Note: using the default IconCaptcha Token class? Make sure to start a PHP session. -->
+                    <?= \IconCaptcha\Token\Token::render() ?>
 
                     <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
                     <div class="iconcaptcha-holder" data-theme="light"></div>
@@ -175,7 +130,7 @@
             $(document).ready(function() {
                 $('.iconcaptcha-holder').iconCaptcha({
                     general: {
-                        validationPath: '../src/captcha-request.php',
+                        validationPath: 'captcha-request.php',
                         fontFamily: 'Poppins',
                         credits: 'show',
                     },
