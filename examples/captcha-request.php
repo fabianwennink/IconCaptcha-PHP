@@ -12,6 +12,9 @@ require_once '../vendor/autoload.php';
 
 use IconCaptcha\IconCaptcha;
 
+// Start a session.
+session_start();
+
 // To prevent having to copy the options to every file, a 'config' file was created.
 $options = require_once 'captcha-config.php';
 

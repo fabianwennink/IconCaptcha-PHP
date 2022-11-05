@@ -2,8 +2,6 @@
 
 namespace IconCaptcha\Token;
 
-use IconCaptcha\Challenge\Validator;
-
 class Token extends AbstractToken implements TokenInterface
 {
     const SESSION_NAME = 'iconcaptcha';
@@ -40,7 +38,7 @@ class Token extends AbstractToken implements TokenInterface
     public static function render()
     {
         $token = self::get();
-        $name = Validator::CAPTCHA_FIELD_TOKEN;
+        $name = self::TOKEN_FIELD_NAME;
 
         return "<input type='hidden' name='$name' value='$token' />";
     }
@@ -56,6 +54,10 @@ class Token extends AbstractToken implements TokenInterface
         return $this->compareToken($sessionToken, $payloadToken, $headerToken);
     }
 
+    /**
+     * Saves the given token to the session.
+     * @param string $token The token to store.
+     */
     private function store($token)
     {
         $this->startSession();
@@ -63,6 +65,10 @@ class Token extends AbstractToken implements TokenInterface
         $_SESSION[self::SESSION_NAME][self::SESSION_TOKEN] = $token;
     }
 
+    /**
+     * Returns the token stored in the session.
+     * @return string|null The token, or NULL if there is no token.
+     */
     private function retrieve()
     {
         $this->startSession();
@@ -77,7 +83,7 @@ class Token extends AbstractToken implements TokenInterface
      */
     private function startSession()
     {
-        if (session_status() === PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
             session_start();
         }
     }

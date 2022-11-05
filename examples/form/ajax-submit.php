@@ -10,8 +10,6 @@
 // Include the IconCaptcha classes.
 require_once '../../vendor/autoload.php';
 
-use IconCaptcha\IconCaptcha;
-
 // If the form has been submitted, validate the captcha.
 if(!empty($_POST)) {
 
@@ -20,7 +18,7 @@ if(!empty($_POST)) {
 
     // Take a look at the README file to see every available option.
     // All options are optional using default values, apart from the 'iconPath'.
-    $captcha = new IconCaptcha($options);
+    $captcha = new \IconCaptcha\IconCaptcha($options);
 
     // Validate the captcha.
     $response = $captcha->validate($_POST);

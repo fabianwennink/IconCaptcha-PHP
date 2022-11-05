@@ -9,8 +9,8 @@
     // Include the IconCaptcha classes.
     require_once '../vendor/autoload.php';
 
-    use IconCaptcha\IconCaptcha;
-    use IconCaptcha\Token\Token;
+    // Start a session (required when using the captcha token, see form below).
+    session_start();
 
     // If the form has been submitted, validate the captcha.
     if(!empty($_POST)) {
@@ -20,7 +20,7 @@
 
         // Take a look at the README file to see every available option.
         // All options are optional using default values, apart from the 'iconPath'.
-        $captcha = new IconCaptcha($options);
+        $captcha = new \IconCaptcha\IconCaptcha($options);
 
         // Validate the captcha.
         $response = $captcha->validate($_POST);
@@ -98,6 +98,7 @@
 
                     <!-- Additional security token to prevent CSRF. -->
                     <!-- Optional, but highly recommended - disable via IconCaptcha options. -->
+                    <!-- Note: using the default IconCaptcha Token class? Make sure to start a PHP session. -->
                     <?= \IconCaptcha\Token\Token::render() ?>
 
                     <!-- The IconCaptcha will be rendered in this element - REQUIRED -->

@@ -8,6 +8,9 @@
 
     // Include the IconCaptcha classes.
     require_once '../vendor/autoload.php';
+
+    // Start a session (required when using the IconCaptcha Token, see form below).
+    session_start();
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -71,6 +74,7 @@
 
                     <!-- Additional security token to prevent CSRF. -->
                     <!-- Optional, but highly recommended - disable via IconCaptcha options. -->
+                    <!-- Note: using the default IconCaptcha Token class? Make sure to start a PHP session. -->
                     <?= \IconCaptcha\Token\Token::render() ?>
 
                     <!-- The IconCaptcha will be rendered in this element - REQUIRED -->

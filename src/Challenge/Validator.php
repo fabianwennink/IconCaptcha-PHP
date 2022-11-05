@@ -2,13 +2,13 @@
 
 namespace IconCaptcha\Challenge;
 
+use IconCaptcha\Token\AbstractToken;
+
 class Validator
 {
     const CAPTCHA_FIELD_ID = 'ic-hf-id';
 
     const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
-
-    const CAPTCHA_FIELD_TOKEN = '_iconcaptcha-token';
 
     /**
      * @var array $options
@@ -47,7 +47,7 @@ class Validator
         }
 
         // Verify if the captcha token is correct.
-        $token = (isset($request[self::CAPTCHA_FIELD_TOKEN])) ? $request[self::CAPTCHA_FIELD_TOKEN] : null;
+        $token = (isset($request[AbstractToken::TOKEN_FIELD_NAME])) ? $request[AbstractToken::TOKEN_FIELD_NAME] : null;
         if (!$this->validateToken($token)) {
             return $this->createFailedResponse(6, $this->options['messages']['form_token']);
         }
