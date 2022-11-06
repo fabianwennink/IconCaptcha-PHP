@@ -110,7 +110,7 @@ class Validator
     {
         // TODO should become a class, e.g. ValidationResult
         return (object)[
-            'success' => false,
+            'success' => true,
             'timestamp' => time(),
         ];
     }
