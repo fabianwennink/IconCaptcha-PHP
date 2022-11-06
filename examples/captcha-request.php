@@ -21,10 +21,10 @@ $options = require_once 'captcha-config.php';
 // Create an instance of the IconCaptcha request processing class.
 $captchaRequest = (new IconCaptcha($options))->request();
 
-// HTTP POST, used when generating and (in)validating the captcha.
+// Process the request.
 if($captchaRequest->isCaptchaRequest()) {
     $captchaRequest->process();
 }
 
-// Request made to file was not supported.
+// Request made was not supported/recognized.
 $captchaRequest->badRequest();

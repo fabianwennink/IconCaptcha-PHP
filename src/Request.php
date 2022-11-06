@@ -16,6 +16,8 @@ class Request
 {
     const CUSTOM_TOKEN_HEADER = 'HTTP_X_ICONCAPTCHA_TOKEN';
 
+    const VALID_ACTION_TYPES = ['LOAD', 'SELECTION', 'INVALIDATE'];
+
     private $challenge;
 
     private $validator;
@@ -39,7 +41,11 @@ class Request
             $payload = $this->decodePayload($_POST['payload']);
 
             // Validate the payload content.
-            if (!isset($payload, $payload['action'], $payload['id']) || !is_string($payload['action']) || !is_numeric($payload['id'])) {
+            if (
+                !isset($payload, $payload['action'], $payload['id']) || // ensure the payload is valid.
+                !is_numeric($payload['id']) || // ensure the identifier is a number.
+                !in_array($payload['action'], self::VALID_ACTION_TYPES) // ensure the action type is known.
+            ) {
                 $this->badRequest();
             }
 
