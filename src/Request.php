@@ -26,49 +26,20 @@ class Request
         $this->validator = $validator;
     }
 
-    public function isChallengeRenderRequest()
-    {
-        return !$this->isAjaxRequest() && isset($_GET['payload']);
-    }
-
-    public function isCaptchaAjaxRequest()
+    public function isCaptchaRequest()
     {
         return $this->isAjaxRequest() && !empty($_POST) && isset($_POST['payload']);
     }
 
-    public function renderChallenge()
+    public function process()
     {
-        if ($this->isChallengeRenderRequest()) {
-
-            // Decode the payload.
-            $payload = $this->decodePayload($_GET['payload']);
-
-            // Validate the payload content.
-            if (!isset($payload, $payload['i']) || !is_numeric($payload['i']) || (int)$payload['i'] < 0) {
-                $this->badRequest();
-            }
-
-            // Validate the captcha token.
-            if (!$this->validateToken($payload, false)) {
-                $this->tokenError();
-            }
-
-            $this->challenge->initialize($payload['i'])->render();
-            exit;
-        }
-
-        $this->badRequest();
-    }
-
-    public function processAjaxCall()
-    {
-        if ($this->isCaptchaAjaxRequest()) {
+        if ($this->isCaptchaRequest()) {
 
             // Decode the payload.
             $payload = $this->decodePayload($_POST['payload']);
 
             // Validate the payload content.
-            if (!isset($payload, $payload['a'], $payload['i']) || !is_numeric($payload['a']) || !is_numeric($payload['i'])) {
+            if (!isset($payload, $payload['action'], $payload['id']) || !is_string($payload['action']) || !is_numeric($payload['id'])) {
                 $this->badRequest();
             }
 
@@ -77,32 +48,32 @@ class Request
                 $this->tokenError();
             }
 
-            $identifier = $payload['i'];
+            $identifier = $payload['id'];
 
-            switch ((int)$payload['a']) {
-                case 1: // Requesting the image hashes
+            switch ($payload['action']) {
+                case 'LOAD':
 
                     // Validate the theme name. Fallback to light.
-                    $theme = (isset($payload['t']) && is_string($payload['t'])) ? $payload['t'] : 'light';
+                    $theme = (isset($payload['theme']) && is_string($payload['theme'])) ? $payload['theme'] : 'light';
 
                     // Echo the captcha data.
                     http_response_code(200);
                     header('Content-type: text/plain');
                     exit($this->challenge->initialize($identifier)->generate($theme));
-                case 2: // Setting the user's choice
+                case 'SELECTION':
 
                     // Check if the captcha ID and required other payload data is set.
-                    if (!isset($payload['x'], $payload['y'], $payload['w'])) {
+                    if (!isset($payload['x'], $payload['y'], $payload['width'])) {
                         $this->badRequest();
                     }
 
-                    if ($this->challenge->initialize($identifier)->makeSelection($payload)) {
+                    if ($this->challenge->initialize($identifier)->makeSelection($payload['x'], $payload['y'], $payload['width'])) {
                         http_response_code(200);
                         exit;
                     }
                     break;
-                case 3: // Captcha interaction time expired.
-                    $this->validator->invalidate($payload['i']);
+                case 'INVALIDATE':
+                    $this->validator->invalidate($payload['id']);
                     http_response_code(200);
                     exit;
                 default:
@@ -135,8 +106,8 @@ class Request
         $headerToken = null;
 
         // Get the token from the payload.
-        if (!empty($payload['tk'])) {
-            $payloadToken = $payload['tk'];
+        if (!empty($payload['token'])) {
+            $payloadToken = $payload['token'];
         }
 
         // Get the token from the request headers, can be empty for some requests.

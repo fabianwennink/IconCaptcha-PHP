@@ -125,7 +125,9 @@ class Challenge
 
         // Return the captcha details.
         return base64_encode(json_encode([
-            'id' => $this->session->getId()
+            'id' => $this->session->getId(),
+            'challenge' => $this->render(),
+            'timestamp' => time(),
         ]));
     }
 
@@ -139,15 +141,15 @@ class Challenge
      *
      * A check will also take place to see if a timeout should set for the user, based on the options and attempts counter.
      *
-     * @param array $payload The payload of the HTTP Post request, containing the captcha identifier, clicked X
-     * and X coordinates and the width of the captcha element.
-     *
+     * @param int $x The clicked X-coordinate relative to the image dimensions.
+     * @param int $y The clicked Y-coordinate relative to the image dimensions.
+     * @param int $width The width of the captcha element.
      * @return boolean TRUE if the correct icon was selected, FALSE if not.
      */
-    public function makeSelection($payload)
+    public function makeSelection($x, $y, $width)
     {
         // Get the clicked position.
-        $clickedPosition = $this->determineClickedIcon($payload['x'], $payload['y'], $payload['w'], count($this->session->icons));
+        $clickedPosition = $this->determineClickedIcon($x, $y, $width, count($this->session->icons));
 
         // Check if the selection is set and matches the position from the session.
         if ($this->session->icons[$clickedPosition] === $this->session->correctId) {
@@ -206,10 +208,12 @@ class Challenge
             $imageGenerator = new $this->options['generator']($this->session, $this->options);
 
             // Generate and render the challenge.
-            $imageGenerator->render(
+            return $imageGenerator->render(
                 $imageGenerator->generate($iconPath, $placeholder)
             );
         }
+
+        return null;
     }
 
     /**

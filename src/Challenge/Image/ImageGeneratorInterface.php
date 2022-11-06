@@ -12,12 +12,6 @@ interface ImageGeneratorInterface
     public function loadImage($path);
 
     /**
-     * Outputs the given image.
-     * @param mixed $image The image to render.
-     */
-    public function renderImage($image);
-
-    /**
      * Flips the given image horizontally.
      * @param mixed $image The image to flip horizontally.
      * @return mixed The flipped image.

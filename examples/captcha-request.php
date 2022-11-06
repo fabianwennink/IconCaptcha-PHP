@@ -22,13 +22,8 @@ $options = require_once 'captcha-config.php';
 $captchaRequest = (new IconCaptcha($options))->request();
 
 // HTTP POST, used when generating and (in)validating the captcha.
-if($captchaRequest->isCaptchaAjaxRequest()) {
-    $captchaRequest->processAjaxCall();
-}
-
-// HTTP GET, used when requesting the captcha image.
-if($captchaRequest->isChallengeRenderRequest()) {
-    $captchaRequest->renderChallenge();
+if($captchaRequest->isCaptchaRequest()) {
+    $captchaRequest->process();
 }
 
 // Request made to file was not supported.

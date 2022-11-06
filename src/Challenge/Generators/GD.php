@@ -75,9 +75,14 @@ class GD extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function renderImage($image)
+    public function render($image)
     {
+        ob_start();
         imagepng($image);
+        $output = ob_get_contents();
         imagedestroy($image);
+        ob_end_clean();
+
+        return base64_encode($output);
     }
 }

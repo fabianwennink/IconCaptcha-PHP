@@ -103,8 +103,13 @@ class Imagick extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function renderImage($image)
+    public function render($image)
     {
-        echo $image;
+        /**
+         * @var ImagickImage $image
+         */
+        $output = $image->getImageBlob();
+        $image->clear();
+        return base64_encode($output);
     }
 }

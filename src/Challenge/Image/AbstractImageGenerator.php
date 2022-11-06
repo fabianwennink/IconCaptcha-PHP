@@ -114,20 +114,9 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
     }
 
     /**
-     * Outputs the given challenge image resource as a PNG.
+     * Outputs the given challenge image resource as a base64 string.
      * @param mixed $image The challenge image to render.
+     * @return string The image as a base64 string.
      */
-    public function render($image) {
-
-        // Set the content type header to the PNG MIME-type.
-        header('Content-type: image/png');
-
-        // Disable caching of the image.
-        header('Expires: 0');
-        header('Cache-Control: no-cache, no-store, must-revalidate');
-        header('Cache-Control: post-check=0, pre-check=0', false);
-        header('Pragma: no-cache');
-
-        $this->renderImage($image);
-    }
+    public abstract function render($image);
 }
