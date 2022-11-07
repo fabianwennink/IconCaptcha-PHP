@@ -53,6 +53,9 @@ class Options
         'token' => Token::class,
         'session' => Session::class,
         'generator' => GD::class,
+        'hooks' => [
+            'generation' => null, // image generation hook, e.g. for changing something on image.
+        ]
     ];
 
     /**
