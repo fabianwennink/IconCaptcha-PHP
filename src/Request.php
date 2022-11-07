@@ -38,7 +38,7 @@ class Request
         if ($this->isCaptchaRequest()) {
 
             // Decode the payload.
-            $payload = $this->decodePayload($_POST['payload']);
+            $payload = Payload::decode($_POST['payload']);
 
             // Validate the payload content.
             if (
@@ -62,7 +62,6 @@ class Request
                     // Validate the theme name. Fallback to light.
                     $theme = (isset($payload['theme']) && is_string($payload['theme'])) ? $payload['theme'] : 'light';
 
-                    // Echo the captcha data.
                     http_response_code(200);
                     header('Content-type: text/plain');
                     exit($this->challenge->initialize($identifier)->generate($theme));
@@ -126,23 +125,6 @@ class Request
     }
 
     /**
-     * Tries to decode the given base64 and json encoded payload.
-     * @param string $payload The request payload to be decoded.
-     * @return mixed The decoded payload.
-     */
-    private function decodePayload($payload)
-    {
-        // Base64 decode the payload.
-        $payload = base64_decode($payload);
-        if ($payload === false) {
-            $this->badRequest();
-        }
-
-        // JSON decode the payload.
-        return json_decode($payload, true);
-    }
-
-    /**
      * Create a error message string for the token validation error.
      * @return void
      */
@@ -150,7 +132,7 @@ class Request
     {
         http_response_code(200);
         header('Content-type: text/plain');
-        exit(base64_encode(json_encode(['error' => 2])));
+        exit(Payload::encode(['error' => 2]));
     }
 
     /**

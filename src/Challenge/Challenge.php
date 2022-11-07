@@ -2,6 +2,7 @@
 
 namespace IconCaptcha\Challenge;
 
+use IconCaptcha\Payload;
 use IconCaptcha\Session\SessionInterface;
 
 class Challenge
@@ -51,9 +52,9 @@ class Challenge
         // TODO timeout check should be extracted to class method.
         if ($this->session->attemptsTimeout > 0) {
             if (time() <= $this->session->attemptsTimeout) {
-                return base64_encode(json_encode([
+                return Payload::encode([
                     'error' => 1, 'data' => ($this->session->attemptsTimeout - time()) * 1000 // remaining time.
-                ]));
+                ]);
             } else {
                 $this->session->attemptsTimeout = 0;
                 $this->session->attempts = 0;
@@ -124,11 +125,11 @@ class Challenge
         $this->session->save();
 
         // Return the captcha details.
-        return base64_encode(json_encode([
+        return Payload::encode([
             'id' => $this->session->getId(),
             'challenge' => $this->render(),
             'timestamp' => time(),
-        ]));
+        ]);
     }
 
     /**
