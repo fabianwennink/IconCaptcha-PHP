@@ -52,8 +52,8 @@
 
             <div class="section">
                 <h2>Examples:</h2>
-                <a href="examples/regular-form.php"><div class="btn">Regular Form <small>Plain JavaScript</small></div></a>
-                <a href="examples/ajax-form.php"><div class="btn">AJAX Form <small>jQuery</small></div></a>
+                <a href="examples/forms/regular-form.php"><div class="btn">Regular Form <small>Plain JavaScript</small></div></a>
+                <a href="examples/forms/ajax-form.php"><div class="btn">AJAX Form <small>jQuery</small></div></a>
             </div>
 
             <div class="section">

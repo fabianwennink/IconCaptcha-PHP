@@ -7,10 +7,31 @@
      */
 
     // Include the IconCaptcha classes.
-    require_once '../vendor/autoload.php';
+    require_once '../../vendor/autoload.php';
 
-    // Start a session (required when using the IconCaptcha Token, see form below).
+    // Start a session (required when using the captcha token, see form below).
     session_start();
+
+    // If the form has been submitted, validate the captcha.
+    if(!empty($_POST)) {
+
+        // To prevent having to copy the options to every file, a 'config' file was created.
+        $options = require_once '../captcha-config.php';
+
+        // Take a look at the README file to see every available option.
+        // All options are optional using default values, apart from the 'iconPath'.
+        $captcha = new \IconCaptcha\IconCaptcha($options);
+
+        // Validate the captcha.
+        $response = $captcha->validate($_POST);
+
+        // Confirm the captcha was validated.
+        if($response->success === true) {
+            $captchaMessage = 'The form has been submitted!';
+        } else {
+            $captchaMessage = $response->error['message'];
+        }
+    }
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -20,15 +41,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		<link href="../assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
         <!-- JUST FOR THE DEMO PAGE -->
-        <link href="assets/demo.css" rel="stylesheet" type="text/css">
-        <script src="assets/demo.js" type="text/javascript"></script>
+        <link href="../assets/demo.css" rel="stylesheet" type="text/css">
+        <script src="../assets/demo.js" type="text/javascript"></script>
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
         <!-- Include IconCaptcha stylesheet - REQUIRED -->
-        <link href="assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div class="container">
@@ -66,11 +87,14 @@
 
             <div class="section">
 
-                <!-- Captcha message placeholder -->
-                <p class="message"></p>
+                <?php
+                    if(isset($captchaMessage)) {
+                        echo '<b>Captcha Message: </b>' . $captchaMessage;
+                    }
+                ?>
 
                 <!-- The IconCaptcha holder should ALWAYS be placed WITHIN the <form> element -->
-                <form action="form/ajax-submit.php" method="post">
+                <form action="" method="post">
 
                     <!-- Additional security token to prevent CSRF. -->
                     <!-- Optional, but highly recommended - disable via IconCaptcha options. -->
@@ -81,7 +105,7 @@
                     <div class="iconcaptcha-holder" data-theme="light"></div>
 
                     <!-- Submit button to test your IconCaptcha input -->
-                    <input type="submit" value="Submit demo captcha" class="btn" >
+                    <input type="submit" value="Submit demo captcha" class="btn">
                 </form>
 
                 <!-- Theme selector - JUST FOR THE DEMO PAGE -->
@@ -101,7 +125,7 @@
             </div>
         </div>
 
-        <a href="../">
+        <a href="../..">
             <div class="btn btn-bottom">
                 <span>GO BACK</span>
             </div>
@@ -117,20 +141,19 @@
                 data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
 
         <!-- Include IconCaptcha script - REQUIRED -->
-        <script src="assets/js/icon-captcha.min.js" type="text/javascript"></script>
-
-        <!-- Include jQuery Library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-        <!-- Include IconCaptcha script - REQUIRED -->
-        <script src="assets/js/icon-captcha.min.js" type="text/javascript"></script>
+        <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Initialize the IconCaptcha - REQUIRED -->
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('.iconcaptcha-holder').iconCaptcha({
+
+            // Note: jQuery can be used as well. Check the README.md for more information.
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                // Check the README.md for information about the options.
+                IconCaptcha.init('.iconcaptcha-holder', {
                     general: {
-                        validationPath: 'captcha-request.php',
+                        validationPath: '../captcha-request.php',
                         fontFamily: 'Poppins',
                         credits: 'show',
                     },
@@ -175,59 +198,6 @@
                 // }).bind('error', function(e) {
                 //     console.log('Event: Wrong input', e.detail.captchaId);
                 // });
-            });
-        </script>
-
-        <!--
-            Script to submit the form(s) with Ajax.
-
-            NOTE: If you want to use FormData instead of .serialize(), make sure to
-            include the inputs 'ic-hf-se', 'ic-hf-id' and 'ic-hf-hp' into your FormData object.
-            Take a look at the commented code down below.
-        -->
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('form').submit(function(e) {
-                    e.preventDefault();
-
-                    // Get the form element.
-                    const form = $(this);
-
-                    // Perform the AJAX call.
-                    $.ajax({
-                        type: 'POST',
-                        url: form.attr('action'),
-                        data: form.serialize()
-                    }).done(function (data) {
-                        $('.message').html(data);
-                    }).fail(function () {
-                        console.log('Error: Failed to submit form.')
-                    });
-
-                    // // FormData example:
-                    //
-                    // // Get the form element.
-                    // const form = $(this);
-                    //
-                    // // Build the FormData object.
-                    // const formData = new FormData();
-                    // formData.append('ic-hf-se', form.find('input[name="ic-hf-se"]').val());
-                    // formData.append('ic-hf-id', form.find('input[name="ic-hf-id"]').val());
-                    // formData.append('ic-hf-hp', form.find('input[name="ic-hf-hp"]').val());
-                    //
-                    // // Perform the AJAX call.
-                    // $.ajax({
-                    //     type: 'POST',
-                    //     url: form.attr('action'),
-                    //     data: formData,
-                    //     processData: false,
-                    //     contentType: false
-                    // }).done(function (data) {
-                    //     $('.message').html(data);
-                    // }).fail(function () {
-                    //     console.log('Error: Failed to submit form.')
-                    // });
-                });
             });
         </script>
     </body>
