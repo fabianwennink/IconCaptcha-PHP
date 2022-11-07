@@ -26,6 +26,9 @@
         "php": ">=5.6",
         "ext-json": "*"
     },
+    "require-dev": {
+        "symfony/thanks": "^1.2"
+    },
     "suggest": {
         "ext-gd": "Required in case you wish to use the GD image generator.",
         "ext-imagick": "Required in case you wish to use the ImageMagick image generator."
@@ -33,6 +36,12 @@
     "autoload": {
         "psr-4": {
             "IconCaptcha\\": "src/"
+        }
+    },
+    "extra": {
+        "thanks": {
+            "name": "fabianwennink/IconCaptcha-Plugin-Front-End",
+            "url": "https://github.com/fabianwennink/IconCaptcha-Plugin-Front-End"
         }
     }
 }
