@@ -3,8 +3,8 @@
 namespace IconCaptcha\Challenge\Image;
 
 use IconCaptcha\Challenge\Hooks\GenerationHookInterface;
+use IconCaptcha\Challenge\Hooks\Hook;
 use IconCaptcha\Session\Session;
-use IconCaptcha\Session\SessionInterface;
 
 abstract class AbstractImageGenerator implements ImageGeneratorInterface
 {
@@ -113,7 +113,10 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
         }
 
         // Call the image generation hook, if provided.
-        $placeholder = $this->callGenerationHook($placeholder, $this->session, $this->options);
+        $placeholder = Hook::call(
+            'generation', GenerationHookInterface::class, 'generate',
+            $this->session, $this->options, $placeholder, $placeholder
+        );
 
         return $placeholder;
     }
@@ -124,23 +127,4 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
      * @return string The image as a base64 string.
      */
     public abstract function render($image);
-
-    /**
-     * Attempts to call the image generation hook.
-     * @param mixed $placeholder The generated challenge image.
-     * @param SessionInterface $session The captcha session.
-     * @param array $options The captcha options.
-     * @return mixed The manipulated challenge image.
-     */
-    private function callGenerationHook($placeholder, $session, $options)
-    {
-        if(isset($this->options['hooks']['generation'])) {
-            $hook = new $this->options['hooks']['generation']();
-            if($hook instanceof GenerationHookInterface) {
-                $placeholder = $hook->generate($placeholder, $session, $options);
-            }
-        }
-
-        return $placeholder;
-    }
 }

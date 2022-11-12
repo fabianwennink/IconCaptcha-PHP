@@ -2,6 +2,9 @@
 
 namespace IconCaptcha\Challenge;
 
+use IconCaptcha\Challenge\Hooks\Hook;
+use IconCaptcha\Challenge\Hooks\InitHookInterface;
+use IconCaptcha\Challenge\Hooks\SelectionHookInterface;
 use IconCaptcha\Payload;
 use IconCaptcha\Session\SessionInterface;
 
@@ -47,6 +50,27 @@ class Challenge
      */
     public function generate($theme)
     {
+        // Call the init 'autocomplete' hook, if provided.
+        $shouldImmediatelyComplete = Hook::call(
+            'init', InitHookInterface::class, 'shouldImmediatelyComplete',
+            $this->session, $this->options, false
+        );
+
+        // If the captcha should autocomplete, update the session and return the success status.
+        if($shouldImmediatelyComplete) {
+            $this->session->clear();
+            $this->session->completed = true;
+            $this->session->requested = true;
+            $this->session->attempts = 0;
+            $this->session->save();
+
+            return Payload::encode([
+                'id' => $this->session->getId(),
+                'completed' => true,
+                'timestamp' => time(),
+            ]);
+        }
+
         // Check if the max attempts limit has been reached and a timeout is active.
         // If reached, return an error and the remaining time.
         // TODO timeout check should be extracted to class method.
@@ -159,6 +183,12 @@ class Challenge
             $this->session->completed = true;
             $this->session->save();
 
+            // Call the 'correct selection' hook, if provided.
+            Hook::callVoid(
+                'selection', SelectionHookInterface::class, 'correct',
+                $this->session, $this->options
+            );
+
             return true;
         } else {
             $this->session->completed = false;
@@ -172,9 +202,15 @@ class Challenge
             }
 
             $this->session->save();
-        }
 
-        return false;
+            // Call the 'incorrect selection' hook, if provided.
+            Hook::callVoid(
+                'selection', SelectionHookInterface::class, 'incorrect',
+                $this->session, $this->options
+            );
+
+            return false;
+        }
     }
 
     /**
