@@ -67,12 +67,7 @@ class Options
     public static function prepare($options)
     {
         // Merge the given options and default options together.
-        $mergedOptions = array_merge(self::DEFAULT_OPTIONS, $options);
-
-        // Merge the extra themes with the default themes.
-        if(isset($options['themes']) && is_array($options['themes'])) {
-            $mergedOptions['themes'] = array_merge(self::DEFAULT_OPTIONS['themes'], $options['themes']);
-        }
+        $mergedOptions = array_replace_recursive(self::DEFAULT_OPTIONS, $options);
 
         // Trim the custom icon folder path of slashes. If no custom path is set, use the default path.
         // When using Composer, the 'iconPath' option always points to the default path in the vendor folder.
