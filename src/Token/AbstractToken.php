@@ -13,23 +13,20 @@ abstract class AbstractToken
      * installed extensions, different internal PHP functions will be used to generate the token.
      * @return string The generated token.
      */
-    protected function generate()
+    protected function generate(): string
     {
         // Create a secure captcha session token.
-        if (function_exists('random_bytes')) {
-            // Only available for PHP 7 or higher.
-            try {
-                $token = bin2hex(random_bytes(self::TOKEN_LENGTH));
-            } catch (\Exception $e) {
-                // Using a fallback in case of an exception.
+        try {
+            $token = bin2hex(random_bytes(self::TOKEN_LENGTH));
+        } catch (\Exception $e) {
+            // Using a fallback in case of an exception.
+            if (function_exists('openssl_random_pseudo_bytes')) {
+                // Only available when the OpenSSL extension is installed.
+                $token = bin2hex(openssl_random_pseudo_bytes(self::TOKEN_LENGTH));
+            } else {
+                // If the OpenSSL extension is not installed, use this fallback.
                 $token = str_shuffle(md5(uniqid(rand(), true)));
             }
-        } elseif (function_exists('openssl_random_pseudo_bytes')) {
-            // Only available when the OpenSSL extension is installed.
-            $token = bin2hex(openssl_random_pseudo_bytes(self::TOKEN_LENGTH));
-        } else {
-            // If not on PHP 7+ or having the OpenSSL extension installed, use this fallback.
-            $token = str_shuffle(md5(uniqid(rand(), true)));
         }
 
         return $token;
@@ -41,10 +38,10 @@ abstract class AbstractToken
      * only be compared against the correct token if it's present. It not being present, is no reason for the check to return FALSE.
      * @param $storedToken string The correct token, which will be compared against the payload & header tokens.
      * @param $payloadToken string The token sent with the request as part of the payload.
-     * @param $headerToken string The token sent with the request as a header. Can be empty in certain requests.
+     * @param $headerToken string|null The token sent with the request as a header. Can be empty in certain requests.
      * @return bool TRUE if the token(s) match the stored token, FALSE if it/they don't.
      */
-    public function compareToken($storedToken, $payloadToken, $headerToken = null)
+    public function compareToken(string $storedToken, string $payloadToken, string $headerToken = null): bool
     {
         // If the token is empty, the token was never requested.
         if (empty($storedToken)) {

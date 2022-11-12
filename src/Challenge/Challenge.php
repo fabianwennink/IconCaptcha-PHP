@@ -17,19 +17,19 @@ class Challenge
     /**
      * @var SessionInterface The session containing captcha information.
      */
-    private $session;
+    private SessionInterface $session;
 
     /**
      * @var array $options
      */
-    private $options;
+    private array $options;
 
     public function __construct($options)
     {
         $this->options = $options;
     }
 
-    public function initialize($identifier)
+    public function initialize($identifier): Challenge
     {
         $this->session = new $this->options['session']($identifier);
         return $this;
@@ -48,7 +48,7 @@ class Challenge
      *
      * @return string Captcha details required to initialize the client.
      */
-    public function generate($theme)
+    public function generate(string $theme): string
     {
         // Call the init 'autocomplete' hook, if provided.
         $shouldImmediatelyComplete = Hook::call(
@@ -171,7 +171,7 @@ class Challenge
      * @param int $width The width of the captcha element.
      * @return boolean TRUE if the correct icon was selected, FALSE if not.
      */
-    public function makeSelection($x, $y, $width)
+    public function makeSelection(int $x, int $y, int $width): bool
     {
         // Get the clicked position.
         $clickedPosition = $this->determineClickedIcon($x, $y, $width, count($this->session->icons));
@@ -220,7 +220,7 @@ class Challenge
      *
      * The image will only be rendered once as a PNG, and be destroyed right after rendering.
      */
-    public function render()
+    public function render(): ?string
     {
         // Check the amount of times an icon has been requested
         if ($this->session->requested) {
@@ -255,14 +255,13 @@ class Challenge
 
     /**
      * Returns the clicked icon position based on the X and Y position and the captcha width.
-     *
      * @param $clickedXPos int The X position of the click.
      * @param $clickedYPos int The Y position of the click.
      * @param $captchaWidth int The width of the captcha.
-     *
+     * @param int $iconAmount int The amount of icons present in the challenge.
      * @return int The selected icon position.
      */
-    private function determineClickedIcon($clickedXPos, $clickedYPos, $captchaWidth, $iconAmount)
+    private function determineClickedIcon(int $clickedXPos, int $clickedYPos, int $captchaWidth, int $iconAmount): int
     {
         // Check if the clicked position is valid.
         if ($clickedXPos < 0 || $clickedXPos > $captchaWidth || $clickedYPos < 0 || $clickedYPos > self::MAX_HEIGHT_OF_CHALLENGE) {
@@ -283,10 +282,9 @@ class Challenge
      *
      * @param int $iconCount The total amount of icons which will be present in the generated image.
      * @param int $smallestIconCount The amount of times the correct icon will be present in the generated image.
-     * @return int[] The number of times an icon should be rendered onto the captcha image. Each value in the returned
-     * array represents a new unique icon.
+     * @return int[] The number of times an icon should be rendered onto the captcha image. Each value in the returned array represents a new unique icon.
      */
-    private function calculateIconAmounts($iconCount, $smallestIconCount = 1)
+    private function calculateIconAmounts(int $iconCount, int $smallestIconCount = 1): array
     {
         $remainder = $iconCount - $smallestIconCount;
         $remainderDivided = $remainder / 2;

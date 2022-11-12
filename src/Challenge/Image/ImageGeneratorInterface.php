@@ -9,7 +9,7 @@ interface ImageGeneratorInterface
      * @param string $path The absolute path pointing to an image.
      * @return mixed The loaded image resource/object.
      */
-    public function loadImage($path);
+    public function loadImage(string $path);
 
     /**
      * Flips the given image horizontally.
@@ -31,7 +31,7 @@ interface ImageGeneratorInterface
      * @param int $degree The number of degrees to rotate the image.
      * @return mixed The rotated image.
      */
-    public function rotate($image, $degree);
+    public function rotate($image, int $degree);
 
     /**
      * Draws a line on the given image at the given coordinates.
@@ -43,7 +43,7 @@ interface ImageGeneratorInterface
      * @param int $y2 The y-coordinate for second point.
      * @return mixed The manipulated image.
      */
-    public function drawBorder($image, $color, $x1, $y1, $x2, $y2);
+    public function drawBorder($image, $color, int $x1, int $y1, int $x2, int $y2);
 
     /**
      * Draws the given icon image onto the larger challenge image, at the given coordinates.
@@ -54,7 +54,7 @@ interface ImageGeneratorInterface
      * @param int $size The size of the icon.
      * @return mixed The manipulated image.
      */
-    public function drawIcon($image, $icon, $x, $y, $size);
+    public function drawIcon($image, $icon, int $x, int $y, int $size);
 
     /**
      * Creates a color object. This object will be used by the {@see drawBorder} function.
@@ -64,5 +64,5 @@ interface ImageGeneratorInterface
      * @param int $blue The blue value of the RGB color, between 0 and 255.
      * @return mixed The color object.
      */
-    public function colorFromRGB($image, $red, $green, $blue);
+    public function colorFromRGB($image, int $red, int $green, int $blue);
 }

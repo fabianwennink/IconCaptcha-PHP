@@ -10,10 +10,7 @@ class Validator
 
     const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
 
-    /**
-     * @var array $options
-     */
-    private $options;
+    private array $options;
 
     public function __construct($options)
     {
@@ -28,7 +25,7 @@ class Validator
      *
      * @return object The validation response.
      */
-    public function validate($request)
+    public function validate(array $request): object
     {
         // Make sure the form data is set.
         if (empty($request)) {
@@ -76,7 +73,7 @@ class Validator
      *
      * @param int $identifier The identifier of the captcha.
      */
-    public function invalidate($identifier)
+    public function invalidate(int $identifier)
     {
         // Unset the previous session data
         $session = $this->createSession($identifier);
@@ -97,7 +94,7 @@ class Validator
      * @return bool TRUE if the captcha session token matches the given tokens or if the token option is disabled,
      * FALSE if the captcha session token does not match the given tokens.
      */
-    public function validateToken($payloadToken, $headerToken = null)
+    public function validateToken(string $payloadToken, string $headerToken = null): bool
     {
         // Only validate if the token option is enabled.
         if (!empty($this->options['token'])) {
@@ -106,7 +103,7 @@ class Validator
         return true;
     }
 
-    private function createSuccessResponse()
+    private function createSuccessResponse(): object
     {
         // TODO should become a class, e.g. ValidationResult
         return (object)[
@@ -115,7 +112,7 @@ class Validator
         ];
     }
 
-    private function createFailedResponse($status, $message)
+    private function createFailedResponse($status, $message): object
     {
         // TODO should become a class, e.g. ValidationResult
         return (object)[

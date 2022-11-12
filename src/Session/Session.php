@@ -31,7 +31,7 @@ class Session implements SessionInterface
     /**
      * @var array The session data.
      */
-    private $session = [];
+    private array $session = [];
 
     /**
      * Creates a new CaptchaSession object. Session data regarding the
@@ -39,7 +39,7 @@ class Session implements SessionInterface
      *
      * @param int $id The captcha identifier.
      */
-    public function __construct($id = 0)
+    public function __construct(int $id = 0)
     {
         $this->id = $id;
         $this->load();
@@ -48,7 +48,7 @@ class Session implements SessionInterface
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -56,7 +56,7 @@ class Session implements SessionInterface
     /**
      * @inheritDoc
      */
-    public function clear()
+    public function clear(): void
     {
         $this->session['icons'] = [];
         $this->session['iconIds'] = [];
@@ -70,7 +70,7 @@ class Session implements SessionInterface
     /**
      * @inheritDoc
      */
-    public function destroy()
+    public function destroy(): void
     {
         unset($_SESSION[self::SESSION_NAME][$this->id]);
     }
@@ -78,7 +78,7 @@ class Session implements SessionInterface
     /**
      * @inheritDoc
      */
-    public function load()
+    public function load(): void
     {
         // Make sure a session has been started.
         self::startSession();
@@ -102,7 +102,7 @@ class Session implements SessionInterface
     /**
      * @inheritDoc
      */
-    public function save()
+    public function save(): void
     {
         // Write the data to the session.
         $_SESSION[self::SESSION_NAME][$this->id] = $this->session;
@@ -111,7 +111,7 @@ class Session implements SessionInterface
     /**
      * @inheritDoc
      */
-    public static function exists($id)
+    public static function exists(int $id): bool
     {
         self::startSession();
 
@@ -121,15 +121,15 @@ class Session implements SessionInterface
     /**
      * @inheritDoc
      */
-    public function __get($key)
+    public function __get(string $key)
     {
-        return isset($this->session[$key]) ? $this->session[$key] : null;
+        return $this->session[$key] ?? null;
     }
 
     /**
      * @inheritDoc
      */
-    public function __set($key, $value)
+    public function __set(string $key, $value): void
     {
         $this->session[$key] = $value;
     }
@@ -138,7 +138,7 @@ class Session implements SessionInterface
      * Attempts to start a session, if none has been started yet.
      * @return void
      */
-    private static function startSession()
+    private static function startSession(): void
     {
         if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
             session_start();

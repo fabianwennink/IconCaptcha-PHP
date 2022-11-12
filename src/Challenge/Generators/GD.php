@@ -15,7 +15,7 @@ class GD extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function loadImage($path)
+    public function loadImage(string $path)
     {
         return imagecreatefrompng($path);
     }
@@ -41,7 +41,7 @@ class GD extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function rotate($image, $degree)
+    public function rotate($image, int $degree)
     {
         return imagerotate($image, $degree, 0);
     }
@@ -49,7 +49,7 @@ class GD extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function drawBorder($image, $color, $x1, $y1, $x2, $y2)
+    public function drawBorder($image, $color, int $x1, int $y1, int $x2, int $y2)
     {
         imageline($image, $x1, $y1, $x2, $y2, $color);
         return $image;
@@ -58,7 +58,7 @@ class GD extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function drawIcon($image, $icon, $x, $y, $size)
+    public function drawIcon($image, $icon, int $x, int $y, int $size)
     {
         imagecopy($image, $icon, $x, $y, 0, 0, $size, $size);
         return $image;
@@ -67,7 +67,7 @@ class GD extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function colorFromRGB($image, $red, $green, $blue)
+    public function colorFromRGB($image, int $red, int $green, int $blue)
     {
         return imagecolorallocate($image, $red, $green, $blue);
     }
@@ -75,7 +75,7 @@ class GD extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function render($image)
+    public function render($image): string
     {
         ob_start();
         imagepng($image);

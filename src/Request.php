@@ -18,9 +18,9 @@ class Request
 
     const VALID_ACTION_TYPES = ['LOAD', 'SELECTION', 'INVALIDATE'];
 
-    private $challenge;
+    private Challenge $challenge;
 
-    private $validator;
+    private Validator $validator;
 
     public function __construct(Challenge $challenge, Validator $validator)
     {
@@ -28,12 +28,12 @@ class Request
         $this->validator = $validator;
     }
 
-    public function isCaptchaRequest()
+    public function isCaptchaRequest(): bool
     {
         return $this->isAjaxRequest() && !empty($_POST) && isset($_POST['payload']);
     }
 
-    public function process()
+    public function process(): void
     {
         if ($this->isCaptchaRequest()) {
 
@@ -93,7 +93,7 @@ class Request
      * Exits the request with a 400 bad request status.
      * @return void
      */
-    public function badRequest()
+    public function badRequest(): void
     {
         http_response_code(400);
         exit;
@@ -105,7 +105,7 @@ class Request
      * @param bool $checkHeader If the presence of the custom HTTP header should be checked.
      * @return bool TRUE if the token was valid, FALSE if it wasn't.
      */
-    private function validateToken($payload, $checkHeader)
+    private function validateToken(array $payload, bool $checkHeader): bool
     {
         $payloadToken = null;
         $headerToken = null;
@@ -128,7 +128,7 @@ class Request
      * Create a error message string for the token validation error.
      * @return void
      */
-    private function tokenError()
+    private function tokenError(): void
     {
         http_response_code(200);
         header('Content-type: text/plain');
@@ -139,7 +139,7 @@ class Request
      * Checks if the current HTTP request was an Ajax request.
      * @return bool TRUE if it was an Ajax request, FALSE if it wasn't.
      */
-    private function isAjaxRequest()
+    private function isAjaxRequest(): bool
     {
         return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
     }

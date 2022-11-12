@@ -19,7 +19,7 @@ class Imagick extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function loadImage($path)
+    public function loadImage(string $path)
     {
         $image = new ImagickImage();
         $image->readImage($path);
@@ -53,7 +53,7 @@ class Imagick extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function rotate($image, $degree)
+    public function rotate($image, int $degree)
     {
         /**
          * @var ImagickImage $image
@@ -65,7 +65,7 @@ class Imagick extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function drawBorder($image, $color, $x1, $y1, $x2, $y2)
+    public function drawBorder($image, $color, int $x1, int $y1, int $x2, int $y2)
     {
         $draw = new ImagickDraw();
         $draw->setFillColor($color);
@@ -83,7 +83,7 @@ class Imagick extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function drawIcon($image, $icon, $x, $y, $size)
+    public function drawIcon($image, $icon, int $x, int $y, int $size)
     {
         /**
          * @var ImagickImage $image
@@ -95,7 +95,7 @@ class Imagick extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function colorFromRGB($image, $red, $green, $blue)
+    public function colorFromRGB($image, int $red, int $green, int $blue)
     {
         return new ImagickPixel("rgb($red, $green, $blue)");
     }
@@ -103,7 +103,7 @@ class Imagick extends AbstractImageGenerator
     /**
      * @inheritDoc
      */
-    public function render($image)
+    public function render($image): string
     {
         /**
          * @var ImagickImage $image

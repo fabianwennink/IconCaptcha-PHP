@@ -9,7 +9,7 @@ class Payload
      * @param string $payload The request payload to be decoded.
      * @return mixed The decoded payload.
      */
-    public static function decode($payload)
+    public static function decode(string $payload)
     {
         // Base64 decode the payload.
         $payload = base64_decode($payload);
@@ -26,7 +26,7 @@ class Payload
      * @param mixed $payload The payload to encode.
      * @return string The encoded payload.
      */
-    public static function encode($payload)
+    public static function encode($payload): string
     {
         return base64_encode(json_encode($payload));
     }

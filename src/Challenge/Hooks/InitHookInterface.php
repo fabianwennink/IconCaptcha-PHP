@@ -14,5 +14,5 @@ interface InitHookInterface
      * @param array $options The captcha options.
      * @return bool TRUE if the captcha should autocomplete upon initialization, FALSE if it should not.
      */
-    public function shouldImmediatelyComplete($request, $session, $options);
+    public function shouldImmediatelyComplete(array $request, SessionInterface $session, array $options): bool;
 }

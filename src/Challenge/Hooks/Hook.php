@@ -18,7 +18,7 @@ class Hook
      * @param mixed ...$params Any additional data which has to be passed to the hook.
      * @return mixed The result of the hook, or the default value if no hook was called.
      */
-    public static function call($type, $class, $action, $session, $options, $default, ...$params)
+    public static function call(string $type, $class, string $action, SessionInterface $session, array $options, $default, ...$params)
     {
         $hook = self::getHook($type, $class);
 
@@ -38,7 +38,7 @@ class Hook
      * @param array $options The captcha options.
      * @param mixed ...$params Any additional data which has to be passed to the hook.
      */
-    public static function callVoid($type, $class, $action, $session, $options, ...$params)
+    public static function callVoid(string $type, $class, string $action, SessionInterface $session, array $options, ...$params)
     {
         $hook = self::getHook($type, $class);
 
@@ -53,7 +53,7 @@ class Hook
      * @param mixed $interface The interface which the hook has to implement in order to be called properly.
      * @return mixed|null The hook class instance, or NULL if no hook was defined for the current action.
      */
-    private static function getHook($hookName, $interface)
+    private static function getHook(string $hookName, $interface)
     {
         if(isset($options['hooks'][$hookName])) {
             $hook = new $options['hooks'][$hookName]();

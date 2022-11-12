@@ -10,17 +10,11 @@ class IconCaptcha
     /**
      * @var mixed Default values for all the server-side options.
      */
-    private $options;
+    private array $options;
 
-    /**
-     * @var Validator
-     */
-    private $validator;
+    private Validator $validator;
 
-    /**
-     * @var Request
-     */
-    private $request;
+    private Request $request;
 
     public function __construct($options)
     {
@@ -28,7 +22,7 @@ class IconCaptcha
         $this->validator = new Validator($options);
     }
 
-    public function options($options)
+    public function options($options): void
     {
         $this->options = Options::prepare($options);
     }
@@ -36,7 +30,7 @@ class IconCaptcha
     /**
      * @return Request
      */
-    public function request()
+    public function request(): Request
     {
         if(!isset($this->request)) {
             $this->request = new Request(
@@ -51,7 +45,7 @@ class IconCaptcha
      * @param $request
      * @return object
      */
-    public function validate($request)
+    public function validate($request): object
     {
         return $this->validator->validate($request);
     }

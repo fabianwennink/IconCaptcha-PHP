@@ -4,7 +4,7 @@ namespace IconCaptcha\Challenge\Image;
 
 use IconCaptcha\Challenge\Hooks\GenerationHookInterface;
 use IconCaptcha\Challenge\Hooks\Hook;
-use IconCaptcha\Session\Session;
+use IconCaptcha\Session\SessionInterface;
 
 abstract class AbstractImageGenerator implements ImageGeneratorInterface
 {
@@ -14,15 +14,9 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
 
     const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
 
-    /**
-     * @var Session $session
-     */
-    private $session;
+    private SessionInterface $session;
 
-    /**
-     * @var array $options
-     */
-    private $options;
+    private array $options;
 
     public function __construct($session, $options)
     {
@@ -39,7 +33,7 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
      * @param string $placeholderPath The path to the placeholder image, with the name of the file included.
      * @return false|\GdImage|resource The generated image.
      */
-    public function generate($iconPath, $placeholderPath)
+    public function generate(string $iconPath, string $placeholderPath)
     {
         // Prepare the placeholder image.
         $placeholder = $this->loadImage($placeholderPath);
@@ -126,5 +120,5 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
      * @param mixed $image The challenge image to render.
      * @return string The image as a base64 string.
      */
-    public abstract function render($image);
+    public abstract function render($image): string;
 }

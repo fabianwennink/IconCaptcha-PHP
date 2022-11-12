@@ -66,7 +66,7 @@ class Options
      * in the given options array, they will be set with their default value.
      * @param array $options The array of options.
      */
-    public static function prepare($options)
+    public static function prepare(array $options): array
     {
         // Merge the given options and default options together.
         $mergedOptions = array_replace_recursive(self::DEFAULT_OPTIONS, $options);
