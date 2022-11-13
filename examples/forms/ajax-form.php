@@ -7,7 +7,7 @@
      */
 
     // Include the IconCaptcha classes.
-    require_once '../../vendor/autoload.php';
+    require_once __DIR__ . '/../../vendor/autoload.php';
 
     // Start a session (required when using the IconCaptcha Token, see form below).
     session_start();
