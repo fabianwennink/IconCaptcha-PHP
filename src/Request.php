@@ -72,9 +72,13 @@ class Request
                         $this->badRequest();
                     }
 
-                    if ($this->challenge->initialize($identifier)->makeSelection($payload['x'], $payload['y'], $payload['width'])) {
+                    $challenge = $this->challenge->initialize($identifier);
+                    $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width']);
+
+                    if ($result->completed) {
                         http_response_code(200);
-                        exit;
+                        header('Content-type: text/plain');
+                        exit($result->payload);
                     }
                     break;
                 case 'INVALIDATE':

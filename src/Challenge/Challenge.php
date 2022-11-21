@@ -67,7 +67,6 @@ class Challenge
             return Payload::encode([
                 'id' => $this->session->getId(),
                 'completed' => true,
-                'timestamp' => time(),
             ]);
         }
 
@@ -152,7 +151,6 @@ class Challenge
         return Payload::encode([
             'id' => $this->session->getId(),
             'challenge' => $this->render(),
-            'timestamp' => time(),
         ]);
     }
 
@@ -169,17 +167,21 @@ class Challenge
      * @param int $x The clicked X-coordinate relative to the image dimensions.
      * @param int $y The clicked Y-coordinate relative to the image dimensions.
      * @param int $width The width of the captcha element.
-     * @return boolean TRUE if the correct icon was selected, FALSE if not.
+     * @return object Object containing the selection response.
      */
-    public function makeSelection(int $x, int $y, int $width): bool
+    public function makeSelection(int $x, int $y, int $width): object
     {
         // Get the clicked position.
         $clickedPosition = $this->determineClickedIcon($x, $y, $width, count($this->session->icons));
 
         // Check if the selection is set and matches the position from the session.
         if ($this->session->icons[$clickedPosition] === $this->session->correctId) {
-            $this->session->attempts = 0;
-            $this->session->attemptsTimeout = 0;
+
+            // If enabled, set the expiration timestamp for the completed captcha.
+            if($this->options['challenge']['completionExpiration'] > 0) {
+                $this->session->expiresAt = time() + $this->options['challenge']['completionExpiration'];
+            }
+
             $this->session->completed = true;
             $this->session->save();
 
@@ -189,7 +191,12 @@ class Challenge
                 $this->session, $this->options
             );
 
-            return true;
+            return (object)[
+                'completed' => true,
+                'payload' => Payload::encode([
+                    'expiredAt' => $this->session->expiresAt,
+                ]),
+            ];
         } else {
             $this->session->completed = false;
 
@@ -209,7 +216,7 @@ class Challenge
                 $this->session, $this->options
             );
 
-            return false;
+            return (object)['completed' => false];
         }
     }
 

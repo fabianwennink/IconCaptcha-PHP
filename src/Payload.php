@@ -28,6 +28,8 @@ class Payload
      */
     public static function encode($payload): string
     {
-        return base64_encode(json_encode($payload));
+        return base64_encode(json_encode(
+            $payload + ['timestamp' => time()]
+        ));
     }
 }

@@ -17,7 +17,8 @@ namespace IconCaptcha\Session;
  * @property bool requested If the captcha image has been requested yet.
  * @property bool completed If the captcha was completed (correct icon selected) or not.
  * @property int attempts The number of times an incorrect answer was given.
- * @property int attemptsTimeout The timestamp, at which the timeout for entering too many incorrect guesses expires.
+ * @property int attemptsTimeout The (unix) timestamp, at which the timeout for entering too many incorrect guesses expires.
+ * @property int expiresAt The (unix) timestamp, at which a completed captcha's session will expire.
  */
 class Session implements SessionInterface
 {
@@ -65,6 +66,7 @@ class Session implements SessionInterface
         $this->session['completed'] = false;
         $this->session['attempts'] = 0;
         $this->session['attemptsTimeout'] = 0;
+        $this->session['expiresAt'] = 0;
     }
 
     /**
@@ -95,6 +97,7 @@ class Session implements SessionInterface
                 'completed' => false,
                 'attempts' => 0,
                 'attemptsTimeout' => 0,
+                'expiresAt' => 0,
             ];
         }
     }

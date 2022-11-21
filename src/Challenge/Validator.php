@@ -55,6 +55,11 @@ class Validator
         // Initialize the session.
         $session = $this->createSession($identifier);
 
+        // Make sure the session hasn't expired.
+        if($session->expiresAt > 0 && $session->expiresAt < time()) {
+            return $this->createFailedResponse(1, $this->options['messages']['session_expired']);
+        }
+
         // Check if the captcha was completed.
         if ($session->completed === true) {
 

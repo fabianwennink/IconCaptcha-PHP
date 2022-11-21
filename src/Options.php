@@ -28,10 +28,13 @@ class Options
         ],
         'messages' => [
             'wrong_icon' => 'You\'ve selected the wrong image.',
-            'no_selection' => 'No image has been selected.',
             'empty_form' => 'You\'ve not submitted any form.',
+            'session_expired' => 'The captcha session has expired.',
             'invalid_id' => 'The captcha ID was invalid.',
             'form_token' => 'The form token was invalid.'
+        ],
+        'challenge' => [
+            'completionExpiration' => 300, // seconds.
         ],
         'image' => [
             'icons' => 180,
