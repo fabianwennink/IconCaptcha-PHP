@@ -11,7 +11,7 @@ class Token extends AbstractToken implements TokenInterface
     /**
      * @inheritDoc
      */
-    public static function get(): string
+    public function get(): string
     {
         $self = new self();
 
@@ -35,9 +35,9 @@ class Token extends AbstractToken implements TokenInterface
     /**
      * @inheritDoc
      */
-    public static function render(): string
+    public function render(): string
     {
-        $token = self::get();
+        $token = $this->get();
         $name = self::TOKEN_FIELD_NAME;
 
         return "<input type='hidden' name='$name' value='$token' />";

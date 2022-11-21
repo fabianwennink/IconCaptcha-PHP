@@ -4,6 +4,7 @@ namespace IconCaptcha;
 
 use IconCaptcha\Challenge\Challenge;
 use IconCaptcha\Challenge\Validator;
+use IconCaptcha\Token\Token;
 
 class IconCaptcha
 {
@@ -48,5 +49,14 @@ class IconCaptcha
     public function validate($request): object
     {
         return $this->validator->validate($request);
+    }
+
+    /**
+     * Generates the captcha token. The token will be rendered inside a hidden HTML input element.
+     * @return string The HTML element containing the token.
+     */
+    public static function token(): string
+    {
+        return (new Token())->render();
     }
 }

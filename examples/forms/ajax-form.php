@@ -75,7 +75,7 @@
                     <!-- Additional security token to prevent CSRF. -->
                     <!-- Optional, but highly recommended - disable via IconCaptcha options. -->
                     <!-- Note: using the default IconCaptcha Token class? Make sure to start a PHP session. -->
-                    <?= \IconCaptcha\Token\Token::render() ?>
+                    <?= \IconCaptcha\IconCaptcha::token() ?>
 
                     <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
                     <div class="iconcaptcha-holder" data-theme="light"></div>
