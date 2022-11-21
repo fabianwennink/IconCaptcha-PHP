@@ -11,9 +11,9 @@
     <head>
         <title>IconCaptcha v3.1.1 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=10" />
+        <meta http-equiv="X-UA-Compatible" content="IE=11" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link href="examples/assets/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <link href="examples/assets/demo.css" rel="stylesheet" type="text/css">
     </head>
