@@ -46,10 +46,11 @@ class Challenge
      * will be returned, also as a base64 encoded JSON string.
      *
      * @param string $theme The theme of the captcha.
+     * @param int $latency The request latency, which will be added onto the expiration timestamp.
      *
      * @return string Captcha details required to initialize the client.
      */
-    public function generate(string $theme): string
+    public function generate(string $theme, int $latency): string
     {
         // Call the init 'autocomplete' hook, if provided.
         $shouldImmediatelyComplete = Hook::call(
@@ -79,7 +80,7 @@ class Challenge
             if ($currentTimestamp <= $this->session->attemptsTimeout) {
                 return Payload::encode([
                     'error' => 1,
-                    'data' => $this->session->attemptsTimeout - $currentTimestamp // remaining time.
+                    'data' => ($this->session->attemptsTimeout - $currentTimestamp) + $latency // remaining time.
                 ]);
             } else {
                 $this->session->attemptsTimeout = 0;
@@ -170,9 +171,10 @@ class Challenge
      * @param int $x The clicked X-coordinate relative to the image dimensions.
      * @param int $y The clicked Y-coordinate relative to the image dimensions.
      * @param int $width The width of the captcha element.
+     * @param int $latency The request latency, which will be added onto the expiration timestamp.
      * @return string The request payload, containing the completion status.
      */
-    public function makeSelection(int $x, int $y, int $width): string
+    public function makeSelection(int $x, int $y, int $width, int $latency): string
     {
         // Get the clicked position.
         $clickedPosition = $this->determineClickedIcon($x, $y, $width, count($this->session->icons));
@@ -182,7 +184,7 @@ class Challenge
 
             // If enabled, set the expiration timestamp for the completed captcha.
             if($this->options['challenge']['completionExpiration'] > 0) {
-                $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['completionExpiration'] * 1000);
+                $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['completionExpiration'] * 1000) + $latency;
             }
 
             $this->session->completed = true;
@@ -207,7 +209,7 @@ class Challenge
 
             // If the max amount has been reached, set a timeout (if set).
             if ($this->session->attempts === $this->options['attempts']['amount'] && $this->options['attempts']['timeout'] > 0) {
-                $this->session->attemptsTimeout = Utils::getTimeInMilliseconds() + ($this->options['attempts']['timeout'] * 1000);
+                $this->session->attemptsTimeout = Utils::getTimeInMilliseconds() + ($this->options['attempts']['timeout'] * 1000) + $latency;
             }
 
             $this->session->save();

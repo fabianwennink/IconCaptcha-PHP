@@ -42,8 +42,10 @@ class Request
 
             // Validate the payload content.
             if (
-                !isset($payload, $payload['action'], $payload['id']) || // ensure the payload is valid.
+                !isset($payload, $payload['action'], $payload['id'], $payload['timestamp'], $payload['initTimestamp']) || // ensure the payload is valid.
                 !is_numeric($payload['id']) || // ensure the identifier is a number.
+                !is_numeric($payload['timestamp']) || // ensure the timestamp is a number.
+                !is_numeric($payload['initTimestamp']) || // ensure the initialization timestamp is a number.
                 !in_array($payload['action'], self::VALID_ACTION_TYPES) // ensure the action type is known.
             ) {
                 $this->badRequest();
@@ -54,7 +56,23 @@ class Request
                 $this->tokenError();
             }
 
-            $identifier = $payload['id'];
+            // Note: JS timestamps are in milliseconds.
+            $currentTimestamp = Utils::getTimeInMilliseconds();
+            $requestTimestamp = $payload['timestamp'];
+            $scriptTimestamp = $payload['initTimestamp'];
+
+            // Validate the payload timestamps.
+            if(
+                ($requestTimestamp > $currentTimestamp || $scriptTimestamp > $currentTimestamp) || // ensure the timestamps are older than the current time.
+                ($scriptTimestamp > $requestTimestamp) // ensure the script init timestamp is older than the request timestamp.
+            ) {
+                $this->badRequest();
+            }
+
+            // Calculate the request latency. The value will be added to all
+            // timeout timestamps, to compensate for latency time loss.
+            // TODO allow this to be optional + to set a max latency adjustment value.
+            $latency = $currentTimestamp - $requestTimestamp;
 
             switch ($payload['action']) {
                 case 'LOAD':
@@ -64,7 +82,7 @@ class Request
 
                     http_response_code(200);
                     header('Content-type: text/plain');
-                    exit($this->challenge->initialize($identifier)->generate($theme));
+                    exit($this->challenge->initialize($payload['id'])->generate($theme, $latency));
                 case 'SELECTION':
 
                     // Check if the captcha ID and required other payload data is set.
@@ -72,8 +90,8 @@ class Request
                         $this->badRequest();
                     }
 
-                    $challenge = $this->challenge->initialize($identifier);
-                    $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width']);
+                    $challenge = $this->challenge->initialize($payload['id']);
+                    $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width'], $latency);
 
                     http_response_code(200);
                     header('Content-type: text/plain');
