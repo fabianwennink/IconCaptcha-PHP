@@ -75,12 +75,9 @@ class Request
                     $challenge = $this->challenge->initialize($identifier);
                     $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width']);
 
-                    if ($result->completed) {
-                        http_response_code(200);
-                        header('Content-type: text/plain');
-                        exit($result->payload);
-                    }
-                    break;
+                    http_response_code(200);
+                    header('Content-type: text/plain');
+                    exit($result);
                 case 'INVALIDATE':
                     $this->validator->invalidate($payload['id']);
                     http_response_code(200);
@@ -91,16 +88,6 @@ class Request
         }
 
         $this->badRequest();
-    }
-
-    /**
-     * Exits the request with a 400 bad request status.
-     * @return void
-     */
-    public function badRequest(): void
-    {
-        http_response_code(400);
-        exit;
     }
 
     /**
@@ -126,6 +113,16 @@ class Request
         http_response_code(200);
         header('Content-type: text/plain');
         exit(Payload::encode(['error' => 2]));
+    }
+
+    /**
+     * Exits the request with a 400 bad request status.
+     * @return void
+     */
+    private function badRequest(): void
+    {
+        http_response_code(400);
+        exit;
     }
 
     /**

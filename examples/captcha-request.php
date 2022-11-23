@@ -26,5 +26,5 @@ if($captchaRequest->isCaptchaRequest()) {
     $captchaRequest->process();
 }
 
-// Request made was not supported/recognized.
-$captchaRequest->badRequest();
+// Request was not supported/recognized.
+http_response_code(400);

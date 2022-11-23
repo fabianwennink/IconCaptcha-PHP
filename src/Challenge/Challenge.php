@@ -167,9 +167,9 @@ class Challenge
      * @param int $x The clicked X-coordinate relative to the image dimensions.
      * @param int $y The clicked Y-coordinate relative to the image dimensions.
      * @param int $width The width of the captcha element.
-     * @return object Object containing the selection response.
+     * @return string The request payload, containing the completion status.
      */
-    public function makeSelection(int $x, int $y, int $width): object
+    public function makeSelection(int $x, int $y, int $width): string
     {
         // Get the clicked position.
         $clickedPosition = $this->determineClickedIcon($x, $y, $width, count($this->session->icons));
@@ -191,12 +191,11 @@ class Challenge
                 $this->session, $this->options
             );
 
-            return (object)[
+            return Payload::encode([
+                'id' => $this->session->getId(),
                 'completed' => true,
-                'payload' => Payload::encode([
-                    'expiredAt' => $this->session->expiresAt,
-                ]),
-            ];
+                'expiredAt' => $this->session->expiresAt,
+            ]);
         } else {
             $this->session->completed = false;
 
@@ -216,7 +215,10 @@ class Challenge
                 $this->session, $this->options
             );
 
-            return (object)['completed' => false];
+            return Payload::encode([
+                'id' => $this->session->getId(),
+                'completed' => false,
+            ]);
         }
     }
 
