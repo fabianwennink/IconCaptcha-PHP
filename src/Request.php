@@ -50,7 +50,7 @@ class Request
             }
 
             // Validate the captcha token.
-            if (!$this->validateToken($payload, true)) {
+            if (!$this->validateToken($payload)) {
                 $this->tokenError();
             }
 
@@ -106,23 +106,12 @@ class Request
     /**
      * Validates the payload and possibly the header tokens.
      * @param array $payload The request payload to check.
-     * @param bool $checkHeader If the presence of the custom HTTP header should be checked.
      * @return bool TRUE if the token was valid, FALSE if it wasn't.
      */
-    private function validateToken(array $payload, bool $checkHeader): bool
+    private function validateToken(array $payload): bool
     {
-        $payloadToken = null;
-        $headerToken = null;
-
-        // Get the token from the payload.
-        if (!empty($payload['token'])) {
-            $payloadToken = $payload['token'];
-        }
-
-        // Get the token from the request headers, can be empty for some requests.
-        if ($checkHeader && !empty($_SERVER[self::CUSTOM_TOKEN_HEADER])) {
-            $headerToken = $_SERVER[self::CUSTOM_TOKEN_HEADER];
-        }
+        $payloadToken = $payload['token'] ?? '';
+        $headerToken = $_SERVER[self::CUSTOM_TOKEN_HEADER] ?? '';
 
         // Validate the tokens.
         return $this->validator->validateToken($payloadToken, $headerToken);
