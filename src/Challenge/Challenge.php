@@ -63,12 +63,18 @@ class Challenge
             $this->session->clear();
             $this->session->completed = true;
             $this->session->requested = true;
-            $this->session->attempts = 0;
+
+            // If enabled, set the expiration timestamp for the completed captcha.
+            if($this->options['challenge']['completionExpiration'] > 0) {
+                $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['completionExpiration'] * 1000) + $latency;
+            }
+
             $this->session->save();
 
             return Payload::encode([
                 'id' => $this->session->getId(),
                 'completed' => true,
+                'expiredAt' => $this->session->expiresAt,
             ]);
         }
 
@@ -139,22 +145,26 @@ class Challenge
         // Get the last attempts count to restore, after clearing the session.
         $attemptsCount = $this->session->attempts;
 
-        // Unset the previous session data.
+        // Save the challenge data to the session.
         $this->session->clear();
-
-        // Set the chosen icons and position and reset the requested status.
         $this->session->mode = $theme;
         $this->session->icons = $iconPositions;
         $this->session->iconIds = $iconIds;
         $this->session->correctId = $correctIconId;
-        $this->session->requested = false;
         $this->session->attempts = $attemptsCount;
+
+        // If enabled, set the expiration timestamp for the challenge.
+        if($this->options['challenge']['inactivityExpiration'] > 0) {
+            $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['inactivityExpiration'] * 1000) + $latency;
+        }
+
         $this->session->save();
 
         // Return the captcha details.
         return Payload::encode([
             'id' => $this->session->getId(),
             'challenge' => $this->render(),
+            'expiredAt' => $this->session->expiresAt,
         ]);
     }
 

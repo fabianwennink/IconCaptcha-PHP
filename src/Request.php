@@ -16,7 +16,7 @@ class Request
 {
     const CUSTOM_TOKEN_HEADER = 'HTTP_X_ICONCAPTCHA_TOKEN';
 
-    const VALID_ACTION_TYPES = ['LOAD', 'SELECTION', 'INVALIDATE'];
+    const VALID_ACTION_TYPES = ['LOAD', 'SELECTION'];
 
     private Challenge $challenge;
 
@@ -96,10 +96,6 @@ class Request
                     http_response_code(200);
                     header('Content-type: text/plain');
                     exit($result);
-                case 'INVALIDATE':
-                    $this->validator->invalidate($payload['id']);
-                    http_response_code(200);
-                    exit;
                 default:
                     break;
             }

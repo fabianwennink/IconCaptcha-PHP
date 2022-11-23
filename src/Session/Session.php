@@ -18,7 +18,7 @@ namespace IconCaptcha\Session;
  * @property bool completed If the captcha was completed (correct icon selected) or not.
  * @property int attempts The number of times an incorrect answer was given.
  * @property int attemptsTimeout The (unix) timestamp, at which the timeout for entering too many incorrect guesses expires.
- * @property int expiresAt The (unix) timestamp, at which a completed captcha's session will expire.
+ * @property int expiresAt The (unix) timestamp, after which the captcha's session should be considered expire.
  */
 class Session implements SessionInterface
 {

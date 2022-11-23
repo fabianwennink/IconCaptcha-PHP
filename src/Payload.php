@@ -23,13 +23,14 @@ class Payload
 
     /**
      * Encodes the given payload with base64 and JSON.
+     * Note: All NULL values will be filtered.
      * @param mixed $payload The payload to encode.
      * @return string The encoded payload.
      */
     public static function encode($payload): string
     {
         return base64_encode(json_encode(
-            $payload + ['timestamp' => Utils::getTimeInMilliseconds()]
+            array_filter($payload) + ['timestamp' => Utils::getTimeInMilliseconds()]
         ));
     }
 }

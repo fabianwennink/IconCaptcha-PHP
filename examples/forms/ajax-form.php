@@ -141,7 +141,6 @@
                         initializeDelay: 500,
                         selectionResetDelay: 3000,
                         loadingAnimationDelay: 1000,
-                        invalidateTime: 1000 * 60 * 2,
                     },
                     messages: {
                         initialization: {

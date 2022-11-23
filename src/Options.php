@@ -34,7 +34,8 @@ class Options
             'form_token' => 'The form token was invalid.'
         ],
         'challenge' => [
-            'completionExpiration' => 300, // seconds.
+            'inactivityExpiration' => 120, // In seconds. Set to 0 to disable.
+            'completionExpiration' => 300, // In seconds. Set to 0 to disable.
         ],
         'image' => [
             'icons' => 180,
