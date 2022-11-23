@@ -3,6 +3,7 @@
 namespace IconCaptcha\Challenge;
 
 use IconCaptcha\Token\AbstractToken;
+use IconCaptcha\Utils;
 
 class Validator
 {
@@ -56,7 +57,7 @@ class Validator
         $session = $this->createSession($identifier);
 
         // Make sure the session hasn't expired.
-        if($session->expiresAt > 0 && $session->expiresAt < time()) {
+        if($session->expiresAt > 0 && $session->expiresAt < Utils::getTimeInMilliseconds()) {
             return $this->createFailedResponse(1, $this->options['messages']['session_expired']);
         }
 
@@ -113,7 +114,7 @@ class Validator
         // TODO should become a class, e.g. ValidationResult
         return (object)[
             'success' => true,
-            'timestamp' => time(),
+            'timestamp' => Utils::getTimeInMilliseconds(),
         ];
     }
 
@@ -126,7 +127,7 @@ class Validator
                 'code' => $status,
                 'message' => $message,
             ],
-            'timestamp' => time(),
+            'timestamp' => Utils::getTimeInMilliseconds(),
         ];
     }
 

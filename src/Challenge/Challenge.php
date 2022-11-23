@@ -7,6 +7,7 @@ use IconCaptcha\Challenge\Hooks\InitHookInterface;
 use IconCaptcha\Challenge\Hooks\SelectionHookInterface;
 use IconCaptcha\Payload;
 use IconCaptcha\Session\SessionInterface;
+use IconCaptcha\Utils;
 
 class Challenge
 {
@@ -74,9 +75,11 @@ class Challenge
         // If reached, return an error and the remaining time.
         // TODO timeout check should be extracted to class method.
         if ($this->session->attemptsTimeout > 0) {
-            if (time() <= $this->session->attemptsTimeout) {
+            $currentTimestamp = Utils::getTimeInMilliseconds();
+            if ($currentTimestamp <= $this->session->attemptsTimeout) {
                 return Payload::encode([
-                    'error' => 1, 'data' => ($this->session->attemptsTimeout - time()) * 1000 // remaining time.
+                    'error' => 1,
+                    'data' => $this->session->attemptsTimeout - $currentTimestamp // remaining time.
                 ]);
             } else {
                 $this->session->attemptsTimeout = 0;
@@ -179,7 +182,7 @@ class Challenge
 
             // If enabled, set the expiration timestamp for the completed captcha.
             if($this->options['challenge']['completionExpiration'] > 0) {
-                $this->session->expiresAt = time() + $this->options['challenge']['completionExpiration'];
+                $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['completionExpiration'] * 1000);
             }
 
             $this->session->completed = true;
@@ -204,7 +207,7 @@ class Challenge
 
             // If the max amount has been reached, set a timeout (if set).
             if ($this->session->attempts === $this->options['attempts']['amount'] && $this->options['attempts']['timeout'] > 0) {
-                $this->session->attemptsTimeout = time() + $this->options['attempts']['timeout'];
+                $this->session->attemptsTimeout = Utils::getTimeInMilliseconds() + ($this->options['attempts']['timeout'] * 1000);
             }
 
             $this->session->save();
