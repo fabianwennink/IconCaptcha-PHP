@@ -21,13 +21,13 @@ if(!empty($_POST)) {
     $captcha = new \IconCaptcha\IconCaptcha($options);
 
     // Validate the captcha.
-    $response = $captcha->validate($_POST);
+    $validation = $captcha->validate($_POST);
 
     // Confirm the captcha was validated.
-    if($response->success === true) {
+    if($validation->success()) {
         echo '<b>Captcha:</b> The form has been submitted!';
     } else {
-        echo '<b>Captcha: </b>' . $response->error['message'];
+        echo '<b>Captcha: </b>' . $validation->getErrorMessage();
     }
 } else {
     echo '<b>Captcha:</b> No data posted!';

@@ -23,13 +23,13 @@
         $captcha = new \IconCaptcha\IconCaptcha($options);
 
         // Validate the captcha.
-        $response = $captcha->validate($_POST);
+        $validation = $captcha->validate($_POST);
 
         // Confirm the captcha was validated.
-        if($response->success === true) {
+        if($validation->success()) {
             $captchaMessage = 'The form has been submitted!';
         } else {
-            $captchaMessage = $response->error['message'];
+            $captchaMessage = $validation->getErrorMessage();
         }
     }
 ?>

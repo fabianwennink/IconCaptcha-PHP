@@ -3,6 +3,7 @@
 namespace IconCaptcha;
 
 use IconCaptcha\Challenge\Challenge;
+use IconCaptcha\Challenge\ValidationResult;
 use IconCaptcha\Challenge\Validator;
 use IconCaptcha\Token\Token;
 
@@ -45,9 +46,9 @@ class IconCaptcha
 
     /**
      * @param $request
-     * @return object
+     * @return ValidationResult
      */
-    public function validate($request): object
+    public function validate($request): ValidationResult
     {
         return $this->validator->validate($request);
     }

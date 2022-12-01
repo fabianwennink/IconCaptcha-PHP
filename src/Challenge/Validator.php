@@ -24,9 +24,9 @@ class Validator
      *
      * @param array $request The HTTP POST request variable ($_POST).
      *
-     * @return object The validation response.
+     * @return ValidationResult The validation response.
      */
-    public function validate(array $request): object
+    public function validate(array $request): ValidationResult
     {
         // Make sure the form data is set.
         if (empty($request)) {
@@ -109,26 +109,14 @@ class Validator
         return true;
     }
 
-    private function createSuccessResponse(): object
+    private function createSuccessResponse(): ValidationResult
     {
-        // TODO should become a class, e.g. ValidationResult
-        return (object)[
-            'success' => true,
-            'timestamp' => Utils::getTimeInMilliseconds(),
-        ];
+        return new ValidationResult(true);
     }
 
-    private function createFailedResponse($status, $message): object
+    private function createFailedResponse($status, $message): ValidationResult
     {
-        // TODO should become a class, e.g. ValidationResult
-        return (object)[
-            'success' => false,
-            'error' => [
-                'code' => $status,
-                'message' => $message,
-            ],
-            'timestamp' => Utils::getTimeInMilliseconds(),
-        ];
+        return new ValidationResult(false, $status, $message);
     }
 
     private function createSession($identifier = 0)
