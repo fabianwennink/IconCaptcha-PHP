@@ -187,7 +187,7 @@ input[type="submit"] {
 }
 
 .themes {
-    width: 400px;
+    width: 200px;
     margin: 60px auto 0;
     display: block;
     overflow: hidden;
@@ -228,17 +228,7 @@ input[type="submit"] {
     border: 1px solid #d8d8d8;
 }
 
-.themes .theme--legacy-light span:first-child {
-    background: #fff;
-    border: 1px solid #d8d8d8;
-}
-
 .themes .theme--dark span:first-child {
-    background: #4c4c4c;
-    border: 1px solid #404040;
-}
-
-.themes .theme--legacy-dark span:first-child {
     background: #4c4c4c;
     border: 1px solid #404040;
 }

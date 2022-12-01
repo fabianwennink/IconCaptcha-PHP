@@ -22,9 +22,7 @@ class Options
         'iconPath' => null,
         'themes' => [
             'light' => ['icons' => 'light', 'color' => [240, 240, 240]],
-            'legacy-light' => ['icons' => 'light', 'color' => [240, 240, 240]],
             'dark' => ['icons' => 'dark', 'color' => [64, 64, 64]],
-            'legacy-dark' => ['icons' => 'dark', 'color' => [64, 64, 64]],
         ],
         'messages' => [
             'wrong_icon' => 'You\'ve selected the wrong image.',

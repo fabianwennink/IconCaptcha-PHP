@@ -110,10 +110,8 @@
 
                 <!-- Theme selector - JUST FOR THE DEMO PAGE -->
                 <div class="themes">
-                    <div class="theme theme--light"><span data-theme="light"></span><span>Light</span></div>
-                    <div class="theme theme--legacy-light"><span data-theme="legacy-light"></span><span>Legacy Light</span></div>
-                    <div class="theme theme--dark"><span data-theme="dark"></span><span>Dark</span></div>
-                    <div class="theme theme--legacy-dark"><span data-theme="legacy-dark"></span><span>Legacy Dark</span></div>
+                    <div class="theme theme--light"><span data-theme="light"></span><span>Light Theme</span></div>
+                    <div class="theme theme--dark"><span data-theme="dark"></span><span>Dark Theme</span></div>
                 </div>
                 <small>(theme selector only works when the challenge has not been requested yet)</small>
             </div>
