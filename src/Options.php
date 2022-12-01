@@ -36,6 +36,7 @@ class Options
         'challenge' => [
             'inactivityExpiration' => 120, // In seconds. Set to 0 to disable.
             'completionExpiration' => 300, // In seconds. Set to 0 to disable.
+            'latencyCorrection' => true,
         ],
         'image' => [
             'icons' => 180,

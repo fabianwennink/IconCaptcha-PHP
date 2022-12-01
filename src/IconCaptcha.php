@@ -35,6 +35,7 @@ class IconCaptcha
     {
         if(!isset($this->request)) {
             $this->request = new Request(
+                $this->options,
                 new Challenge($this->options),
                 $this->validator
             );

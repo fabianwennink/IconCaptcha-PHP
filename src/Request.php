@@ -18,12 +18,18 @@ class Request
 
     const VALID_ACTION_TYPES = ['LOAD', 'SELECTION'];
 
+    /**
+     * @var array $options
+     */
+    private array $options;
+
     private Challenge $challenge;
 
     private Validator $validator;
 
-    public function __construct(Challenge $challenge, Validator $validator)
+    public function __construct(array $options, Challenge $challenge, Validator $validator)
     {
+        $this->options = $options;
         $this->challenge = $challenge;
         $this->validator = $validator;
     }
@@ -71,8 +77,7 @@ class Request
 
             // Calculate the request latency. The value will be added to all
             // timeout timestamps, to compensate for latency time loss.
-            // TODO allow this to be optional + to set a max latency adjustment value.
-            $latency = $currentTimestamp - $requestTimestamp;
+            $latency = $this->options['challenge']['latencyCorrection'] ? $currentTimestamp - $requestTimestamp : 0;
 
             switch ($payload['action']) {
                 case 'LOAD':
