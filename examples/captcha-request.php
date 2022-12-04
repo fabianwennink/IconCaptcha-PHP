@@ -18,13 +18,14 @@ session_start();
 // To prevent having to copy the options to every file, a 'config' file was created.
 $options = require_once 'captcha-config.php';
 
-// Create an instance of the IconCaptcha request processing class.
-$captchaRequest = (new IconCaptcha($options))->request();
+// Create an instance of IconCaptcha.
+$captcha = new IconCaptcha($options);
+
+// Handle the CORS preflight request.
+$captcha->handleCors();
 
 // Process the request.
-if($captchaRequest->isCaptchaRequest()) {
-    $captchaRequest->process();
-}
+$captcha->request()->process();
 
 // Request was not supported/recognized.
 http_response_code(400);

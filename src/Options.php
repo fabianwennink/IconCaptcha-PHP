@@ -53,6 +53,12 @@ class Options
             'amount' => 5,
             'timeout' => 30 // seconds.
         ],
+        'cors' => [
+            'enabled' => false,
+            'origins' => [],
+            'credentials' => true,
+            'cache' => 86400,
+        ],
         'token' => Token::class,
         'session' => Session::class,
         'generator' => GD::class,

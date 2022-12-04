@@ -18,13 +18,13 @@ class IconCaptcha
 
     private Request $request;
 
-    public function __construct($options)
+    public function __construct(array $options)
     {
         $this->options($options);
         $this->validator = new Validator($options);
     }
 
-    public function options($options): void
+    public function options(array $options): void
     {
         $this->options = Options::prepare($options);
     }
@@ -60,5 +60,21 @@ class IconCaptcha
     public static function token(): string
     {
         return (new Token())->render();
+    }
+
+    /**
+     * Handles the CORS preflight request.
+     * @return void
+     */
+    public function handleCors(): void
+    {
+        if($this->options['cors']['enabled']) {
+            $cors = new Cors(
+                $this->options['cors']['origins'],
+                $this->options['cors']['credentials'],
+                $this->options['cors']['cache']
+            );
+            $cors->handleCors();
+        }
     }
 }
