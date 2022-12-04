@@ -56,6 +56,12 @@ class Validator
         // Initialize the session.
         $session = $this->createSession($identifier);
 
+        // Ensure the session is valid. If the original session failed to load, the $session variable
+        // will contain a new session. Checking the 'requested' status should tell if this is the case.
+        if(!$session || $session->requested === false) {
+            return $this->createFailedResponse(1, $this->options['messages']['session_expired']);
+        }
+
         // Make sure the session hasn't expired.
         if($session->expiresAt > 0 && $session->expiresAt < Utils::getTimeInMilliseconds()) {
             return $this->createFailedResponse(1, $this->options['messages']['session_expired']);
