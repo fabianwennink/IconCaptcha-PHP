@@ -85,7 +85,7 @@ class Challenge
             $currentTimestamp = Utils::getTimeInMilliseconds();
             if ($currentTimestamp <= $this->session->attemptsTimeout) {
                 return Payload::encode([
-                    'error' => 1,
+                    'error' => 'too-many-attempts',
                     'data' => ($this->session->attemptsTimeout - $currentTimestamp) + $latency // remaining time.
                 ]);
             } else {

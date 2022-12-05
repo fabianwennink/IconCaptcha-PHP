@@ -30,24 +30,24 @@ class Validator
     {
         // Make sure the form data is set.
         if (empty($request)) {
-            return $this->createFailedResponse(3, $this->options['messages']['empty_form']);
+            return $this->createFailedResponse('empty-form');
         }
 
         // Check if the captcha ID is set.
         if (!isset($request[self::CAPTCHA_FIELD_ID]) || !is_numeric($request[self::CAPTCHA_FIELD_ID])
             || !$this->options['session']::exists($request[self::CAPTCHA_FIELD_ID])) {
-            return $this->createFailedResponse(4, $this->options['messages']['invalid_id']);
+            return $this->createFailedResponse('invalid-widget-id');
         }
 
         // Check if the honeypot value is set.
         if (!isset($request[self::CAPTCHA_FIELD_HONEYPOT]) || !empty($request[self::CAPTCHA_FIELD_HONEYPOT])) {
-            return $this->createFailedResponse(5, $this->options['messages']['invalid_id']);
+            return $this->createFailedResponse('detected-bot');
         }
 
         // Verify if the captcha token is correct.
         $token = (isset($request[AbstractToken::TOKEN_FIELD_NAME])) ? $request[AbstractToken::TOKEN_FIELD_NAME] : null;
         if (!$this->validateToken($token)) {
-            return $this->createFailedResponse(6, $this->options['messages']['form_token']);
+            return $this->createFailedResponse('invalid-token');
         }
 
         // Get the captcha identifier.
@@ -59,12 +59,12 @@ class Validator
         // Ensure the session is valid. If the original session failed to load, the $session variable
         // will contain a new session. Checking the 'requested' status should tell if this is the case.
         if(!$session || $session->requested === false) {
-            return $this->createFailedResponse(1, $this->options['messages']['session_expired']);
+            return $this->createFailedResponse('invalid-challenge');
         }
 
         // Make sure the session hasn't expired.
         if($session->expiresAt > 0 && $session->expiresAt < Utils::getTimeInMilliseconds()) {
-            return $this->createFailedResponse(1, $this->options['messages']['session_expired']);
+            return $this->createFailedResponse('expired-challenge');
         }
 
         // Check if the captcha was completed.
@@ -75,8 +75,7 @@ class Validator
             return $this->createSuccessResponse();
         }
 
-        // TODO create new error message stating the form wasn't completed.
-        return $this->createFailedResponse(1, $this->options['messages']['wrong_icon']);
+        return $this->createFailedResponse('unsolved-challenge');
     }
 
     /**
@@ -120,9 +119,9 @@ class Validator
         return new ValidationResult(true);
     }
 
-    private function createFailedResponse($status, $message): ValidationResult
+    private function createFailedResponse(string $status): ValidationResult
     {
-        return new ValidationResult(false, $status, $message);
+        return new ValidationResult(false, $status);
     }
 
     private function createSession($identifier = 0)

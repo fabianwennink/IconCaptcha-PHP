@@ -27,7 +27,7 @@ if(!empty($_POST)) {
     if($validation->success()) {
         echo '<b>Captcha:</b> The form has been submitted!';
     } else {
-        echo '<b>Captcha: </b>' . $validation->getErrorMessage();
+        echo '<b>Captcha:</b> Validation failed with error code:' . $validation->getErrorCode();
     }
 } else {
     echo '<b>Captcha:</b> No data posted!';

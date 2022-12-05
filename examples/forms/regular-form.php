@@ -29,7 +29,7 @@
         if($validation->success()) {
             $captchaMessage = 'The form has been submitted!';
         } else {
-            $captchaMessage = $validation->getErrorMessage();
+            $captchaMessage = 'Validation failed with error code: ' . $validation->getErrorCode();
         }
     }
 ?>

@@ -8,22 +8,18 @@ final class ValidationResult
 {
     private bool $success;
 
-    private ?int $errorCode;
-
-    private ?string $errorMessage;
+    private ?string $errorCode;
 
     private int $timestamp;
 
     /**
      * @param bool $success
-     * @param int|null $errorCode
-     * @param string|null $errorMessage
+     * @param string|null $errorCode
      */
-    public function __construct(bool $success, int $errorCode = null, string $errorMessage = null)
+    public function __construct(bool $success, string $errorCode = null)
     {
         $this->success = $success;
         $this->errorCode = $errorCode;
-        $this->errorMessage = $errorMessage;
         $this->timestamp = Utils::getTimeInMilliseconds();
     }
 
@@ -39,21 +35,11 @@ final class ValidationResult
     /**
      * Returns the error code of the reason as to why the verification failed.
      * Will only be set in case the response of {@see success} is FALSE.
-     * @return int|null The error code.
+     * @return string|null The error code.
      */
-    public function getErrorCode(): ?int
+    public function getErrorCode(): ?string
     {
         return $this->errorCode;
-    }
-
-    /**
-     * Returns the error message of the reason as to why the verification failed.
-     * Will only be set in case the response of {@see success} is FALSE.
-     * @return string|null The error message.
-     */
-    public function getErrorMessage(): ?string
-    {
-        return $this->errorMessage;
     }
 
     /**
@@ -67,13 +53,10 @@ final class ValidationResult
 
     public function __toString(): string
     {
-        return json_encode([
+        return json_encode(array_values([
             'success' => $this->success,
-            'error' => [
-                'code' => $this->errorCode,
-                'message' => $this->errorMessage,
-            ],
+            'error_code' => $this->errorCode,
             'timestamp' => $this->timestamp,
-        ]);
+        ]));
     }
 }

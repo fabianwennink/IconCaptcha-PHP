@@ -131,7 +131,7 @@ class Request
     {
         http_response_code(200);
         header('Content-type: text/plain');
-        exit(Payload::encode(['error' => 2]));
+        exit(Payload::encode(['error' => 'invalid-form-token']));
     }
 
     /**

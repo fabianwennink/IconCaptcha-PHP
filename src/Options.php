@@ -24,13 +24,6 @@ class Options
             'light' => ['icons' => 'light', 'color' => [240, 240, 240]],
             'dark' => ['icons' => 'dark', 'color' => [64, 64, 64]],
         ],
-        'messages' => [
-            'wrong_icon' => 'You\'ve selected the wrong image.',
-            'empty_form' => 'You\'ve not submitted any form.',
-            'session_expired' => 'The captcha session has expired.',
-            'invalid_id' => 'The captcha ID was invalid.',
-            'form_token' => 'The form token was invalid.'
-        ],
         'challenge' => [
             'inactivityExpiration' => 120, // In seconds. Set to 0 to disable.
             'completionExpiration' => 300, // In seconds. Set to 0 to disable.
