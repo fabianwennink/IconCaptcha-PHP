@@ -16,7 +16,7 @@ use IconCaptcha\IconCaptcha;
 session_start();
 
 // To prevent having to copy the options to every file, a 'config' file was created.
-$options = require_once 'captcha-config.php';
+$options = require 'captcha-config.php';
 
 // Create an instance of IconCaptcha.
 $captcha = new IconCaptcha($options);

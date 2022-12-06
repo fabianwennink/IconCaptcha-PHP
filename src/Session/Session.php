@@ -22,7 +22,7 @@ namespace IconCaptcha\Session;
  */
 class Session implements SessionInterface
 {
-    const SESSION_NAME = 'iconcaptcha';
+    private const SESSION_NAME = 'iconcaptcha';
 
     /**
      * @var string The captcha identifier.

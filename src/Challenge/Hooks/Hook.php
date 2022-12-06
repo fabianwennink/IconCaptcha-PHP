@@ -38,11 +38,11 @@ class Hook
      * @param array $options The captcha options.
      * @param mixed ...$params Any additional data which has to be passed to the hook.
      */
-    public static function callVoid(string $type, $class, string $action, SessionInterface $session, array $options, ...$params)
+    public static function callVoid(string $type, $class, string $action, SessionInterface $session, array $options, ...$params): void
     {
         $hook = self::getHook($type, $class);
 
-        if(!empty($hook)) {
+        if (!empty($hook)) {
             $hook->{$action}($_REQUEST, $session, $options, $params);
         }
     }

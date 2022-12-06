@@ -19,7 +19,7 @@ class Cors
     public function __construct(array $origins, bool $allowCredentials, int $cacheAge)
     {
         $this->origins = $origins;
-        $this->allowAllOrigins = empty($this->origins) || in_array('*', $this->origins);;
+        $this->allowAllOrigins = empty($this->origins) || in_array('*', $this->origins, true);
         $this->allowCredentials = $allowCredentials;
         $this->cacheAge = $cacheAge;
 
@@ -85,8 +85,10 @@ class Cors
         if ($this->allowAllOrigins) {
             header("Access-Control-Allow-Origin: *");
             return true;
-        } else if ($this->isCorsRequest()) {
-            $origin = (string)$_SERVER['HTTP_ORIGIN'];
+        }
+
+        if ($this->isCorsRequest()) {
+            $origin = $_SERVER['HTTP_ORIGIN'];
 
             // Only set the 'allow origin' header if the origin is actually allowed.
             if ($this->isOriginAllowed($origin)) {
@@ -108,7 +110,7 @@ class Cors
     private function isOriginAllowed(string $origin): bool
     {
         // Simple origin check.
-        if (in_array($origin, $this->origins)) {
+        if (in_array($origin, $this->origins, true)) {
             return true;
         }
 
@@ -157,7 +159,7 @@ class Cors
      * @param array $headers The header names to set in the Vary header.
      * @return void
      */
-    private function applyVaryHeaders(array $headers)
+    private function applyVaryHeaders(array $headers): void
     {
         if (!empty($headers)) {
             $combinedValue = implode(', ', array_unique($headers));

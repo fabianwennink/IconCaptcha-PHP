@@ -4,9 +4,9 @@ namespace IconCaptcha\Token;
 
 abstract class AbstractToken
 {
-    const TOKEN_LENGTH = 20;
+    public const TOKEN_LENGTH = 20;
 
-    const TOKEN_FIELD_NAME = '_iconcaptcha-token';
+    public const TOKEN_FIELD_NAME = '_iconcaptcha-token';
 
     /**
      * Generates a token string, which will serve as a CSRF token. Based on the PHP version and
@@ -25,7 +25,7 @@ abstract class AbstractToken
                 $token = bin2hex(openssl_random_pseudo_bytes(self::TOKEN_LENGTH));
             } else {
                 // If the OpenSSL extension is not installed, use this fallback.
-                $token = str_shuffle(md5(uniqid(rand(), true)));
+                $token = str_shuffle(md5(uniqid(mt_rand(), true)));
             }
         }
 
@@ -51,8 +51,8 @@ abstract class AbstractToken
         // Validate the payload and header token (if set) against the stored token.
         if ($headerToken !== null) {
             return $storedToken === $payloadToken && $storedToken === $headerToken;
-        } else {
-            return $storedToken === $payloadToken;
         }
+
+        return $storedToken === $payloadToken;
     }
 }

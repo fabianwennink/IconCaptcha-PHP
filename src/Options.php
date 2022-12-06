@@ -18,7 +18,7 @@ class Options
     /**
      * @var mixed Default values for all the server-side options.
      */
-    const DEFAULT_OPTIONS = [
+    private const DEFAULT_OPTIONS = [
         'iconPath' => null,
         'themes' => [
             'light' => ['icons' => 'light', 'color' => [240, 240, 240]],
@@ -78,7 +78,7 @@ class Options
         if(isset($options['iconPath'])) {
             $mergedOptions['iconPath'] = rtrim($mergedOptions['iconPath'], DIRECTORY_SEPARATOR);
         } else {
-            $mergedOptions['iconPath'] = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'
+            $mergedOptions['iconPath'] = __DIR__ . DIRECTORY_SEPARATOR . '..'
                 . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'icons';
         }
 

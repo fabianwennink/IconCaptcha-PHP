@@ -7,9 +7,9 @@ use IconCaptcha\Utils;
 
 class Validator
 {
-    const CAPTCHA_FIELD_ID = 'ic-hf-id';
+    private const CAPTCHA_FIELD_ID = 'ic-hf-id';
 
-    const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
+    private const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
 
     private array $options;
 
@@ -45,7 +45,7 @@ class Validator
         }
 
         // Verify if the captcha token is correct.
-        $token = (isset($request[AbstractToken::TOKEN_FIELD_NAME])) ? $request[AbstractToken::TOKEN_FIELD_NAME] : null;
+        $token = $request[AbstractToken::TOKEN_FIELD_NAME] ?? null;
         if (!$this->validateToken($token)) {
             return $this->createFailedResponse('invalid-token');
         }
@@ -84,7 +84,7 @@ class Validator
      *
      * @param int $identifier The identifier of the captcha.
      */
-    public function invalidate(int $identifier)
+    public function invalidate(int $identifier): void
     {
         // Unset the previous session data
         $session = $this->createSession($identifier);

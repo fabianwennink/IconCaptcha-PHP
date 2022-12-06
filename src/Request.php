@@ -14,9 +14,9 @@ use IconCaptcha\Challenge\Validator;
 
 class Request
 {
-    const CUSTOM_TOKEN_HEADER = 'HTTP_X_ICONCAPTCHA_TOKEN';
+    private const CUSTOM_TOKEN_HEADER = 'HTTP_X_ICONCAPTCHA_TOKEN';
 
-    const VALID_ACTION_TYPES = ['LOAD', 'SELECTION'];
+    private const VALID_ACTION_TYPES = ['LOAD', 'SELECTION'];
 
     /**
      * @var array $options
@@ -48,11 +48,11 @@ class Request
 
             // Validate the payload content.
             if (
-                !isset($payload, $payload['action'], $payload['id'], $payload['timestamp'], $payload['initTimestamp']) || // ensure the payload is valid.
+                !isset($payload['action'], $payload['id'], $payload['timestamp'], $payload['initTimestamp']) || // ensure the payload is valid.
                 !is_numeric($payload['id']) || // ensure the identifier is a number.
                 !is_numeric($payload['timestamp']) || // ensure the timestamp is a number.
                 !is_numeric($payload['initTimestamp']) || // ensure the initialization timestamp is a number.
-                !in_array($payload['action'], self::VALID_ACTION_TYPES) // ensure the action type is known.
+                !in_array($payload['action'], self::VALID_ACTION_TYPES, true) // ensure the action type is known.
             ) {
                 $this->badRequest();
             }

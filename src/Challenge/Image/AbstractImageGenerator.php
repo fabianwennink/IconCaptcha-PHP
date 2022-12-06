@@ -8,11 +8,11 @@ use IconCaptcha\Session\SessionInterface;
 
 abstract class AbstractImageGenerator implements ImageGeneratorInterface
 {
-    const CAPTCHA_IMAGE_SIZE = 320;
+    private const CAPTCHA_IMAGE_SIZE = 320;
 
-    const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
+    private const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
 
-    const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
+    private const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
 
     private SessionInterface $session;
 
@@ -61,7 +61,7 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
         if ($borderEnabled) {
 
             // Determine border color.
-            if (key_exists($this->session->mode, $this->options['themes'])
+            if (array_key_exists($this->session->mode, $this->options['themes'])
                 && count($this->options['themes'][$this->session->mode]['color']) === 3) {
                 $color = $this->options['themes'][$this->session->mode]['color'];
             } else {
@@ -80,19 +80,19 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
 
             // Rotate icon, if enabled.
             if ($rotateEnabled) {
-                $degree = mt_rand(1, 4);
+                $degree = random_int(1, 4);
                 if ($degree !== 4) { // Only if the 'degree' is not the same as what it would already be at.
                     $icon = $this->rotate($icon, $degree * 90);
                 }
             }
 
             // Flip icon horizontally, if enabled.
-            if ($flipHorizontally && mt_rand(1, 2) === 1) {
+            if ($flipHorizontally && random_int(1, 2) === 1) {
                 $this->flipHorizontal($icon);
             }
 
             // Flip icon vertically, if enabled.
-            if ($flipVertically && mt_rand(1, 2) === 1) {
+            if ($flipVertically && random_int(1, 2) === 1) {
                 $this->flipVertical($icon);
             }
 
@@ -120,5 +120,5 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
      * @param mixed $image The challenge image to render.
      * @return string The image as a base64 string.
      */
-    public abstract function render($image): string;
+    abstract public function render($image): string;
 }

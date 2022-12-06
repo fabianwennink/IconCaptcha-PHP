@@ -11,9 +11,9 @@ use IconCaptcha\Utils;
 
 class Challenge
 {
-    const MAX_HEIGHT_OF_CHALLENGE = 50;
+    private const MAX_HEIGHT_OF_CHALLENGE = 50;
 
-    const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
+    private const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
 
     /**
      * @var SessionInterface The session containing captcha information.
@@ -83,15 +83,16 @@ class Challenge
         // TODO timeout check should be extracted to class method.
         if ($this->session->attemptsTimeout > 0) {
             $currentTimestamp = Utils::getTimeInMilliseconds();
+
             if ($currentTimestamp <= $this->session->attemptsTimeout) {
                 return Payload::encode([
                     'error' => 'too-many-attempts',
                     'data' => ($this->session->attemptsTimeout - $currentTimestamp) + $latency // remaining time.
                 ]);
-            } else {
-                $this->session->attemptsTimeout = 0;
-                $this->session->attempts = 0;
             }
+
+            $this->session->attemptsTimeout = 0;
+            $this->session->attempts = 0;
         }
 
         $minIconAmount = $this->options['image']['amount']['min'];
@@ -101,11 +102,11 @@ class Challenge
         // Determine the number of icons to add to the image.
         $iconAmount = $minIconAmount;
         if ($minIconAmount !== $maxIconAmount) {
-            $iconAmount = mt_rand($minIconAmount, $maxIconAmount);
+            $iconAmount = random_int($minIconAmount, $maxIconAmount);
         }
 
         // Number of times the correct image will be placed onto the placeholder.
-        $correctIconAmount = mt_rand(1, self::CAPTCHA_MAX_LOWEST_ICON_COUNT[$iconAmount]);
+        $correctIconAmount = random_int(1, self::CAPTCHA_MAX_LOWEST_ICON_COUNT[$iconAmount]);
         $totalIconAmount = $this->calculateIconAmounts($iconAmount, $correctIconAmount);
         $totalIconAmount[] = $correctIconAmount;
 
@@ -123,8 +124,8 @@ class Challenge
         while (count($iconIds) < count($totalIconAmount)) {
 
             // Generate a random icon ID. If it is not in use yet, process it.
-            $tempIconId = mt_rand(1, $availableIconAmount);
-            if (!in_array($tempIconId, $iconIds)) {
+            $tempIconId = random_int(1, $availableIconAmount);
+            if (!in_array($tempIconId, $iconIds, true)) {
                 $iconIds[] = $tempIconId;
 
                 // Assign the current icon ID to one or more positions.
@@ -211,30 +212,30 @@ class Challenge
                 'completed' => true,
                 'expiredAt' => $this->session->expiresAt,
             ]);
-        } else {
-            $this->session->completed = false;
-
-            // Increase the attempts counter.
-            $this->session->attempts += 1;
-
-            // If the max amount has been reached, set a timeout (if set).
-            if ($this->session->attempts === $this->options['attempts']['amount'] && $this->options['attempts']['timeout'] > 0) {
-                $this->session->attemptsTimeout = Utils::getTimeInMilliseconds() + ($this->options['attempts']['timeout'] * 1000) + $latency;
-            }
-
-            $this->session->save();
-
-            // Call the 'incorrect selection' hook, if provided.
-            Hook::callVoid(
-                'selection', SelectionHookInterface::class, 'incorrect',
-                $this->session, $this->options
-            );
-
-            return Payload::encode([
-                'id' => $this->session->getId(),
-                'completed' => false,
-            ]);
         }
+
+        $this->session->completed = false;
+
+        // Increase the attempts counter.
+        $this->session->attempts += 1;
+
+        // If the max amount has been reached, set a timeout (if set).
+        if ($this->session->attempts === $this->options['attempts']['amount'] && $this->options['attempts']['timeout'] > 0) {
+            $this->session->attemptsTimeout = Utils::getTimeInMilliseconds() + ($this->options['attempts']['timeout'] * 1000) + $latency;
+        }
+
+        $this->session->save();
+
+        // Call the 'incorrect selection' hook, if provided.
+        Hook::callVoid(
+            'selection', SelectionHookInterface::class, 'incorrect',
+            $this->session, $this->options
+        );
+
+        return Payload::encode([
+            'id' => $this->session->getId(),
+            'completed' => false,
+        ]);
     }
 
     /**
@@ -312,10 +313,10 @@ class Challenge
     {
         $remainder = $iconCount - $smallestIconCount;
         $remainderDivided = $remainder / 2;
-        $pickDivided = mt_rand(1, 2) === 1; // 50/50 chance.
+        $pickDivided = random_int(1, 2) === 1; // 50/50 chance.
 
         // If division leads to decimal.
-        if (fmod($remainderDivided, 1) !== 0.0 && $pickDivided) {
+        if ($pickDivided && fmod($remainderDivided, 1) !== 0.0) {
             $left = floor($remainderDivided);
             $right = ceil($remainderDivided);
 

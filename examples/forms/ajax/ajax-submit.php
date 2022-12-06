@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 if(!empty($_POST)) {
 
     // To prevent having to copy the options to every file, a 'config' file was created.
-    $options = require_once __DIR__ . '/../../captcha-config.php';
+    $options = require __DIR__ . '/../../captcha-config.php';
 
     // Take a look at the README file to see every available option.
     // All options are optional using default values, apart from the 'iconPath'.
