@@ -11,7 +11,6 @@ namespace IconCaptcha\Session;
 
 /**
  * @property array icons The positions of the icon on the generated image.
- * @property array iconIds List of used icon IDs.
  * @property int correctId The icon ID of the correct answer/icon.
  * @property string mode The name of the theme used by the captcha instance.
  * @property bool requested If the captcha image has been requested yet.
@@ -60,7 +59,6 @@ class Session implements SessionInterface
     public function clear(): void
     {
         $this->session['icons'] = [];
-        $this->session['iconIds'] = [];
         $this->session['correctId'] = 0;
         $this->session['requested'] = false;
         $this->session['completed'] = false;
@@ -90,7 +88,6 @@ class Session implements SessionInterface
         } else {
             $this->session = [
                 'icons' => [],
-                'iconIds' => [],
                 'correctId' => 0,
                 'mode' => 'light',
                 'requested' => false,

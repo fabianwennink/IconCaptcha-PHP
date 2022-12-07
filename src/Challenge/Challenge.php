@@ -111,8 +111,8 @@ class Challenge
         $totalIconAmount[] = $correctIconAmount;
 
         // Icon position and ID information.
-        $iconPositions = [];
         $iconIds = [];
+        $iconPositions = [];
         $correctIconId = -1;
 
         // Create a random 'icon position' order.
@@ -150,7 +150,6 @@ class Challenge
         $this->session->clear();
         $this->session->mode = $theme;
         $this->session->icons = $iconPositions;
-        $this->session->iconIds = $iconIds;
         $this->session->correctId = $correctIconId;
         $this->session->attempts = $attemptsCount;
 

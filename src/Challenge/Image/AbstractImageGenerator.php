@@ -40,7 +40,7 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
 
         // Prepare the icon images.
         $iconImages = [];
-        foreach ($this->session->iconIds as $id) {
+        foreach (array_unique($this->session->icons) as $id) {
             $iconImages[$id] = $this->loadImage(realpath($iconPath . 'icon-' . $id . '.png'));
         }
 
