@@ -23,10 +23,9 @@ abstract class AbstractToken
             if (function_exists('openssl_random_pseudo_bytes')) {
                 // Only available when the OpenSSL extension is installed.
                 $token = bin2hex(openssl_random_pseudo_bytes(self::TOKEN_LENGTH));
-            } else {
-                // If the OpenSSL extension is not installed, use this fallback.
-                $token = str_shuffle(md5(uniqid(mt_rand(), true)));
             }
+            // If the OpenSSL extension is not installed, use this fallback.
+            $token = $token ?? str_shuffle(md5(uniqid(mt_rand(), true)));
         }
 
         return $token;
