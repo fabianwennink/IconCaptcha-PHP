@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     for (let element of elements) {
         element.addEventListener('click', function (e) {
             const theme = e.target.getAttribute('data-theme');
-            const holder = document.querySelector('.iconcaptcha-holder');
+            const holder = document.querySelector('.iconcaptcha-widget');
 
             // Set the theme attribute.
             holder.setAttribute('data-theme', theme);

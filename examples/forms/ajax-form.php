@@ -78,10 +78,10 @@
                     <?= \IconCaptcha\IconCaptcha::token() ?>
 
                     <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
-                    <div class="iconcaptcha-holder" data-theme="light"></div>
+                    <div class="iconcaptcha-widget" data-theme="light"></div>
 
                     <!-- Submit button to test your IconCaptcha input -->
-                    <input type="submit" value="Submit demo captcha" class="btn" >
+                    <input type="submit" value="Submit demo captcha" class="btn">
                 </form>
 
                 <!-- Theme selector - JUST FOR THE DEMO PAGE -->
@@ -125,8 +125,8 @@
 
         <!-- Initialize the IconCaptcha - REQUIRED -->
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('.iconcaptcha-holder').iconCaptcha({
+            $(document).ready(function () {
+                $('.iconcaptcha-widget').iconCaptcha({
                     general: {
                         validationPath: '../captcha-request.php',
                         fontFamily: 'Poppins',
@@ -183,8 +183,8 @@
             Take a look at the commented code down below.
         -->
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('form').submit(function(e) {
+            $(document).ready(function () {
+                $('form').submit(function (e) {
                     e.preventDefault();
 
                     // Get the form element.

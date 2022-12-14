@@ -102,7 +102,7 @@
                     <?= \IconCaptcha\IconCaptcha::token() ?>
 
                     <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
-                    <div class="iconcaptcha-holder" data-theme="light"></div>
+                    <div class="iconcaptcha-widget" data-theme="light"></div>
 
                     <!-- Submit button to test your IconCaptcha input -->
                     <input type="submit" value="Submit demo captcha" class="btn">
@@ -146,10 +146,10 @@
 
             // Note: jQuery can be used as well. Check the README.md for more information.
 
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
 
                 // Check the README.md for information about the options.
-                IconCaptcha.init('.iconcaptcha-holder', {
+                IconCaptcha.init('.iconcaptcha-widget', {
                     general: {
                         validationPath: '../captcha-request.php',
                         fontFamily: 'Poppins',
