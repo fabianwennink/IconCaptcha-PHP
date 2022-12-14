@@ -179,7 +179,7 @@
             Script to submit the form(s) with Ajax.
 
             NOTE: If you want to use FormData instead of .serialize(), make sure to
-            include the inputs 'ic-hf-se', 'ic-hf-id' and 'ic-hf-hp' into your FormData object.
+            include the inputs 'ic-rq', 'ic-wid', 'ic-cid' and 'ic-hp' into your FormData object.
             Take a look at the commented code down below.
         -->
         <script type="text/javascript">
@@ -208,9 +208,10 @@
                     //
                     // // Build the FormData object.
                     // const formData = new FormData();
-                    // formData.append('ic-hf-se', form.find('input[name="ic-hf-se"]').val());
-                    // formData.append('ic-hf-id', form.find('input[name="ic-hf-id"]').val());
-                    // formData.append('ic-hf-hp', form.find('input[name="ic-hf-hp"]').val());
+                    // formData.append('ic-rq', form.find('input[name="ic-rq"]').val());
+                    // formData.append('ic-wid', form.find('input[name="ic-wid"]').val());
+                    // formData.append('ic-cid', form.find('input[name="ic-cid"]').val());
+                    // formData.append('ic-hp', form.find('input[name="ic-hp"]').val());
                     //
                     // // Perform the AJAX call.
                     // $.ajax({

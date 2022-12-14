@@ -48,8 +48,8 @@ class Request
 
             // Validate the payload content.
             if (
-                !isset($payload['action'], $payload['id'], $payload['timestamp'], $payload['initTimestamp']) || // ensure the payload is valid.
-                !is_numeric($payload['id']) || // ensure the identifier is a number.
+                !isset($payload['action'], $payload['widgetId'], $payload['timestamp'], $payload['initTimestamp']) || // ensure the payload is valid.
+                ($payload['action'] !== 'LOAD' && !isset($payload['challengeId'])) || // ensure the challenge ID is present, except for the init request.
                 !is_numeric($payload['timestamp']) || // ensure the timestamp is a number.
                 !is_numeric($payload['initTimestamp']) || // ensure the initialization timestamp is a number.
                 !in_array($payload['action'], self::VALID_ACTION_TYPES, true) // ensure the action type is known.
@@ -87,7 +87,7 @@ class Request
 
                     http_response_code(200);
                     header('Content-type: text/plain');
-                    exit($this->challenge->initialize($payload['id'])->generate($theme, $latency));
+                    exit($this->challenge->initialize($payload['widgetId'])->generate($theme, $latency));
                 case 'SELECTION':
 
                     // Check if the captcha ID and required other payload data is set.
@@ -95,7 +95,7 @@ class Request
                         $this->badRequest();
                     }
 
-                    $challenge = $this->challenge->initialize($payload['id']);
+                    $challenge = $this->challenge->initialize($payload['widgetId'], $payload['challengeId']);
                     $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width'], $latency);
 
                     http_response_code(200);

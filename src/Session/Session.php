@@ -9,6 +9,8 @@
 
 namespace IconCaptcha\Session;
 
+use IconCaptcha\Utils;
+
 /**
  * @property array icons The positions of the icon on the generated image.
  * @property int correctId The icon ID of the correct answer/icon.
@@ -17,40 +19,47 @@ namespace IconCaptcha\Session;
  * @property bool completed If the captcha was completed (correct icon selected) or not.
  * @property int attempts The number of times an incorrect answer was given.
  * @property int attemptsTimeout The (unix) timestamp, at which the timeout for entering too many incorrect guesses expires.
- * @property int expiresAt The (unix) timestamp, after which the captcha's session should be considered expire.
+ * @property int expiresAt The (unix) timestamp, after which the captcha's session should be considered expired.
  */
 class Session implements SessionInterface
 {
     private const SESSION_NAME = 'iconcaptcha';
 
     /**
-     * @var string The captcha identifier.
+     * @var string The challenge identifier.
      */
-    protected $id;
+    protected string $challengeId;
+
+    /**
+     * @var string The widget identifier.
+     */
+    protected string $widgetId;
 
     /**
      * @var array The session data.
      */
-    private array $session = [];
+    private array $data = [];
 
     /**
      * Creates a new CaptchaSession object. Session data regarding the
      * captcha (given identifier) will be stored and can be retrieved when necessary.
      *
-     * @param int $id The captcha identifier.
+     * @param string $widgetId The widget identifier.
+     * @param string|null $challengeId The challenge identifier.
      */
-    public function __construct(int $id = 0)
+    public function __construct(string $widgetId, string $challengeId = null)
     {
-        $this->id = $id;
+        $this->widgetId = $widgetId;
+        $this->challengeId = $challengeId ?? $this->generateUniqueId();
         $this->load();
     }
 
     /**
      * @inheritDoc
      */
-    public function getId(): string
+    public function getChallengeId(): string
     {
-        return $this->id;
+        return $this->challengeId;
     }
 
     /**
@@ -58,13 +67,13 @@ class Session implements SessionInterface
      */
     public function clear(): void
     {
-        $this->session['icons'] = [];
-        $this->session['correctId'] = 0;
-        $this->session['requested'] = false;
-        $this->session['completed'] = false;
-        $this->session['attempts'] = 0;
-        $this->session['attemptsTimeout'] = 0;
-        $this->session['expiresAt'] = 0;
+        $this->data['icons'] = [];
+        $this->data['correctId'] = 0;
+        $this->data['requested'] = false;
+        $this->data['completed'] = false;
+        $this->data['attempts'] = 0;
+        $this->data['attemptsTimeout'] = 0;
+        $this->data['expiresAt'] = 0;
     }
 
     /**
@@ -72,7 +81,7 @@ class Session implements SessionInterface
      */
     public function destroy(): void
     {
-        unset($_SESSION[self::SESSION_NAME][$this->id]);
+        unset($_SESSION[self::SESSION_NAME][$this->challengeId]);
     }
 
     /**
@@ -83,10 +92,11 @@ class Session implements SessionInterface
         // Make sure a session has been started.
         self::startSession();
 
-        if (self::exists($this->id)) {
-            $this->session = $_SESSION[self::SESSION_NAME][$this->id];
+        if (self::exists($this->challengeId, $this->widgetId)) {
+            $this->data = $_SESSION[self::SESSION_NAME][$this->challengeId];
         } else {
-            $this->session = [
+            $this->data = [
+                'widget' => $this->widgetId,
                 'icons' => [],
                 'correctId' => 0,
                 'mode' => 'light',
@@ -105,17 +115,25 @@ class Session implements SessionInterface
     public function save(): void
     {
         // Write the data to the session.
-        $_SESSION[self::SESSION_NAME][$this->id] = $this->session;
+        $_SESSION[self::SESSION_NAME][$this->challengeId] = $this->data;
     }
 
     /**
      * @inheritDoc
      */
-    public static function exists(int $id): bool
+    public function isExpired(): bool
+    {
+        return $this->data['expiresAt'] > 0 && $this->data['expiresAt'] < Utils::getTimeInMilliseconds();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function exists(string $challengeId, string $widgetId): bool
     {
         self::startSession();
 
-        return isset($_SESSION[self::SESSION_NAME][$id]);
+        return isset($_SESSION[self::SESSION_NAME][$challengeId]) && $_SESSION[self::SESSION_NAME][$challengeId]['widget'] === $widgetId;
     }
 
     /**
@@ -123,7 +141,7 @@ class Session implements SessionInterface
      */
     public function __get(string $key)
     {
-        return $this->session[$key] ?? null;
+        return $this->data[$key] ?? null;
     }
 
     /**
@@ -131,7 +149,7 @@ class Session implements SessionInterface
      */
     public function __set(string $key, $value): void
     {
-        $this->session[$key] = $value;
+        $this->data[$key] = $value;
     }
 
     /**
@@ -143,5 +161,22 @@ class Session implements SessionInterface
         if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
             session_start();
         }
+    }
+
+    /**
+     * Generates a random UUID to be used as the challenge identifier.
+     * @return string The generated UUID.
+     * @throws \Exception
+     */
+    private function generateUniqueId(): string
+    {
+        $id = null;
+
+        // Generate an identifier, making sure it is not already in use.
+        while (empty($id) || static::exists($id, $this->widgetId)) {
+            $id = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex(random_bytes(16)), 4));
+        }
+
+        return $id;
     }
 }

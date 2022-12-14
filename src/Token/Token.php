@@ -4,9 +4,9 @@ namespace IconCaptcha\Token;
 
 class Token extends AbstractToken implements TokenInterface
 {
-    const SESSION_NAME = 'iconcaptcha';
+    private const SESSION_NAME = 'iconcaptcha';
 
-    const SESSION_TOKEN = 'token';
+    private const SESSION_TOKEN = 'token';
 
     /**
      * @inheritDoc

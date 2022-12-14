@@ -5,10 +5,10 @@ namespace IconCaptcha\Session;
 interface SessionInterface
 {
     /**
-     * Returns the identifier of the session.
+     * Returns the identifier of the challenge.
      * @return string
      */
-    public function getId(): string;
+    public function getChallengeId(): string;
 
     /**
      * This will clear the set hashes, and reset the icon
@@ -32,13 +32,18 @@ interface SessionInterface
     public function save(): void;
 
     /**
-     * Checks if the given captcha identifier has session data stored.
-     *
-     * @param int $id The captcha identifier.
-     *
+     * Returns whether the session has expired.
+     * @return bool TRUE if it's expired, FALSE if it's not.
+     */
+    public function isExpired(): bool;
+
+    /**
+     * Checks if the given challenge and widget identifier combination has session data stored.
+     * @param string $challengeId The challenge identifier.
+     * @param string $widgetId The widget identifier.
      * @return boolean TRUE if any session data exists, FALSE if not.
      */
-    public static function exists(int $id): bool;
+    public static function exists(string $challengeId, string $widgetId): bool;
 
     /**
      * Retrieves data from the session based on the given property name.

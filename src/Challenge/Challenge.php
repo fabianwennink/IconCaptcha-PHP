@@ -30,9 +30,9 @@ class Challenge
         $this->options = $options;
     }
 
-    public function initialize($identifier): Challenge
+    public function initialize(string $widgetId, string $challengeId = null): Challenge
     {
-        $this->session = new $this->options['session']($identifier);
+        $this->session = new $this->options['session']($widgetId, $challengeId);
         return $this;
     }
 
@@ -72,7 +72,7 @@ class Challenge
             $this->session->save();
 
             return Payload::encode([
-                'id' => $this->session->getId(),
+                'id' => $this->session->getChallengeId(),
                 'completed' => true,
                 'expiredAt' => $this->session->expiresAt,
             ]);
@@ -162,7 +162,7 @@ class Challenge
 
         // Return the captcha details.
         return Payload::encode([
-            'id' => $this->session->getId(),
+            'id' => $this->session->getChallengeId(),
             'challenge' => $this->render(),
             'expiredAt' => $this->session->expiresAt,
         ]);
@@ -207,7 +207,7 @@ class Challenge
             );
 
             return Payload::encode([
-                'id' => $this->session->getId(),
+                'id' => $this->session->getChallengeId(),
                 'completed' => true,
                 'expiredAt' => $this->session->expiresAt,
             ]);
@@ -232,7 +232,7 @@ class Challenge
         );
 
         return Payload::encode([
-            'id' => $this->session->getId(),
+            'id' => $this->session->getChallengeId(),
             'completed' => false,
         ]);
     }

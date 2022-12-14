@@ -3,13 +3,16 @@
 namespace IconCaptcha\Challenge;
 
 use IconCaptcha\Token\AbstractToken;
-use IconCaptcha\Utils;
 
 class Validator
 {
-    private const CAPTCHA_FIELD_ID = 'ic-hf-id';
+    private const CAPTCHA_FIELD_INIT = 'ic-rq';
 
-    private const CAPTCHA_FIELD_HONEYPOT = 'ic-hf-hp';
+    private const CAPTCHA_FIELD_WIDGET_ID = 'ic-wid';
+
+    private const CAPTCHA_FIELD_CHALLENGE_ID = 'ic-cid';
+
+    private const CAPTCHA_FIELD_HONEYPOT = 'ic-hp';
 
     private array $options;
 
@@ -30,40 +33,55 @@ class Validator
     {
         // Make sure the form data is set.
         if (empty($request)) {
-            return $this->createFailedResponse('empty-form');
+            return $this->createFailedResponse('empty-request');
         }
 
-        // Check if the captcha ID is set.
-        if (!isset($request[self::CAPTCHA_FIELD_ID]) || !is_numeric($request[self::CAPTCHA_FIELD_ID])
-            || !$this->options['session']::exists($request[self::CAPTCHA_FIELD_ID])) {
-            return $this->createFailedResponse('invalid-widget-id');
+        // Check if a challenge was requested.
+        if (!isset($request[self::CAPTCHA_FIELD_INIT])) {
+            return $this->createFailedResponse('unsolved-challenge');
         }
 
-        // Check if the honeypot value is set.
-        if (!isset($request[self::CAPTCHA_FIELD_HONEYPOT]) || !empty($request[self::CAPTCHA_FIELD_HONEYPOT])) {
+        // Check if the honeypot value is set. Normal users will have this field empty.
+        if (isset($request[self::CAPTCHA_FIELD_HONEYPOT]) && !empty($request[self::CAPTCHA_FIELD_HONEYPOT])) {
             return $this->createFailedResponse('detected-bot');
+        }
+
+        // Check if the widget ID is set.
+        if (!isset($request[self::CAPTCHA_FIELD_WIDGET_ID])) {
+            return $this->createFailedResponse('missing-widget-id');
+        }
+
+        // Check if the challenge ID is set.
+        if (!isset($request[self::CAPTCHA_FIELD_CHALLENGE_ID])) {
+            return $this->createFailedResponse('missing-challenge-id');
+        }
+
+        // Check if a session exists for the widget and challenge identifiers.
+        if (!$this->options['session']::exists($request[self::CAPTCHA_FIELD_CHALLENGE_ID], $request[self::CAPTCHA_FIELD_WIDGET_ID])) {
+            return $this->createFailedResponse('invalid-challenge');
         }
 
         // Verify if the captcha token is correct.
         $token = $request[AbstractToken::TOKEN_FIELD_NAME] ?? null;
         if (!$this->validateToken($token)) {
-            return $this->createFailedResponse('invalid-token');
+            return $this->createFailedResponse('invalid-security-token');
         }
 
         // Get the captcha identifier.
-        $identifier = $request[self::CAPTCHA_FIELD_ID];
+        $challengeId = $request[self::CAPTCHA_FIELD_CHALLENGE_ID];
+        $widgetId = $request[self::CAPTCHA_FIELD_WIDGET_ID];
 
         // Initialize the session.
-        $session = $this->createSession($identifier);
+        $session = $this->createSession($widgetId, $challengeId);
 
         // Ensure the session is valid. If the original session failed to load, the $session variable
         // will contain a new session. Checking the 'requested' status should tell if this is the case.
-        if(!$session || $session->requested === false) {
+        if (!$session || $session->requested === false) {
             return $this->createFailedResponse('invalid-challenge');
         }
 
         // Make sure the session hasn't expired.
-        if($session->expiresAt > 0 && $session->expiresAt < Utils::getTimeInMilliseconds()) {
+        if ($session->isExpired()) {
             return $this->createFailedResponse('expired-challenge');
         }
 
@@ -71,7 +89,7 @@ class Validator
         if ($session->completed === true) {
 
             // Invalidate the captcha to prevent resubmission of a form on the same captcha.
-            $this->invalidate($identifier);
+            $this->invalidate($widgetId, $challengeId);
             return $this->createSuccessResponse();
         }
 
@@ -82,12 +100,13 @@ class Validator
      * Invalidates the captcha session linked to the given captcha identifier.
      * The data stored inside the session will be destroyed, as the session will be unset.
      *
-     * @param int $identifier The identifier of the captcha.
+     * @param string $widgetId The widget identifier.
+     * @param string $challengeId The captcha challenge identifier.
      */
-    public function invalidate(int $identifier): void
+    public function invalidate(string $widgetId, string $challengeId): void
     {
         // Unset the previous session data
-        $session = $this->createSession($identifier);
+        $session = $this->createSession($widgetId, $challengeId);
         $session->destroy();
     }
 
@@ -124,8 +143,8 @@ class Validator
         return new ValidationResult(false, $status);
     }
 
-    private function createSession($identifier = 0)
+    private function createSession(string $widgetId, string $challengeId)
     {
-        return new $this->options['session']($identifier);
+        return new $this->options['session']($widgetId, $challengeId);
     }
 }
