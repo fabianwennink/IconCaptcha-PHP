@@ -11,6 +11,16 @@ interface SessionInterface
     public function getChallengeId(): string;
 
     /**
+     * Loads the captcha's session data based on the earlier set captcha identifier.
+     */
+    public function load(): void;
+
+    /**
+     * Saves the current data to the session. The data will be stored in an array.
+     */
+    public function save(): void;
+
+    /**
      * This will clear the set hashes, and reset the icon
      * request counter and last clicked icon.
      */
@@ -22,20 +32,16 @@ interface SessionInterface
     public function destroy(): void;
 
     /**
-     * Loads the captcha's session data based on the earlier set captcha identifier.
-     */
-    public function load(): void;
-
-    /**
-     * Saves the current data to the session. The data will be stored in an array.
-     */
-    public function save(): void;
-
-    /**
      * Returns whether the session has expired.
      * @return bool TRUE if it's expired, FALSE if it's not.
      */
     public function isExpired(): bool;
+
+    /**
+     * Deletes all expired sessions.
+     * @return void
+     */
+    public static function purgeExpired(): void;
 
     /**
      * Checks if the given challenge and widget identifier combination has session data stored.
