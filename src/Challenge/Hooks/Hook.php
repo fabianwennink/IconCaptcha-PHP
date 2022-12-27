@@ -20,7 +20,7 @@ class Hook
      */
     public static function call(string $type, $class, string $action, SessionInterface $session, array $options, $default, ...$params)
     {
-        $hook = self::getHook($type, $class);
+        $hook = self::getHook($options, $type, $class);
 
         if(!empty($hook)) {
             return $hook->{$action}($_REQUEST, $session, $options, $params);
@@ -40,7 +40,7 @@ class Hook
      */
     public static function callVoid(string $type, $class, string $action, SessionInterface $session, array $options, ...$params): void
     {
-        $hook = self::getHook($type, $class);
+        $hook = self::getHook($options, $type, $class);
 
         if (!empty($hook)) {
             $hook->{$action}($_REQUEST, $session, $options, $params);
@@ -49,15 +49,16 @@ class Hook
 
     /**
      * Attempts to return a class instance of the hook based on the given hook name.
+     * @param array $options The captcha options.
      * @param string $hookName The name of the hook in the options.
      * @param mixed $interface The interface which the hook has to implement in order to be called properly.
      * @return mixed|null The hook class instance, or NULL if no hook was defined for the current action.
      */
-    private static function getHook(string $hookName, $interface)
+    private static function getHook(array $options, string $hookName, $interface)
     {
-        if(isset($options['hooks'][$hookName])) {
+        if (isset($options['hooks'][$hookName])) {
             $hook = new $options['hooks'][$hookName]();
-            if($hook instanceof $interface) {
+            if ($hook instanceof $interface) {
                 return $hook;
             }
         }
