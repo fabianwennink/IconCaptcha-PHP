@@ -58,24 +58,10 @@ class Challenge
             $this->session, $this->options, false
         );
 
-        // If the captcha should autocomplete, update the session and return the success status.
+        // If the hook returned TRUE, the challenge should autocomplete.
         if($shouldImmediatelyComplete) {
-            $this->session->clear();
-            $this->session->completed = true;
-            $this->session->requested = true;
-
-            // If enabled, set the expiration timestamp for the completed captcha.
-            if($this->options['challenge']['completionExpiration'] > 0) {
-                $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['completionExpiration'] * 1000) + $latency;
-            }
-
-            $this->session->save();
-
-            return Payload::encode([
-                'id' => $this->session->getChallengeId(),
-                'completed' => true,
-                'expiredAt' => $this->session->expiresAt,
-            ]);
+            $this->markChallengeCompleted($latency);
+            return $this->getCompletionPayload();
         }
 
         // Check if the max attempts limit has been reached and a timeout is active.
@@ -192,13 +178,8 @@ class Challenge
         // Check if the selection is set and matches the position from the session.
         if ($this->session->icons[$clickedPosition] === $this->session->correctId) {
 
-            // If enabled, set the expiration timestamp for the completed captcha.
-            if($this->options['challenge']['completionExpiration'] > 0) {
-                $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['completionExpiration'] * 1000) + $latency;
-            }
-
-            $this->session->completed = true;
-            $this->session->save();
+            // Correct icon was clicked, mark as 'completed'.
+            $this->markChallengeCompleted($latency);
 
             // Call the 'correct selection' hook, if provided.
             Hook::callVoid(
@@ -206,17 +187,14 @@ class Challenge
                 $this->session, $this->options
             );
 
-            return Payload::encode([
-                'id' => $this->session->getChallengeId(),
-                'completed' => true,
-                'expiredAt' => $this->session->expiresAt,
-            ]);
+            return $this->getCompletionPayload();
         }
 
+        // Incorrect icon was clicked, mark as 'not completed'.
         $this->session->completed = false;
 
         // Increase the attempts counter.
-        $this->session->attempts += 1;
+        ++$this->session->attempts;
 
         // If the max amount has been reached, set a timeout (if set).
         if ($this->session->attempts === $this->options['attempts']['amount'] && $this->options['attempts']['timeout'] > 0) {
@@ -275,6 +253,36 @@ class Challenge
         }
 
         return null;
+    }
+
+    /**
+     * Marks the challenge as completed.
+     */
+    private function markChallengeCompleted(int $latency): void
+    {
+        $this->session->clear();
+        $this->session->completed = true;
+        $this->session->requested = true;
+
+        // If enabled, set the expiration timestamp for the completed captcha.
+        if ($this->options['challenge']['completionExpiration'] > 0) {
+            $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['completionExpiration'] * 1000) + $latency;
+        }
+
+        $this->session->save();
+    }
+
+    /**
+     * Returns the request payload for a completed challenge.
+     * @return string The payload.
+     */
+    private function getCompletionPayload(): string
+    {
+        return Payload::encode([
+            'id' => $this->session->getChallengeId(),
+            'completed' => true,
+            'expiredAt' => $this->session->expiresAt,
+        ]);
     }
 
     /**
