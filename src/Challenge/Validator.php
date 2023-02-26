@@ -2,6 +2,7 @@
 
 namespace IconCaptcha\Challenge;
 
+use IconCaptcha\Session\Session;
 use IconCaptcha\Token\AbstractToken;
 
 class Validator
@@ -56,11 +57,6 @@ class Validator
             return $this->createFailedResponse('missing-challenge-id');
         }
 
-        // Check if a session exists for the widget and challenge identifiers.
-        if (!$this->options['session']::exists($request[self::CAPTCHA_FIELD_CHALLENGE_ID], $request[self::CAPTCHA_FIELD_WIDGET_ID])) {
-            return $this->createFailedResponse('invalid-challenge');
-        }
-
         // Verify if the captcha token is correct.
         $token = $request[AbstractToken::TOKEN_FIELD_NAME] ?? null;
         if (!$this->validateToken($token)) {
@@ -72,11 +68,11 @@ class Validator
         $widgetId = $request[self::CAPTCHA_FIELD_WIDGET_ID];
 
         // Initialize the session.
-        $session = $this->createSession($widgetId, $challengeId);
+        $session = $this->loadSession($widgetId, $challengeId);
 
         // Ensure the session is valid. If the original session failed to load, the $session variable
         // will contain a new session. Checking the 'requested' status should tell if this is the case.
-        if (!$session || $session->requested === false) {
+        if ($session->requested === false || !$session->hasSessionDataLoaded()) {
             return $this->createFailedResponse('invalid-challenge');
         }
 
@@ -106,7 +102,7 @@ class Validator
     public function invalidate(string $widgetId, string $challengeId): void
     {
         // Unset the previous session data
-        $session = $this->createSession($widgetId, $challengeId);
+        $session = $this->loadSession($widgetId, $challengeId);
         $session->destroy();
     }
 
@@ -143,7 +139,7 @@ class Validator
         return new ValidationResult(false, $status);
     }
 
-    private function createSession(string $widgetId, string $challengeId)
+    private function loadSession(string $widgetId, string $challengeId): Session
     {
         return new $this->options['session']($widgetId, $challengeId);
     }

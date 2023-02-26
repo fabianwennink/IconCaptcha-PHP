@@ -21,26 +21,27 @@ use IconCaptcha\Utils;
  * @property int attemptsTimeout The (unix) timestamp, at which the timeout for entering too many incorrect guesses expires.
  * @property int expiresAt The (unix) timestamp, after which the captcha's session should be considered expired.
  */
-class Session implements SessionInterface
+abstract class Session implements SessionInterface
 {
-    private const SESSION_NAME = 'iconcaptcha';
-
-    private const SESSION_CHALLENGES = 'challenges';
-
-    /**
-     * @var string The challenge identifier.
-     */
-    protected string $challengeId;
-
     /**
      * @var string The widget identifier.
      */
     protected string $widgetId;
 
     /**
-     * @var array The session data.
+     * @var ?string The challenge identifier.
      */
-    private array $data = [];
+    protected ?string $challengeId;
+
+    /**
+     * @var SessionData The session data.
+     */
+    protected SessionData $data;
+
+    /**
+     * @var bool Whether the session data was loaded/created or not.
+     */
+    protected bool $dataLoaded = false;
 
     /**
      * Creates a new CaptchaSession object. Session data regarding the
@@ -52,150 +53,89 @@ class Session implements SessionInterface
     public function __construct(string $widgetId, string $challengeId = null)
     {
         $this->widgetId = $widgetId;
-        $this->challengeId = $challengeId ?? $this->generateUniqueId();
-
-        self::startSession();
-        self::purgeExpired();
-
-        $this->load();
+        $this->challengeId = $challengeId;
+        $this->data = new SessionData();
     }
 
     /**
-     * @inheritDoc
+     * Returns the identifier of the challenge.
      */
-    public function getChallengeId(): string
+    public function getChallengeId(): ?string
     {
         return $this->challengeId;
     }
 
     /**
-     * @inheritDoc
-     */
-    public function load(): void
-    {
-        if (self::exists($this->challengeId, $this->widgetId)) {
-            $this->data = $_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES][$this->challengeId];
-        } else {
-            $this->data = [
-                'widget' => $this->widgetId,
-                'icons' => [],
-                'correctId' => 0,
-                'mode' => 'light',
-                'requested' => false,
-                'completed' => false,
-                'attempts' => 0,
-                'attemptsTimeout' => 0,
-                'expiresAt' => 0,
-            ];
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function save(): void
-    {
-        // Write the data to the session.
-        $_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES][$this->challengeId] = $this->data;
-    }
-
-    /**
-     * @inheritDoc
+     * This will clear the set hashes, and reset the icon
+     * request counter and last clicked icon.
      */
     public function clear(): void
     {
-        $this->data['icons'] = [];
-        $this->data['correctId'] = 0;
-        $this->data['requested'] = false;
-        $this->data['completed'] = false;
-        $this->data['attempts'] = 0;
-        $this->data['attemptsTimeout'] = 0;
-        $this->data['expiresAt'] = 0;
+        $this->data->icons = [];
+        $this->data->correctId = 0;
+        $this->data->requested = false;
+        $this->data->completed = false;
+        $this->data->attempts = 0;
+        $this->data->attemptsTimeout = 0;
+        $this->data->expiresAt = 0;
     }
 
     /**
-     * @inheritDoc
-     */
-    public function destroy(): void
-    {
-        unset($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES][$this->challengeId]);
-    }
-
-    /**
-     * @inheritDoc
+     * Returns whether the session has expired.
      */
     public function isExpired(): bool
     {
-        return $this->data['expiresAt'] > 0 && $this->data['expiresAt'] < Utils::getTimeInMilliseconds();
+        return $this->data->expiresAt > 0 && $this->data->expiresAt < Utils::getTimeInMilliseconds();
     }
 
     /**
-     * @inheritDoc
-     */
-    public static function purgeExpired(): void
-    {
-        self::startSession();
-
-        // Check all existing sessions, deleting the ones which are expired.
-        foreach ($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES] as $id => $session) {
-            if ($session['expiresAt'] > 0 && $session['expiresAt'] < Utils::getTimeInMilliseconds()) {
-                unset($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES][$id]);
-            }
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function exists(string $challengeId, string $widgetId): bool
-    {
-        self::startSession();
-
-        return isset($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES][$challengeId])
-            && $_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES][$challengeId]['widget'] === $widgetId;
-    }
-
-    /**
-     * @inheritDoc
+     * Retrieves data from the session based on the given property name.
+     * @param string $key The name of the property in the session which should be retrieved.
+     * @return mixed The data in the session, or NULL if the key does not exist.
      */
     public function __get(string $key)
     {
-        return $this->data[$key] ?? null;
+        return $this->data->{$key} ?? null;
     }
 
     /**
-     * @inheritDoc
+     * Set a value of the captcha session.
+     * @param string $key The name of the property in the session which should be set.
+     * @param mixed $value The value which should be stored.
      */
     public function __set(string $key, $value): void
     {
-        $this->data[$key] = $value;
+        $this->data->{$key} = $value;
     }
 
-    /**
-     * Attempts to start a session, if none has been started yet.
-     * @return void
-     */
-    private static function startSession(): void
+    public function hasSessionDataLoaded(): bool
     {
-        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
-            session_start();
-        }
+        return $this->dataLoaded;
     }
 
     /**
      * Generates a random UUID to be used as the challenge identifier.
-     * @return string The generated UUID.
      * @throws \Exception
      */
-    private function generateUniqueId(): string
+    protected function generateUniqueId(): string
     {
         $id = null;
 
         // Generate an identifier, making sure it is not already in use.
-        while (empty($id) || static::exists($id, $this->widgetId)) {
+        while (empty($id) || $this->exists($id, $this->widgetId)) {
             $id = Utils::generateUUID();
         }
 
         return $id;
     }
+
+    /**
+     * Loads the captcha's session data based on the earlier set captcha identifier.
+     */
+    abstract protected function load(): void;
+
+    /**
+     * Deletes all expired sessions.
+     */
+    abstract protected function purgeExpired(): void;
 }

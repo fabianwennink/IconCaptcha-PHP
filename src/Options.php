@@ -10,7 +10,7 @@
 namespace IconCaptcha;
 
 use IconCaptcha\Challenge\Generators\GD;
-use IconCaptcha\Session\Session;
+use IconCaptcha\Session\Drivers\ServerSession;
 use IconCaptcha\Token\Token;
 
 class Options
@@ -53,7 +53,7 @@ class Options
             'cache' => 86400,
         ],
         'token' => Token::class,
-        'session' => Session::class,
+        'session' => ServerSession::class,
         'generator' => GD::class,
         'hooks' => [
             'init' => null, // initialization hook, called when the challenge is requested.
@@ -75,7 +75,7 @@ class Options
 
         // Trim the custom icon folder path of slashes. If no custom path is set, use the default path.
         // When using Composer, the 'iconPath' option always points to the default path in the vendor folder.
-        if(isset($options['iconPath'])) {
+        if (isset($options['iconPath'])) {
             $mergedOptions['iconPath'] = rtrim($mergedOptions['iconPath'], DIRECTORY_SEPARATOR);
         } else {
             $mergedOptions['iconPath'] = __DIR__ . DIRECTORY_SEPARATOR . '..'

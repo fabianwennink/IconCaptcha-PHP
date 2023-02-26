@@ -6,6 +6,7 @@ use IconCaptcha\Challenge\Hooks\Hook;
 use IconCaptcha\Challenge\Hooks\InitHookInterface;
 use IconCaptcha\Challenge\Hooks\SelectionHookInterface;
 use IconCaptcha\Payload;
+use IconCaptcha\Session\Session;
 use IconCaptcha\Session\SessionInterface;
 use IconCaptcha\Utils;
 
@@ -16,9 +17,9 @@ class Challenge
     private const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
 
     /**
-     * @var SessionInterface The session containing captcha information.
+     * @var Session The session containing captcha information.
      */
-    private SessionInterface $session;
+    private Session $session;
 
     /**
      * @var array $options
@@ -59,7 +60,7 @@ class Challenge
         );
 
         // If the hook returned TRUE, the challenge should autocomplete.
-        if($shouldImmediatelyComplete) {
+        if ($shouldImmediatelyComplete) {
             $this->markChallengeCompleted($latency);
             return $this->getCompletionPayload();
         }
@@ -140,7 +141,7 @@ class Challenge
         $this->session->attempts = $attemptsCount;
 
         // If enabled, set the expiration timestamp for the challenge.
-        if($this->options['challenge']['inactivityExpiration'] > 0) {
+        if ($this->options['challenge']['inactivityExpiration'] > 0) {
             $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['inactivityExpiration'] * 1000) + $latency;
         }
 

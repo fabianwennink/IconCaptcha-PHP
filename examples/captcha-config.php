@@ -32,6 +32,6 @@ return [
         'timeout' => 60 // seconds.
     ],
     'token' => \IconCaptcha\Token\Token::class, // to disable, replace with 'null'.
-    'session' => \IconCaptcha\Session\Session::class,
+    'session' => \IconCaptcha\Session\Drivers\ServerSession::class,
     'generator' => \IconCaptcha\Challenge\Generators\GD::class, // a generator for ImageMagick (Imagick::class) is also available.
 ];
