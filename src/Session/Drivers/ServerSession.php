@@ -18,16 +18,9 @@ class ServerSession extends Session
 
     private const SESSION_CHALLENGES = 'challenges';
 
-    /**
-     * Creates a new CaptchaSession object. Session data regarding the
-     * captcha (given identifier) will be stored and can be retrieved when necessary.
-     *
-     * @param string $widgetId The widget identifier.
-     * @param string|null $challengeId The challenge identifier.
-     */
-    public function __construct(string $widgetId, string $challengeId = null)
+    public function __construct(array $options, string $widgetId, string $challengeId = null)
     {
-        parent::__construct($widgetId, $challengeId);
+        parent::__construct($options, $widgetId, $challengeId);
 
         $this->startSession();
         $this->purgeExpired();

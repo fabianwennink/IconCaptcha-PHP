@@ -30,8 +30,9 @@
         "symfony/thanks": "^1.2"
     },
     "suggest": {
-        "ext-gd": "Required in case you wish to use the GD image generator.",
-        "ext-imagick": "Required in case you wish to use the ImageMagick image generator."
+        "ext-gd": "Required if you wish to use the GD image generator.",
+        "ext-imagick": "Required if you wish to use the ImageMagick image generator.",
+        "ext-pdo": "Required if you wish to use the default PDOSession class."
     },
     "autoload": {
         "psr-4": {

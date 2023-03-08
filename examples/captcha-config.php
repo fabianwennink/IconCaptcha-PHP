@@ -34,4 +34,22 @@ return [
     'token' => \IconCaptcha\Token\Token::class, // to disable, replace with 'null'.
     'session' => \IconCaptcha\Session\Drivers\ServerSession::class,
     'generator' => \IconCaptcha\Challenge\Generators\GD::class, // a generator for ImageMagick (Imagick::class) is also available.
+    'session' => [
+        'driver' => \IconCaptcha\Session\Drivers\ServerSession::class, // database drivers are available as well. (\Session\Drivers\Database\)
+//        'options' => [
+//            // Connection details are required when using a database session driver.
+//            'connection' => [
+//                //'url' => 'mysql:host=127.0.0.1;port=3306;dbname=db', // you can use a DSN URL if your database requires a more complex connection.
+//                'host' => '127.0.0.1',
+//                'port' => 3306,
+//                'database' => 'db',
+//                'username' => 'root',
+//                'password' => '',
+//                'table' => 'sessions',
+//            ],
+////
+////            // ... or use an existing database connection (must be a PDO object).
+////            'connection' => $connection
+//        ],
+    ]
 ];

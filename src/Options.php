@@ -53,12 +53,15 @@ class Options
             'cache' => 86400,
         ],
         'token' => Token::class,
-        'session' => ServerSession::class,
         'generator' => GD::class,
         'hooks' => [
             'init' => null, // initialization hook, called when the challenge is requested.
             'generation' => null, // image generation hook, e.g. for changing something on image.
             'selection' => null, // user image interaction hook, called when the user clicks on an icon.
+        ],
+        'session' => [
+            'driver' => ServerSession::class,
+            'options' => [],
         ]
     ];
 

@@ -141,6 +141,9 @@ class Validator
 
     private function loadSession(string $widgetId, string $challengeId): Session
     {
-        return new $this->options['session']($widgetId, $challengeId);
+        return new $this->options['session']['driver'](
+            $this->options['session']['options'] ?? [],
+            $widgetId, $challengeId
+        );
     }
 }

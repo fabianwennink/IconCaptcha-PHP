@@ -43,15 +43,20 @@ abstract class Session implements SessionInterface
      */
     protected bool $dataLoaded = false;
 
+    protected array $options;
+
     /**
-     * Creates a new CaptchaSession object. Session data regarding the
-     * captcha (given identifier) will be stored and can be retrieved when necessary.
+     * Creates or loads a captcha session. If the widget and challenge identifiers are
+     * given, an attempt will be made to load existing session data belonging to
+     * the session identifiers. Otherwise, a new session will be created.
      *
-     * @param string $widgetId The widget identifier.
-     * @param string|null $challengeId The challenge identifier.
+     * @param array $options The captcha session options.
+     * @param string $widgetId The widget unique identifier.
+     * @param string|null $challengeId The challenge unique identifier.
      */
-    public function __construct(string $widgetId, string $challengeId = null)
+    public function __construct(array $options, string $widgetId, string $challengeId = null)
     {
+        $this->options = $options;
         $this->widgetId = $widgetId;
         $this->challengeId = $challengeId;
         $this->data = new SessionData();

@@ -21,9 +21,6 @@ class Challenge
      */
     private Session $session;
 
-    /**
-     * @var array $options
-     */
     private array $options;
 
     public function __construct($options)
@@ -33,7 +30,11 @@ class Challenge
 
     public function initialize(string $widgetId, string $challengeId = null): Challenge
     {
-        $this->session = new $this->options['session']($widgetId, $challengeId);
+        $this->session = new $this->options['session']['driver'](
+            $this->options['session']['options'] ?? [],
+            $widgetId, $challengeId
+        );
+
         return $this;
     }
 
