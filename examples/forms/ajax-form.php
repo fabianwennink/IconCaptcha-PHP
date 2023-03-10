@@ -1,11 +1,4 @@
 <?php
-    /**
-     * IconCaptcha Plugin: v3.1.1
-     * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
-     *
-     * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
-     */
-
     // Include the IconCaptcha classes.
     require_once __DIR__ . '/../../vendor/autoload.php';
 

@@ -1,12 +1,5 @@
 <?php
 
-/**
- * IconCaptcha Plugin: v3.1.0
- * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
- *
- * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
- */
-
 namespace IconCaptcha;
 
 use IconCaptcha\Challenge\Challenge;
@@ -68,7 +61,7 @@ class Request
             $scriptTimestamp = $payload['initTimestamp'];
 
             // Validate the payload timestamps.
-            if(
+            if (
                 ($requestTimestamp > $currentTimestamp || $scriptTimestamp > $currentTimestamp) || // ensure the timestamps are older than the current time.
                 ($scriptTimestamp > $requestTimestamp) // ensure the script init timestamp is older than the request timestamp.
             ) {

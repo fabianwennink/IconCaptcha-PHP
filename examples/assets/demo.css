@@ -1,11 +1,4 @@
-﻿/**
- * IconCaptcha Plugin: v3.1.1
- * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
- *
- * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
- */
-
-* {
+﻿* {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -26,9 +19,9 @@ body {
     font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image: url(polygon-background.png), -webkit-linear-gradient(20deg,#6D1AF3,#51D0EF);
-    background-image: url(polygon-background.png), -moz-linear-gradient(20deg,#6D1AF3,#51D0EF);
-    background-image: url(polygon-background.png), linear-gradient(20deg,#6D1AF3,#51D0EF);
+    background-image: url(polygon-background.png), -webkit-linear-gradient(20deg, #6D1AF3, #51D0EF);
+    background-image: url(polygon-background.png), -moz-linear-gradient(20deg, #6D1AF3, #51D0EF);
+    background-image: url(polygon-background.png), linear-gradient(20deg, #6D1AF3, #51D0EF);
 }
 
 a {
@@ -78,7 +71,7 @@ h2 {
 
 .btn {
     letter-spacing: 1px;
-    border: 1px solid rgba(255,255,255,0.8);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -105,18 +98,18 @@ h2 {
     font-weight: bold;
     color: #5396ED;
     background: #fff;
-    -webkit-transition: background 0.15s ease,box-shadow 0.15s ease;
-    -moz-transition: background 0.15s ease,box-shadow 0.15s ease;
-    -ms-transition: background 0.15s ease,box-shadow 0.15s ease;
-    transition: background 0.15s ease,box-shadow 0.15s ease;
+    -webkit-transition: background 0.15s ease, box-shadow 0.15s ease;
+    -moz-transition: background 0.15s ease, box-shadow 0.15s ease;
+    -ms-transition: background 0.15s ease, box-shadow 0.15s ease;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
     -ms-transform: translateZ(0);
     -o-transform: translateZ(0);
     transform: translateZ(0);
-    -webkit-box-shadow: 0 0 0 6px rgba(255,255,255,0.5);
-    -moz-box-shadow: 0 0 0 6px rgba(255,255,255,0.5);
-    box-shadow: 0 0 0 6px rgba(255,255,255,0.5);
+    -webkit-box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.5);
+    -moz-box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.5);
 }
 
 .btn small {
@@ -165,7 +158,7 @@ h2 {
     background: rgba(255, 255, 255, 0.9);
 }
 
-.corner-ribbon.top-left{
+.corner-ribbon.top-left {
     top: 50px;
     left: -70px;
     transform: rotate(-45deg);
