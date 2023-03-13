@@ -2,10 +2,13 @@
 
 namespace IconCaptcha\Session\Drivers\Database;
 
+use IconCaptcha\Exceptions\FileNotFoundException;
+
 class SQLiteSession extends PDOSession
 {
     /**
      * @inheritDoc
+     * @throws FileNotFoundException
      */
     public function createDsnString(array $config): string
     {
@@ -14,6 +17,12 @@ class SQLiteSession extends PDOSession
         }
 
         $path = realpath($config['database']);
+
+        // Verify that the SQLite database exists before attempting to connect.
+        // The SQLite driver will not throw any exception by default if the file does not exist.
+        if ($path === false) {
+            throw new FileNotFoundException($config['database']);
+        }
 
         return "sqlite:$path";
     }
