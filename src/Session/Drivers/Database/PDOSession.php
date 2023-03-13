@@ -2,6 +2,7 @@
 
 namespace IconCaptcha\Session\Drivers\Database;
 
+use IconCaptcha\Session\Exceptions\SessionDatabaseOptionsException;
 use IconCaptcha\Session\Session;
 use PDO;
 
@@ -171,11 +172,10 @@ abstract class PDOSession extends Session
                 $dsnString = $this->createDsnString($config);
             }
 
-            // TODO throw custom exception if no connection could be established.
             return new PDO($dsnString, $config['username'] ?? null, $config['password'] ?? null, $this->getConnectionOptions($config));
         }
 
-        throw new \InvalidArgumentException('Expected connection options to be either a PDO instance or an array containing database connection details.');
+        throw new SessionDatabaseOptionsException($config);
     }
 
     /**
