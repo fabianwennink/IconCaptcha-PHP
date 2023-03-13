@@ -2,6 +2,9 @@
 
 namespace IconCaptcha\Session;
 
+use IconCaptcha\Session\Exceptions\SessionDataParsingFailedException;
+use JsonException;
+
 class SessionData
 {
     /**
@@ -44,18 +47,6 @@ class SessionData
      */
     public int $expiresAt = 0;
 
-    public function fromArray(array $data): void
-    {
-        $this->icons = $data['icons'];
-        $this->correctId = $data['correctId'];
-        $this->mode = $data['mode'];
-        $this->requested = $data['requested'];
-        $this->completed = $data['completed'];
-        $this->attempts = $data['attempts'];
-        $this->attemptsTimeout = $data['attemptsTimeout'];
-        $this->expiresAt = $data['expiresAt'];
-    }
-
     public function toArray(): array
     {
         return [
@@ -70,19 +61,78 @@ class SessionData
         ];
     }
 
-    public function fromJson(string $json): void
+    /**
+     * @throws SessionDataParsingFailedException
+     */
+    public function fromArray(array $data): void
     {
-        $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        $this->fromArray($data);
+        $missing = 0;
+
+        $this->icons = $this->getArrayValue($data, 'icons', $missing);
+        $this->correctId = $this->getArrayValue($data, 'correctId', $missing);
+        $this->mode = $this->getArrayValue($data, 'mode', $missing);
+        $this->requested = $this->getArrayValue($data, 'requested', $missing);
+        $this->completed = $this->getArrayValue($data, 'completed', $missing);
+        $this->attempts = $this->getArrayValue($data, 'attempts', $missing);
+        $this->attemptsTimeout = $this->getArrayValue($data, 'attemptsTimeout', $missing);
+        $this->expiresAt = $this->getArrayValue($data, 'expiresAt', $missing);
+
+        // If any of the keys were missing, throw an exception.
+        if ($missing > 0) {
+            throw new SessionDataParsingFailedException();
+        }
     }
 
+    /**
+     * @throws SessionDataParsingFailedException
+     */
     public function toJson(): string
     {
-        return json_encode($this->toArray(), JSON_THROW_ON_ERROR);
+        try {
+            return json_encode($this->toArray(), JSON_THROW_ON_ERROR);
+        } catch (JsonException $exception) {
+            throw new SessionDataParsingFailedException($exception);
+        }
     }
 
+    /**
+     * @throws SessionDataParsingFailedException
+     */
+    public function fromJson(string $json): void
+    {
+        try {
+            $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            $this->fromArray($data);
+        } catch (JsonException $exception) {
+            throw new SessionDataParsingFailedException($exception);
+        }
+    }
+
+    /**
+     * @throws SessionDataParsingFailedException
+     */
     public function __toString(): string
     {
         return $this->toJson();
+    }
+
+    /**
+     * Checks if a key exists in an array.
+     * @param array $arr The array to verify whether the key exists.
+     * @param string $key The key to verify the existence of.
+     * @param int $missing An increment counter, will be incremented by 1 if the key does not exist.
+     * @return mixed|null The value of the key in the array, or NULL if the key does not exist.
+     */
+    private function getArrayValue(array $arr, string $key, int &$missing)
+    {
+
+        // Using both 'isset' and 'array_key_exists', as values might be NULL.
+        if (isset($arr[$key]) || array_key_exists($key, $arr)) {
+            return $arr[$key];
+        }
+
+        $missing++;
+
+        return null;
     }
 }

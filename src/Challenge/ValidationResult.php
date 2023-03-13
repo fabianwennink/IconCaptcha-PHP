@@ -57,6 +57,6 @@ final class ValidationResult
             'success' => $this->success,
             'error_code' => $this->errorCode,
             'timestamp' => $this->timestamp,
-        ]));
+        ]), JSON_THROW_ON_ERROR);
     }
 }
