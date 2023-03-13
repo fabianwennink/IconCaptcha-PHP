@@ -4,6 +4,7 @@ namespace IconCaptcha\Challenge\Image;
 
 use IconCaptcha\Challenge\Hooks\GenerationHookInterface;
 use IconCaptcha\Challenge\Hooks\Hook;
+use IconCaptcha\Exceptions\FileNotFoundException;
 use IconCaptcha\Session\SessionInterface;
 
 abstract class AbstractImageGenerator implements ImageGeneratorInterface
@@ -32,6 +33,7 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
      * @param string $iconPath The path to the folder holding the icons.
      * @param string $placeholderPath The path to the placeholder image, with the name of the file included.
      * @return false|\GdImage|resource The generated image.
+     * @throws FileNotFoundException
      */
     public function generate(string $iconPath, string $placeholderPath)
     {
@@ -41,7 +43,14 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
         // Prepare the icon images.
         $iconImages = [];
         foreach (array_unique($this->session->icons) as $id) {
-            $iconImages[$id] = $this->loadImage(realpath($iconPath . 'icon-' . $id . '.png'));
+            $iconImage = realpath($iconPath . "icon-$id.png");
+
+            // Verify that the icon image exists.
+            if ($iconImage === false) {
+                throw new FileNotFoundException($iconPath . "icon-$id.png");
+            }
+
+            $iconImages[$id] = $this->loadImage($iconImage);
         }
 
         // Image pixel information.
@@ -81,7 +90,9 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
             // Rotate icon, if enabled.
             if ($rotateEnabled) {
                 $degree = random_int(1, 4);
-                if ($degree !== 4) { // Only if the 'degree' is not the same as what it would already be at.
+
+                // Only if the 'degree' is not the same as what it would already be at.
+                if ($degree !== 4) {
                     $icon = $this->rotate($icon, $degree * 90);
                 }
             }

@@ -5,6 +5,7 @@ namespace IconCaptcha\Challenge;
 use IconCaptcha\Challenge\Hooks\Hook;
 use IconCaptcha\Challenge\Hooks\InitHookInterface;
 use IconCaptcha\Challenge\Hooks\SelectionHookInterface;
+use IconCaptcha\Exceptions\FileNotFoundException;
 use IconCaptcha\Payload;
 use IconCaptcha\Session\Session;
 use IconCaptcha\Session\SessionInterface;
@@ -216,6 +217,7 @@ class Challenge
      * image was already requested once, an HTTP status '403 Forbidden' will be set and no image will be returned.
      *
      * The image will only be rendered once as a PNG, and be destroyed right after rendering.
+     * @throws FileNotFoundException
      */
     public function render(): ?string
     {
@@ -229,25 +231,25 @@ class Challenge
         $this->session->save();
 
         $iconsDirectoryPath = $this->options['iconPath'];
-        $placeholder = realpath($iconsDirectoryPath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'placeholder.png');
+        $placeholderPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'placeholder.png';
+        $placeholder = realpath($placeholderPath);
 
         // Check if the placeholder icon exists.
-        if (is_file($placeholder)) {
-
-            // Format the path to the icon directory.
-            $themeIconColor = $this->options['themes'][$this->session->mode]['icons'];
-            $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . $themeIconColor . DIRECTORY_SEPARATOR;
-
-            // Instantiate the challenge image generator.
-            $imageGenerator = new $this->options['generator']($this->session, $this->options);
-
-            // Generate and render the challenge.
-            return $imageGenerator->render(
-                $imageGenerator->generate($iconPath, $placeholder)
-            );
+        if ($placeholder === false) {
+            throw new FileNotFoundException($placeholderPath);
         }
 
-        return null;
+        // Format the path to the icon directory.
+        $themeIconColor = $this->options['themes'][$this->session->mode]['icons'];
+        $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . $themeIconColor . DIRECTORY_SEPARATOR;
+
+        // Instantiate the challenge image generator.
+        $imageGenerator = new $this->options['generator']($this->session, $this->options);
+
+        // Generate and render the challenge.
+        return $imageGenerator->render(
+            $imageGenerator->generate($iconPath, $placeholder)
+        );
     }
 
     /**
