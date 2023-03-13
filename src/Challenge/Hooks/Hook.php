@@ -20,9 +20,11 @@ class Hook
      */
     public static function call(string $type, $class, string $action, SessionInterface $session, array $options, $default, ...$params)
     {
+        // Get the hook.
         $hook = self::getHook($options, $type, $class);
 
-        if(!empty($hook)) {
+        // Ensure the hook is valid and has a callable action.
+        if (!empty($hook) && is_callable([$hook, $action], true)) {
             return $hook->{$action}($_REQUEST, $session, $options, $params);
         }
 
@@ -40,9 +42,11 @@ class Hook
      */
     public static function callVoid(string $type, $class, string $action, SessionInterface $session, array $options, ...$params): void
     {
+        // Get the hook.
         $hook = self::getHook($options, $type, $class);
 
-        if (!empty($hook)) {
+        // Ensure the hook is valid and has a callable action.
+        if (!empty($hook) && is_callable([$hook, $action], true)) {
             $hook->{$action}($_REQUEST, $session, $options, $params);
         }
     }
