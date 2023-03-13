@@ -2,8 +2,8 @@
 
 namespace IconCaptcha\Challenge;
 
-use IconCaptcha\Session\Session;
 use IconCaptcha\Token\AbstractToken;
+use IconCaptcha\Utils;
 
 class Validator
 {
@@ -68,7 +68,7 @@ class Validator
         $widgetId = $request[self::CAPTCHA_FIELD_WIDGET_ID];
 
         // Initialize the session.
-        $session = $this->loadSession($widgetId, $challengeId);
+        $session = Utils::createSession($this->options, $widgetId, $challengeId);
 
         // Ensure the session is valid. If the original session failed to load, the $session variable
         // will contain a new session. Checking the 'requested' status should tell if this is the case.
@@ -102,7 +102,7 @@ class Validator
     public function invalidate(string $widgetId, string $challengeId): void
     {
         // Unset the previous session data
-        $session = $this->loadSession($widgetId, $challengeId);
+        $session = Utils::createSession($this->options, $widgetId, $challengeId);
         $session->destroy();
     }
 
@@ -137,13 +137,5 @@ class Validator
     private function createFailedResponse(string $status): ValidationResult
     {
         return new ValidationResult(false, $status);
-    }
-
-    private function loadSession(string $widgetId, string $challengeId): Session
-    {
-        return new $this->options['session']['driver'](
-            $this->options['session']['options'] ?? [],
-            $widgetId, $challengeId
-        );
     }
 }

@@ -16,9 +16,6 @@ class Challenge
 
     private const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
 
-    /**
-     * @var Session The session containing captcha information.
-     */
     private Session $session;
 
     private array $options;
@@ -30,11 +27,7 @@ class Challenge
 
     public function initialize(string $widgetId, string $challengeId = null): Challenge
     {
-        $this->session = new $this->options['session']['driver'](
-            $this->options['session']['options'] ?? [],
-            $widgetId, $challengeId
-        );
-
+        $this->session = Utils::createSession($this->options, $widgetId, $challengeId);
         return $this;
     }
 
