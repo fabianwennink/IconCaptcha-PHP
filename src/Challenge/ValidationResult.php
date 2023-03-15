@@ -13,6 +13,7 @@ final class ValidationResult
     private int $timestamp;
 
     /**
+     * Creates a new validation result instance.
      * @param bool $success
      * @param string|null $errorCode
      */
@@ -25,7 +26,6 @@ final class ValidationResult
 
     /**
      * Returns whether the captcha was validated successfully or not.
-     * @return bool TRUE if validated, FALSE if validation failed.
      */
     public function success(): bool
     {
@@ -35,7 +35,6 @@ final class ValidationResult
     /**
      * Returns the error code of the reason as to why the verification failed.
      * Will only be set in case the response of {@see success} is FALSE.
-     * @return string|null The error code.
      */
     public function getErrorCode(): ?string
     {
@@ -44,7 +43,6 @@ final class ValidationResult
 
     /**
      * Returns the time of verification, as a timestamp, in milliseconds.
-     * @return int The verification timestamp.
      */
     public function getTimestamp(): int
     {

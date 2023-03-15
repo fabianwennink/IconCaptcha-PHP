@@ -2,6 +2,7 @@
 
 namespace IconCaptcha\Session;
 
+use Exception;
 use IconCaptcha\Utils;
 
 /**
@@ -64,8 +65,7 @@ abstract class Session implements SessionInterface
     }
 
     /**
-     * This will clear the set hashes, and reset the icon
-     * request counter and last clicked icon.
+     * Resets the session to the default values.
      */
     public function clear(): void
     {
@@ -106,6 +106,9 @@ abstract class Session implements SessionInterface
         $this->data->{$key} = $value;
     }
 
+    /**
+     * Returns whether the session data was loaded or if the instance is still being initialized.
+     */
     public function hasSessionDataLoaded(): bool
     {
         return $this->dataLoaded;
@@ -113,7 +116,7 @@ abstract class Session implements SessionInterface
 
     /**
      * Generates a random UUID to be used as the challenge identifier.
-     * @throws \Exception
+     * @throws Exception
      */
     protected function generateUniqueId(): string
     {
@@ -128,7 +131,7 @@ abstract class Session implements SessionInterface
     }
 
     /**
-     * Loads the captcha's session data based on the earlier set captcha identifier.
+     * Loads the session data.
      */
     abstract protected function load(): void;
 

@@ -47,6 +47,9 @@ class SessionData
      */
     public int $expiresAt = 0;
 
+    /**
+     * Converts the session data into an array.
+     */
     public function toArray(): array
     {
         return [
@@ -62,6 +65,7 @@ class SessionData
     }
 
     /**
+     * Uses the values from the given array to set the session data.
      * @throws SessionDataParsingFailedException
      */
     public function fromArray(array $data): void
@@ -84,6 +88,7 @@ class SessionData
     }
 
     /**
+     * Converts the session data into a JSON string.
      * @throws SessionDataParsingFailedException
      */
     public function toJson(): string
@@ -96,6 +101,7 @@ class SessionData
     }
 
     /**
+     * Uses the given JSON string to fill the session data.
      * @throws SessionDataParsingFailedException
      */
     public function fromJson(string $json): void
@@ -109,6 +115,7 @@ class SessionData
     }
 
     /**
+     * Converts the session data into a JSON string.
      * @throws SessionDataParsingFailedException
      */
     public function __toString(): string

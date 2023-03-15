@@ -12,7 +12,7 @@ interface SelectionHookInterface
      * @param SessionInterface $session The session containing captcha information.
      * @param array $options The captcha options.
      */
-    public function correct(array $request, SessionInterface $session, array $options);
+    public function correct(array $request, SessionInterface $session, array $options): void;
 
     /**
      * Will be called when the visitor selected an incorrect icon.
@@ -20,5 +20,5 @@ interface SelectionHookInterface
      * @param SessionInterface $session The session containing captcha information.
      * @param array $options The captcha options.
      */
-    public function incorrect(array $request, SessionInterface $session, array $options);
+    public function incorrect(array $request, SessionInterface $session, array $options): void;
 }

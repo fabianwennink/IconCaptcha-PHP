@@ -19,7 +19,7 @@ class Token extends AbstractToken implements TokenInterface
         $existingToken = $self->retrieve();
 
         // If a token exists, return it.
-        if(!empty($existingToken)) {
+        if (!empty($existingToken)) {
             return $existingToken;
         }
 

@@ -4,16 +4,37 @@ namespace IconCaptcha;
 
 class Cors
 {
+    /**
+     * @var array All allowed origins.
+     */
     private array $origins;
 
+    /**
+     * @var array All allowed wildcard origins.
+     */
     private array $wildcardOrigins = [];
 
+    /**
+     * @var bool Whether to expose the credentials (cookies, authorization headers, or TLS client certificates) in the response.
+     * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
+     */
     private bool $allowCredentials;
 
+    /**
+     * @var bool Whether all origins should be allowed.
+     */
     private bool $allowAllOrigins;
 
+    /**
+     * @var int For how long the CORS response should be cached, in seconds.
+     * @link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
+     */
     private int $cacheAge;
 
+    /**
+     * @var string[] List of set Vary headers.
+     * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary
+     */
     private array $vary = [];
 
     public function __construct(array $origins, bool $allowCredentials, int $cacheAge)
@@ -105,7 +126,6 @@ class Cors
     /**
      * Checks if the given origin is allowed to make a request.
      * @param string $origin The origin URL.
-     * @return bool TRUE if the origin is allowed, FALSE if it is not.
      */
     private function isOriginAllowed(string $origin): bool
     {
@@ -126,7 +146,6 @@ class Cors
 
     /**
      * Returns whether the request is a CORS request.
-     * @return bool TRUE if the request is a CORS request, FALSE if it is not.
      */
     private function isCorsRequest(): bool
     {
@@ -135,7 +154,6 @@ class Cors
 
     /**
      * Returns whether the request is a preflight request.
-     * @return bool TRUE if the request is a preflight request, FALSE if it is not.
      */
     private function isPreflightRequest(): bool
     {
@@ -157,7 +175,6 @@ class Cors
     /**
      * Will set the 'Vary' header with the given values.
      * @param array $headers The header names to set in the Vary header.
-     * @return void
      */
     private function applyVaryHeaders(array $headers): void
     {

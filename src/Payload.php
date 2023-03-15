@@ -8,8 +8,6 @@ class Payload
 {
     /**
      * Tries to decode the given base64 and JSON encoded payload.
-     * @param string $payload The request payload to be decoded.
-     * @return mixed The decoded payload.
      * @throws JsonException
      */
     public static function decode(string $payload)
@@ -27,11 +25,9 @@ class Payload
     /**
      * Encodes the given payload with base64 and JSON.
      * Note: All NULL values will be filtered.
-     * @param mixed $payload The payload to encode.
-     * @return string The encoded payload.
      * @throws JsonException
      */
-    public static function encode($payload): string
+    public static function encode(array $payload): string
     {
         return base64_encode(json_encode(
             array_filter($payload) + ['timestamp' => Utils::getTimeInMilliseconds()],

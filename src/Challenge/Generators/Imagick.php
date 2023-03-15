@@ -3,7 +3,6 @@
 namespace IconCaptcha\Challenge\Generators;
 
 use IconCaptcha\Challenge\Image\AbstractImageGenerator;
-
 use Imagick as ImagickImage;
 use ImagickDraw;
 use ImagickPixel;

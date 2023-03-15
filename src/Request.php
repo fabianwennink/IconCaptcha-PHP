@@ -105,7 +105,6 @@ class Request
     /**
      * Validates the payload and possibly the header tokens.
      * @param array $payload The request payload to check.
-     * @return bool TRUE if the token was valid, FALSE if it wasn't.
      */
     private function validateToken(array $payload): bool
     {
@@ -118,7 +117,6 @@ class Request
 
     /**
      * Create a error message string for the token validation error.
-     * @return void
      */
     private function tokenError(): void
     {
@@ -129,7 +127,6 @@ class Request
 
     /**
      * Exits the request with a 400 bad request status.
-     * @return void
      */
     private function badRequest(): void
     {
@@ -139,7 +136,6 @@ class Request
 
     /**
      * Checks if the current HTTP request was an Ajax request.
-     * @return bool TRUE if it was an Ajax request, FALSE if it wasn't.
      */
     private function isAjaxRequest(): bool
     {

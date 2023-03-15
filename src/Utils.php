@@ -2,13 +2,13 @@
 
 namespace IconCaptcha;
 
+use Exception;
 use IconCaptcha\Session\Session;
 
 class Utils
 {
     /**
      * Returns the current Unix timestamp in milliseconds.
-     * @return int The timestamp.
      */
     public static function getTimeInMilliseconds(): int
     {
@@ -18,7 +18,7 @@ class Utils
     /**
      * Generates a random UUID.
      * @return string The generated UUID.
-     * @throws \Exception
+     * @throws Exception
      */
     public static function generateUUID(): string
     {

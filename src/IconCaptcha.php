@@ -34,7 +34,7 @@ class IconCaptcha
      */
     public function request(): Request
     {
-        if(!isset($this->request)) {
+        if (!isset($this->request)) {
             $this->request = new Request(
                 $this->options,
                 new Challenge($this->options),
@@ -68,7 +68,7 @@ class IconCaptcha
      */
     public function handleCors(): void
     {
-        if($this->options['cors']['enabled']) {
+        if ($this->options['cors']['enabled']) {
             $cors = new Cors(
                 $this->options['cors']['origins'],
                 $this->options['cors']['credentials'],
