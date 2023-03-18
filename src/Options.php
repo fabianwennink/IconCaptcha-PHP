@@ -14,17 +14,18 @@ class Options
     private const DEFAULT_OPTIONS = [
         'iconPath' => null,
         'themes' => [
-            'light' => ['icons' => 'light', 'color' => [240, 240, 240]],
-            'dark' => ['icons' => 'dark', 'color' => [64, 64, 64]],
+            'light' => [
+                'iconStyle' => 'light',
+                'separatorColor' => [240, 240, 240]
+            ],
+            'dark' => [
+                'iconStyle' => 'dark',
+                'separatorColor' => [64, 64, 64]
+            ],
         ],
         'challenge' => [
-            'inactivityExpiration' => 120, // In seconds. Set to 0 to disable.
-            'completionExpiration' => 300, // In seconds. Set to 0 to disable.
-            'latencyCorrection' => true,
-        ],
-        'image' => [
-            'icons' => 180,
-            'amount' => [ // min & max can be 5 - 8
+            'availableIcons' => 180,
+            'iconAmount' => [
                 'min' => 5,
                 'max' => 8
             ],
@@ -33,11 +34,17 @@ class Options
                 'horizontally' => true,
                 'vertically' => true,
             ],
-            'border' => true
+            'border' => true,
+            'generator' => GD::class,
         ],
-        'attempts' => [
-            'amount' => 5,
-            'timeout' => 30 // seconds.
+        'validation' => [
+            'inactivityExpiration' => 120,
+            'completionExpiration' => 300,
+            'latencyCorrection' => true,
+            'attempts' => [
+                'amount' => 5,
+                'timeout' => 30,
+            ],
         ],
         'cors' => [
             'enabled' => false,
@@ -46,16 +53,15 @@ class Options
             'cache' => 86400,
         ],
         'token' => Token::class,
-        'generator' => GD::class,
-        'hooks' => [
-            'init' => null, // initialization hook, called when the challenge is requested.
-            'generation' => null, // image generation hook, e.g. for changing something on image.
-            'selection' => null, // user image interaction hook, called when the user clicks on an icon.
-        ],
         'session' => [
             'driver' => ServerSession::class,
             'options' => [],
-        ]
+        ],
+        'hooks' => [
+            'init' => null,
+            'generation' => null,
+            'selection' => null,
+        ],
     ];
 
     /**

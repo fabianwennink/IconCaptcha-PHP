@@ -1,55 +1,118 @@
 <?php
 
-// All options are optional, and are using their default values.
-// Take a look at the GitHub Wiki for information about every option.
+/**
+ * Configuration options for IconCaptcha library.
+ *
+ * This array contains various configuration options that can be used to customize
+ * the behavior of the IconCaptcha library. All options are optional and have default values.
+ *
+ * For more information on each option, please refer to the documentation on the GitHub wiki:
+ * - https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki
+ */
 return [
-    //'iconPath' => dirname(__FILE__) . '/../assets/icons/',
-    //'themes' => [
-    //    'black' => [
-    //        'icons' => 'light', // Which icon type should be used: light or dark.
-    //        'color' => [20, 20, 20], // Array contains the icon separator border color, as RGB.
-    //    ]
-    //],
-    'challenge' => [
-        'inactivityExpiration' => 120, // In seconds. Set to 0 to disable.
-        'completionExpiration' => 300, // In seconds. Set to 0 to disable.
+    // Specifies the directory path where the icon files are located.
+    'iconPath' => __DIR__ . '/../assets/icons/',
+
+    // Configurations for additional custom themes.
+    'themes' => [
+        'black' => [
+            // Specifies which icon type should be used: light or dark.
+            'iconStyle' => 'light',
+            // Specifies the RGB color of the icon separator.
+            'separatorColor' => [20, 20, 20],
+        ]
     ],
-    'image' => [
-        'icons' => 180,
-        'amount' => [ // min & max can be 5 - 8
-            'min' => 5,
-            'max' => 8
+
+    // Configuration for the challenge generation.
+    'challenge' => [
+        // Specifies the maximum number of unique icons available. By default, IconCaptcha ships with 180 icons.
+        'availableIcons' => 180,
+        // Specifies the minimum and maximum number of icons to use in each challenge image.
+        'iconAmount' => [
+            'min' => 5, // The lowest possible is 5 icons per challenge.
+            'max' => 8 // The highest possible is 8 icons per challenge.
         ],
+        // Specifies whether to randomly rotate the icons in each challenge image.
         'rotate' => true,
+        // Specifies whether to randomly flip the icons in each challenge image, horizontally and/or vertically.
         'flip' => [
             'horizontally' => true,
             'vertically' => true,
         ],
-        'border' => true
+        // Specifies whether to render a border between the icons in each challenge image.
+        'border' => true,
+        // Specifies the generator class to use for creating challenge images. Generators for 'GD' and 'Imagick' extensions are available.
+        'generator' => \IconCaptcha\Challenge\Generators\GD::class,
     ],
-    'attempts' => [
-        'amount' => 3,
-        'timeout' => 60 // seconds.
+
+    // Configuration for challenge validation.
+    'validation' => [
+        // Specifies the duration (in seconds) of inactivity before a challenge is invalidated. Set to 0 to disable.
+        'inactivityExpiration' => 120,
+        // Specifies the duration (in seconds) after a successful challenge before it's invalidated. Set to 0 to disable.
+        'completionExpiration' => 300,
+        // Specifies whether to include the request latency when generating expiration timestamps.
+        'latencyCorrection' => true,
+        // Specifies the options for challenge solving attempts.
+        'attempts' => [
+            // Specifies the maximum number of attempts per challenge before the visitor will receive a timeout.
+            'amount' => 3,
+            // Specifies the time (in seconds) which the visitor has to wait after making too many incorrect attempts.
+            'timeout' => 60,
+        ],
     ],
-    'token' => \IconCaptcha\Token\Token::class, // to disable, replace with 'null'.
-    'session' => \IconCaptcha\Session\Drivers\ServerSession::class,
-    'generator' => \IconCaptcha\Challenge\Generators\GD::class, // a generator for ImageMagick (Imagick::class) is also available.
+
+    // Configuration for the session driver.
     'session' => [
-        'driver' => \IconCaptcha\Session\Drivers\ServerSession::class, // database drivers are available as well. (\Session\Drivers\Database\)
-//        'options' => [
-//            // Connection details are required when using a database session driver.
-//            'connection' => [
-//                //'url' => 'mysql:host=127.0.0.1;port=3306;dbname=db', // you can use a DSN URL if your database requires a more complex connection.
-//                'host' => '127.0.0.1',
-//                'port' => 3306,
-//                'database' => 'db',
-//                'username' => 'root',
-//                'password' => '',
-//                'table' => 'sessions',
-//            ],
-////
-////            // ... or use an existing database connection (must be a PDO object).
-////            'connection' => $connection
-//        ],
-    ]
+        // Specifies the session driver class to use for storing and retrieving challenge data.
+        // Database drivers are available in the \Session\Drivers\Database\ namespace.
+        'driver' => \IconCaptcha\Session\Drivers\ServerSession::class,
+        // Specifies the options passed on to the session driver.
+        'options' => [
+            // Specifies the connection details for database session driver.
+            // Alternatively, you can use an existing PDO object for the 'connection' key.
+            'connection' => [
+                //'url' => 'mysql:host=127.0.0.1;port=3306;dbname=db', // You can use a DSN URL if your database requires a more complex connection.
+                'host' => '127.0.0.1',
+                'port' => 3306,
+                'database' => 'db',
+                'username' => 'root',
+                'password' => '',
+                'table' => 'sessions',
+            ],
+        ],
+    ],
+
+    // Configuration for Cross-Origin Resource Sharing (CORS).
+    'cors' => [
+        // Specifies whether CORS is enabled.
+        'enabled' => false,
+        // Specifies the list of allowed origins for CORS requests.
+        // Wildcards, such as *.example.com, are supported. Use '*' to allow all origins, but be aware of the potential security implications.
+        'origins' => [],
+        // Specifies whether to include credentials (cookies, headers, etc.) in CORS requests.
+        'credentials' => true,
+        // Specifies the maximum age (in seconds) to cache CORS preflight requests.
+        'cache' => 86400,
+    ],
+
+    // Specifies the token class to use for challenge CSRF tokens. Set to null to disable.
+    // The default token class is \IconCaptcha\Token\Token::class.
+    'token' => null,
+
+    // Configuration for hooks.
+    'hooks' => [
+        // Initialization hook, called when the challenge is requested.
+        // Use case: To determine whether to serve a challenge, or complete immediately, e.g. based on IP or previously completed challenges.
+        // Required: The hook must implement the 'InitHookInterface' interface.
+        'init' => null,
+        // Image generation hook, called after the challenge image was generated.
+        // Example use case: Modify the image by applying filters or adding random noise to increase the difficulty.
+        // Required: The hook must implement the 'GenerationHookInterface' interface.
+        'generation' => null,
+        // User image interaction hook, called after the user clicked on an icon.
+        // Example use case: Perform a custom action based on whether the user made a correct or incorrect choice.
+        // Required: The hook must implement the 'SelectionHookInterface' interface.
+        'selection' => null,
+    ],
 ];

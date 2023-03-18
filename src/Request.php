@@ -70,7 +70,7 @@ class Request
 
             // Calculate the request latency. The value will be added to all
             // timeout timestamps, to compensate for latency time loss.
-            $latency = $this->options['challenge']['latencyCorrection'] ? $currentTimestamp - $requestTimestamp : 0;
+            $latency = $this->options['validation']['latencyCorrection'] ? $currentTimestamp - $requestTimestamp : 0;
 
             switch ($payload['action']) {
                 case 'LOAD':

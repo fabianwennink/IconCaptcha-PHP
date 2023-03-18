@@ -61,23 +61,23 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
         $iconLineSize = (int)(self::CAPTCHA_IMAGE_SIZE / $iconCount);
 
         // Options.
-        $rotateEnabled = $this->options['image']['rotate'];
-        $flipHorizontally = $this->options['image']['flip']['horizontally'];
-        $flipVertically = $this->options['image']['flip']['vertically'];
-        $borderEnabled = $this->options['image']['border'];
+        $rotateEnabled = $this->options['challenge']['rotate'];
+        $flipHorizontally = $this->options['challenge']['flip']['horizontally'];
+        $flipVertically = $this->options['challenge']['flip']['vertically'];
+        $borderEnabled = $this->options['challenge']['border'];
 
         // Create the border color, if enabled.
         if ($borderEnabled) {
 
             // Determine border color.
             if (array_key_exists($this->session->mode, $this->options['themes'])
-                && count($this->options['themes'][$this->session->mode]['color']) === 3) {
-                $color = $this->options['themes'][$this->session->mode]['color'];
+                && count($this->options['themes'][$this->session->mode]['separatorColor']) === 3) {
+                $color = $this->options['themes'][$this->session->mode]['separatorColor'];
             } else {
                 $color = self::CAPTCHA_DEFAULT_BORDER_COLOR;
             }
 
-            $borderColor = $this->colorFromRGB($placeholder, $color[0], $color[1], $color[2]);
+            $separatorColor = $this->colorFromRGB($placeholder, $color[0], $color[1], $color[2]);
         }
 
         // Copy the icons onto the placeholder.
@@ -113,7 +113,7 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
 
             // Add the vertical separator lines to the placeholder, if enabled.
             if ($borderEnabled && $i > 0) {
-                $this->drawBorder($placeholder, $borderColor, $iconLineSize * $i, 0, $iconLineSize * $i, 50);
+                $this->drawBorder($placeholder, $separatorColor, $iconLineSize * $i, 0, $iconLineSize * $i, 50);
             }
         }
 

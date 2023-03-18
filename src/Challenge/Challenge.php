@@ -77,9 +77,9 @@ class Challenge
             $this->session->attempts = 0;
         }
 
-        $minIconAmount = $this->options['image']['amount']['min'];
-        $maxIconAmount = $this->options['image']['amount']['max'];
-        $availableIconAmount = $this->options['image']['icons'];
+        $minIconAmount = $this->options['challenge']['iconAmount']['min'];
+        $maxIconAmount = $this->options['challenge']['iconAmount']['max'];
+        $availableIconAmount = $this->options['challenge']['availableIcons'];
 
         // Determine the number of icons to add to the image.
         $iconAmount = $minIconAmount;
@@ -136,8 +136,8 @@ class Challenge
         $this->session->attempts = $attemptsCount;
 
         // If enabled, set the expiration timestamp for the challenge.
-        if ($this->options['challenge']['inactivityExpiration'] > 0) {
-            $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['inactivityExpiration'] * 1000) + $latency;
+        if ($this->options['validation']['inactivityExpiration'] > 0) {
+            $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['validation']['inactivityExpiration'] * 1000) + $latency;
         }
 
         $this->session->save();
@@ -193,8 +193,8 @@ class Challenge
         ++$this->session->attempts;
 
         // If the max amount has been reached, set a timeout (if set).
-        if ($this->session->attempts === $this->options['attempts']['amount'] && $this->options['attempts']['timeout'] > 0) {
-            $this->session->attemptsTimeout = Utils::getTimeInMilliseconds() + ($this->options['attempts']['timeout'] * 1000) + $latency;
+        if ($this->session->attempts === $this->options['validation']['attempts']['amount'] && $this->options['validation']['attempts']['timeout'] > 0) {
+            $this->session->attemptsTimeout = Utils::getTimeInMilliseconds() + ($this->options['validation']['attempts']['timeout'] * 1000) + $latency;
         }
 
         $this->session->save();
@@ -240,11 +240,11 @@ class Challenge
         }
 
         // Format the path to the icon directory.
-        $themeIconColor = $this->options['themes'][$this->session->mode]['icons'];
+        $themeIconColor = $this->options['themes'][$this->session->mode]['iconStyle'];
         $iconPath = $iconsDirectoryPath . DIRECTORY_SEPARATOR . $themeIconColor . DIRECTORY_SEPARATOR;
 
         // Instantiate the challenge image generator.
-        $imageGenerator = new $this->options['generator']($this->session, $this->options);
+        $imageGenerator = new $this->options['challenge']['generator']($this->session, $this->options);
 
         // Generate and render the challenge.
         return $imageGenerator->render(
@@ -262,8 +262,8 @@ class Challenge
         $this->session->requested = true;
 
         // If enabled, set the expiration timestamp for the completed captcha.
-        if ($this->options['challenge']['completionExpiration'] > 0) {
-            $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['challenge']['completionExpiration'] * 1000) + $latency;
+        if ($this->options['validation']['completionExpiration'] > 0) {
+            $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['validation']['completionExpiration'] * 1000) + $latency;
         }
 
         $this->session->save();
