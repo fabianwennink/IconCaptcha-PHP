@@ -482,6 +482,7 @@ class IconCaptcha
             if ($rotateEnabled) {
                 $degree = mt_rand(1, 4);
                 if ($degree !== 4) { // Only if the 'degree' is not the same as what it would already be at.
+                    imagepalettetotruecolor($icon);
                     $icon = imagerotate($icon, $degree * 90, 0);
                 }
             }
