@@ -87,7 +87,7 @@ class IconCaptcha
     public static function options($options)
     {
         // Merge the given options and default options together.
-        self::$options = array_merge(self::$options, $options);
+        self::$options = array_replace_recursive(self::$options, $options);
 
         // Update the icon path string.
         self::$options['iconPath'] = (is_string(self::$options['iconPath'])) ? rtrim(self::$options['iconPath'], '/') : '';
