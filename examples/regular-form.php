@@ -32,9 +32,10 @@
             'form_token' => 'The form token was invalid.'
         ],
         'image' => [
-            'amount' => [ // min & max can be 5 - 8
-                'min' => 5,
-                'max' => 8
+            'availableIcons' => 180, // Number of unique icons available. By default, IconCaptcha ships with 180 icons.
+            'amount' => [
+                'min' => 5, // The lowest possible is 5 icons per challenge.
+                'max' => 8 // The highest possible is 8 icons per challenge.
             ],
             'rotate' => true,
             'flip' => [
