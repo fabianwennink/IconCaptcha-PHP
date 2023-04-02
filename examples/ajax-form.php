@@ -13,11 +13,11 @@
     require('../src/captcha-session.class.php');
     require('../src/captcha.class.php');
 
-    use IconCaptcha\IconCaptcha;
+use IconCaptcha\IconCaptcha;
 
-    // Take a look at the README file to see every available option.
+// Take a look at the README file to see every available option.
     IconCaptcha::options([
-        'iconPath' => dirname(__FILE__) . '/../assets/icons/', // required
+        'iconPath' => __DIR__ . '/../assets/icons/', // required
         //'themes' => [
         //    'black' => [
         //        'icons' => 'light', // Which icon type should be used: light or dark.
