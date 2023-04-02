@@ -26,6 +26,15 @@ class Utils
     }
 
     /**
+     * Checks if a string is in the UUID v4 format.
+     * @param string $string The string to check.
+     */
+    public static function isUUIDv4(string $string): bool
+    {
+        return preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $string) === 1;
+    }
+
+    /**
      * Creates a new instance of a session.
      * @param array $options The captcha options.
      * @param string $widgetId The widget identifier of the captcha.

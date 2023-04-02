@@ -48,13 +48,13 @@ class Validator
         }
 
         // Check if the widget ID is set.
-        if (!isset($request[self::CAPTCHA_FIELD_WIDGET_ID])) {
-            return $this->createFailedResponse('missing-widget-id');
+        if (!isset($request[self::CAPTCHA_FIELD_WIDGET_ID]) || !Utils::isUUIDv4($request[self::CAPTCHA_FIELD_WIDGET_ID])) {
+            return $this->createFailedResponse('missing-or-invalid-widget-id');
         }
 
         // Check if the challenge ID is set.
-        if (!isset($request[self::CAPTCHA_FIELD_CHALLENGE_ID])) {
-            return $this->createFailedResponse('missing-challenge-id');
+        if (!isset($request[self::CAPTCHA_FIELD_CHALLENGE_ID]) || !Utils::isUUIDv4($request[self::CAPTCHA_FIELD_CHALLENGE_ID])) {
+            return $this->createFailedResponse('missing-or-invalid-challenge-id');
         }
 
         // Verify if the captcha token is correct.
