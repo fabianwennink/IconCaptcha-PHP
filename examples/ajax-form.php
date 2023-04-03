@@ -1,7 +1,7 @@
 <?php
     /**
-     * IconCaptcha Plugin: v3.1.1
-     * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
+     * IconCaptcha Plugin: v3.1.2
+     * Copyright © 2023, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
      */
@@ -13,11 +13,11 @@
     require('../src/captcha-session.class.php');
     require('../src/captcha.class.php');
 
-    use IconCaptcha\IconCaptcha;
+use IconCaptcha\IconCaptcha;
 
-    // Take a look at the README file to see every available option.
+// Take a look at the README file to see every available option.
     IconCaptcha::options([
-        'iconPath' => dirname(__FILE__) . '/../assets/icons/', // required
+        'iconPath' => __DIR__ . '/../assets/icons/', // required
         //'themes' => [
         //    'black' => [
         //        'icons' => 'light', // Which icon type should be used: light or dark.
@@ -32,9 +32,10 @@
             'form_token' => 'The form token was invalid.'
         ],
         'image' => [
-            'amount' => [ // min & max can be 5 - 8
-                'min' => 5,
-                'max' => 8
+            'availableIcons' => 180, // Number of unique icons available. By default, IconCaptcha ships with 180 icons.
+            'amount' => [
+                'min' => 5, // The lowest possible is 5 icons per challenge.
+                'max' => 8 // The highest possible is 8 icons per challenge.
             ],
             'rotate' => true,
             'flip' => [
@@ -62,7 +63,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>IconCaptcha v3.1.1 - By Fabian Wennink</title>
+        <title>IconCaptcha v3.1.2 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -89,7 +90,7 @@
             <div class="shields">
                 <div class="shields-row">
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/badge/Version-3.1.1-orange.svg?style=flat-square" alt="Version 3.1.1 Badge" />
+                        <img src="https://img.shields.io/badge/Version-3.1.2-orange.svg?style=flat-square" alt="Version 3.1.2 Badge"/>
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
                         <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * IconCaptcha Plugin: v3.1.1
- * Copyright © 2022, Fabian Wennink (https://www.fabianwennink.nl)
+ * IconCaptcha Plugin: v3.1.2
+ * Copyright © 2023, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
  */
@@ -20,7 +20,6 @@ class IconCaptcha
     const CAPTCHA_FIELD_TOKEN = '_iconcaptcha-token';
     const CAPTCHA_TOKEN_LENGTH = 20;
     const CAPTCHA_IMAGE_SIZE = 320;
-    const CAPTCHA_ICONS_FOLDER_COUNT = 180;
     const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
     const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
     const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
@@ -55,7 +54,8 @@ class IconCaptcha
             'form_token' => 'The form token was invalid.'
         ],
         'image' => [
-            'amount' => [ // min & max can be 5 - 8
+            'availableIcons' => 180,
+            'amount' => [
                 'min' => 5,
                 'max' => 8
             ],
@@ -87,7 +87,7 @@ class IconCaptcha
     public static function options($options)
     {
         // Merge the given options and default options together.
-        self::$options = array_merge(self::$options, $options);
+        self::$options = array_replace_recursive(self::$options, $options);
 
         // Update the icon path string.
         self::$options['iconPath'] = (is_string(self::$options['iconPath'])) ? rtrim(self::$options['iconPath'], '/') : '';
@@ -204,7 +204,7 @@ class IconCaptcha
         while (count($iconIds) < count($totalIconAmount)) {
 
             // Generate a random icon ID. If it is not in use yet, process it.
-            $tempIconId = mt_rand(1, self::CAPTCHA_ICONS_FOLDER_COUNT);
+            $tempIconId = mt_rand(1, self::$options['image']['availableIcons']);
             if (!in_array($tempIconId, $iconIds)) {
                 $iconIds[] = $tempIconId;
 

@@ -1,6 +1,6 @@
 # IconCaptcha - PHP & JavaScript
 
-![Version](https://img.shields.io/badge/Version-3.1.1-orange.svg?style=flat-square) 
+![Version](https://img.shields.io/badge/Version-3.1.2-orange.svg?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
 [![Issues](https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square)](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/issues)
 [![Support](https://img.shields.io/badge/Support-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
