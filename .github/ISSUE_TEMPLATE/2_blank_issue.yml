@@ -1,0 +1,32 @@
+name: Blank Issue
+description: Open a blank issue. Want to report a bug? Use the 'Bug Report' template instead.
+title: "[Issue]: "
+assignees: fabianwennink
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for opening this issue. Please be as clear as possible in describing the problem you are encountering.
+  - type: input
+    id: version-package
+    attributes:
+      label: IconCaptcha version
+      description: Please specify the version of the package that you are using.
+      placeholder: "e.g. 3.1.2 or 'latest'"
+    validations:
+      required: true
+  - type: input
+    id: version-php
+    attributes:
+      label: PHP version
+      description: Please specify the version of PHP you are using.
+      placeholder: e.g. 8.2.0
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe your issue. Include anything that will give more context about the issue you are encountering.
+    validations:
+      required: true
