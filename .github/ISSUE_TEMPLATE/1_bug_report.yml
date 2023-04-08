@@ -1,0 +1,82 @@
+name: Bug Report
+description: Report a bug or unexpected behavior. Please ensure that your issue has not already been reported.
+title: "[Bug]: "
+labels: ["bug"]
+assignees: fabianwennink
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this bug report. Please be as clear as possible when describing your issue, as this will help to identify and resolve the bug as quickly as possible.
+  - type: checkboxes
+    id: requirements
+    attributes:
+      label: Bug report requirements
+      description: "Please confirm that the following requirements have been met before submitting your bug report."
+      options:
+        - label: I have confirmed that this is a bug and not a configuration/user error.
+          required: true
+        - label: I have searched for existing issues and confirmed that my issue has not been reported before.
+          required: true
+  - type: input
+    id: version-package
+    attributes:
+      label: IconCaptcha version
+      description: Please specify the version of the package that you are using.
+      placeholder: "e.g. 3.1.2 or 'latest'"
+    validations:
+      required: true
+  - type: input
+    id: version-php
+    attributes:
+      label: PHP version
+      description: Please specify the version of PHP you are using.
+      placeholder: e.g. 8.2.0
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Browsers affected
+      description: "Please select the browsers you've encountered the problem on."
+      multiple: true
+      options:
+        - Google Chrome
+        - Mozilla Firefox
+        - Opera (GX)
+        - Microsoft Edge
+        - Safari
+        - Brave
+        - Other (specify in "Additional Information")
+    validations:
+      required: true
+  - type: textarea
+    id: expectation
+    attributes:
+      label: Expectation
+      description: Please provide clear steps to reproduce the issue, including any relevant code or configuration.
+      placeholder: When I do [action], I expect [result] to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Actual behaviour
+      description: Describe what the actual result of the action is.
+      placeholder: Instead of [expected result], I get [actual result].
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log information
+      description: If applicable, please provide any relevant logs or stack traces to help diagnose the issue. **Please be sure to remove any sensitive information.**
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: Please include any other information that may be helpful in resolving this issue.
+    validations:
+      required: false
