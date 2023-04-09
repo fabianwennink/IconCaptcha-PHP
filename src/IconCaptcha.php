@@ -20,13 +20,14 @@ class IconCaptcha
 
     public function __construct(array $options)
     {
-        $this->options($options);
-        $this->validator = new Validator($options);
+        $this->validator = new Validator(
+            $this->options($options)
+        );
     }
 
-    public function options(array $options): void
+    public function options(array $options): array
     {
-        $this->options = Options::prepare($options);
+        return $this->options = Options::prepare($options);
     }
 
     /**
