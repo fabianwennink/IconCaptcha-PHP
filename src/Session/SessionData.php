@@ -132,7 +132,6 @@ class SessionData
      */
     private function getArrayValue(array $arr, string $key, int &$missing)
     {
-
         // Using both 'isset' and 'array_key_exists', as values might be NULL.
         if (isset($arr[$key]) || array_key_exists($key, $arr)) {
             return $arr[$key];

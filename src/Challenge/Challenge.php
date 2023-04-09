@@ -144,7 +144,7 @@ class Challenge
 
         // Return the captcha details.
         return Payload::encode([
-            'id' => $this->session->getChallengeId(),
+            'identifier' => $this->session->getChallengeId(),
             'challenge' => $this->render(),
             'expiredAt' => $this->session->expiresAt,
         ]);
@@ -206,7 +206,7 @@ class Challenge
         );
 
         return Payload::encode([
-            'id' => $this->session->getChallengeId(),
+            'identifier' => $this->session->getChallengeId(),
             'completed' => false,
         ]);
     }
@@ -276,7 +276,7 @@ class Challenge
     private function getCompletionPayload(): string
     {
         return Payload::encode([
-            'id' => $this->session->getChallengeId(),
+            'identifier' => $this->session->getChallengeId(),
             'completed' => true,
             'expiredAt' => $this->session->expiresAt,
         ]);
