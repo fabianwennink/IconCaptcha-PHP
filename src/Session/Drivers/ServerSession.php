@@ -11,9 +11,9 @@ class ServerSession extends Session
 
     private const SESSION_CHALLENGES = 'challenges';
 
-    public function __construct(array $options, string $widgetId, string $challengeId = null)
+    public function __construct(array $options, string $ipAddress, string $widgetId, string $challengeId = null)
     {
-        parent::__construct($options, $widgetId, $challengeId);
+        parent::__construct($options, $ipAddress, $widgetId, $challengeId);
 
         $this->startSession();
         $this->purgeExpired();

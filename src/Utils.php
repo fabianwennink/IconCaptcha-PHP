@@ -47,6 +47,7 @@ class Utils
     {
         return new $options['session']['driver'](
             $options['session']['options'] ?? [],
+            $options['validation']['ipAddress'](),
             $widgetId, $challengeId
         );
     }

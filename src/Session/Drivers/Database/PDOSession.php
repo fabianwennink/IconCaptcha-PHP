@@ -27,9 +27,9 @@ abstract class PDOSession extends Session
 
     private PDO $connection;
 
-    public function __construct(array $options, string $widgetId, string $challengeId = null)
+    public function __construct(array $options, string $ipAddress, string $widgetId, string $challengeId = null)
     {
-        parent::__construct($options, $widgetId, $challengeId);
+        parent::__construct($options, $ipAddress, $widgetId, $challengeId);
 
         $this->connection = $this->createConnection();
 
@@ -96,6 +96,7 @@ abstract class PDOSession extends Session
                 $this->challengeId,
                 $this->data->toJson(),
                 $this->getDbFormattedExpirationTime(),
+                $this->ipAddress,
             ]);
         }
     }

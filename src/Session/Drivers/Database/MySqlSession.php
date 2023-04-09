@@ -40,7 +40,7 @@ class MySqlSession extends PDOSession
      */
     protected function createSessionQuery(): string
     {
-        return "INSERT INTO $this->table (`widget_id`, `challenge_id`, `data`, `expires_at`) VALUES (?, ?, ?, ?);";
+        return "INSERT INTO $this->table (`widget_id`, `challenge_id`, `data`, `expires_at`, `ip_address`) VALUES (?, ?, ?, ?, ?);";
     }
 
     /**

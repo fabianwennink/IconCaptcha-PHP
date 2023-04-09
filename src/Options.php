@@ -45,6 +45,7 @@ class Options
                 'amount' => 5,
                 'timeout' => 30,
             ],
+            'ipAddress' => null,
         ],
         'cors' => [
             'enabled' => false,
@@ -74,6 +75,13 @@ class Options
     {
         // Merge the given options and default options together.
         $mergedOptions = array_replace_recursive(self::DEFAULT_OPTIONS, $options);
+
+        // TODO validate if all classes and closures/invokables are callable with `is_callable`.
+
+        // If an alternative function to get the visitor's IP address is not defined, use the default 'REMOTE_ADDR' variable.
+        if(!isset($options['validation']['ipAddress'])) {
+            $mergedOptions['validation']['ipAddress'] = static fn() => $_SERVER['REMOTE_ADDR'];
+        }
 
         // Trim the custom icon folder path of slashes. If no custom path is set, use the default path.
         // When using Composer, the 'iconPath' option always points to the default path in the vendor folder.

@@ -33,6 +33,11 @@ abstract class Session implements SessionInterface
     protected SessionData $data;
 
     /**
+     * @var string The IP address of the visitor.
+     */
+    protected string $ipAddress;
+
+    /**
      * @var bool Whether the session data was loaded/created or not.
      */
     protected bool $dataLoaded = false;
@@ -45,12 +50,14 @@ abstract class Session implements SessionInterface
      * the session identifiers. Otherwise, a new session will be created.
      *
      * @param array $options The captcha session options.
+     * @param string $ipAddress The IP address of the visitor.
      * @param string $widgetId The widget unique identifier.
      * @param string|null $challengeId The challenge unique identifier.
      */
-    public function __construct(array $options, string $widgetId, string $challengeId = null)
+    public function __construct(array $options, string $ipAddress, string $widgetId, string $challengeId = null)
     {
         $this->options = $options;
+        $this->ipAddress = $ipAddress;
         $this->widgetId = $widgetId;
         $this->challengeId = $challengeId;
         $this->data = new SessionData();
