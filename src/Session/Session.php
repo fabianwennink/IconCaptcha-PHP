@@ -30,7 +30,7 @@ abstract class Session implements SessionInterface
     /**
      * @var SessionData The session data.
      */
-    protected SessionData $data;
+    protected SessionData $puzzle;
 
     /**
      * @var string The IP address of the visitor.
@@ -60,7 +60,7 @@ abstract class Session implements SessionInterface
         $this->ipAddress = $ipAddress;
         $this->widgetId = $widgetId;
         $this->challengeId = $challengeId;
-        $this->data = new SessionData();
+        $this->puzzle = new SessionData();
     }
 
     /**
@@ -76,13 +76,13 @@ abstract class Session implements SessionInterface
      */
     public function clear(): void
     {
-        $this->data->icons = [];
-        $this->data->correctId = 0;
-        $this->data->requested = false;
-        $this->data->completed = false;
-        $this->data->attempts = 0;
-        $this->data->attemptsTimeout = 0;
-        $this->data->expiresAt = 0;
+        $this->puzzle->icons = [];
+        $this->puzzle->correctId = 0;
+        $this->puzzle->requested = false;
+        $this->puzzle->completed = false;
+        $this->puzzle->attempts = 0;
+        $this->puzzle->attemptsTimeout = 0;
+        $this->puzzle->expiresAt = 0;
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class Session implements SessionInterface
      */
     public function isExpired(): bool
     {
-        return $this->data->expiresAt > 0 && $this->data->expiresAt < Utils::getTimeInMilliseconds();
+        return $this->puzzle->expiresAt > 0 && $this->puzzle->expiresAt < Utils::getTimeInMilliseconds();
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class Session implements SessionInterface
      */
     public function __get(string $key)
     {
-        return $this->data->{$key} ?? null;
+        return $this->puzzle->{$key} ?? null;
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class Session implements SessionInterface
      */
     public function __set(string $key, $value): void
     {
-        $this->data->{$key} = $value;
+        $this->puzzle->{$key} = $value;
     }
 
     /**

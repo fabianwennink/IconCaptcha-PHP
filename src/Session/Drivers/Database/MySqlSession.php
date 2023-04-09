@@ -24,7 +24,7 @@ class MySqlSession extends PDOSession
      */
     protected function loadSessionQuery(): string
     {
-        return "SELECT `data`, `expires_at` FROM $this->table WHERE `widget_id` = ? AND `challenge_id` = ? LIMIT 1";
+        return "SELECT `puzzle`, `expires_at` FROM $this->table WHERE `widget_id` = ? AND `challenge_id` = ? LIMIT 1";
     }
 
     /**
@@ -32,7 +32,7 @@ class MySqlSession extends PDOSession
      */
     protected function saveSessionQuery(): string
     {
-        return "UPDATE $this->table SET `data` = ?, `expires_at` = ? WHERE `widget_id` = ? AND `challenge_id` = ?;";
+        return "UPDATE $this->table SET `puzzle` = ?, `expires_at` = ? WHERE `widget_id` = ? AND `challenge_id` = ?;";
     }
 
     /**
@@ -40,7 +40,7 @@ class MySqlSession extends PDOSession
      */
     protected function createSessionQuery(): string
     {
-        return "INSERT INTO $this->table (`widget_id`, `challenge_id`, `data`, `expires_at`, `ip_address`) VALUES (?, ?, ?, ?, ?);";
+        return "INSERT INTO $this->table (`widget_id`, `challenge_id`, `puzzle`, `expires_at`, `ip_address`) VALUES (?, ?, ?, ?, ?);";
     }
 
     /**

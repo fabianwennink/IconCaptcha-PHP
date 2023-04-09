@@ -78,7 +78,7 @@ return [
                 'database' => 'db',
                 'username' => 'root',
                 'password' => '',
-                'table' => 'sessions',
+                'table' => 'iconcaptcha_challenges',
             ],
         ],
     ],

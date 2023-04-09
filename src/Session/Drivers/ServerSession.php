@@ -26,7 +26,7 @@ class ServerSession extends Session
     protected function load(): void
     {
         if ($this->exists($this->challengeId ?? '', $this->widgetId)) {
-            $this->data->fromArray($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES]["$this->widgetId:$this->challengeId"]);
+            $this->puzzle->fromArray($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES]["$this->widgetId:$this->challengeId"]);
         } else {
             $this->challengeId = $this->challengeId ?? $this->generateUniqueId();
         }
@@ -40,7 +40,7 @@ class ServerSession extends Session
     public function save(): void
     {
         // Write the data to the session.
-        $_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES]["$this->widgetId:$this->challengeId"] = $this->data->toArray();
+        $_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES]["$this->widgetId:$this->challengeId"] = $this->puzzle->toArray();
     }
 
     /**

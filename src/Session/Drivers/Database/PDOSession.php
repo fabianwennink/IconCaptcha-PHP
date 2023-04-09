@@ -18,7 +18,7 @@ abstract class PDOSession extends Session
     /**
      * @var string The default table name for the session data.
      */
-    protected string $table = 'sessions';
+    protected string $table = 'iconcaptcha_challenges';
 
     /**
      * @var bool Whether the current session data was saved to the database before.
@@ -60,7 +60,7 @@ abstract class PDOSession extends Session
 
             $record = $statement->fetchObject();
 
-            $this->data->fromJson($record->data);
+            $this->puzzle->fromJson($record->puzzle);
             $this->existingSession = true;
         } else {
             $this->challengeId = $this->challengeId ?? $this->generateUniqueId();
@@ -81,7 +81,7 @@ abstract class PDOSession extends Session
             );
 
             $statement->execute([
-                $this->data->toJson(),
+                $this->puzzle->toJson(),
                 $this->getDbFormattedExpirationTime(),
                 $this->widgetId,
                 $this->challengeId,
@@ -94,7 +94,7 @@ abstract class PDOSession extends Session
             $this->existingSession = $statement->execute([
                 $this->widgetId,
                 $this->challengeId,
-                $this->data->toJson(),
+                $this->puzzle->toJson(),
                 $this->getDbFormattedExpirationTime(),
                 $this->ipAddress,
             ]);
