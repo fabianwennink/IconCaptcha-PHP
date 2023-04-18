@@ -4,6 +4,7 @@ namespace IconCaptcha;
 
 use Exception;
 use IconCaptcha\Session\Session;
+use IconCaptcha\Session\SessionFactory;
 
 class Utils
 {
@@ -39,16 +40,20 @@ class Utils
 
     /**
      * Creates a new instance of a session.
+     * @param mixed $storage The storage container.
      * @param array $options The captcha options.
      * @param string $widgetId The widget identifier of the captcha.
      * @param string|null $challengeId The challenge identifier of the captcha.
      */
-    public static function createSession(array $options, string $widgetId, string $challengeId = null): Session
+    public static function createSession($storage, array $options, string $widgetId, string $challengeId = null): Session
     {
-        return new $options['session']['driver'](
+        return SessionFactory::create(
+            $storage,
+            $options['session']['driver'],
             $options['session']['options'] ?? [],
             $options['validation']['ipAddress'](),
-            $widgetId, $challengeId
+            $widgetId,
+            $challengeId
         );
     }
 }

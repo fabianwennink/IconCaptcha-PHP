@@ -55,7 +55,7 @@ class Options
         ],
         'token' => Token::class,
         'session' => [
-            'driver' => ServerSession::class,
+            'driver' => 'session',
             'options' => [],
         ],
         'hooks' => [

@@ -17,8 +17,11 @@ class Validator
 
     private array $options;
 
-    public function __construct($options)
+    private $storage;
+
+    public function __construct($storage, $options)
     {
+        $this->storage = $storage;
         $this->options = $options;
     }
 
@@ -68,7 +71,7 @@ class Validator
         $widgetId = $request[self::CAPTCHA_FIELD_WIDGET_ID];
 
         // Initialize the session.
-        $session = Utils::createSession($this->options, $widgetId, $challengeId);
+        $session = Utils::createSession($this->storage, $this->options, $widgetId, $challengeId);
 
         // Ensure the session is valid. If the original session failed to load, the $session variable
         // will contain a new session. Checking the 'requested' status should tell if this is the case.
@@ -102,7 +105,7 @@ class Validator
     public function invalidate(string $widgetId, string $challengeId): void
     {
         // Unset the previous session data
-        $session = Utils::createSession($this->options, $widgetId, $challengeId);
+        $session = Utils::createSession($this->storage, $this->options, $widgetId, $challengeId);
         $session->destroy();
     }
 

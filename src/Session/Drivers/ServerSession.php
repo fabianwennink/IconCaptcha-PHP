@@ -3,19 +3,24 @@
 namespace IconCaptcha\Session\Drivers;
 
 use IconCaptcha\Session\Session;
+use IconCaptcha\Storage\Session\SessionStorage;
 use IconCaptcha\Utils;
 
 class ServerSession extends Session
 {
-    private const SESSION_NAME = 'iconcaptcha';
+    /**
+     * @var string The key used to store the challenges at in the session.
+     */
+    private string $sessionKey = 'challenges';
 
-    private const SESSION_CHALLENGES = 'challenges';
+    private SessionStorage $storage;
 
-    public function __construct(array $options, string $ipAddress, string $widgetId, string $challengeId = null)
+    public function __construct(SessionStorage $storage, array $options, string $ipAddress, string $widgetId, string $challengeId = null)
     {
         parent::__construct($options, $ipAddress, $widgetId, $challengeId);
 
-        $this->startSession();
+        $this->storage = $storage;
+
         $this->purgeExpired();
         $this->load();
     }
@@ -26,7 +31,9 @@ class ServerSession extends Session
     protected function load(): void
     {
         if ($this->exists($this->challengeId ?? '', $this->widgetId)) {
-            $this->puzzle->fromArray($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES]["$this->widgetId:$this->challengeId"]);
+            $this->puzzle->fromArray(
+                $this->storage->read("$this->sessionKey.$this->widgetId:$this->challengeId")
+            );
         } else {
             $this->challengeId = $this->challengeId ?? $this->generateUniqueId();
         }
@@ -40,7 +47,7 @@ class ServerSession extends Session
     public function save(): void
     {
         // Write the data to the session.
-        $_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES]["$this->widgetId:$this->challengeId"] = $this->puzzle->toArray();
+        $this->storage->write("$this->sessionKey.$this->widgetId:$this->challengeId", $this->puzzle->toArray());
     }
 
     /**
@@ -48,7 +55,7 @@ class ServerSession extends Session
      */
     public function destroy(): void
     {
-        unset($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES]["$this->widgetId:$this->challengeId"]);
+        $this->storage->remove("$this->sessionKey.$this->widgetId:$this->challengeId");
     }
 
     /**
@@ -57,14 +64,14 @@ class ServerSession extends Session
     protected function purgeExpired(): void
     {
         // If the session is not set yet, do nothing.
-        if (!isset($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES])) {
+        if (!$this->storage->exists($this->sessionKey)) {
             return;
         }
 
         // Check all existing sessions, deleting the ones which are expired.
-        foreach ($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES] as $id => $session) {
+        foreach ($this->storage->read($this->sessionKey) as $id => $session) {
             if ($session['expiresAt'] > 0 && $session['expiresAt'] < Utils::getTimeInMilliseconds()) {
-                unset($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES][$id]);
+                $this->storage->remove("$this->sessionKey.$id");
             }
         }
     }
@@ -75,17 +82,6 @@ class ServerSession extends Session
     public function exists(string $challengeId, string $widgetId): bool
     {
         return !empty($challengeId) && !empty($widgetId)
-            && isset($_SESSION[self::SESSION_NAME][self::SESSION_CHALLENGES]["$widgetId:$challengeId"]);
-    }
-
-    /**
-     * Attempts to start a session, if none has been started yet.
-     * @return void
-     */
-    private function startSession(): void
-    {
-        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
-            session_start();
-        }
+            && $this->storage->exists("$this->sessionKey.$widgetId:$challengeId");
     }
 }

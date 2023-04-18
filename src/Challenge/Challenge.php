@@ -21,14 +21,17 @@ class Challenge
 
     private array $options;
 
-    public function __construct($options)
+    private $storage;
+
+    public function __construct($storage, $options)
     {
+        $this->storage = $storage;
         $this->options = $options;
     }
 
     public function initialize(string $widgetId, string $challengeId = null): Challenge
     {
-        $this->session = Utils::createSession($this->options, $widgetId, $challengeId);
+        $this->session = Utils::createSession($this->storage, $this->options, $widgetId, $challengeId);
         return $this;
     }
 

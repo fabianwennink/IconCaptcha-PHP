@@ -64,9 +64,9 @@ return [
 
     // Configuration for the session driver.
     'session' => [
-        // Specifies the session driver class to use for storing and retrieving challenge data.
-        // Database drivers are available in the \Session\Drivers\Database\ namespace.
-        'driver' => \IconCaptcha\Session\Drivers\ServerSession::class,
+        // Specifies the session driver to use for storing and retrieving challenge data.
+        // Default available drivers: 'session', 'mysql', 'sqlsrv', 'pgsql' and 'sqlite'.
+        'driver' => 'session',
         // Specifies the options passed on to the session driver.
         'options' => [
             // Specifies the connection details for database session driver.

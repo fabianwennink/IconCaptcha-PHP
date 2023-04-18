@@ -5,6 +5,7 @@ namespace IconCaptcha;
 use IconCaptcha\Challenge\Challenge;
 use IconCaptcha\Challenge\ValidationResult;
 use IconCaptcha\Challenge\Validator;
+use IconCaptcha\Storage\StorageFactory;
 use IconCaptcha\Token\Token;
 
 class IconCaptcha
@@ -18,11 +19,15 @@ class IconCaptcha
 
     private Request $request;
 
+    private $storage;
+
     public function __construct(array $options)
     {
-        $this->validator = new Validator(
-            $this->options($options)
-        );
+        $this->options = $this->options($options);
+
+        // TODO The storage driver should not be in 'session.driver' option, but in a separate option.
+        $this->storage = StorageFactory::create($this->options['session'])->connect();
+        $this->validator = new Validator($this->storage, $this->options);
     }
 
     public function options(array $options): array
@@ -38,7 +43,7 @@ class IconCaptcha
         if (!isset($this->request)) {
             $this->request = new Request(
                 $this->options,
-                new Challenge($this->options),
+                new Challenge($this->storage, $this->options),
                 $this->validator
             );
         }
