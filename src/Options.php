@@ -3,7 +3,6 @@
 namespace IconCaptcha;
 
 use IconCaptcha\Challenge\Generators\GD;
-use IconCaptcha\Session\Drivers\ServerSession;
 use IconCaptcha\Token\Token;
 
 class Options
@@ -13,6 +12,7 @@ class Options
      */
     private const DEFAULT_OPTIONS = [
         'iconPath' => null,
+        'ipAddress' => null,
         'themes' => [
             'light' => [
                 'iconStyle' => 'light',
@@ -45,7 +45,6 @@ class Options
                 'amount' => 5,
                 'timeout' => 30,
             ],
-            'ipAddress' => null,
         ],
         'cors' => [
             'enabled' => false,
@@ -79,8 +78,8 @@ class Options
         // TODO validate if all classes and closures/invokables are callable with `is_callable`.
 
         // If an alternative function to get the visitor's IP address is not defined, use the default 'REMOTE_ADDR' variable.
-        if(!isset($options['validation']['ipAddress'])) {
-            $mergedOptions['validation']['ipAddress'] = static fn() => $_SERVER['REMOTE_ADDR'];
+        if(!isset($options['ipAddress'])) {
+            $mergedOptions['ipAddress'] = static fn() => $_SERVER['REMOTE_ADDR'];
         }
 
         // Trim the custom icon folder path of slashes. If no custom path is set, use the default path.

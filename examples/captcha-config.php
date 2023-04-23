@@ -13,6 +13,10 @@ return [
     // Specifies the directory path where the icon files are located.
     'iconPath' => __DIR__ . '/../assets/icons/',
 
+    // Specifies a function that must return the IP address of the visitor.
+    // Using Cloudflare? Ensure to return the visitor's original IP (HTTP_CF_CONNECTING_IP) and not the proxy IP.
+    'ipAddress' => static fn() => $_SERVER['REMOTE_ADDR'],
+
     // Configurations for additional custom themes.
     'themes' => [
         'black' => [

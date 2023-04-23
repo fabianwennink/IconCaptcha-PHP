@@ -51,7 +51,7 @@ class Utils
             $storage,
             $options['session']['driver'],
             $options['session']['options'] ?? [],
-            $options['validation']['ipAddress'](),
+            $options['ipAddress'](),
             $widgetId,
             $challengeId
         );
