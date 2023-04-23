@@ -44,5 +44,10 @@
             "name": "fabianwennink/IconCaptcha-Plugin-Front-End",
             "url": "https://github.com/fabianwennink/IconCaptcha-Plugin-Front-End"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/thanks": true
+        }
     }
 }
