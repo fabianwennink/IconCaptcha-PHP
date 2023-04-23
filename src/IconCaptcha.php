@@ -11,6 +11,11 @@ use IconCaptcha\Token\Token;
 class IconCaptcha
 {
     /**
+     * The semantic version number of IconCaptcha, as an integer.
+     */
+    public const VERSION = 400;
+
+    /**
      * @var mixed Default values for all the server-side options.
      */
     private array $options;
