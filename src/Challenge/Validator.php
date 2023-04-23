@@ -87,26 +87,13 @@ class Validator
         // Check if the captcha was completed.
         if ($session->completed === true) {
 
-            // Invalidate the captcha to prevent resubmission of a form on the same captcha.
-            $this->invalidate($widgetId, $challengeId);
+            // Invalidate the captcha to prevent resubmission.
+            $session->destroy();
+
             return $this->createSuccessResponse();
         }
 
         return $this->createFailedResponse('unsolved-challenge');
-    }
-
-    /**
-     * Invalidates the captcha session linked to the given captcha identifier.
-     * The data stored inside the session will be destroyed, as the session will be unset.
-     *
-     * @param string $widgetId The widget identifier.
-     * @param string $challengeId The captcha challenge identifier.
-     */
-    public function invalidate(string $widgetId, string $challengeId): void
-    {
-        // Unset the previous session data
-        $session = Utils::createSession($this->storage, $this->options, $widgetId, $challengeId);
-        $session->destroy();
     }
 
     /**

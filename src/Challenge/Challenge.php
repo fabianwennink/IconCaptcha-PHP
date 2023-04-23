@@ -174,10 +174,10 @@ class Challenge
         // Get the clicked position.
         $clickedPosition = $this->determineClickedIcon($x, $y, $width, count($this->session->icons));
 
-        // Check if the selection is set and matches the position from the session.
+        // Check if the selection matches the position from the session.
         if ($this->session->icons[$clickedPosition] === $this->session->correctId) {
 
-            // Correct icon was clicked, mark as 'completed'.
+            // Mark the challenge as completed.
             $this->markChallengeCompleted($latency);
 
             // Call the 'correct selection' hook, if provided.
