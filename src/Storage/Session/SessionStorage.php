@@ -53,8 +53,9 @@ class SessionStorage
     public function remove(string $key): void
     {
         $segments = explode('.', $key);
+        $lastSegment = array_pop($segments);
         $data = &$this->getDataBySegments($segments);
-        unset($data);
+        unset($data[$lastSegment]);
     }
 
     /**
