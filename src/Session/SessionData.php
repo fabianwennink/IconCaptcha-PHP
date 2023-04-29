@@ -33,16 +33,6 @@ class SessionData
     public bool $completed = false;
 
     /**
-     * @var int The number of times an incorrect answer was given.
-     */
-    public int $attempts = 0;
-
-    /**
-     * @var int The (unix) timestamp, at which the timeout for entering too many incorrect guesses expires.
-     */
-    public int $attemptsTimeout = 0;
-
-    /**
      * @var int The (unix) timestamp, after which the captcha's session should be considered expired.
      */
     public int $expiresAt = 0;
@@ -58,8 +48,6 @@ class SessionData
             'mode' => $this->mode,
             'requested' => $this->requested,
             'completed' => $this->completed,
-            'attempts' => $this->attempts,
-            'attemptsTimeout' => $this->attemptsTimeout,
             'expiresAt' => $this->expiresAt,
         ];
     }
@@ -77,8 +65,6 @@ class SessionData
         $this->mode = $this->getArrayValue($data, 'mode', $missing);
         $this->requested = $this->getArrayValue($data, 'requested', $missing);
         $this->completed = $this->getArrayValue($data, 'completed', $missing);
-        $this->attempts = $this->getArrayValue($data, 'attempts', $missing);
-        $this->attemptsTimeout = $this->getArrayValue($data, 'attemptsTimeout', $missing);
         $this->expiresAt = $this->getArrayValue($data, 'expiresAt', $missing);
 
         // If any of the keys were missing, throw an exception.

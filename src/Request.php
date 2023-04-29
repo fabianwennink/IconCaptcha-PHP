@@ -56,7 +56,7 @@ class Request
             }
 
             // Note: JS timestamps are in milliseconds.
-            $currentTimestamp = Utils::getTimeInMilliseconds();
+            $currentTimestamp = Utils::getCurrentTimeInMilliseconds();
             $requestTimestamp = $payload['timestamp'];
             $scriptTimestamp = $payload['initTimestamp'];
 

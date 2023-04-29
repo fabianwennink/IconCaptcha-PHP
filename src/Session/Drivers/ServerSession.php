@@ -70,7 +70,7 @@ class ServerSession extends Session
 
         // Check all existing sessions, deleting the ones which are expired.
         foreach ($this->storage->read($this->sessionKey) as $id => $session) {
-            if ($session['expiresAt'] > 0 && $session['expiresAt'] < Utils::getTimeInMilliseconds()) {
+            if ($session['expiresAt'] > 0 && $session['expiresAt'] < Utils::getCurrentTimeInMilliseconds()) {
                 $this->storage->remove("$this->sessionKey.$id");
             }
         }

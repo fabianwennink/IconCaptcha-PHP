@@ -71,7 +71,11 @@ class Validator
         $widgetId = $request[self::CAPTCHA_FIELD_WIDGET_ID];
 
         // Initialize the session.
-        $session = Utils::createSession($this->storage, $this->options, $widgetId, $challengeId);
+        $session = Utils::createSession(
+            $this->storage, $this->options['session'],
+            Utils::getIpAddress($this->options['ipAddress']),
+            $widgetId, $challengeId
+        );
 
         // Ensure the session is valid. If the original session failed to load, the $session variable
         // will contain a new session. Checking the 'requested' status should tell if this is the case.

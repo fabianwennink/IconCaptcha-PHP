@@ -2,6 +2,8 @@
 
 namespace IconCaptcha\Challenge;
 
+use IconCaptcha\Attempts\AttemptsFactory;
+use IconCaptcha\Attempts\AttemptsInterface;
 use IconCaptcha\Challenge\Hooks\Hook;
 use IconCaptcha\Challenge\Hooks\InitHookInterface;
 use IconCaptcha\Challenge\Hooks\SelectionHookInterface;
@@ -17,11 +19,13 @@ class Challenge
 
     private const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
 
-    private Session $session;
-
     private array $options;
 
     private $storage;
+
+    private Session $session;
+
+    private AttemptsInterface $attempts;
 
     public function __construct($storage, $options)
     {
@@ -31,7 +35,19 @@ class Challenge
 
     public function initialize(string $widgetId, string $challengeId = null): Challenge
     {
-        $this->session = Utils::createSession($this->storage, $this->options, $widgetId, $challengeId);
+        // Get the visitor's current IP address.
+        $ipAddress = Utils::getIpAddress($this->options['ipAddress']);
+
+        // Create a new session instance.
+        $this->session = Utils::createSession($this->storage, $this->options['session'], $ipAddress, $widgetId, $challengeId);
+
+        // Create a new attempts/timeout manager instance.
+        $this->attempts = AttemptsFactory::create($this->storage,
+            $this->options['validation']['attempts']['driver'],
+            $this->options['validation']['attempts'],
+            $ipAddress
+        );
+
         return $this;
     }
 
@@ -65,19 +81,11 @@ class Challenge
 
         // Check if the max attempts limit has been reached and a timeout is active.
         // If reached, return an error and the remaining time.
-        // TODO timeout check should be extracted to class method.
-        if ($this->session->attemptsTimeout > 0) {
-            $currentTimestamp = Utils::getTimeInMilliseconds();
-
-            if ($currentTimestamp <= $this->session->attemptsTimeout) {
-                return Payload::encode([
-                    'error' => 'too-many-attempts',
-                    'data' => ($this->session->attemptsTimeout - $currentTimestamp) + $latency // remaining time.
-                ]);
-            }
-
-            $this->session->attemptsTimeout = 0;
-            $this->session->attempts = 0;
+        if ($this->attempts->isEnabled() && $this->attempts->isTimeoutActive()) {
+            return Payload::encode([
+                'error' => 'too-many-attempts',
+                'data' => $this->attempts->getTimeoutRemainingTime() + $latency
+            ]);
         }
 
         $minIconAmount = $this->options['challenge']['iconAmount']['min'];
@@ -128,19 +136,15 @@ class Challenge
             }
         }
 
-        // Get the last attempts count to restore, after clearing the session.
-        $attemptsCount = $this->session->attempts;
-
         // Save the challenge data to the session.
         $this->session->clear();
         $this->session->mode = $theme;
         $this->session->icons = $iconPositions;
         $this->session->correctId = $correctIconId;
-        $this->session->attempts = $attemptsCount;
 
         // If enabled, set the expiration timestamp for the challenge.
         if ($this->options['validation']['inactivityExpiration'] > 0) {
-            $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['validation']['inactivityExpiration'] * 1000) + $latency;
+            $this->session->expiresAt = Utils::getCurrentTimeInMilliseconds() + ($this->options['validation']['inactivityExpiration'] * 1000) + $latency;
         }
 
         $this->session->save();
@@ -180,6 +184,11 @@ class Challenge
             // Mark the challenge as completed.
             $this->markChallengeCompleted($latency);
 
+            // Clear the attempts history of the visitor.
+            if($this->attempts->isEnabled()) {
+                $this->attempts->clearAttempts();
+            }
+
             // Call the 'correct selection' hook, if provided.
             Hook::callVoid(
                 'selection', SelectionHookInterface::class, 'correct',
@@ -193,11 +202,8 @@ class Challenge
         $this->session->completed = false;
 
         // Increase the attempts counter.
-        ++$this->session->attempts;
-
-        // If the max amount has been reached, set a timeout (if set).
-        if ($this->session->attempts === $this->options['validation']['attempts']['amount'] && $this->options['validation']['attempts']['timeout'] > 0) {
-            $this->session->attemptsTimeout = Utils::getTimeInMilliseconds() + ($this->options['validation']['attempts']['timeout'] * 1000) + $latency;
+        if($this->attempts->isEnabled()) {
+            $this->attempts->increaseAttempts(Utils::getCurrentTimeInMilliseconds() + $latency);
         }
 
         $this->session->save();
@@ -266,7 +272,7 @@ class Challenge
 
         // If enabled, set the expiration timestamp for the completed captcha.
         if ($this->options['validation']['completionExpiration'] > 0) {
-            $this->session->expiresAt = Utils::getTimeInMilliseconds() + ($this->options['validation']['completionExpiration'] * 1000) + $latency;
+            $this->session->expiresAt = Utils::getCurrentTimeInMilliseconds() + ($this->options['validation']['completionExpiration'] * 1000) + $latency;
         }
 
         $this->session->save();

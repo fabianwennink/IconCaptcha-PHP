@@ -11,8 +11,6 @@ use IconCaptcha\Utils;
  * @property string mode The name of the theme used by the captcha instance.
  * @property bool requested If the captcha image has been requested yet.
  * @property bool completed If the captcha was completed (correct icon selected) or not.
- * @property int attempts The number of times an incorrect answer was given.
- * @property int attemptsTimeout The (unix) timestamp, at which the timeout for entering too many incorrect guesses expires.
  * @property int expiresAt The (unix) timestamp, after which the captcha's session should be considered expired.
  */
 abstract class Session implements SessionInterface
@@ -80,8 +78,6 @@ abstract class Session implements SessionInterface
         $this->puzzle->correctId = 0;
         $this->puzzle->requested = false;
         $this->puzzle->completed = false;
-        $this->puzzle->attempts = 0;
-        $this->puzzle->attemptsTimeout = 0;
         $this->puzzle->expiresAt = 0;
     }
 
@@ -90,7 +86,7 @@ abstract class Session implements SessionInterface
      */
     public function isExpired(): bool
     {
-        return $this->puzzle->expiresAt > 0 && $this->puzzle->expiresAt < Utils::getTimeInMilliseconds();
+        return $this->puzzle->expiresAt > 0 && $this->puzzle->expiresAt < Utils::getCurrentTimeInMilliseconds();
     }
 
     /**

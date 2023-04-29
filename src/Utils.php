@@ -2,7 +2,9 @@
 
 namespace IconCaptcha;
 
+use Closure;
 use Exception;
+use http\Exception\InvalidArgumentException;
 use IconCaptcha\Session\Session;
 use IconCaptcha\Session\SessionFactory;
 
@@ -11,7 +13,7 @@ class Utils
     /**
      * Returns the current Unix timestamp in milliseconds.
      */
-    public static function getTimeInMilliseconds(): int
+    public static function getCurrentTimeInMilliseconds(): int
     {
         return round(microtime(true) * 1000);
     }
@@ -39,19 +41,38 @@ class Utils
     }
 
     /**
+     * Returns the IP address of the visitor.
+     * @param string|Closure $option A function which returns the IP address, or an already known IP address.
+     * @return string
+     */
+    public static function getIpAddress($option): ?string
+    {
+        if(is_string($option)) {
+            return $option;
+        }
+
+        if(is_callable($option)) {
+            return $option();
+        }
+
+        throw new InvalidArgumentException("The 'ipAddress' options is invalid.");
+    }
+
+    /**
      * Creates a new instance of a session.
      * @param mixed $storage The storage container.
-     * @param array $options The captcha options.
+     * @param array $sessionOptions The captcha session options.
+     * @param string $ipAddress The IP address of the visitor.
      * @param string $widgetId The widget identifier of the captcha.
      * @param string|null $challengeId The challenge identifier of the captcha.
      */
-    public static function createSession($storage, array $options, string $widgetId, string $challengeId = null): Session
+    public static function createSession($storage, array $sessionOptions, string $ipAddress, string $widgetId, string $challengeId = null): Session
     {
         return SessionFactory::create(
             $storage,
-            $options['session']['driver'],
-            $options['session']['options'] ?? [],
-            $options['ipAddress'](),
+            $sessionOptions['driver'],
+            $sessionOptions['options'] ?? [],
+            $ipAddress,
             $widgetId,
             $challengeId
         );

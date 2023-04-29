@@ -59,10 +59,17 @@ return [
         'latencyCorrection' => true,
         // Specifies the options for challenge solving attempts.
         'attempts' => [
-            // Specifies the maximum number of attempts per challenge before the visitor will receive a timeout.
-            'amount' => 3,
+            // Specifies whether to enable the attempts and timeout feature.
+            'enabled' => true,
+            // Specifies the maximum number of attempts before the visitor will receive a timeout.
+            'amount' => 2,
             // Specifies the time (in seconds) which the visitor has to wait after making too many incorrect attempts.
             'timeout' => 60,
+            // Specifies the time (in seconds) after which an attempt will automatically be forgotten and removed from the attempts counter.
+            'valid' => 30,
+            // Specifies the driver to use for storing and retrieving attempts and timeout data.
+            // Default available drivers: 'session'
+            'driver' => 'session'
         ],
     ],
 

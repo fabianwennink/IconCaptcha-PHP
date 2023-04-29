@@ -21,7 +21,7 @@ final class ValidationResult
     {
         $this->success = $success;
         $this->errorCode = $errorCode;
-        $this->timestamp = Utils::getTimeInMilliseconds();
+        $this->timestamp = Utils::getCurrentTimeInMilliseconds();
     }
 
     /**

@@ -30,7 +30,7 @@ class Payload
     public static function encode(array $payload): string
     {
         return base64_encode(json_encode(
-            array_filter($payload) + ['timestamp' => Utils::getTimeInMilliseconds()],
+            array_filter($payload) + ['timestamp' => Utils::getCurrentTimeInMilliseconds()],
             JSON_THROW_ON_ERROR
         ));
     }

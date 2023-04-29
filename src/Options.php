@@ -42,8 +42,11 @@ class Options
             'completionExpiration' => 300,
             'latencyCorrection' => true,
             'attempts' => [
+                'enabled' => true,
                 'amount' => 5,
-                'timeout' => 30,
+                'timeout' => 60,
+                'valid' => 30,
+                'driver' => 'session',
             ],
         ],
         'cors' => [
