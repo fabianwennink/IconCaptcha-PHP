@@ -57,24 +57,4 @@ class Utils
 
         throw new InvalidArgumentException("The 'ipAddress' options is invalid.");
     }
-
-    /**
-     * Creates a new instance of a session.
-     * @param mixed $storage The storage container.
-     * @param array $sessionOptions The captcha session options.
-     * @param string $ipAddress The IP address of the visitor.
-     * @param string $widgetId The widget identifier of the captcha.
-     * @param string|null $challengeId The challenge identifier of the captcha.
-     */
-    public static function createSession($storage, array $sessionOptions, string $ipAddress, string $widgetId, string $challengeId = null): Session
-    {
-        return SessionFactory::create(
-            $storage,
-            $sessionOptions['driver'],
-            $sessionOptions['options'] ?? [],
-            $ipAddress,
-            $widgetId,
-            $challengeId
-        );
-    }
 }

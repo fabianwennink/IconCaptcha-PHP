@@ -23,6 +23,11 @@ class Options
                 'separatorColor' => [64, 64, 64]
             ],
         ],
+        'storage' => [
+            'driver' => 'session',
+            'connection' => [],
+            'datetimeFormat' => 'Y-m-d H:i:s',
+        ],
         'challenge' => [
             'availableIcons' => 180,
             'iconAmount' => [
@@ -46,7 +51,12 @@ class Options
                 'amount' => 5,
                 'timeout' => 60,
                 'valid' => 30,
-                'driver' => 'session',
+                'storage' => [
+                    'driver' => null,
+                    'options' => [
+                        'table' => 'iconcaptcha_attempts',
+                    ],
+                ],
             ],
         ],
         'cors' => [
@@ -57,8 +67,10 @@ class Options
         ],
         'token' => Token::class,
         'session' => [
-            'driver' => 'session',
-            'options' => [],
+            'driver' => null,
+            'options' => [
+                'table' => 'iconcaptcha_challenges',
+            ],
         ],
         'hooks' => [
             'init' => null,

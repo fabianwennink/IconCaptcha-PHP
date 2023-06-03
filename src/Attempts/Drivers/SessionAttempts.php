@@ -26,19 +26,19 @@ class SessionAttempts extends Attempts
      */
     public function increaseAttempts(int $timestamp): void
     {
-        // Read the current attempts count from session. Use 0 if no count is stored.
+        // Read the current attempts count.
         $storedAttemptsCount = $this->getCurrentAttemptsCount();
-        $updatedAttemptsCount = $storedAttemptsCount + 1;
-
-        // Store the updated attempts count.
-        $this->storage->write($this->sessionKey, [
-            'count' => $updatedAttemptsCount,
-            'valid' => $this->getNewValidityTimestamp(),
-        ]);
+        $updatedAttemptsCount = $storedAttemptsCount + 1 ?? 1;
 
         // If the attempts threshold was passed, issue a timeout.
+        // Otherwise, only increment the attempts counter.
         if($updatedAttemptsCount >= $this->options['amount']) {
             $this->issueTimeout($timestamp);
+        } else {
+            $this->storage->write($this->sessionKey, [
+                'count' => $updatedAttemptsCount,
+                'valid' => $this->getNewValidityTimestamp(),
+            ]);
         }
     }
 
@@ -75,7 +75,6 @@ class SessionAttempts extends Attempts
      */
     protected function getActiveTimeoutTimestamp(): ?int
     {
-        // Read the active timeout timestamp from session, if still valid.
         if($this->isAttemptsDataStillValid()) {
             return $this->storage->read("$this->sessionKey.timeout");
         }
@@ -86,14 +85,13 @@ class SessionAttempts extends Attempts
     /**
      * @inheritDoc
      */
-    protected function getCurrentAttemptsCount(): int
+    protected function getCurrentAttemptsCount(): ?int
     {
-        // Read the active timeout timestamp from session, if still valid.
         if($this->isAttemptsDataStillValid()) {
-            return $this->storage->read("$this->sessionKey.count") ?? 0;
+            return $this->storage->read("$this->sessionKey.count");
         }
 
-        return 0;
+        return null;
     }
 
     /**

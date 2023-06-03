@@ -27,8 +27,6 @@ class StorageFactory
             throw new InvalidArgumentException('A storage driver must be specified.');
         }
 
-        $options = $options['options'];
-
         switch ($driver) {
             case 'session':
                 return new SessionConnector();

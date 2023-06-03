@@ -10,6 +10,7 @@ use IconCaptcha\Challenge\Hooks\SelectionHookInterface;
 use IconCaptcha\Exceptions\FileNotFoundException;
 use IconCaptcha\Payload;
 use IconCaptcha\Session\Session;
+use IconCaptcha\Session\SessionFactory;
 use IconCaptcha\Session\SessionInterface;
 use IconCaptcha\Utils;
 
@@ -39,11 +40,19 @@ class Challenge
         $ipAddress = Utils::getIpAddress($this->options['ipAddress']);
 
         // Create a new session instance.
-        $this->session = Utils::createSession($this->storage, $this->options['session'], $ipAddress, $widgetId, $challengeId);
+        $this->session = SessionFactory::create(
+            $this->storage,
+            $this->options['session']['driver'] ?? $this->options['storage']['driver'],
+            $this->options['session'],
+            $ipAddress,
+            $widgetId,
+            $challengeId
+        );
 
         // Create a new attempts/timeout manager instance.
-        $this->attempts = AttemptsFactory::create($this->storage,
-            $this->options['validation']['attempts']['driver'],
+        $this->attempts = AttemptsFactory::create(
+            $this->storage,
+            $this->options['validation']['attempts']['storage']['driver'] ?? $this->options['storage']['driver'],
             $this->options['validation']['attempts'],
             $ipAddress
         );

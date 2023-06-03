@@ -29,9 +29,7 @@ class IconCaptcha
     public function __construct(array $options)
     {
         $this->options = $this->options($options);
-
-        // TODO The storage driver should not be in 'session.driver' option, but in a separate option.
-        $this->storage = StorageFactory::create($this->options['session'])->connect();
+        $this->storage = StorageFactory::create($this->options['storage'])->connect();
         $this->validator = new Validator($this->storage, $this->options);
     }
 

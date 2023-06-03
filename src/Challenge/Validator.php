@@ -2,6 +2,7 @@
 
 namespace IconCaptcha\Challenge;
 
+use IconCaptcha\Session\SessionFactory;
 use IconCaptcha\Token\AbstractToken;
 use IconCaptcha\Utils;
 
@@ -71,8 +72,10 @@ class Validator
         $widgetId = $request[self::CAPTCHA_FIELD_WIDGET_ID];
 
         // Initialize the session.
-        $session = Utils::createSession(
-            $this->storage, $this->options['session'],
+        $session = SessionFactory::create(
+            $this->storage,
+            $this->options['session']['driver'] ?? $this->options['storage']['driver'],
+            $this->options['session']['options'],
             Utils::getIpAddress($this->options['ipAddress']),
             $widgetId, $challengeId
         );

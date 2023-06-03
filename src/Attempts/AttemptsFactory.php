@@ -2,6 +2,8 @@
 
 namespace IconCaptcha\Attempts;
 
+use IconCaptcha\Attempts\Drivers\Database\PDOAttempts;
+use IconCaptcha\Attempts\Drivers\Database\Query\DefaultQuery;
 use IconCaptcha\Attempts\Drivers\SessionAttempts;
 use InvalidArgumentException;
 
@@ -15,7 +17,7 @@ class AttemptsFactory
      * @param array $options The attempts/timeout options.
      * @param string $ipAddress The IP address of the visitor.
      *
-     * @return SessionAttempts|mixed
+     * @return PDOAttempts|SessionAttempts|mixed
      *
      * @throws InvalidArgumentException
      */
@@ -28,6 +30,13 @@ class AttemptsFactory
         switch ($driver) {
             case 'session':
                 return new SessionAttempts($storage, $options);
+            case 'mysql':
+            case 'pgsql':
+            case 'postgres':
+            case 'sqlite':
+            case 'sqlsrv':
+            case 'mssql':
+                return new PDOAttempts($storage, new DefaultQuery(), $options, $ipAddress);
             default:
                 // If none of the supported drivers are used, check if perhaps a custom driver was passed.
                 if (class_exists($driver) && in_array(AttemptsInterface::class, class_implements($driver), true)) {

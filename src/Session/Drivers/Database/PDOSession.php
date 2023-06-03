@@ -38,8 +38,8 @@ class PDOSession extends Session
         $this->queryStrategy = $queryStrategy;
 
         // Change the table name, if set in the options.
-        if (isset($this->options['connection']['table']) && is_string($this->options['connection']['table'])) {
-            $this->table = $this->options['connection']['table'];
+        if (isset($this->options['options']['table']) && is_string($this->options['options']['table'])) {
+            $this->table = $this->options['options']['table'];
         }
 
         $this->purgeExpired();
