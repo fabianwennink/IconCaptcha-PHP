@@ -7,5 +7,15 @@ CREATE TABLE iconcaptcha_challenges (
     ip_address inet NOT NULL,
     expires_at timestamp,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT sessions_widget_challenge UNIQUE (challenge_id, widget_id)
+    CONSTRAINT iconcaptcha_challenges_widget UNIQUE (challenge_id, widget_id)
+);
+
+-- Attempts
+CREATE TABLE iconcaptcha_attempts (
+    id serial NOT NULL PRIMARY KEY,
+    ip_address inet NOT NULL,
+    attempts int NOT NULL,
+    timeout_until timestamp NULL,
+    valid_until timestamp NOT NULL,
+    CONSTRAINT iconcaptcha_attempts_ip_address UNIQUE (ip_address)
 );
