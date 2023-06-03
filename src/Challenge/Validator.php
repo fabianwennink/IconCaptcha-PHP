@@ -75,7 +75,7 @@ class Validator
         $session = SessionFactory::create(
             $this->storage,
             $this->options['session']['driver'] ?? $this->options['storage']['driver'],
-            $this->options['session']['options'],
+            $this->options['session'],
             Utils::getIpAddress($this->options['ipAddress']),
             $widgetId, $challengeId
         );
