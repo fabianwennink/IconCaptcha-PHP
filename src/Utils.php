@@ -4,9 +4,7 @@ namespace IconCaptcha;
 
 use Closure;
 use Exception;
-use http\Exception\InvalidArgumentException;
-use IconCaptcha\Session\Session;
-use IconCaptcha\Session\SessionFactory;
+use InvalidArgumentException;
 
 class Utils
 {
