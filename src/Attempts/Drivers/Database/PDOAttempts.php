@@ -4,21 +4,19 @@ namespace IconCaptcha\Attempts\Drivers\Database;
 
 use IconCaptcha\Attempts\Attempts;
 use IconCaptcha\Attempts\Drivers\Database\Query\QueryInterface;
-use PDO;
+use IconCaptcha\Storage\Database\PDOStorageInterface;
 
 class PDOAttempts extends Attempts
 {
-    private const DEFAULT_DATE_FORMAT = 'Y-m-d H:i:s';
-
     /**
      * @var string The default table name for the attempts.
      */
     protected string $table = 'iconcaptcha_attempts';
 
     /**
-     * @var PDO The database connection.
+     * @var PDOStorageInterface The database storage wrapper.
      */
-    private PDO $connection;
+    private PDOStorageInterface $storage;
 
     /**
      * @var QueryInterface The query strategy to use when performing database operation.
@@ -30,11 +28,11 @@ class PDOAttempts extends Attempts
      */
     protected string $ipAddress;
 
-    public function __construct(PDO $storage, QueryInterface $queryStrategy, array $options, string $ipAddress)
+    public function __construct(PDOStorageInterface $storage, QueryInterface $queryStrategy, array $options, string $ipAddress)
     {
         parent::__construct($options);
 
-        $this->connection = $storage;
+        $this->storage = $storage;
         $this->queryStrategy = $queryStrategy;
         $this->ipAddress = $ipAddress;
 
@@ -62,13 +60,13 @@ class PDOAttempts extends Attempts
         if($updatedAttemptsCount >= $this->options['amount']) {
             $this->issueTimeout($timestamp);
         } else {
-            $validityTimestamp = date(self::DEFAULT_DATE_FORMAT, floor($this->getNewValidityTimestamp() / 1000));
+            $validityTimestamp = $this->storage->formatTimestampAsDatetime(floor($this->getNewValidityTimestamp() / 1000));
 
             // Depending on if attempts were already registered, we either update
             // the attempts counter of the existing record, or insert a new one.
             if(is_null($storedAttemptsCount)) {
                 // TODO if inserting fails, try increasing the attempts.
-                $this->connection->prepare(
+                $this->storage->getConnection()->prepare(
                     $this->queryStrategy->insertAttemptQuery($this->table)
                 )->execute([
                     $this->ipAddress,
@@ -77,7 +75,7 @@ class PDOAttempts extends Attempts
                 ]);
             } else {
                 // TODO if increasing fails, try inserting a new attempt.
-                $this->connection->prepare(
+                $this->storage->getConnection()->prepare(
                     $this->queryStrategy->increaseAttemptsQuery($this->table)
                 )->execute([
                     $updatedAttemptsCount,
@@ -93,7 +91,7 @@ class PDOAttempts extends Attempts
      */
     public function clearAttempts(): void
     {
-        $this->connection->prepare(
+        $this->storage->getConnection()->prepare(
             $this->queryStrategy->clearAttemptsQuery($this->table)
         )->execute([
             $this->ipAddress,
@@ -108,10 +106,10 @@ class PDOAttempts extends Attempts
         // TODO refactor, duplicate date conversion + millisecond requirement
         // Calculate the timeout period. The timeout will be active until the timestamp has expired.
         $timeoutMilliseconds = ($this->options['timeout'] * 1000) + $currentTimestamp;
-        $timeoutDate = date(self::DEFAULT_DATE_FORMAT, floor($timeoutMilliseconds / 1000));
+        $timeoutDate = $this->storage->formatTimestampAsDatetime(floor($timeoutMilliseconds / 1000));
 
         // Store the timeout.
-        $this->connection->prepare(
+        $this->storage->getConnection()->prepare(
             $this->queryStrategy->issueTimeoutQuery($this->table)
         )->execute([
             $timeoutDate,
@@ -127,13 +125,13 @@ class PDOAttempts extends Attempts
      */
     protected function getActiveTimeoutTimestamp(): ?int
     {
-        $statement = $this->connection->prepare(
+        $statement = $this->storage->getConnection()->prepare(
             $this->queryStrategy->activeTimeoutTimestampQuery($this->table)
         );
 
         $statement->execute([
             $this->ipAddress,
-            date(self::DEFAULT_DATE_FORMAT),
+            $this->storage->getDatetime(),
         ]);
 
         $timestamp = $statement->fetchColumn();
@@ -146,13 +144,13 @@ class PDOAttempts extends Attempts
      */
     protected function getCurrentAttemptsCount(): ?int
     {
-        $statement = $this->connection->prepare(
+        $statement = $this->storage->getConnection()->prepare(
             $this->queryStrategy->currentAttemptsCountQuery($this->table)
         );
 
         $statement->execute([
             $this->ipAddress,
-            date(self::DEFAULT_DATE_FORMAT),
+            $this->storage->getDatetime(),
         ]);
 
         $attemptsCount = $statement->fetchColumn();
@@ -165,7 +163,7 @@ class PDOAttempts extends Attempts
      */
     protected function getAttemptsValidityTimestamp(): ?int
     {
-        $statement = $this->connection->prepare(
+        $statement = $this->storage->getConnection()->prepare(
             $this->queryStrategy->attemptsValidityTimestampQuery($this->table)
         );
 
@@ -183,10 +181,10 @@ class PDOAttempts extends Attempts
      */
     protected function purgeExpiredAttempts(): void
     {
-        $this->connection->prepare(
+        $this->storage->getConnection()->prepare(
             $this->queryStrategy->purgeExpiredTimeoutsQuery($this->table)
         )->execute([
-            date(self::DEFAULT_DATE_FORMAT)
+            $this->storage->getDatetime(),
         ]);
     }
 }

@@ -4,12 +4,10 @@ namespace IconCaptcha\Session\Drivers\Database;
 
 use IconCaptcha\Session\Drivers\Database\Query\QueryInterface;
 use IconCaptcha\Session\Session;
-use PDO;
+use IconCaptcha\Storage\Database\PDOStorageInterface;
 
 class PDOSession extends Session
 {
-    private const DEFAULT_DATE_FORMAT = 'Y-m-d H:i:s';
-
     /**
      * @var string The default table name for the session data.
      */
@@ -21,20 +19,27 @@ class PDOSession extends Session
     private bool $existingSession = false;
 
     /**
-     * @var PDO The database connection.
+     * @var PDOStorageInterface The database storage wrapper.
      */
-    private PDO $connection;
+    private PDOStorageInterface $storage;
 
     /**
      * @var QueryInterface The query strategy to use when performing database operation.
      */
     private QueryInterface $queryStrategy;
 
-    public function __construct(PDO $storage, QueryInterface $queryStrategy, array $options, string $ipAddress, string $widgetId, string $challengeId = null)
+    public function __construct(
+        PDOStorageInterface $storage,
+        QueryInterface $queryStrategy,
+        array $options,
+        string $ipAddress,
+        string $widgetId,
+        string $challengeId = null
+    )
     {
         parent::__construct($options, $ipAddress, $widgetId, $challengeId);
 
-        $this->connection = $storage;
+        $this->storage = $storage;
         $this->queryStrategy = $queryStrategy;
 
         // Change the table name, if set in the options.
@@ -52,7 +57,7 @@ class PDOSession extends Session
     public function load(): void
     {
         if ($this->exists($this->challengeId ?? '', $this->widgetId)) {
-            $statement = $this->connection->prepare(
+            $statement = $this->storage->getConnection()->prepare(
                 $this->queryStrategy->loadQuery($this->table)
             );
 
@@ -79,7 +84,7 @@ class PDOSession extends Session
     public function save(): void
     {
         if ($this->existingSession) {
-            $statement = $this->connection->prepare(
+            $statement = $this->storage->getConnection()->prepare(
                 $this->queryStrategy->saveQuery($this->table)
             );
 
@@ -90,7 +95,7 @@ class PDOSession extends Session
                 $this->challengeId,
             ]);
         } else {
-            $statement = $this->connection->prepare(
+            $statement = $this->storage->getConnection()->prepare(
                 $this->queryStrategy->createQuery($this->table)
             );
 
@@ -109,7 +114,7 @@ class PDOSession extends Session
      */
     public function destroy(): void
     {
-        $this->connection->prepare(
+        $this->storage->getConnection()->prepare(
             $this->queryStrategy->destroyQuery($this->table)
         )->execute([
             $this->widgetId,
@@ -122,10 +127,10 @@ class PDOSession extends Session
      */
     public function purgeExpired(): void
     {
-        $this->connection->prepare(
+        $this->storage->getConnection()->prepare(
             $this->queryStrategy->purgeQuery($this->table)
         )->execute([
-            date(self::DEFAULT_DATE_FORMAT)
+            $this->storage->getDatetime(),
         ]);
     }
 
@@ -134,7 +139,7 @@ class PDOSession extends Session
      */
     public function exists(string $challengeId, string $widgetId): bool
     {
-        $statement = $this->connection->prepare(
+        $statement = $this->storage->getConnection()->prepare(
             $this->queryStrategy->existsQuery($this->table)
         );
 
@@ -153,7 +158,8 @@ class PDOSession extends Session
     private function getDbFormattedExpirationTime(): ?string
     {
         return $this->expiresAt > 0
-            ? date(self::DEFAULT_DATE_FORMAT, floor($this->expiresAt / 1000)) // database timestamps are in seconds, not milliseconds.
+            // Database timestamps are in seconds, not milliseconds.
+            ? $this->storage->formatTimestampAsDatetime(floor($this->expiresAt / 1000))
             : null;
     }
 }

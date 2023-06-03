@@ -13,8 +13,6 @@ abstract class PDOConnector implements StorageInterface
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     ];
 
-    private PDO $connection;
-
     private array $options;
 
     public function __construct(array $options)
@@ -26,9 +24,12 @@ abstract class PDOConnector implements StorageInterface
      * @inheritDoc
      * @return PDO
      */
-    public function connect(): PDO
+    public function connect(): PDOStorage
     {
-        return $this->connection = $this->createConnection();
+        return new PDOStorage(
+            $this->createConnection(),
+            $this->options['datetimeFormat']
+        );
     }
 
     /**
@@ -37,16 +38,10 @@ abstract class PDOConnector implements StorageInterface
      */
     private function createConnection(): PDO
     {
-        // If an open database connection already exists, reuse it.
-        if (!empty($this->connection)) {
-            return $this->connection;
-        }
-
         $config = $this->options['connection'];
 
         // In case the config is an existing PDO object, simply return it.
         if ($config instanceof PDO) {
-            $this->connection = $config;
             return $config;
         }
 
