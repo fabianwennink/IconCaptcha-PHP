@@ -2,7 +2,7 @@
 
 namespace IconCaptcha\Token;
 
-class Token extends AbstractToken implements TokenInterface
+class IconCaptchaToken extends AbstractToken implements TokenInterface
 {
     private const SESSION_NAME = 'iconcaptcha';
 
@@ -11,12 +11,21 @@ class Token extends AbstractToken implements TokenInterface
     /**
      * @inheritDoc
      */
+    public static function render(): string
+    {
+        $token = (new self())->get();
+        $name = self::TOKEN_FIELD_NAME;
+
+        return "<input type='hidden' name='$name' value='$token' />";
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function get(): string
     {
-        $self = new self();
-
         // Try to load an existing token from the session.
-        $existingToken = $self->retrieve();
+        $existingToken = $this->retrieve();
 
         // If a token exists, return it.
         if (!empty($existingToken)) {
@@ -24,23 +33,12 @@ class Token extends AbstractToken implements TokenInterface
         }
 
         // When no token exists, generate one.
-        $token = $self->generate();
+        $token = $this->generate();
 
         // Save the token to the session.
-        $self->store($token);
+        $this->store($token);
 
         return $token;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function render(): string
-    {
-        $token = $this->get();
-        $name = self::TOKEN_FIELD_NAME;
-
-        return "<input type='hidden' name='$name' value='$token' />";
     }
 
     /**

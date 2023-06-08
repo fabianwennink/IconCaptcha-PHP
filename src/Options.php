@@ -3,7 +3,7 @@
 namespace IconCaptcha;
 
 use IconCaptcha\Challenge\Generators\GD;
-use IconCaptcha\Token\Token;
+use IconCaptcha\Token\IconCaptchaToken;
 
 class Options
 {
@@ -65,7 +65,7 @@ class Options
             'credentials' => true,
             'cache' => 86400,
         ],
-        'token' => Token::class,
+        'token' => IconCaptchaToken::class,
         'session' => [
             'driver' => null,
             'options' => [

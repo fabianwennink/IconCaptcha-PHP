@@ -5,16 +5,16 @@ namespace IconCaptcha\Token;
 interface TokenInterface
 {
     /**
+     * Returns an HTML input field as a string, containing the captcha token as its value.
+     * @return string The HTML input field.
+     */
+    public static function render(): string;
+
+    /**
      * Returns the captcha token for the current request.
      * @return string The captcha token.
      */
     public function get(): string;
-
-    /**
-     * Returns an HTML input field as a string, containing the captcha token as its value.
-     * @return string The HTML input field.
-     */
-    public function render(): string;
 
     /**
      * Validates the global captcha token against the given payload token and sometimes against a header token
