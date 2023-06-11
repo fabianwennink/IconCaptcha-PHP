@@ -5,6 +5,7 @@ namespace IconCaptcha\Attempts\Drivers\Database;
 use IconCaptcha\Attempts\Attempts;
 use IconCaptcha\Attempts\Drivers\Database\Query\QueryInterface;
 use IconCaptcha\Storage\Database\PDOStorageInterface;
+use IconCaptcha\Utils;
 
 class PDOAttempts extends Attempts
 {
@@ -48,9 +49,8 @@ class PDOAttempts extends Attempts
     /**
      * @inheritDoc
      */
-    public function increaseAttempts(int $timestamp): void
+    public function increaseAttempts(): void
     {
-        // TODO refactor, duplicate date conversion + millisecond requirement
         // Read the current attempts count.
         $storedAttemptsCount = $this->getCurrentAttemptsCount();
         $updatedAttemptsCount = $storedAttemptsCount + 1 ?? 1;
@@ -58,9 +58,11 @@ class PDOAttempts extends Attempts
         // If the attempts threshold was exceeded, issue a timeout.
         // Otherwise, only register the attempt.
         if($updatedAttemptsCount >= $this->options['amount']) {
-            $this->issueTimeout($timestamp);
+            $this->issueTimeout();
         } else {
-            $validityTimestamp = $this->storage->formatTimestampAsDatetime(floor($this->getNewValidityTimestamp() / 1000));
+            $validityTimestamp = $this->storage->formatTimestampAsDatetime(
+                $this->getNewValidityTimestamp()
+            );
 
             // Depending on if attempts were already registered, we either update
             // the attempts counter of the existing record, or insert a new one.
@@ -101,12 +103,11 @@ class PDOAttempts extends Attempts
     /**
      * @inheritDoc
      */
-    protected function issueTimeout(int $currentTimestamp): bool
+    protected function issueTimeout(): bool
     {
-        // TODO refactor, duplicate date conversion + millisecond requirement
         // Calculate the timeout period. The timeout will be active until the timestamp has expired.
-        $timeoutMilliseconds = ($this->options['timeout'] * 1000) + $currentTimestamp;
-        $timeoutDate = $this->storage->formatTimestampAsDatetime(floor($timeoutMilliseconds / 1000));
+        $timeoutTimestamp = $this->options['timeout'] + Utils::getCurrentTimeInSeconds();
+        $timeoutDate = $this->storage->formatTimestampAsDatetime($timeoutTimestamp);
 
         // Store the timeout.
         $this->storage->getConnection()->prepare(
@@ -136,7 +137,7 @@ class PDOAttempts extends Attempts
 
         $timestamp = $statement->fetchColumn();
 
-        return !empty($timestamp) ? strtotime($timestamp) * 1000 : null; // TODO refactor millisecond requirement
+        return !empty($timestamp) ? strtotime($timestamp) : null;
     }
 
     /**
@@ -173,7 +174,7 @@ class PDOAttempts extends Attempts
 
         $timestamp = $statement->fetchColumn();
 
-        return !empty($timestamp) ? strtotime($timestamp) * 1000 : 0; // TODO refactor millisecond requirement
+        return !empty($timestamp) ? strtotime($timestamp) : 0;
     }
 
     /**

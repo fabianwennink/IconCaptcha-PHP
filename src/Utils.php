@@ -17,6 +17,14 @@ class Utils
     }
 
     /**
+     * Returns the current Unix timestamp in seconds.
+     */
+    public static function getCurrentTimeInSeconds(): int
+    {
+        return time();
+    }
+
+    /**
      * Generates a random UUID.
      * @return string The generated UUID.
      * @throws Exception

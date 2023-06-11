@@ -26,12 +26,10 @@ abstract class Attempts implements AttemptsInterface
      */
     public function isTimeoutActive(): bool
     {
-        $currentTimestamp = Utils::getCurrentTimeInMilliseconds();
-
         // Read the active timeout timestamp from session. Will be NULL if no timeout is active.
         $storedTimeoutTimestamp = $this->getActiveTimeoutTimestamp();
 
-        return $storedTimeoutTimestamp !== null && $storedTimeoutTimestamp >= $currentTimestamp;
+        return $storedTimeoutTimestamp !== null && $storedTimeoutTimestamp >= Utils::getCurrentTimeInSeconds();
     }
 
     /**
@@ -39,14 +37,12 @@ abstract class Attempts implements AttemptsInterface
      */
     public function getTimeoutRemainingTime(): int
     {
-        $currentTimestamp = Utils::getCurrentTimeInMilliseconds();
-
         // Read the active timeout timestamp from session. Will be NULL if no timeout is active.
         $storedTimeoutTimestamp = $this->getActiveTimeoutTimestamp();
 
         // If there is a timeout active, calculate the remaining time.
         if($storedTimeoutTimestamp !== null) {
-            $remainingTime = $storedTimeoutTimestamp - $currentTimestamp;
+            $remainingTime = $storedTimeoutTimestamp - Utils::getCurrentTimeInSeconds();
             if($remainingTime > 0) {
                 return $remainingTime;
             }
@@ -56,11 +52,11 @@ abstract class Attempts implements AttemptsInterface
     }
 
     /**
-     * Generates a new validity timestamp in milliseconds, based on the configuration and current timestamp.
+     * Generates a new validity timestamp in seconds, based on the configuration and current timestamp.
      */
     protected function getNewValidityTimestamp(): int
     {
-        return ($this->options['valid'] * 1000) + Utils::getCurrentTimeInMilliseconds();
+        return $this->options['valid'] + Utils::getCurrentTimeInSeconds();
     }
 
     /**
@@ -70,7 +66,7 @@ abstract class Attempts implements AttemptsInterface
     protected function isAttemptsDataStillValid(): bool
     {
         $storedValidityTimestamp = $this->getAttemptsValidityTimestamp();
-        return $storedValidityTimestamp !== null && $storedValidityTimestamp >= Utils::getCurrentTimeInMilliseconds();
+        return $storedValidityTimestamp !== null && $storedValidityTimestamp >= Utils::getCurrentTimeInSeconds();
     }
 
     /**
@@ -93,8 +89,7 @@ abstract class Attempts implements AttemptsInterface
 
     /**
      * Issues a new temporary timeout for a visitor.
-     * @param int $currentTimestamp The current timestamp, in milliseconds.
      * @return bool Whether the timeout was successfully issued.
      */
-    abstract protected function issueTimeout(int $currentTimestamp): bool;
+    abstract protected function issueTimeout(): bool;
 }

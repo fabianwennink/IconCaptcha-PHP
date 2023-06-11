@@ -93,7 +93,7 @@ class Challenge
         if ($this->attempts->isEnabled() && $this->attempts->isTimeoutActive()) {
             return Payload::encode([
                 'error' => 'too-many-attempts',
-                'data' => $this->attempts->getTimeoutRemainingTime() + $latency
+                'data' => ($this->attempts->getTimeoutRemainingTime() * 1000) + $latency
             ]);
         }
 
@@ -153,7 +153,9 @@ class Challenge
 
         // If enabled, set the expiration timestamp for the challenge.
         if ($this->options['validation']['inactivityExpiration'] > 0) {
-            $this->session->expiresAt = Utils::getCurrentTimeInMilliseconds() + ($this->options['validation']['inactivityExpiration'] * 1000) + $latency;
+            $this->session->expiresAt = Utils::getCurrentTimeInMilliseconds()
+                + ($this->options['validation']['inactivityExpiration'] * 1000)
+                + $latency;
         }
 
         $this->session->save();
@@ -212,7 +214,7 @@ class Challenge
 
         // Increase the attempts counter.
         if($this->attempts->isEnabled()) {
-            $this->attempts->increaseAttempts(Utils::getCurrentTimeInMilliseconds() + $latency);
+            $this->attempts->increaseAttempts();
         }
 
         $this->session->save();
@@ -281,7 +283,9 @@ class Challenge
 
         // If enabled, set the expiration timestamp for the completed captcha.
         if ($this->options['validation']['completionExpiration'] > 0) {
-            $this->session->expiresAt = Utils::getCurrentTimeInMilliseconds() + ($this->options['validation']['completionExpiration'] * 1000) + $latency;
+            $this->session->expiresAt = Utils::getCurrentTimeInMilliseconds()
+                + ($this->options['validation']['completionExpiration'] * 1000)
+                + $latency;
         }
 
         $this->session->save();
