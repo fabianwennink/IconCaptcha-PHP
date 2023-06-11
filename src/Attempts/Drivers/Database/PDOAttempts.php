@@ -6,6 +6,7 @@ use IconCaptcha\Attempts\Attempts;
 use IconCaptcha\Attempts\Drivers\Database\Query\QueryInterface;
 use IconCaptcha\Storage\Database\PDOStorageInterface;
 use IconCaptcha\Utils;
+use PDOException;
 
 class PDOAttempts extends Attempts
 {
@@ -67,23 +68,17 @@ class PDOAttempts extends Attempts
             // Depending on if attempts were already registered, we either update
             // the attempts counter of the existing record, or insert a new one.
             if(is_null($storedAttemptsCount)) {
-                // TODO if inserting fails, try increasing the attempts.
-                $this->storage->getConnection()->prepare(
-                    $this->queryStrategy->insertAttemptQuery($this->table)
-                )->execute([
-                    $this->ipAddress,
-                    $updatedAttemptsCount,
-                    $validityTimestamp,
-                ]);
+                // No previous attempts were found, try to insert a new record.
+                if(!$this->performAttemptsInsert($updatedAttemptsCount, $validityTimestamp)) {
+                    // Insertion failed, perform increase query.
+                    $this->performAttemptsIncrease($updatedAttemptsCount, $validityTimestamp);
+                }
             } else {
-                // TODO if increasing fails, try inserting a new attempt.
-                $this->storage->getConnection()->prepare(
-                    $this->queryStrategy->increaseAttemptsQuery($this->table)
-                )->execute([
-                    $updatedAttemptsCount,
-                    $validityTimestamp,
-                    $this->ipAddress,
-                ]);
+                // Previous attempts were found, perform increase query.
+                if(!$this->performAttemptsIncrease($updatedAttemptsCount, $validityTimestamp)) {
+                    // Increase query failed, insert a new record.
+                    $this->performAttemptsInsert($updatedAttemptsCount, $validityTimestamp);
+                }
             }
         }
     }
@@ -187,5 +182,49 @@ class PDOAttempts extends Attempts
         )->execute([
             $this->storage->getDatetime(),
         ]);
+    }
+
+    /**
+     * Performs an attempt insert query. For this query to succeed, no existing
+     * record must exist in the database for the visitor's IP address.
+     * @param int $updatedAttemptsCount The updated attempts count.
+     * @param string $validityTimestamp The validity timestamp, formatted as a datetime string.
+     * @return bool TRUE if the insert query was successful, FALSE otherwise.
+     */
+    private function performAttemptsInsert(int $updatedAttemptsCount, string $validityTimestamp): bool
+    {
+        try {
+            return $this->storage->getConnection()->prepare(
+                $this->queryStrategy->insertAttemptQuery($this->table)
+            )->execute([
+                $this->ipAddress,
+                $updatedAttemptsCount,
+                $validityTimestamp,
+            ]);
+        } catch(PDOException $exception) {
+            return false;
+        }
+    }
+
+    /**
+     * Performs an attempt increase query. For this query to succeed, an existing
+     * record must exist in the database for the visitor's IP address.
+     * @param int $updatedAttemptsCount The updated attempts count.
+     * @param string $validityTimestamp The validity timestamp, formatted as a datetime string.
+     * @return bool TRUE if the increase query was successful, FALSE otherwise.
+     */
+    private function performAttemptsIncrease(int $updatedAttemptsCount, string $validityTimestamp): bool
+    {
+        try {
+            return $this->storage->getConnection()->prepare(
+                $this->queryStrategy->increaseAttemptsQuery($this->table)
+            )->execute([
+                $updatedAttemptsCount,
+                $validityTimestamp,
+                $this->ipAddress,
+            ]);
+        } catch(PDOException $exception) {
+            return false;
+        }
     }
 }
