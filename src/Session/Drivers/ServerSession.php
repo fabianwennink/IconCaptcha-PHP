@@ -21,7 +21,11 @@ class ServerSession extends Session
 
         $this->storage = $storage;
 
-        $this->purgeExpired();
+        // Purge any expired attempts records, if enabled.
+        if(!isset($this->options['options']['purging']) || $this->options['options']['purging']) {
+            $this->purgeExpired();
+        }
+
         $this->load();
     }
 

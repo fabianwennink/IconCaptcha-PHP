@@ -47,7 +47,11 @@ class PDOSession extends Session
             $this->table = $this->options['options']['table'];
         }
 
-        $this->purgeExpired();
+        // Purge any expired attempts records, if enabled.
+        if(!isset($this->options['options']['purging']) || $this->options['options']['purging']) {
+            $this->purgeExpired();
+        }
+
         $this->load();
     }
 

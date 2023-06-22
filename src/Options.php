@@ -55,6 +55,7 @@ class Options
                     'driver' => null,
                     'options' => [
                         'table' => 'iconcaptcha_attempts',
+                        'purging' => true,
                     ],
                 ],
             ],
@@ -70,6 +71,7 @@ class Options
             'driver' => null,
             'options' => [
                 'table' => 'iconcaptcha_challenges',
+                'purging' => true,
             ],
         ],
         'hooks' => [

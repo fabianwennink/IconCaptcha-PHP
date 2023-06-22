@@ -39,12 +39,14 @@ class PDOAttempts extends Attempts
         $this->ipAddress = $ipAddress;
 
         // Change the table name, if set in the options.
-        $storageOptions = $this->options['storage']['options'];
-        if (isset($storageOptions['table']) && is_string($storageOptions['table'])) {
-            $this->table = $storageOptions['table'];
+        if (isset($this->options['storage']['options']['table']) && is_string($this->options['storage']['options']['table'])) {
+            $this->table = $this->options['storage']['options']['table'];
         }
 
-        $this->purgeExpiredAttempts();
+        // Purge any expired attempts records, if enabled.
+        if(!isset($this->options['storage']['options']['purging']) || $this->options['storage']['options']['purging']) {
+            $this->purgeExpiredAttempts();
+        }
     }
 
     /**

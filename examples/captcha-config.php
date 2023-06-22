@@ -97,6 +97,8 @@ return [
                 'options' => [
                     // Specifies the table name used by the database storage drivers to keep track of attempts and timeouts.
                     'table' => 'iconcaptcha_attempts',
+                    // Specifies whether the expired attempts/timeout records should automatically be deleted from storage.
+                    'purging' => true,
                 ],
             ]
         ],
@@ -112,6 +114,8 @@ return [
         'options' => [
             // Specifies the table name used by the database storage drivers to keep track of challenges.
             'table' => 'iconcaptcha_challenges',
+            // Specifies whether the expired challenges should automatically be deleted from storage.
+            'purging' => true,
         ],
     ],
 
