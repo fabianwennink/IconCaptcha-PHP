@@ -75,8 +75,6 @@ return [
         'inactivityExpiration' => 120,
         // Specifies the duration (in seconds) after a successful challenge before it's invalidated. Set to 0 to disable.
         'completionExpiration' => 300,
-        // Specifies whether to include the request latency when generating expiration timestamps.
-        'latencyCorrection' => true,
         // Specifies the options for challenge solving attempts.
         'attempts' => [
             // Specifies whether to enable the attempts and timeout feature.

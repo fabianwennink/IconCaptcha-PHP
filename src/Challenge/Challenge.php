@@ -70,11 +70,10 @@ class Challenge
      * will be returned, also as a base64 encoded JSON string.
      *
      * @param string $theme The theme of the captcha.
-     * @param int $latency The request latency, which will be added onto the expiration timestamp.
      *
      * @return string Captcha details required to initialize the client.
      */
-    public function generate(string $theme, int $latency): string
+    public function generate(string $theme): string
     {
         // Call the init 'autocomplete' hook, if provided.
         $shouldImmediatelyComplete = Hook::call(
@@ -84,7 +83,7 @@ class Challenge
 
         // If the hook returned TRUE, the challenge should autocomplete.
         if ($shouldImmediatelyComplete) {
-            $this->markChallengeCompleted($latency);
+            $this->markChallengeCompleted();
             return $this->getCompletionPayload();
         }
 
@@ -93,7 +92,7 @@ class Challenge
         if ($this->attempts->isEnabled() && $this->attempts->isTimeoutActive()) {
             return Payload::encode([
                 'error' => 'too-many-attempts',
-                'data' => ($this->attempts->getTimeoutRemainingTime() * 1000) + $latency
+                'data' => $this->attempts->getTimeoutRemainingTime() * 1000
             ]);
         }
 
@@ -154,8 +153,7 @@ class Challenge
         // If enabled, set the expiration timestamp for the challenge.
         if ($this->options['validation']['inactivityExpiration'] > 0) {
             $this->session->expiresAt = Utils::getCurrentTimeInMilliseconds()
-                + ($this->options['validation']['inactivityExpiration'] * 1000)
-                + $latency;
+                + ($this->options['validation']['inactivityExpiration'] * 1000);
         }
 
         $this->session->save();
@@ -181,10 +179,9 @@ class Challenge
      * @param int $x The clicked X-coordinate relative to the image dimensions.
      * @param int $y The clicked Y-coordinate relative to the image dimensions.
      * @param int $width The width of the captcha element.
-     * @param int $latency The request latency, which will be added onto the expiration timestamp.
      * @return string The request payload, containing the completion status.
      */
-    public function makeSelection(int $x, int $y, int $width, int $latency): string
+    public function makeSelection(int $x, int $y, int $width): string
     {
         // Get the clicked position.
         $clickedPosition = $this->determineClickedIcon($x, $y, $width, count($this->session->icons));
@@ -193,7 +190,7 @@ class Challenge
         if ($this->session->icons[$clickedPosition] === $this->session->correctId) {
 
             // Mark the challenge as completed.
-            $this->markChallengeCompleted($latency);
+            $this->markChallengeCompleted();
 
             // Clear the attempts history of the visitor.
             if($this->attempts->isEnabled()) {
@@ -275,7 +272,7 @@ class Challenge
     /**
      * Marks the challenge as completed.
      */
-    private function markChallengeCompleted(int $latency): void
+    private function markChallengeCompleted(): void
     {
         $this->session->clear();
         $this->session->completed = true;
@@ -284,8 +281,7 @@ class Challenge
         // If enabled, set the expiration timestamp for the completed captcha.
         if ($this->options['validation']['completionExpiration'] > 0) {
             $this->session->expiresAt = Utils::getCurrentTimeInMilliseconds()
-                + ($this->options['validation']['completionExpiration'] * 1000)
-                + $latency;
+                + ($this->options['validation']['completionExpiration'] * 1000);
         }
 
         $this->session->save();

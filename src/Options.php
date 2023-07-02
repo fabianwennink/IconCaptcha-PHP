@@ -45,7 +45,6 @@ class Options
         'validation' => [
             'inactivityExpiration' => 120,
             'completionExpiration' => 300,
-            'latencyCorrection' => true,
             'attempts' => [
                 'enabled' => true,
                 'amount' => 5,

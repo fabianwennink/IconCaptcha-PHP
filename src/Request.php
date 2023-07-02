@@ -68,10 +68,6 @@ class Request
                 $this->badRequest();
             }
 
-            // Calculate the request latency. The value will be added to all
-            // timeout timestamps, to compensate for latency time loss.
-            $latency = $this->options['validation']['latencyCorrection'] ? $currentTimestamp - $requestTimestamp : 0;
-
             switch ($payload['action']) {
                 case 'LOAD':
 
@@ -80,7 +76,7 @@ class Request
 
                     http_response_code(200);
                     header('Content-type: text/plain');
-                    exit($this->challenge->initialize($payload['widgetId'])->generate($theme, $latency));
+                    exit($this->challenge->initialize($payload['widgetId'])->generate($theme));
                 case 'SELECTION':
 
                     // Check if the captcha ID and required other payload data is set.
@@ -89,7 +85,7 @@ class Request
                     }
 
                     $challenge = $this->challenge->initialize($payload['widgetId'], $payload['challengeId']);
-                    $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width'], $latency);
+                    $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width']);
 
                     http_response_code(200);
                     header('Content-type: text/plain');
