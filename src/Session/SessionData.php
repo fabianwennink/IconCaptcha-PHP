@@ -54,7 +54,8 @@ class SessionData
 
     /**
      * Uses the values from the given array to set the session data.
-     * @throws SessionDataParsingFailedException
+     *
+     * @throws SessionDataParsingFailedException If the JSON string could not be parsed.
      */
     public function fromArray(array $data): void
     {
@@ -75,7 +76,8 @@ class SessionData
 
     /**
      * Converts the session data into a JSON string.
-     * @throws SessionDataParsingFailedException
+     *
+     * @throws SessionDataParsingFailedException If the JSON string could not be parsed.
      */
     public function toJson(): string
     {
@@ -88,7 +90,8 @@ class SessionData
 
     /**
      * Uses the given JSON string to fill the session data.
-     * @throws SessionDataParsingFailedException
+     *
+     * @throws SessionDataParsingFailedException If the JSON string could not be parsed.
      */
     public function fromJson(string $json): void
     {
@@ -102,7 +105,8 @@ class SessionData
 
     /**
      * Converts the session data into a JSON string.
-     * @throws SessionDataParsingFailedException
+     *
+     * @throws SessionDataParsingFailedException If the JSON string could not be parsed.
      */
     public function __toString(): string
     {
@@ -111,6 +115,7 @@ class SessionData
 
     /**
      * Checks if a key exists in an array.
+     *
      * @param array $arr The array to verify whether the key exists.
      * @param string $key The key to verify the existence of.
      * @param int $missing An increment counter, will be incremented by 1 if the key does not exist.

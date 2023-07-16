@@ -16,7 +16,7 @@ class PDOAttempts extends Attempts
     protected string $table = 'iconcaptcha_attempts';
 
     /**
-     * @var PDOStorageInterface The database storage wrapper.
+     * @var PDOStorageInterface The database storage container.
      */
     private PDOStorageInterface $storage;
 
@@ -30,6 +30,14 @@ class PDOAttempts extends Attempts
      */
     protected string $ipAddress;
 
+    /**
+     * Initializes a new database (PDO) attempts/timeout manager instance.
+     *
+     * @param PDOStorageInterface $storage The database storage container.
+     * @param QueryInterface $queryStrategy The query strategy to use.
+     * @param array $options The captcha storage options.
+     * @param string $ipAddress The IP address of the visitor.
+     */
     public function __construct(PDOStorageInterface $storage, QueryInterface $queryStrategy, array $options, string $ipAddress)
     {
         parent::__construct($options);
@@ -189,6 +197,7 @@ class PDOAttempts extends Attempts
     /**
      * Performs an attempt insert query. For this query to succeed, no existing
      * record must exist in the database for the visitor's IP address.
+     *
      * @param int $updatedAttemptsCount The updated attempts count.
      * @param string $validityTimestamp The validity timestamp, formatted as a datetime string.
      * @return bool TRUE if the insert query was successful, FALSE otherwise.
@@ -211,6 +220,7 @@ class PDOAttempts extends Attempts
     /**
      * Performs an attempt increase query. For this query to succeed, an existing
      * record must exist in the database for the visitor's IP address.
+     *
      * @param int $updatedAttemptsCount The updated attempts count.
      * @param string $validityTimestamp The validity timestamp, formatted as a datetime string.
      * @return bool TRUE if the increase query was successful, FALSE otherwise.

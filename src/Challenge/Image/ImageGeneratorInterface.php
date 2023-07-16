@@ -6,6 +6,7 @@ interface ImageGeneratorInterface
 {
     /**
      * Returns an image resource/object containing the image at the given path.
+     *
      * @param string $path The absolute path pointing to an image.
      * @return mixed The loaded image resource/object.
      */
@@ -13,6 +14,7 @@ interface ImageGeneratorInterface
 
     /**
      * Flips the given image horizontally.
+     *
      * @param mixed $image The image to flip horizontally.
      * @return mixed The flipped image.
      */
@@ -20,6 +22,7 @@ interface ImageGeneratorInterface
 
     /**
      * Flips the given image vertically.
+     *
      * @param mixed $image The image to flip vertically.
      * @return mixed The flipped image.
      */
@@ -27,6 +30,7 @@ interface ImageGeneratorInterface
 
     /**
      * Rotates the given image.
+     *
      * @param mixed $image The challenge image.
      * @param int $degree The number of degrees to rotate the image.
      * @return mixed The rotated image.
@@ -35,6 +39,7 @@ interface ImageGeneratorInterface
 
     /**
      * Draws a line on the given image at the given coordinates.
+     *
      * @param mixed $image The challenge image.
      * @param mixed $color The color object to draw the border with.
      * @param int $x1 The x-coordinate for first point.
@@ -47,6 +52,7 @@ interface ImageGeneratorInterface
 
     /**
      * Draws the given icon image onto the larger challenge image, at the given coordinates.
+     *
      * @param mixed $image The challenge image.
      * @param mixed $icon The icon image to draw onto the challenge image.
      * @param int $x The x-coordinate where the icon will be drawn.
@@ -58,6 +64,7 @@ interface ImageGeneratorInterface
 
     /**
      * Creates a color object. This object will be used by the {@see drawBorder} function.
+     *
      * @param mixed $image The challenge image.
      * @param int $red The red value of the RGB color, between 0 and 255.
      * @param int $green The green value of the RGB color, between 0 and 255.

@@ -13,8 +13,20 @@ class ServerSession extends Session
      */
     private string $sessionKey = 'challenges';
 
+    /**
+     * @var SessionStorage The session storage container.
+     */
     private SessionStorage $storage;
 
+    /**
+     * Initializes a new server session instance.
+     *
+     * @param SessionStorage $storage The session storage container.
+     * @param array $options The captcha session options.
+     * @param string $ipAddress The IP address of the visitor.
+     * @param string $widgetId The captcha widget identifier.
+     * @param string|null $challengeId The captcha challenge identifier.
+     */
     public function __construct(SessionStorage $storage, array $options, string $ipAddress, string $widgetId, string $challengeId = null)
     {
         parent::__construct($options, $ipAddress, $widgetId, $challengeId);

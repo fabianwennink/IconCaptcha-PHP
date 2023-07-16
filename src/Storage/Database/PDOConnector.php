@@ -8,13 +8,24 @@ use PDO;
 
 abstract class PDOConnector implements StorageInterface
 {
+    /**
+     * List of default PDO connection options.
+     */
     private const DEFAULT_PDO_OPTIONS = [
         PDO::ATTR_CASE => PDO::CASE_NATURAL,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     ];
 
+    /**
+     * @var array The database storage options.
+     */
     private array $options;
 
+    /**
+     * Initializes a new PDOConnector instance.
+     * 
+     * @param array $options The database storage options.
+     */
     public function __construct(array $options)
     {
         $this->options = $options;
@@ -63,8 +74,10 @@ abstract class PDOConnector implements StorageInterface
     }
 
     /**
-     * @param array $config
-     * @return array
+     * Get the connection options for the given configuration. The given
+     * configuration options will be merged with the default PDO options.
+     *
+     * @param array $config The configuration array.
      */
     private function getConnectionOptions(array $config): array
     {

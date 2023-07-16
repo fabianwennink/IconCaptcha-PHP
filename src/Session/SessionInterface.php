@@ -16,6 +16,7 @@ interface SessionInterface
 
     /**
      * Checks if the given challenge and widget identifier combination has session data stored.
+     *
      * @param string $challengeId The challenge identifier.
      * @param string $widgetId The widget identifier.
      */

@@ -30,6 +30,7 @@ class SessionConnector implements StorageInterface
 
     /**
      * Attempts to start a session, if none has been started yet.
+     *
      * @throws RuntimeException if the headers have already been sent
      */
     private function startSession(): void

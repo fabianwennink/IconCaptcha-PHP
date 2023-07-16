@@ -6,8 +6,14 @@ use PDO;
 
 class PDOStorage implements PDOStorageInterface
 {
+    /**
+     * @var PDO The PDO connection object.
+     */
     private PDO $connection;
 
+    /**
+     * @var string The format to be used when transforming time into a datetime string.
+     */
     private string $datetimeFormat;
 
     public function __construct(PDO $connection, string $datetimeFormat)

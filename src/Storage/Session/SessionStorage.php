@@ -9,6 +9,11 @@ class SessionStorage
      */
     private string $sessionName;
 
+    /**
+     * Initializes a new session storage container instance.
+     *
+     * @param string $sessionName The session name.
+     */
     public function __construct(string $sessionName)
     {
         $this->sessionName = $sessionName;
@@ -36,6 +41,7 @@ class SessionStorage
 
     /**
      * Writes a value to the session storage.
+     *
      * @param string $key The key to write the value to. Dot notation is supported.
      * @param mixed $value The value to write to the session.
      */
@@ -48,6 +54,7 @@ class SessionStorage
 
     /**
      * Removes a value from the session storage.
+     *
      * @param string $key The key of the value to remove. Dot notation is supported.
      */
     public function remove(string $key): void
@@ -60,6 +67,7 @@ class SessionStorage
 
     /**
      * Checks if a value exists in the session storage.
+     *
      * @param string $key The key to check for. Dot notation is supported.
      */
     public function exists(string $key): bool

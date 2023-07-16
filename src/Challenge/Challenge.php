@@ -2,6 +2,7 @@
 
 namespace IconCaptcha\Challenge;
 
+use Exception;
 use IconCaptcha\Attempts\AttemptsFactory;
 use IconCaptcha\Attempts\AttemptsInterface;
 use IconCaptcha\Challenge\Hooks\Hook;
@@ -13,27 +14,59 @@ use IconCaptcha\Session\Session;
 use IconCaptcha\Session\SessionFactory;
 use IconCaptcha\Session\SessionInterface;
 use IconCaptcha\Utils;
+use JsonException;
 
 class Challenge
 {
+    /**
+     * The maximum height of a challenge image.
+     */
     private const MAX_HEIGHT_OF_CHALLENGE = 50;
 
+    /**
+     * The lowest amount of different icon possibilities per amount of icons per challenge.
+     * @example If there are 6 icons per challenge, the lowest amount of different icons can be 2.
+     */
     private const CAPTCHA_MAX_LOWEST_ICON_COUNT = [5 => 2, 6 => 2, 7 => 3, 8 => 3];
 
-    private array $options;
-
-    private $storage;
-
+    /**
+     * @var Session The captcha challenge session.
+     */
     private Session $session;
 
+    /**
+     * @var AttemptsInterface The attempts/timeout manager instance.
+     */
     private AttemptsInterface $attempts;
 
-    public function __construct($storage, $options)
+    /**
+     * @var array The captcha options.
+     */
+    private array $options;
+
+    /**
+     * @var mixed The storage container.
+     */
+    private $storage;
+
+    /**
+     * Initializes a new challenge generator/processor instance.
+     *
+     * @param mixed $storage The storage container.
+     * @param array $options The captcha options.
+     */
+    public function __construct($storage, array $options)
     {
         $this->storage = $storage;
         $this->options = $options;
     }
 
+    /**
+     * Initializes the challenge manager with the given captcha identifiers.
+     *
+     * @param string $widgetId The widget identifier.
+     * @param string|null $challengeId The challenge identifier.
+     */
     public function initialize(string $widgetId, string $challengeId = null): Challenge
     {
         // Get the visitor's current IP address.
@@ -66,8 +99,8 @@ class Challenge
      * This information will be stored a captcha session, implementing {@see SessionInterface}.
      * The details required to initialize the client will be returned as a base64 encoded JSON string.
      *
-     * In case a timeout is detected, no state will be initialized and an error message
-     * will be returned, also as a base64 encoded JSON string.
+     * In case a timeout is detected, no state will be initialized and an error message will be
+     * returned instead. This error message will also be a base64 encoded JSON string.
      *
      * @param string $theme The theme of the captcha.
      *
@@ -180,6 +213,7 @@ class Challenge
      * @param int $y The clicked Y-coordinate relative to the image dimensions.
      * @param int $width The width of the captcha element.
      * @return string The request payload, containing the completion status.
+     * @throws JsonException If a problem occurs when encoding the response payload.
      */
     public function makeSelection(int $x, int $y, int $width): string
     {
@@ -234,7 +268,7 @@ class Challenge
      * image was already requested once, an HTTP status '403 Forbidden' will be set and no image will be returned.
      *
      * The image will only be rendered once as a PNG, and be destroyed right after rendering.
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException If the placeholder image does not exist at the configured path.
      */
     public function render(): ?string
     {
@@ -289,7 +323,9 @@ class Challenge
 
     /**
      * Returns the request payload for a completed challenge.
+     *
      * @return string The payload.
+     * @throws JsonException If a problem occurs when encoding the payload.
      */
     private function getCompletionPayload(): string
     {
@@ -302,6 +338,7 @@ class Challenge
 
     /**
      * Returns the clicked icon position based on the X and Y position and the captcha width.
+     *
      * @param $clickedXPos int The X position of the click.
      * @param $clickedYPos int The Y position of the click.
      * @param $captchaWidth int The width of the captcha.
@@ -330,6 +367,7 @@ class Challenge
      * @param int $iconCount The total amount of icons which will be present in the generated image.
      * @param int $smallestIconCount The amount of times the correct icon will be present in the generated image.
      * @return int[] The number of times an icon should be rendered onto the captcha image. Each value in the returned array represents a new unique icon.
+     * @throws Exception If a problem occurs during the calculations.
      */
     private function calculateIconAmounts(int $iconCount, int $smallestIconCount = 1): array
     {

@@ -13,6 +13,9 @@ class SessionAttempts extends Attempts
      */
     private string $sessionKey = 'attempts';
 
+    /**
+     * @var SessionStorage The session storage wrapper.
+     */
     private SessionStorage $storage;
 
     public function __construct(SessionStorage $storage, array $options)

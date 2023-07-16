@@ -4,13 +4,20 @@ namespace IconCaptcha\Token;
 
 abstract class AbstractToken
 {
+    /**
+     * The default length of a captcha token.
+     */
     public const TOKEN_LENGTH = 20;
 
+    /**
+     * The name of the form input field containing the captcha token.
+     */
     public const TOKEN_FIELD_NAME = '_iconcaptcha-token';
 
     /**
      * Generates a token string, which will serve as a CSRF token. Based on the PHP version and
      * installed extensions, different internal PHP functions will be used to generate the token.
+     *
      * @return string The generated token.
      */
     protected function generate(): string
@@ -35,6 +42,7 @@ abstract class AbstractToken
      * Checks if the given token (correct token) matches the token values passed to the request as part of the payload and headers.
      * The payload token is always required, while the header token might not be present with every request. For that reason, it will
      * only be compared against the correct token if it's present. It not being present, is no reason for the check to return FALSE.
+     *
      * @param $storedToken string The correct token, which will be compared against the payload & header tokens.
      * @param $payloadToken string The token sent with the request as part of the payload.
      * @param $headerToken string|null The token sent with the request as a header. Can be empty in certain requests.

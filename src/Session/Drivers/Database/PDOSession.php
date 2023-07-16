@@ -19,7 +19,7 @@ class PDOSession extends Session
     private bool $existingSession = false;
 
     /**
-     * @var PDOStorageInterface The database storage wrapper.
+     * @var PDOStorageInterface The database storage container.
      */
     private PDOStorageInterface $storage;
 
@@ -28,6 +28,16 @@ class PDOSession extends Session
      */
     private QueryInterface $queryStrategy;
 
+    /**
+     * Initializes a new database (PDO) session instance.
+     *
+     * @param PDOStorageInterface $storage The database storage container.
+     * @param QueryInterface $queryStrategy The query strategy to use.
+     * @param array $options The captcha session options.
+     * @param string $ipAddress The IP address of the visitor.
+     * @param string $widgetId The captcha widget identifier.
+     * @param string|null $challengeId The captcha challenge identifier.
+     */
     public function __construct(
         PDOStorageInterface $storage,
         QueryInterface $queryStrategy,
@@ -157,6 +167,7 @@ class PDOSession extends Session
 
     /**
      * Returns the session expiration timestamp as a formatted datetime string, suitable for storing in a database.
+     *
      * @return string|null The formatted datetime string, or NULL if the session expiration time is not set.
      */
     private function getDbFormattedExpirationTime(): ?string

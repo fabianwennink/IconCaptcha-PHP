@@ -26,6 +26,7 @@ class Utils
 
     /**
      * Generates a random UUID.
+     *
      * @return string The generated UUID.
      * @throws Exception
      */
@@ -39,6 +40,7 @@ class Utils
 
     /**
      * Checks if a string is in the UUID v4 format.
+     *
      * @param string $string The string to check.
      */
     public static function isUUIDv4(string $string): bool
@@ -48,8 +50,10 @@ class Utils
 
     /**
      * Returns the IP address of the visitor.
+     *
      * @param string|Closure $option A function which returns the IP address, or an already known IP address.
-     * @return string
+     * @return string|null The IP address as a string, or null if it cannot be determined.
+     * @throws InvalidArgumentException If the 'ipAddress' configuration option is invalid.
      */
     public static function getIpAddress($option): ?string
     {
@@ -61,6 +65,6 @@ class Utils
             return $option();
         }
 
-        throw new InvalidArgumentException("The 'ipAddress' options is invalid.");
+        throw new InvalidArgumentException("The 'ipAddress' configuration options is invalid.");
     }
 }

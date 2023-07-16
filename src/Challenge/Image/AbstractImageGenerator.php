@@ -9,17 +9,38 @@ use IconCaptcha\Session\SessionInterface;
 
 abstract class AbstractImageGenerator implements ImageGeneratorInterface
 {
+    /**
+     * The default captcha challenge image size in pixels.
+     */
     private const CAPTCHA_IMAGE_SIZE = 320;
 
+    /**
+     * The different sizes in pixels of each icon on the challenge image based on the amount of icons per challenge.
+     */
     private const CAPTCHA_ICON_SIZES = [5 => 50, 6 => 40, 7 => 30, 8 => 20];
 
+    /**
+     * The default challenge border color as RGB.
+     */
     private const CAPTCHA_DEFAULT_BORDER_COLOR = [240, 240, 240];
 
+    /**
+     * @var SessionInterface The session containing captcha information
+     */
     private SessionInterface $session;
 
+    /**
+     * @var array The captcha options.
+     */
     private array $options;
 
-    public function __construct($session, $options)
+    /**
+     * Initializes a new image generator instance.
+     *
+     * @param SessionInterface $session The session containing captcha information
+     * @param array $options The captcha options.
+     */
+    public function __construct(SessionInterface $session, array $options)
     {
         $this->session = $session;
         $this->options = $options;
@@ -27,7 +48,7 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
 
     /**
      * Returns a generated image containing the icons for the current captcha instance. The icons will be copied
-     * onto a placeholder image, located at the $placeholderPath. The icons will be randomly rotated and flipped
+     * onto a placeholder image, located at the $placeholderPath path. The icons will be randomly rotated and flipped
      * based on the captcha options.
      *
      * @param string $iconPath The path to the folder holding the icons.
@@ -128,6 +149,7 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
 
     /**
      * Outputs the given challenge image resource as a base64 string.
+     *
      * @param mixed $image The challenge image to render.
      * @return string The image as a base64 string.
      */

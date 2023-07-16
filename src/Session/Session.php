@@ -40,6 +40,9 @@ abstract class Session implements SessionInterface
      */
     protected bool $dataLoaded = false;
 
+    /**
+     * @var array The captcha session options
+     */
     protected array $options;
 
     /**
@@ -70,7 +73,7 @@ abstract class Session implements SessionInterface
     }
 
     /**
-     * Resets the session to the default values.
+     * Resets the session to its default state.
      */
     public function clear(): void
     {
@@ -91,6 +94,7 @@ abstract class Session implements SessionInterface
 
     /**
      * Retrieves data from the session based on the given property name.
+     *
      * @param string $key The name of the property in the session which should be retrieved.
      * @return mixed The data in the session, or NULL if the key does not exist.
      */
@@ -101,6 +105,7 @@ abstract class Session implements SessionInterface
 
     /**
      * Set a value of the captcha session.
+     *
      * @param string $key The name of the property in the session which should be set.
      * @param mixed $value The value which should be stored.
      */
@@ -110,7 +115,7 @@ abstract class Session implements SessionInterface
     }
 
     /**
-     * Returns whether the session data was loaded or if the instance is still being initialized.
+     * Returns whether the session data was loaded.
      */
     public function hasSessionDataLoaded(): bool
     {
@@ -119,7 +124,8 @@ abstract class Session implements SessionInterface
 
     /**
      * Generates a random UUID to be used as the challenge identifier.
-     * @throws Exception
+     *
+     * @throws Exception If no unique identifier could be generated.
      */
     protected function generateUniqueId(): string
     {

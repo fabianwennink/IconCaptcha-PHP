@@ -14,6 +14,7 @@ final class ValidationResult
 
     /**
      * Creates a new validation result instance.
+     *
      * @param bool $success
      * @param string|null $errorCode
      */

@@ -4,8 +4,14 @@ namespace IconCaptcha\Token;
 
 class IconCaptchaToken extends AbstractToken implements TokenInterface
 {
+    /**
+     * The key of the session containing the captcha data.
+     */
     private const SESSION_NAME = 'iconcaptcha';
 
+    /**
+     * The key of the session containing the token.
+     */
     private const SESSION_TOKEN = 'token';
 
     /**
@@ -54,6 +60,7 @@ class IconCaptchaToken extends AbstractToken implements TokenInterface
 
     /**
      * Saves the given token to the session.
+     *
      * @param string $token The token to store.
      */
     private function store(string $token): void
@@ -65,6 +72,7 @@ class IconCaptchaToken extends AbstractToken implements TokenInterface
 
     /**
      * Returns the token stored in the session.
+     *
      * @return string|null The token, or NULL if there is no token.
      */
     private function retrieve(): ?string
@@ -76,7 +84,6 @@ class IconCaptchaToken extends AbstractToken implements TokenInterface
 
     /**
      * Attempts to start a session, if none has been started yet.
-     * @return void
      */
     private function startSession(): void
     {

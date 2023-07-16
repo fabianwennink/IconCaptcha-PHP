@@ -8,7 +8,8 @@ class Payload
 {
     /**
      * Tries to decode the given base64 and JSON encoded payload.
-     * @throws JsonException
+     *
+     * @throws JsonException If the payload contains invalid JSON.
      */
     public static function decode(string $payload)
     {
@@ -25,7 +26,8 @@ class Payload
     /**
      * Encodes the given payload with base64 and JSON.
      * Note: All NULL values will be filtered.
-     * @throws JsonException
+     *
+     * @throws JsonException If the payload contains invalid data which fails to be encoded.
      */
     public static function encode(array $payload): string
     {

@@ -37,6 +37,13 @@ class Cors
      */
     private array $vary = [];
 
+    /**
+     * Initializes a new CORS handler instance.
+     *
+     * @param array $origins All allowed origins.
+     * @param bool $allowCredentials Whether to expose the credentials in the response.
+     * @param int $cacheAge For how long the CORS response should be cached, in seconds.
+     */
     public function __construct(array $origins, bool $allowCredentials, int $cacheAge)
     {
         $this->origins = $origins;
@@ -59,6 +66,9 @@ class Cors
         }
     }
 
+    /**
+     * Handles the CORS request.
+     */
     public function handleCors(): void
     {
         $originAllowed = $this->addOriginHeader();
@@ -99,6 +109,7 @@ class Cors
      * Will set the 'Access-Control-Allow-Origin' header in case the request
      * origin is allowed. In case no specific origin is configured, all origins
      * will be allowed (set as *).
+     *
      * @return bool TRUE if the header was set, FALSE if it was not set.
      */
     private function addOriginHeader(): bool
@@ -125,6 +136,7 @@ class Cors
 
     /**
      * Checks if the given origin is allowed to make a request.
+     *
      * @param string $origin The origin URL.
      */
     private function isOriginAllowed(string $origin): bool
@@ -162,6 +174,7 @@ class Cors
 
     /**
      * Converts the given wildcard URL and returns a regex pattern for easier comparison.
+     *
      * @param string $url The wildcard URL.
      * @return string The wildcard URL regex pattern.
      */
@@ -174,6 +187,7 @@ class Cors
 
     /**
      * Will set the 'Vary' header with the given values.
+     *
      * @param array $headers The header names to set in the Vary header.
      */
     private function applyVaryHeaders(array $headers): void

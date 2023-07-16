@@ -8,19 +8,37 @@ use IconCaptcha\Utils;
 
 class Validator
 {
+    /**
+     * The name of the form input field containing whether the captcha was initialized.
+     */
     private const CAPTCHA_FIELD_INIT = 'ic-rq';
 
+    /**
+     * The name of the form input field containing the widget identifier.
+     */
     private const CAPTCHA_FIELD_WIDGET_ID = 'ic-wid';
 
+    /**
+     * The name of the form input field containing the challenge identifier.
+     */
     private const CAPTCHA_FIELD_CHALLENGE_ID = 'ic-cid';
 
+    /**
+     * The name of the form input field used as a honeypot.
+     */
     private const CAPTCHA_FIELD_HONEYPOT = 'ic-hp';
 
+    /**
+     * @var array The captcha options.
+     */
     private array $options;
 
+    /**
+     * @var mixed The storage container.
+     */
     private $storage;
 
-    public function __construct($storage, $options)
+    public function __construct($storage, array $options)
     {
         $this->storage = $storage;
         $this->options = $options;
@@ -104,16 +122,18 @@ class Validator
     }
 
     /**
-     * Validates the global captcha session token against the given payload token and sometimes against a header token
-     * as well. All the given tokens must match the global captcha session token to pass the check. This function
-     * will only validate the given tokens if the 'token' option is set to TRUE. If the 'token' option is set to anything
-     * else other than TRUE, the check will be skipped.
+     * Validates the global captcha session token against the given payload token and against a header token
+     * as well if present. All the given tokens must match the global captcha session token to pass the check.
+     *
+     * This function will only validate the given tokens if the 'token' option is set to TRUE. If the 'token'
+     * option is set to anything else other than TRUE, the check will be skipped.
      *
      * @param string $payloadToken The token string received via the HTTP request body.
      * @param string|null $headerToken The token string received via the HTTP request headers. This value is optional,
      * as not every request will contain custom HTTP headers and thus this token should be able to be skipped. Default
      * value is NULL. When the value is set to anything else other than NULL, the given value will be checked against
      * the captcha session token.
+     *
      * @return bool TRUE if the captcha session token matches the given tokens or if the token option is disabled,
      * FALSE if the captcha session token does not match the given tokens.
      */
@@ -126,11 +146,22 @@ class Validator
         return true;
     }
 
+    /**
+     * Creates a success response object.
+     *
+     * @return ValidationResult The successful validation response.
+     */
     private function createSuccessResponse(): ValidationResult
     {
         return new ValidationResult(true);
     }
 
+    /**
+     * Creates a failed response object.
+     *
+     * @param string $status The status message for the failed response.
+     * @return ValidationResult The failed validation response.
+     */
     private function createFailedResponse(string $status): ValidationResult
     {
         return new ValidationResult(false, $status);

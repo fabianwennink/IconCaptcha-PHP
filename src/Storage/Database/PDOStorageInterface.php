@@ -18,6 +18,7 @@ interface PDOStorageInterface
 
     /**
      * Formats the given timestamp into a database supported datetime string.
+     *
      * @param int $timestamp The timestamp to format.
      */
     public function formatTimestampAsDatetime(int $timestamp): string;

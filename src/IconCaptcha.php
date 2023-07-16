@@ -19,12 +19,26 @@ class IconCaptcha
      */
     private array $options;
 
+    /**
+     * @var Validator The challenge validator.
+     */
     private Validator $validator;
 
+    /**
+     * @var Request The request handler.
+     */
     private Request $request;
 
+    /**
+     * @var mixed The storage container.
+     */
     private $storage;
 
+    /**
+     * Initializes a new IconCaptcha instance.
+     *
+     * @param array $options The captcha options.
+     */
     public function __construct(array $options)
     {
         $this->options = $this->options($options);
@@ -32,19 +46,25 @@ class IconCaptcha
         $this->validator = new Validator($this->storage, $this->options);
     }
 
+    /**
+     * Sets the captcha configuration.
+     *
+     * @param array $options The captcha configuration.
+     *
+     * @return array The newly configured options.
+     */
     public function options(array $options): array
     {
         return $this->options = Options::prepare($options);
     }
 
     /**
-     * @return Request
+     * Returns a new request handler instance.
      */
     public function request(): Request
     {
         if (!isset($this->request)) {
             $this->request = new Request(
-                $this->options,
                 new Challenge($this->storage, $this->options),
                 $this->validator
             );
@@ -53,17 +73,18 @@ class IconCaptcha
     }
 
     /**
-     * @param $request
-     * @return ValidationResult
+     * Validates the form and determines whether the captcha challenge was successfully solved.
+     *
+     * @param array $request The form POST contents ($_POST)
+     * @return ValidationResult The validation result containing whether the challenge was successfully solved.
      */
-    public function validate($request): ValidationResult
+    public function validate(array $request): ValidationResult
     {
         return $this->validator->validate($request);
     }
 
     /**
      * Handles the CORS preflight request.
-     * @return void
      */
     public function handleCors(): void
     {

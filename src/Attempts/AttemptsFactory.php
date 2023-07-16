@@ -17,9 +17,8 @@ class AttemptsFactory
      * @param array $options The attempts/timeout options.
      * @param string $ipAddress The IP address of the visitor.
      *
-     * @return PDOAttempts|SessionAttempts|mixed
-     *
-     * @throws InvalidArgumentException
+     * @return PDOAttempts|SessionAttempts|AttemptsInterface|mixed The generated attempts/timeout manager instance.
+     * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */
     public static function create($storage, string $driver, array $options, string $ipAddress): AttemptsInterface
     {

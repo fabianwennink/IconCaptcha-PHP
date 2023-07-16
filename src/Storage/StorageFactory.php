@@ -14,10 +14,10 @@ class StorageFactory
     /**
      * Create a new storage instance based on the driver configuration.
      *
-     * @param array $options
-     * @return StorageInterface
+     * @param array $options The captcha storage options.
      *
-     * @throws InvalidArgumentException
+     * @return StorageInterface The generated storage instance.
+     * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */
     public static function create(array $options): StorageInterface
     {

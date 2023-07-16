@@ -16,7 +16,7 @@ interface AttemptsInterface
     public function increaseAttempts(): void;
 
     /**
-     * Clears the attempts history and possible timeout of a visitor.
+     * Clears the attempts history and possible timeout of the visitor.
      */
     public function clearAttempts(): void;
 

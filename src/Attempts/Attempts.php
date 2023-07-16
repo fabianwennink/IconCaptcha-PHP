@@ -6,8 +6,16 @@ use IconCaptcha\Utils;
 
 abstract class Attempts implements AttemptsInterface
 {
+    /**
+     * @var array The captcha attempts/timeout options.
+     */
     protected array $options;
 
+    /**
+     * Create a new attempts/timeout manager instance.
+     * 
+     * @param array $options The captcha attempts/timeout options.
+     */
     public function __construct(array $options)
     {
         $this->options = $options;
@@ -52,7 +60,9 @@ abstract class Attempts implements AttemptsInterface
     }
 
     /**
-     * Generates a new validity timestamp in seconds, based on the configuration and current timestamp.
+     * Generates a new validity timestamp (seconds) based on the configuration and current timestamp.
+     *
+     * @return int The validity timestamp.
      */
     protected function getNewValidityTimestamp(): int
     {
@@ -71,24 +81,28 @@ abstract class Attempts implements AttemptsInterface
 
     /**
      * Attempts to retrieve the current active timeout timestamp from storage.
+     *
      * @return int|null The timeout expiration timestamp, if set, otherwise NULL.
      */
     abstract protected function getActiveTimeoutTimestamp(): ?int;
 
     /**
      * Attempts to retrieve the current attempts count made by the visitor from storage.
+     *
      * @return int|null The amount of attempts made by the visitor, if set, otherwise NULL.
      */
     abstract protected function getCurrentAttemptsCount(): ?int;
 
     /**
      * Attempts to retrieve the validity timestamp from storage.
+     *
      * @return int|null The timestamp, if set, otherwise NULL.
      */
     abstract protected function getAttemptsValidityTimestamp(): ?int;
 
     /**
-     * Issues a new temporary timeout for a visitor.
+     * Issues a new temporary timeout for the visitor.
+     *
      * @return bool Whether the timeout was successfully issued.
      */
     abstract protected function issueTimeout(): bool;
