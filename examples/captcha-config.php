@@ -114,6 +114,8 @@ return [
             'table' => 'iconcaptcha_challenges',
             // Specifies whether the expired challenges should automatically be deleted from storage.
             'purging' => true,
+            // Specifies the maximum amount of attempts that will be made to generate a captcha identifier before failing.
+            'identifierTries' => 100,
         ],
     ],
 

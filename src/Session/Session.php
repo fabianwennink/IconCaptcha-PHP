@@ -46,6 +46,11 @@ abstract class Session implements SessionInterface
     protected array $options;
 
     /**
+     * @var int The maximum number of tries to generate a unique identifier.
+     */
+    private int $maxIdentifierTries;
+
+    /**
      * Creates or loads a captcha session. If the widget and challenge identifiers are
      * given, an attempt will be made to load existing session data belonging to
      * the session identifiers. Otherwise, a new session will be created.
@@ -58,6 +63,7 @@ abstract class Session implements SessionInterface
     public function __construct(array $options, string $ipAddress, string $widgetId, string $challengeId = null)
     {
         $this->options = $options;
+        $this->maxIdentifierTries = (int)$options['options']['identifierTries'];
         $this->ipAddress = $ipAddress;
         $this->widgetId = $widgetId;
         $this->challengeId = $challengeId;
@@ -129,14 +135,20 @@ abstract class Session implements SessionInterface
      */
     protected function generateUniqueId(): string
     {
-        $id = null;
+        $tries = 0;
 
-        // Generate an identifier, making sure it is not already in use.
-        while (empty($id) || $this->exists($id, $this->widgetId)) {
+        do {
             $id = Utils::generateUUID();
-        }
+            $tries++;
 
-        return $id;
+            // Check if the identifier already exists.
+            if (!$this->exists($id, $this->widgetId)) {
+                return $id;
+            }
+        } while ($tries < $this->maxIdentifierTries);
+
+        // No identifier could be generated within the maximum number of tries.
+        throw new Exception('Failed to generate a captcha identifier.');
     }
 
     /**

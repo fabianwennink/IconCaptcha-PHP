@@ -71,6 +71,7 @@ class Options
             'options' => [
                 'table' => 'iconcaptcha_challenges',
                 'purging' => true,
+                'identifierTries' => 100,
             ],
         ],
         'hooks' => [
