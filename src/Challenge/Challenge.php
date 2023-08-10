@@ -227,7 +227,7 @@ class Challenge
             $this->markChallengeCompleted();
 
             // Clear the attempts history of the visitor.
-            if($this->attempts->isEnabled()) {
+            if ($this->attempts->isEnabled()) {
                 $this->attempts->clearAttempts();
             }
 
@@ -244,7 +244,7 @@ class Challenge
         $this->session->completed = false;
 
         // Increase the attempts counter.
-        if($this->attempts->isEnabled()) {
+        if ($this->attempts->isEnabled()) {
             $this->attempts->increaseAttempts();
         }
 

@@ -23,7 +23,7 @@ abstract class PDOConnector implements StorageInterface
 
     /**
      * Initializes a new PDOConnector instance.
-     * 
+     *
      * @param array $options The database storage options.
      */
     public function __construct(array $options)

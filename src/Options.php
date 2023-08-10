@@ -95,7 +95,7 @@ class Options
         // TODO validate if all classes and closures/invokables are callable with `is_callable`.
 
         // If an alternative function to get the visitor's IP address is not defined, use the default 'REMOTE_ADDR' variable.
-        if(!isset($options['ipAddress'])) {
+        if (!isset($options['ipAddress'])) {
             $mergedOptions['ipAddress'] = static fn() => $_SERVER['REMOTE_ADDR'];
         }
 

@@ -52,7 +52,7 @@ class PDOAttempts extends Attempts
         }
 
         // Purge any expired attempts records, if enabled.
-        if(!isset($this->options['storage']['options']['purging']) || $this->options['storage']['options']['purging']) {
+        if (!isset($this->options['storage']['options']['purging']) || $this->options['storage']['options']['purging']) {
             $this->purgeExpiredAttempts();
         }
     }
@@ -68,7 +68,7 @@ class PDOAttempts extends Attempts
 
         // If the attempts threshold was exceeded, issue a timeout.
         // Otherwise, only register the attempt.
-        if($updatedAttemptsCount >= $this->options['amount']) {
+        if ($updatedAttemptsCount >= $this->options['amount']) {
             $this->issueTimeout();
         } else {
             $validityTimestamp = $this->storage->formatTimestampAsDatetime(
@@ -77,15 +77,15 @@ class PDOAttempts extends Attempts
 
             // Depending on if attempts were already registered, we either update
             // the attempts counter of the existing record, or insert a new one.
-            if(is_null($storedAttemptsCount)) {
+            if (is_null($storedAttemptsCount)) {
                 // No previous attempts were found, try to insert a new record.
-                if(!$this->performAttemptsInsert($updatedAttemptsCount, $validityTimestamp)) {
+                if (!$this->performAttemptsInsert($updatedAttemptsCount, $validityTimestamp)) {
                     // Insertion failed, perform increase query.
                     $this->performAttemptsIncrease($updatedAttemptsCount, $validityTimestamp);
                 }
             } else {
                 // Previous attempts were found, perform increase query.
-                if(!$this->performAttemptsIncrease($updatedAttemptsCount, $validityTimestamp)) {
+                if (!$this->performAttemptsIncrease($updatedAttemptsCount, $validityTimestamp)) {
                     // Increase query failed, insert a new record.
                     $this->performAttemptsInsert($updatedAttemptsCount, $validityTimestamp);
                 }
@@ -212,7 +212,7 @@ class PDOAttempts extends Attempts
                 $updatedAttemptsCount,
                 $validityTimestamp,
             ]);
-        } catch(PDOException $exception) {
+        } catch (PDOException $exception) {
             return false;
         }
     }
@@ -235,7 +235,7 @@ class PDOAttempts extends Attempts
                 $validityTimestamp,
                 $this->ipAddress,
             ]);
-        } catch(PDOException $exception) {
+        } catch (PDOException $exception) {
             return false;
         }
     }

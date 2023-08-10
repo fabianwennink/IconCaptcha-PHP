@@ -36,7 +36,7 @@ class SessionAttempts extends Attempts
 
         // If the attempts threshold was passed, issue a timeout.
         // Otherwise, only increment the attempts counter.
-        if($updatedAttemptsCount >= $this->options['amount']) {
+        if ($updatedAttemptsCount >= $this->options['amount']) {
             $this->issueTimeout();
         } else {
             $this->storage->write($this->sessionKey, [
@@ -79,7 +79,7 @@ class SessionAttempts extends Attempts
      */
     protected function getActiveTimeoutTimestamp(): ?int
     {
-        if($this->isAttemptsDataStillValid()) {
+        if ($this->isAttemptsDataStillValid()) {
             return $this->storage->read("$this->sessionKey.timeout");
         }
 
@@ -91,7 +91,7 @@ class SessionAttempts extends Attempts
      */
     protected function getCurrentAttemptsCount(): ?int
     {
-        if($this->isAttemptsDataStillValid()) {
+        if ($this->isAttemptsDataStillValid()) {
             return $this->storage->read("$this->sessionKey.count");
         }
 

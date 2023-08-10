@@ -21,7 +21,7 @@ class SessionConnector implements StorageInterface
         $this->startSession();
 
         // Initialize a new session key if it does not yet exist.
-        if(!isset($_SESSION[self::SESSION_NAME])) {
+        if (!isset($_SESSION[self::SESSION_NAME])) {
             $_SESSION[self::SESSION_NAME] = [];
         }
 
@@ -36,7 +36,7 @@ class SessionConnector implements StorageInterface
     private function startSession(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
-            if(!headers_sent()) {
+            if (!headers_sent()) {
                 session_start();
             } else {
                 throw new RuntimeException('A session could not be started as the headers have already been sent.');

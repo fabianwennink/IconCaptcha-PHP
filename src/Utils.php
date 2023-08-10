@@ -57,11 +57,11 @@ class Utils
      */
     public static function getIpAddress($option): ?string
     {
-        if(is_string($option)) {
+        if (is_string($option)) {
             return $option;
         }
 
-        if(is_callable($option)) {
+        if (is_callable($option)) {
             return $option();
         }
 

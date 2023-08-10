@@ -13,7 +13,7 @@ abstract class Attempts implements AttemptsInterface
 
     /**
      * Create a new attempts/timeout manager instance.
-     * 
+     *
      * @param array $options The captcha attempts/timeout options.
      */
     public function __construct(array $options)
@@ -49,9 +49,9 @@ abstract class Attempts implements AttemptsInterface
         $storedTimeoutTimestamp = $this->getActiveTimeoutTimestamp();
 
         // If there is a timeout active, calculate the remaining time.
-        if($storedTimeoutTimestamp !== null) {
+        if ($storedTimeoutTimestamp !== null) {
             $remainingTime = $storedTimeoutTimestamp - Utils::getCurrentTimeInSeconds();
-            if($remainingTime > 0) {
+            if ($remainingTime > 0) {
                 return $remainingTime;
             }
         }
