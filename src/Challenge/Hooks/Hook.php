@@ -19,6 +19,7 @@ class Hook
      * @param mixed ...$params Any additional data which has to be passed to the hook.
      *
      * @return mixed The result of the hook, or the default value if no hook was called.
+     * @throws InvalidHookException If the hook is invalid/implemented incorrectly.
      */
     public static function call(string $type, $class, string $action, SessionInterface $session, array $options, $default, ...$params)
     {
@@ -43,6 +44,7 @@ class Hook
      * @param array $options The captcha options.
      *
      * @param mixed ...$params Any additional data which has to be passed to the hook.
+     * @throws InvalidHookException If the hook is invalid/implemented incorrectly.
      */
     public static function callVoid(string $type, $class, string $action, SessionInterface $session, array $options, ...$params): void
     {
@@ -63,15 +65,26 @@ class Hook
      * @param mixed $interface The interface which the hook has to implement in order to be called properly.
      *
      * @return mixed|null The hook class instance, or NULL if no hook was defined for the current action.
+     * @throws InvalidHookException If the hook is invalid/implemented incorrectly.
      */
     private static function getHook(array $options, string $hookName, $interface)
     {
-        if (isset($options['hooks'][$hookName])) {
-            $hook = new $options['hooks'][$hookName]();
-            if ($hook instanceof $interface) {
+        // Make sure the hook exists in the options.
+        if (!isset($options['hooks'][$hookName])) {
+            return null;
+        }
+
+        $option = $options['hooks'][$hookName];
+
+        // Make sure the hook is a valid class before invoking it.
+        if (is_string($option) && class_exists($option)) {
+            $hook = new $option();
+            if (in_array($interface, class_implements($hook), true)) {
                 return $hook;
             }
         }
-        return null;
+
+        // The hook is invalid, and most likely incorrectly configured.
+        throw new InvalidHookException($hookName);
     }
 }
