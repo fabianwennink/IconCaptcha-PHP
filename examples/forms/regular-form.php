@@ -112,7 +112,7 @@
             <div class="copyright">
                 <p>Copyright &copy; <?= date('Y'); ?> Fabian Wennink - All rights reserved</p>
                 <p><small>IconCaptcha is licensed under <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>.
-				Icons made by by <a href="https://streamlinehq.com" target="_blank" rel="nofollow noopener">Streamline</a>.</small></p>
+				Icons made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow noopener">Streamline</a>.</small></p>
             </div>
         </div>
 
@@ -145,7 +145,7 @@
                 IconCaptcha.init('.iconcaptcha-widget', {
                     general: {
                         validationPath: '../captcha-request.php',
-                        fontFamily: 'Poppins',
+                        fontFamily: 'inherit',
                         credits: 'show',
                     },
                     security: {
@@ -168,7 +168,7 @@
                             subtitle: "You've selected the wrong image."
                         },
                         timeout: {
-                            title: 'Please wait 60 sec.',
+                            title: 'Please wait.',
                             subtitle: 'You made too many incorrect selections.'
                         }
                     }

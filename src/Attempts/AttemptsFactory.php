@@ -41,7 +41,7 @@ class AttemptsFactory
                 if (class_exists($driver) && in_array(AttemptsInterface::class, class_implements($driver), true)) {
                     return new $driver($storage, $options, $ipAddress);
                 }
-                throw new InvalidArgumentException("Unsupported driver [$driver].");
+                throw new InvalidArgumentException("Unsupported attempts/timeout driver [$driver].");
         }
     }
 }

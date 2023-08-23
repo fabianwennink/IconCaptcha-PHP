@@ -134,7 +134,7 @@ return [
 
     // Specifies the token class to use for challenge CSRF tokens. Set to null to disable.
     // The default token class is \IconCaptcha\Token\IconCaptchaToken::class.
-    'token' => IconCaptcha\Token\IconCaptchaToken::class,
+    'token' => \IconCaptcha\Token\IconCaptchaToken::class,
 
     // Configuration for hooks.
     'hooks' => [
