@@ -1,77 +1,90 @@
-# IconCaptcha - PHP & JavaScript
+<br/>
+<p align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/k8sIUQI.png">
+      <source media="(prefers-color-scheme: light)" srcset="https://i.imgur.com/RMUALSz.png">
+      <img alt="IconCaptcha Logo" src="https://i.imgur.com/RMUALSz.png">
+    </picture>
+</p>
 
-![Version](https://img.shields.io/badge/Version-3.1.2-orange.svg?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
-[![Issues](https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square)](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/issues)
-[![Support](https://img.shields.io/badge/Support-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
-[![Support](https://img.shields.io/badge/Support-Buy_Me_A_Coffee-yellow.svg?style=flat-square)](https://www.buymeacoffee.com/fabianwennink)
+<p align="center">
+    <strong>A self-hosted, customizable, easy-to-implement and user-friendly captcha.</strong>
+</p>
 
-[![Sonar Quality](https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
-[![Sonar Security](https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
-[![Sonar Bugs](https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
-[![Sonar Vulnerabilities](https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP)
+<p align="center">
+    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases"><img src="https://img.shields.io/badge/version-4.0.0-orange.svg?style=flat-square" alt="Version" /></a>
+    <a href="https://packagist.org/packages/fabianwennink/iconcaptcha"><img src="https://img.shields.io/packagist/v/fabianwennink/iconcaptcha.svg?style=flat-square" alt="Latest Version on Packagist" /></a>
+    <a href="https://fabianwennink.nl/projects/IconCaptcha/license"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License" /></a>
+    <a href="https://paypal.me/nlgamevideosnl"><img src="https://img.shields.io/badge/support-PayPal-lightblue.svg?style=flat-square" alt="Support via PayPal" /></a>
+    <a href="https://www.buymeacoffee.com/fabianwennink"><img src="https://img.shields.io/badge/support-Buy_Me_A_Coffee-lightblue.svg?style=flat-square" alt="Buy me a coffee" /></a>
+</p>
 
-<br><img src="http://i.imgur.com/RMUALSz.png" />
-
-IconCaptcha is a self-hosted captcha which is faster, more user-friendly and more customizable than other captchas. Users no longer have to read any annoying 
-text images, solve difficult math equations or play any puzzle games. IconCaptcha is simple: Compare up to 8 icons and select the icon type shown the least amount of times.
-
-Aside from being user-friendly, IconCaptcha is also developer-friendly. In just a few steps you can get your own installation of IconCaptcha up and running. 
-Even developers new to JavaScript and PHP can easily install IconCaptcha. The included demo pages in this repository contain all the code required to make IconCaptcha work. 
-For more detailed information, please read the information written on this page.
-
-<img src="https://i.imgur.com/9RGFZSC.png" title="IconCaptcha" alt="IconCaptcha" />
+<p align="center">
+    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP"><img src="https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Quality" /></a>
+    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP"><img src="https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1" alt="Sonar Security" /></a>
+    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP"><img src="https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Bugs" /></a>
+    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP"><img src="https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Vulnerabilities" /></a>
+</p>
 
 ___
-### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View live demo</a>
-### <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/releases">Download IconCaptcha for PHP now</a>
+
+Introducing IconCaptcha, a self-hosted captcha solution that's designed to be fast, user-friendly, and highly customizable. Unlike other captchas, IconCaptcha spares users the need of deciphering hard-to-read text images, solving complex math problems, or engaging with perplexing puzzle games. Instead, with IconCaptcha it's as straightforward as comparing up to 8 icons and selecting the least common one.
+
+IconCaptcha doesn't just prioritize users; it's also developer-friendly. In just a few steps, you can have IconCaptcha integrated into your website. Even if you're new to PHP and JavaScript, installing IconCaptcha is a straightforward process. The included demo pages in this repository provide all the necessary code to get IconCaptcha up and running. For more in-depth insights, take a moment to explore the information provided on this page and the wiki.
+
 ___
 
-**<a href="https://github.com/fabianwennink/IconCaptcha-Plugin-ASP.NET">Visit IconCaptcha for ASP.NET here.</a>** _(no longer maintained, last stable version is 1.0.0)_
+### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/#!demonstration">▶ Try the live demo here!</a>
+
+<img src="https://i.imgur.com/9RGFZSC.png" title="IconCaptcha widget examples" alt="IconCaptcha light and dark theme widget examples." />
+
+**<a href="https://github.com/fabianwennink/IconCaptcha-Plugin-ASP.NET">Using ASP.NET instead? Try IconCaptcha for ASP.NET.</a>** _(not currently maintained - will continue in Q4 of 2023)_
 ___
+
+## Installation
+
+### Composer
+```
+composer require fabianwennink/iconcaptcha
+```
+Once the installation is finished, proceed to follow the [setup instructions](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#implementation).
+
+### Manually
+It is recommended to use Composer. However, if you are unable to, follow the [manual installation instructions](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#installation) and [setup instructions](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#implementation).
+
 
 ## Features
-* __User Friendly:__ The captcha uses easily understandable images instead of hard to read texts to complete the captcha.
-* __Server-side Validation:__ All validation done by the captcha will be performed on the server-side instead of the client-side.
-* __Self Hosted:__ Because IconCaptcha is a self-hosted plugin, you are not relying on any third party.
-* __No Data Sharing:__ Unlike captchas such as Google ReCaptcha, no user data will be stored or sold to third parties.
-* __jQuery Support:__ IconCaptcha is written in plain JavaScript, but hooks into jQuery to allow you to integrate it in your jQuery code.
-* __Modern Design:__ The look and feel of IconCaptcha fits every modern website design.
-* __Events:__ Events are triggered at various points in the code, allowing you to hook into them and execute custom code if necessary.
-* __Themes:__ Select the design of the captcha without having to ever touch a stylesheet, or create your own custom theme.
-* __SASS:__ The project contains a SASS file, allowing you to easily style and compile the stylesheet.
-* __IE 10+ Support:__ IconCaptcha has been tested in Internet Explorer 10 & 11 and is functional in both versions.
+* 🏠 __Self-Hosted:__ As a self-hosted solution, IconCaptcha eliminates reliance on third-party services, keeping things under your control.
+* 🚫 __No Data Sharing:__ Unlike other captchas, IconCaptcha's self-hosted nature ensures no user data is shared with third parties.
+* 🔐 __Server-Side Validation:__ All validation is carried out server-side, boosting security by eliminating exposure of sensitive processes on the client side.
+* 😊 __User-Friendly:__ Replace complex captchas for easily understandable images, delivering a smoother experience for your users.
+* 💾 __Database Support:__ Store and manage challenge data using various popular databases like MySQL, SQL Server, PostgreSQL, and SQLite.
+* 🌐 __Cross-Domain Integration:__ With CORS support, IconCaptcha effortlessly integrates into applications spanning different domains.
+* 🎣 __Events and Hooks:__ Events are triggered throughout the code, allowing you to inject custom code and fine-tune the experience to your needs.
+* 🎨 __Contemporary Design:__  IconCaptcha's modern design seamlessly integrates with a diverse range of styles.
+* 🖌️ __Themes:__  Choose from existing themes, or craft your own unique theme using the provided SASS file.
+* 🔌 __jQuery Integration:__ While written in plain JavaScript, IconCaptcha smoothly integrates with jQuery.
 
-## New in v3
-In version 3 of IconCaptcha, the whole plugin got an overhaul - both client-side and server-side. With better security features, more customizations/options, new 
-themes, no more jQuery dependency and 180 icons, version 3 is the biggest change to IconCaptcha yet.
+## What's New in IconCaptcha 4
+Version 4 of IconCaptcha introduces significant enhancements to the architecture and feature set, and offers greater flexibility and customization, alongside improved security. Here are the key updates in this release:
 
-* No longer required to use jQuery, although IconCaptcha can still be used with jQuery.
-* More captcha image generation options to increase the difficulty.
-* Automatic captcha invalidation after a period of no user interaction.
-* Automatic timeouts when too many incorrect selections were made by the user.
-* New light and dark themes with more modern designs, with improved support for custom themes.
-* Includes 180 new modern icons, created by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
-* Better stability, general code improvements and bug fixes.
+* 📦 **Composer Compatibility:** IconCaptcha is now available on Packagist and can be installed using Composer.
+* 🏗️ **Restructured Code Base:** The entire code base has been restructured, moving away from the previous one-file-does-everything approach. This restructuring makes it easier to maintain the code in the future.
+* 📃 **Improved Configuration:** IconCaptcha 4 introduces a more comprehensive and polished configuration file, offering more options for customization alongside clearer descriptions for each choice.
+* 💾 **Database Support:** A notable addition to this version is the inclusion of database support. Challenge data can now be stored using well-known databases like MySQL, SQL Server, PostgreSQL, and SQLite.
+* 🧩 **Custom Drivers:** Want to handle certain server-side aspects your own way? IconCaptcha 4 allows you to implement custom drivers for critical features such as session management, storage, and timeout handling.
+* 🎣 **Server-side Hooks:** Hook into server-side events like captcha initialization, challenge generation, and solution processing to customize the processes according to your application's needs.
+* 🌐 **CORS Support:** Cross-Origin Resource Sharing (CORS) support is now available, allowing IconCaptcha to be integrated into applications spread across different domains while maintaining security standards.
 
 # Wiki
-For information on how to install, set up and configure IconCaptcha, please check the Wiki pages:
+For instructions on installing, setting up, and configuring IconCaptcha, be sure to explore the Wiki pages:
 
-* [How To Use](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use) - A guide on how to setup and use IconCaptcha.
-    * [Requirements](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#requirements) - A list of requirements to get IconCaptcha working properly on your website.
-    * [Download](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#download) - Information on how to download the required client-side and server-side packages.
-    * [Usage](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#usage) - Details on how to implement IconCaptcha in both the client-side and server-side.
-        * [HTML](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#html)
-        * [JavaScript/jQuery](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#javascript--jquery)
-        * [PHP](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#php)
-    * [Options](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#options) - All available configuration options, including their meaning and default values.
-        * [PHP](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#php-1)
-        * [JavaScript/jQuery](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#javascript--jquery-1)
-    * [Messages](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#messages) - All the localization strings used in IconCaptcha.
-        * [PHP](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#php-2)
-        * [JavaScript/jQuery](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#javascript--jquery-2)
-    * [Events](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#events) - All client-side events which are triggered at various points in the captcha process.
-    * [Custom Themes](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#custom-themes) - Details on how to implement and enable custom themes.
+* [Requirements](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#requirements) - A list of requirements to get IconCaptcha working properly.
+* [Installation](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#installation) - Instructions on how to install/download IconCaptcha.
+* [Implementing](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#implementation) - Step-by-step instructions on how to implement IconCaptcha.
+* [Configuration](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#configuration) - Explanation of all available configuration options.
+* [Events](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#events) - Overview of events which are triggered at different stages in the captcha process.
+* [Custom Themes](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#custom-themes) - Details on creating and setting up custom themes.
 
 ## Credits
 The icons used in this project are made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
