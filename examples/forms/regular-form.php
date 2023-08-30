@@ -29,7 +29,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>IconCaptcha v3.1.2 - By Fabian Wennink</title>
+        <title>IconCaptcha v4.0.0 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=11" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -56,16 +56,16 @@
             <div class="shields">
                 <div class="shields-row">
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/badge/Version-3.1.2-orange.svg?style=flat-square" alt="Version 3.1.2 Badge" />
+                        <img src="https://img.shields.io/badge/version-4.0.0-orange.svg?style=flat-square" alt="Version 4.0.0" />
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
+                        <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT license" />
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/issues" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" alt="Git Issues Badge" />
+                        <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" alt="GitHub issues" />
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" alt="Git Stars Badge" />
+                        <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" alt="GitHub stars" />
                     </a>
                 </div>
                 <div class="shields-row">
@@ -94,7 +94,7 @@
                     <!-- Note: using the default IconCaptcha Token class? Make sure to start a PHP session. -->
                     <?= \IconCaptcha\Token\IconCaptchaToken::render() ?>
 
-                    <!-- The IconCaptcha will be rendered in this element - REQUIRED -->
+                    <!-- The IconCaptcha widget will be rendered in this element - REQUIRED -->
                     <div class="iconcaptcha-widget" data-theme="light"></div>
 
                     <!-- Submit button to test your IconCaptcha input -->
