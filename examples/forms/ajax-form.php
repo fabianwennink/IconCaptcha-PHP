@@ -133,7 +133,7 @@
                         selectionResetDelay: 3000,
                         loadingAnimationDelay: 1000,
                     },
-                    messages: {
+                    locale: {
                         initialization: {
                             verify: 'Verify that you are human.',
                             loading: 'Loading challenge...',
