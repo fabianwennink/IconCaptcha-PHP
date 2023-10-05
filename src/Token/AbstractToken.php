@@ -7,7 +7,7 @@ abstract class AbstractToken
     /**
      * The default length of a captcha token.
      */
-    public const TOKEN_LENGTH = 20;
+    public const TOKEN_LENGTH = 32;
 
     /**
      * The name of the form input field containing the captcha token.
