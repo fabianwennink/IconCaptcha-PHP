@@ -82,32 +82,32 @@ use IconCaptcha\IconCaptcha;
         <div class="container">
 
             <div class="logo-text">
-                <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank" rel="noopener">
+                <a href="https://github.com/fabianwennink/IconCaptcha-PHP/" target="_blank" rel="noopener">
                     Ic<span>o</span>nCaptcha
                 </a>
             </div>
 
             <div class="shields">
                 <div class="shields-row">
-                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases" target="_blank" rel="noopener">
+                    <a href="https://github.com/fabianwennink/IconCaptcha-PHP/releases" target="_blank" rel="noopener">
                         <img src="https://img.shields.io/badge/Version-3.1.2-orange.svg?style=flat-square" alt="Version 3.1.2 Badge"/>
                     </a>
-                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
+                    <a href="https://github.com/fabianwennink/IconCaptcha-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
                         <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
                     </a>
-                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/issues" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?style=flat-square" alt="Git Issues Badge" />
+                    <a href="https://github.com/fabianwennink/IconCaptcha-PHP/issues" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/github/issues/fabianwennink/IconCaptcha-PHP?style=flat-square" alt="Git Issues Badge" />
                     </a>
-                    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-Plugin-jQuery-PHP?color=%23ffff&logo=github&style=flat-square" alt="Git Stars Badge" />
+                    <a href="https://github.com/fabianwennink/IconCaptcha-PHP" target="_blank" rel="noopener">
+                        <img src="https://img.shields.io/github/stars/fabianwennink/IconCaptcha-PHP?color=%23ffff&logo=github&style=flat-square" alt="Git Stars Badge" />
                     </a>
                 </div>
                 <div class="shields-row">
-                    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP" target="_blank" rel="nofollow noreferrer noopener">
-                        <img src="https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Status Badge" />
-                        <img src="https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1" alt="SonarCloud Security Rating Badge" />
-                        <img src="https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Bugs Badge" />
-                        <img src="https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Vulnerabilities Badge" />
+                    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-PHP" target="_blank" rel="nofollow noreferrer noopener">
+                        <img src="https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Status Badge" />
+                        <img src="https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1" alt="SonarCloud Security Rating Badge" />
+                        <img src="https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Bugs Badge" />
+                        <img src="https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="SonarCloud Vulnerabilities Badge" />
                     </a>
                 </div>
             </div>
@@ -142,8 +142,8 @@ use IconCaptcha\IconCaptcha;
 
             <div class="copyright">
                 <p>Copyright &copy; <?= date('Y'); ?> Fabian Wennink - All rights reserved</p>
-                <p><small>IconCaptcha is licensed under <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>.
-				Icons made by by <a href="https://streamlinehq.com" target="_blank" rel="nofollow noopener">Streamline</a>.</small></p>
+                <p><small>IconCaptcha is licensed under <a href="https://github.com/fabianwennink/IconCaptcha-PHP/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>.
+				Icons made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow noopener">Streamline</a>.</small></p>
             </div>
         </div>
 
@@ -153,7 +153,7 @@ use IconCaptcha\IconCaptcha;
             </div>
         </a>
 
-        <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/" target="_blank" rel="noopener">
+        <a href="https://github.com/fabianwennink/IconCaptcha-PHP/" target="_blank" rel="noopener">
             <div class="corner-ribbon top-left">STAR ME ON GITHUB</div>
         </a>
 

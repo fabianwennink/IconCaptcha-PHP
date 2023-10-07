@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Feature Request
-    url: https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/discussions
+    url: https://github.com/fabianwennink/IconCaptcha-PHP/discussions
     about: 'For feature requests or sharing ideas, please start a new discussion.'
