@@ -7,7 +7,7 @@
  * the behavior of the IconCaptcha library. All options are optional and have default values.
  *
  * For more information on each option, please refer to the documentation on the GitHub wiki:
- * - https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki
+ * - https://github.com/fabianwennink/IconCaptcha-PHP/wiki
  */
 return [
     // Specifies the directory path where the icon files are located.

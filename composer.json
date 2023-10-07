@@ -11,7 +11,7 @@
         "anti-spam",
         "spam"
     ],
-    "homepage": "https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP",
+    "homepage": "https://github.com/fabianwennink/IconCaptcha-PHP",
     "authors": [
         {
             "name": "Fabian Wennink",
@@ -19,8 +19,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/issues",
-        "wiki": "https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki"
+        "issues": "https://github.com/fabianwennink/IconCaptcha-PHP/issues",
+        "wiki": "https://github.com/fabianwennink/IconCaptcha-PHP/wiki"
     },
     "require": {
         "php": ">=7.4",

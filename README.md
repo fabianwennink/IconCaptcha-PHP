@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/releases"><img src="https://img.shields.io/badge/version-4.0.0-orange.svg?style=flat-square" alt="Version" /></a>
+    <a href="https://github.com/fabianwennink/IconCaptcha-PHP/releases"><img src="https://img.shields.io/badge/version-4.0.0-orange.svg?style=flat-square" alt="Version" /></a>
     <a href="https://packagist.org/packages/fabianwennink/iconcaptcha"><img src="https://img.shields.io/packagist/v/fabianwennink/iconcaptcha.svg?style=flat-square" alt="Latest Version on Packagist" /></a>
     <a href="https://fabianwennink.nl/projects/IconCaptcha/license"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License" /></a>
     <a href="https://paypal.me/nlgamevideosnl"><img src="https://img.shields.io/badge/support-PayPal-lightblue.svg?style=flat-square" alt="Support via PayPal" /></a>
@@ -20,10 +20,10 @@
 </p>
 
 <p align="center">
-    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP"><img src="https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Quality" /></a>
-    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP"><img src="https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1" alt="Sonar Security" /></a>
-    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP"><img src="https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Bugs" /></a>
-    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-Plugin-jQuery-PHP"><img src="https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-Plugin-jQuery-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Vulnerabilities" /></a>
+    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-PHP"><img src="https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Quality" /></a>
+    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-PHP"><img src="https://img.shields.io/sonar/security_rating/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&color=%234c1" alt="Sonar Security" /></a>
+    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-PHP"><img src="https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Bugs" /></a>
+    <a href="https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-PHP"><img src="https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud" alt="Sonar Vulnerabilities" /></a>
 </p>
 
 ___
@@ -47,10 +47,10 @@ ___
 ```
 composer require fabianwennink/iconcaptcha
 ```
-Once the installation is finished, proceed to follow the [setup instructions](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#implementation).
+Once the installation is finished, proceed to follow the [setup instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#implementation).
 
 ### Manually
-It is recommended to use Composer. However, if you are unable to, follow the [manual installation instructions](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#installation) and [setup instructions](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#implementation).
+It is recommended to use Composer. However, if you are unable to, follow the [manual installation instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#installation) and [setup instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#implementation).
 
 
 ## Features
@@ -79,12 +79,12 @@ Version 4 of IconCaptcha introduces significant enhancements to the architecture
 # Wiki
 For instructions on installing, setting up, and configuring IconCaptcha, be sure to explore the Wiki pages:
 
-* [Requirements](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#requirements) - A list of requirements to get IconCaptcha working properly.
-* [Installation](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#installation) - Instructions on how to install/download IconCaptcha.
-* [Implementing](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#implementation) - Step-by-step instructions on how to implement IconCaptcha.
-* [Configuration](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#configuration) - Explanation of all available configuration options.
-* [Events](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#events) - Overview of events which are triggered at different stages in the captcha process.
-* [Custom Themes](https://github.com/fabianwennink/IconCaptcha-Plugin-jQuery-PHP/wiki/How-To-Use#custom-themes) - Details on creating and setting up custom themes.
+* [Requirements](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#requirements) - A list of requirements to get IconCaptcha working properly.
+* [Installation](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#installation) - Instructions on how to install/download IconCaptcha.
+* [Implementing](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#implementation) - Step-by-step instructions on how to implement IconCaptcha.
+* [Configuration](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#configuration) - Explanation of all available configuration options.
+* [Events](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#events) - Overview of events which are triggered at different stages in the captcha process.
+* [Custom Themes](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#custom-themes) - Details on creating and setting up custom themes.
 
 ## Credits
 The icons used in this project are made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
