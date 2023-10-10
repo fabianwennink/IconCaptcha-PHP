@@ -11,6 +11,8 @@
  */
 return [
     // Specifies the directory path where the icon files are located.
+    // When using Composer, you should set this to null, except if you've published the assets to your own project during setup.
+    // For more information, see https://github.com/fabianwennink/testing-wiki/wiki/Configuration#iconpath
     'iconPath' => __DIR__ . '/../assets/icons/',
 
     // Specifies a function that must return the IP address of the visitor.
