@@ -49,5 +49,9 @@
         "allow-plugins": {
             "symfony/thanks": true
         }
+    },
+    "scripts": {
+        "publish-iconcaptcha-server-assets": "php scripts/publish-server-assets.php",
+        "publish-iconcaptcha-client-assets": "php scripts/publish-client-assets.php"
     }
 }
