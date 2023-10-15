@@ -107,14 +107,11 @@
                 data-description="Support me on Buy me a coffee!" data-message="If you like IconCaptcha, consider buying me a coffee!"
                 data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
 
-        <!-- Include IconCaptcha script - REQUIRED -->
-        <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
-
         <!-- Include jQuery Library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <!-- Include IconCaptcha script - REQUIRED -->
-        <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
+        <script src="../../assets/client/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Initialize the IconCaptcha - REQUIRED -->
         <script type="text/javascript">

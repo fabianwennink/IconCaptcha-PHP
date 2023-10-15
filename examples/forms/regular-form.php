@@ -42,7 +42,7 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
         <!-- Include IconCaptcha stylesheet - REQUIRED -->
-        <link href="../assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
+        <link href="../../assets/client/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div class="container">
@@ -132,7 +132,7 @@
                 data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
 
         <!-- Include IconCaptcha script - REQUIRED -->
-        <script src="../assets/js/icon-captcha.min.js" type="text/javascript"></script>
+        <script src="../../assets/client/js/icon-captcha.min.js" type="text/javascript"></script>
 
         <!-- Initialize the IconCaptcha - REQUIRED -->
         <script type="text/javascript">
