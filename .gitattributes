@@ -3,6 +3,7 @@
 /.gitignore              export-ignore
 /.github                 export-ignore
 /index.php               export-ignore
+/sql                     export-ignore
 /examples                export-ignore
 
 * text=auto eol=lf
