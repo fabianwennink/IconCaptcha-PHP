@@ -19,6 +19,10 @@ return [
     // Using Cloudflare? Ensure to return the visitor's original IP (HTTP_CF_CONNECTING_IP) and not the proxy IP.
     'ipAddress' => static fn() => $_SERVER['REMOTE_ADDR'],
 
+    // Specifies the token class to use for challenge CSRF tokens. Set to null to disable.
+    // The default token class is \IconCaptcha\Token\IconCaptchaToken::class.
+    'token' => \IconCaptcha\Token\IconCaptchaToken::class,
+
     // Configurations for additional custom themes.
     'themes' => [
         'black' => [
@@ -133,10 +137,6 @@ return [
         // Specifies the maximum age (in seconds) to cache CORS preflight requests.
         'cache' => 86400,
     ],
-
-    // Specifies the token class to use for challenge CSRF tokens. Set to null to disable.
-    // The default token class is \IconCaptcha\Token\IconCaptchaToken::class.
-    'token' => \IconCaptcha\Token\IconCaptchaToken::class,
 
     // Configuration for hooks.
     'hooks' => [

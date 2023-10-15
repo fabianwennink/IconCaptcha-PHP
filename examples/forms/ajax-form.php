@@ -2,7 +2,12 @@
     // Include the IconCaptcha classes.
     require_once __DIR__ . '/../../vendor/autoload.php';
 
-    // Start a session (required when using the IconCaptcha Token, see form below).
+    // Start a session ().
+
+    // Start a session.
+    // * Required when using any 'session' driver in the configuration.
+    // * Required when using the IconCaptcha Token, referring to the use of 'IconCaptchaToken' in the form below.
+    // For more information, please refer to the documentation.
     session_start();
 ?>
 <!DOCTYPE HTML>

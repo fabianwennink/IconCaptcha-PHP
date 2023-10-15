@@ -6,11 +6,16 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 // If the form has been submitted, validate the captcha.
 if (!empty($_POST)) {
 
-    // To prevent having to copy the options to every file, a 'config' file was created.
+    // Start a session.
+    // * Required when using any 'session' driver in the configuration.
+    // * Required when using the IconCaptcha Token in your forms.
+    // For more information, please refer to the documentation.
+    session_start();
+
+    // Load the IconCaptcha options.
     $options = require __DIR__ . '/../../captcha-config.php';
 
-    // Take a look at the README file to see every available option.
-    // All options are optional using default values, apart from the 'iconPath'.
+    // Create an instance of IconCaptcha.
     $captcha = new \IconCaptcha\IconCaptcha($options);
 
     // Validate the captcha.

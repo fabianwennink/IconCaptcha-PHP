@@ -13,6 +13,7 @@ class Options
     private const DEFAULT_OPTIONS = [
         'iconPath' => null,
         'ipAddress' => null,
+        'token' => IconCaptchaToken::class,
         'themes' => [
             'light' => [
                 'iconStyle' => 'light',
@@ -49,7 +50,7 @@ class Options
                 'enabled' => true,
                 'amount' => 5,
                 'timeout' => 60,
-                'valid' => 30,
+                'valid' => 60,
                 'storage' => [
                     'driver' => null,
                     'options' => [
@@ -59,13 +60,6 @@ class Options
                 ],
             ],
         ],
-        'cors' => [
-            'enabled' => false,
-            'origins' => [],
-            'credentials' => true,
-            'cache' => 86400,
-        ],
-        'token' => IconCaptchaToken::class,
         'session' => [
             'driver' => null,
             'options' => [
@@ -73,6 +67,12 @@ class Options
                 'purging' => true,
                 'identifierTries' => 100,
             ],
+        ],
+        'cors' => [
+            'enabled' => false,
+            'origins' => [],
+            'credentials' => true,
+            'cache' => 86400,
         ],
         'hooks' => [
             'init' => null,
@@ -98,7 +98,7 @@ class Options
         }
 
         // Trim the custom icon folder path of slashes. If no custom path is set, use the default path.
-        // When using Composer, the 'iconPath' option always points to the default path in the vendor folder.
+        // When using Composer, this default path always points to the assets folder in the vendor package.
         if (isset($options['iconPath'])) {
             $mergedOptions['iconPath'] = rtrim($mergedOptions['iconPath'], DIRECTORY_SEPARATOR);
         } else {

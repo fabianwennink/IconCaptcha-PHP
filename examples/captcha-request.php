@@ -8,17 +8,17 @@ use IconCaptcha\IconCaptcha;
 try {
 
     // Start a session.
-    // Note: check the documentation to see whether you need this.
+    // * Only required when using any 'session' driver in the configuration. See the documentation for more information.
     session_start();
 
-    // Initialize the IconCaptcha options.
-    // To prevent having to copy the options to every file, a 'config' file was created.
+    // Load the IconCaptcha options.
     $options = require 'captcha-config.php';
 
     // Create an instance of IconCaptcha.
     $captcha = new IconCaptcha($options);
 
     // Handle the CORS preflight request.
+    // * If you have disabled CORS in the configuration, you may remove this line.
     $captcha->handleCors();
 
     // Process the request.
@@ -31,6 +31,6 @@ try {
 
     http_response_code(500);
 
-    // ADD YOUR CUSTOM ERROR LOGGING SERVICE HERE.
+    // Add your custom error logging handling here.
 
 }
