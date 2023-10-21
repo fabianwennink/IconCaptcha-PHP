@@ -5,10 +5,10 @@
  * This script copies files from the vendor package to a destination directory.
  */
 
-$assetsDir = __DIR__ . "/../vendor/fabianwennink/iconcaptcha/assets";
+$assetsDir = __DIR__ . "/../assets";
 $iconsDir = "$assetsDir/icons";
 $placeholderImage = "$assetsDir/placeholder.png";
-$destinationDir = __DIR__ . '/../iconcaptcha';
+$destinationDir = __DIR__ . '/../../../../iconcaptcha';
 $iconsDestination = "$destinationDir/icons";
 $placeholderImageDestination = "$destinationDir/placeholder.png";
 

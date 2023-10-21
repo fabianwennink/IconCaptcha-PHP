@@ -5,8 +5,8 @@
  * This script copies files from the vendor package to a destination directory.
  */
 
-$destinationDir = __DIR__ . '/../iconcaptcha/client';
-$assetsDir = __DIR__ . "/../vendor/fabianwennink/iconcaptcha/assets/client";
+$assetsDir = __DIR__ . "/../assets/client";
+$destinationDir = __DIR__ . '/../../../../iconcaptcha/client';
 
 if (is_dir($assetsDir)) {
 
