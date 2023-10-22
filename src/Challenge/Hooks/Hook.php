@@ -35,7 +35,7 @@ class Hook
 
         // Ensure the hook is valid and has a callable action.
         if (!empty($hook) && is_callable([$hook, $action], true)) {
-            return $hook->{$action}($_REQUEST, $session, $options, $params);
+            return $hook->{$action}($_REQUEST, $session, $options, ...array_values($params));
         }
 
         return $default;
@@ -60,7 +60,7 @@ class Hook
 
         // Ensure the hook is valid and has a callable action.
         if (!empty($hook) && is_callable([$hook, $action], true)) {
-            $hook->{$action}($_REQUEST, $session, $options, $params);
+            $hook->{$action}($_REQUEST, $session, $options, ...array_values($params));
         }
     }
 
