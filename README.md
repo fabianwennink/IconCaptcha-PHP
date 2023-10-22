@@ -44,14 +44,13 @@ ___
 ## Installation
 
 ### Composer
-```
+```bash
 composer require fabianwennink/iconcaptcha
 ```
-Once the installation is finished, proceed to follow the [setup instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#implementation).
+Once the package has been installed, continue with the remaining [installation instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#installation), followed by the [setup instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Implementation).
 
-### Manually
-It is recommended to use Composer. However, if you are unable to, follow the [manual installation instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#installation) and [setup instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#implementation).
-
+### Manual Installation
+It is recommended to use Composer. However, if you are unable to, follow the [manual installation instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#manual-installation) and [setup instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Implementation).
 
 ## Features
 * 🏠 __Self-Hosted:__ As a self-hosted solution, IconCaptcha eliminates reliance on third-party services, keeping things under your control.
@@ -79,12 +78,17 @@ Version 4 of IconCaptcha introduces significant enhancements to the architecture
 # Wiki
 For instructions on installing, setting up, and configuring IconCaptcha, be sure to explore the Wiki pages:
 
-* [Requirements](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#requirements) - A list of requirements to get IconCaptcha working properly.
-* [Installation](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#installation) - Instructions on how to install/download IconCaptcha.
-* [Implementing](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#implementation) - Step-by-step instructions on how to implement IconCaptcha.
-* [Configuration](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#configuration) - Explanation of all available configuration options.
-* [Events](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#events) - Overview of events which are triggered at different stages in the captcha process.
-* [Custom Themes](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#custom-themes) - Details on creating and setting up custom themes.
+* [Requirements](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#requirements) - A list of requirements to get IconCaptcha working properly.
+* [Installation](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#installation) - Instructions on how to install/download IconCaptcha.
+* [Implementing](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Implementation) - Step-by-step instructions on how to implement IconCaptcha.
+* [Configuration](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Configuration) - Explanation of all available configuration options.
+* [Storage](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Storage) - Details about all storage options.
+* [Challenge Generator](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Challenge-Generator) - Information about how to implement a custom challenge generator.
+* [Validation](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Validation) - Explanation of the validation process and error handling.
+* [Hooks & Events](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Hooks-&-Events) - Overview of events which are triggered at different stages in the captcha process.
+* [Token](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Token) - Information about the usage of the optional widget security token.
+* [Themes](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Themes) - Details on creating and setting up custom themes.
+* [Localization](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Localization) - Details on how to customize the localization strings.
 
 ## Credits
 The icons used in this project are made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
