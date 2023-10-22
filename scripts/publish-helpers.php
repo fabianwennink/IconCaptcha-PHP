@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * IconCaptcha - Copyright 2023, Fabian Wennink (https://www.fabianwennink.nl)
+ * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
+ *
+ * The above copyright notice and license shall be included in all copies or substantial portions of the software.
+ */
+
 /**
  * Will attempt to create a new directory at the given path, if none already exists.
  * @param string $directory The directory to make.
