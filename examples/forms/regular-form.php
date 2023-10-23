@@ -146,17 +146,17 @@
                 // Check the README.md for information about the options.
                 IconCaptcha.init('.iconcaptcha-widget', {
                     general: {
-                        validationPath: '../captcha-request.php',
+                        endpoint: '../captcha-request.php',
                         fontFamily: 'inherit',
                         credits: 'show',
                     },
                     security: {
-                        clickDelay: 500,
-                        hoverDetection: true,
-                        enableInitialMessage: true,
-                        initializeDelay: 500,
-                        selectionResetDelay: 3000,
-                        loadingAnimationDelay: 1000,
+                        interactionDelay: 1000,
+                        hoverProtection: true,
+                        displayInitialMessage: true,
+                        initializationDelay: 500,
+                        incorrectSelectionResetDelay: 3000,
+                        loadingAnimationDuration: 1000,
                     },
                     locale: {
                         initialization: {
