@@ -26,7 +26,7 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
 
         <!-- Include IconCaptcha stylesheet - REQUIRED -->
-        <link href="../assets/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
+        <link href="../../assets/client/css/icon-captcha.min.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <div class="container">
