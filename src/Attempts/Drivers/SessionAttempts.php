@@ -10,7 +10,7 @@
 namespace IconCaptcha\Attempts\Drivers;
 
 use IconCaptcha\Attempts\Attempts;
-use IconCaptcha\Storage\Session\SessionStorage;
+use IconCaptcha\Storage\Session\SessionStorageInterface;
 use IconCaptcha\Utils;
 
 class SessionAttempts extends Attempts
@@ -21,11 +21,17 @@ class SessionAttempts extends Attempts
     private string $sessionKey = 'attempts';
 
     /**
-     * @var SessionStorage The session storage wrapper.
+     * @var SessionStorageInterface The session storage wrapper.
      */
-    private SessionStorage $storage;
+    private SessionStorageInterface $storage;
 
-    public function __construct(SessionStorage $storage, array $options)
+    /**
+     * Initializes a new instance of the attempts/timeout manager with session storage.
+     * 
+     * @param SessionStorageInterface $storage The session storage container.
+     * @param array $options The captcha storage options.
+     */
+    public function __construct(SessionStorageInterface $storage, array $options)
     {
         parent::__construct($options);
 

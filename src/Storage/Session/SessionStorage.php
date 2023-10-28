@@ -9,7 +9,7 @@
 
 namespace IconCaptcha\Storage\Session;
 
-class SessionStorage
+class SessionStorage implements SessionStorageInterface
 {
     /**
      * @var string The session name.
@@ -27,9 +27,7 @@ class SessionStorage
     }
 
     /**
-     * Reads a value from the session storage.
-     * @param string $key The key of the value to read. Dot notation is supported.
-     * @return mixed|null The value if it exists, or null if it does not exist.
+     * @inheritDoc
      */
     public function read(string $key)
     {
@@ -47,10 +45,7 @@ class SessionStorage
     }
 
     /**
-     * Writes a value to the session storage.
-     *
-     * @param string $key The key to write the value to. Dot notation is supported.
-     * @param mixed $value The value to write to the session.
+     * @inheritDoc
      */
     public function write(string $key, $value): void
     {
@@ -60,9 +55,7 @@ class SessionStorage
     }
 
     /**
-     * Removes a value from the session storage.
-     *
-     * @param string $key The key of the value to remove. Dot notation is supported.
+     * @inheritDoc
      */
     public function remove(string $key): void
     {
@@ -73,9 +66,7 @@ class SessionStorage
     }
 
     /**
-     * Checks if a value exists in the session storage.
-     *
-     * @param string $key The key to check for. Dot notation is supported.
+     * @inheritDoc
      */
     public function exists(string $key): bool
     {
