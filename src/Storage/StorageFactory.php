@@ -9,10 +9,10 @@
 
 namespace IconCaptcha\Storage;
 
-use IconCaptcha\Storage\Database\MySqlConnector;
-use IconCaptcha\Storage\Database\PostgresConnector;
-use IconCaptcha\Storage\Database\SQLiteConnector;
-use IconCaptcha\Storage\Database\SqlServerConnector;
+use IconCaptcha\Storage\Database\Connectors\MySqlConnector;
+use IconCaptcha\Storage\Database\Connectors\PostgresConnector;
+use IconCaptcha\Storage\Database\Connectors\SQLiteConnector;
+use IconCaptcha\Storage\Database\Connectors\SqlServerConnector;
 use IconCaptcha\Storage\Session\SessionConnector;
 use InvalidArgumentException;
 
@@ -23,10 +23,10 @@ class StorageFactory
      *
      * @param array $options The captcha storage options.
      *
-     * @return StorageInterface The generated storage instance.
+     * @return StorageConnectorInterface The generated storage instance.
      * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */
-    public static function create(array $options): StorageInterface
+    public static function create(array $options): StorageConnectorInterface
     {
         $driver = $options['driver'];
 
@@ -49,7 +49,7 @@ class StorageFactory
                 return new SqlServerConnector($options);
             default:
                 // If none of the supported drivers are used, check if perhaps a custom storage driver was passed.
-                if (class_exists($driver) && in_array(StorageInterface::class, class_implements($driver), true)) {
+                if (class_exists($driver) && in_array(StorageConnectorInterface::class, class_implements($driver), true)) {
                     return new $driver($options);
                 }
                 throw new InvalidArgumentException("Unsupported storage driver [$driver].");

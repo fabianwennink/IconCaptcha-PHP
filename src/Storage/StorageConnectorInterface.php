@@ -9,7 +9,7 @@
 
 namespace IconCaptcha\Storage;
 
-interface StorageInterface
+interface StorageConnectorInterface
 {
     /**
      * Connect to the storage instance.
