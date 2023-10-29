@@ -9,7 +9,9 @@
 
 namespace IconCaptcha\Storage\Session;
 
-class SessionStorage implements SessionStorageInterface
+use IconCaptcha\Storage\KeyValueStorageInterface;
+
+class SessionStorage implements KeyValueStorageInterface
 {
     /**
      * @var string The session name.

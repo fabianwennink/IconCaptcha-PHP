@@ -10,7 +10,7 @@
 namespace IconCaptcha\Session\Drivers;
 
 use IconCaptcha\Session\Session;
-use IconCaptcha\Storage\Session\SessionStorageInterface;
+use IconCaptcha\Storage\KeyValueStorageInterface;
 use IconCaptcha\Utils;
 
 class ServerSession extends Session
@@ -21,20 +21,20 @@ class ServerSession extends Session
     private string $sessionKey = 'challenges';
 
     /**
-     * @var SessionStorageInterface The session storage container.
+     * @var KeyValueStorageInterface The session storage container.
      */
-    private SessionStorageInterface $storage;
+    private KeyValueStorageInterface $storage;
 
     /**
      * Initializes a new server session instance.
      *
-     * @param SessionStorageInterface $storage The session storage container.
+     * @param KeyValueStorageInterface $storage The session storage container.
      * @param array $options The captcha session options.
      * @param string $ipAddress The IP address of the visitor.
      * @param string $widgetId The captcha widget identifier.
      * @param string|null $challengeId The captcha challenge identifier.
      */
-    public function __construct(SessionStorageInterface $storage, array $options, string $ipAddress, string $widgetId, string $challengeId = null)
+    public function __construct(KeyValueStorageInterface $storage, array $options, string $ipAddress, string $widgetId, string $challengeId = null)
     {
         parent::__construct($options, $ipAddress, $widgetId, $challengeId);
 
