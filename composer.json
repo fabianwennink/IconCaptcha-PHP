@@ -41,8 +41,8 @@
     },
     "extra": {
         "thanks": {
-            "name": "fabianwennink/IconCaptcha-Plugin-Front-End",
-            "url": "https://github.com/fabianwennink/IconCaptcha-Plugin-Front-End"
+            "name": "fabianwennink/IconCaptcha-Widget",
+            "url": "https://github.com/fabianwennink/IconCaptcha-Widget"
         }
     },
     "config": {
