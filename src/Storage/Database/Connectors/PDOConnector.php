@@ -7,13 +7,14 @@
  * The above copyright notice and license shall be included in all copies or substantial portions of the software.
  */
 
-namespace IconCaptcha\Storage\Database;
+namespace IconCaptcha\Storage\Database\Connectors;
 
 use IconCaptcha\Storage\Database\Exceptions\DatabaseOptionsException;
-use IconCaptcha\Storage\StorageInterface;
+use IconCaptcha\Storage\Database\PDOStorage;
+use IconCaptcha\Storage\StorageConnectorInterface;
 use PDO;
 
-abstract class PDOConnector implements StorageInterface
+abstract class PDOConnector implements StorageConnectorInterface
 {
     /**
      * List of default PDO connection options.

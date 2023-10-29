@@ -9,10 +9,10 @@
 
 namespace IconCaptcha\Storage\Session;
 
-use IconCaptcha\Storage\StorageInterface;
+use IconCaptcha\Storage\StorageConnectorInterface;
 use RuntimeException;
 
-class SessionConnector implements StorageInterface
+class SessionConnector implements StorageConnectorInterface
 {
     /**
      * The key in which all captcha related data will be stored.

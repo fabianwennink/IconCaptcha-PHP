@@ -7,7 +7,7 @@
  * The above copyright notice and license shall be included in all copies or substantial portions of the software.
  */
 
-namespace IconCaptcha\Storage\Database;
+namespace IconCaptcha\Storage\Database\Connectors;
 
 class MySqlConnector extends PDOConnector
 {
