@@ -13,7 +13,7 @@ The requirements for running IconCaptcha have undergone slight changes between v
 Install IconCaptcha either using Composer, as described in the [Composer installation guide](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#composer), or manually, following the steps provided in the [manual installation guide](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#manual-installation).
 
 ### Step 3: Assets
-Update your current client-side assets (`/js/icon-captcha.min.js`, `/css/icon-captcha.min.css`, and `/icons`) with the updated ones. You can achieve this in multiple ways:
+Update your current client-side assets (`/js/iconcaptcha.min.js`, `/css/iconcaptcha.min.css`, and `/icons`) with the updated ones. You can achieve this in multiple ways:
   - If you are using Composer, copy the assets from the vendor directory by publishing them to your project, as explained [here](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#composer).
   - Alternatively, you can download a compatible release of the client-side repository and copy the assets from there, as detailed in the [manual installation guide](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#manual-installation), steps 5-8.
 
