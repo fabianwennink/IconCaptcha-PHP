@@ -34,11 +34,11 @@ IconCaptcha doesn't just prioritize users; it's also developer-friendly. In just
 
 ___
 
-### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/#!demonstration">▶ Try the live demo here!</a>
+### [▶ Try the live demo here!](https://www.fabianwennink.nl/projects/IconCaptcha/#!demonstration)
 
 <img src="https://i.imgur.com/9RGFZSC.png" title="IconCaptcha widget examples" alt="IconCaptcha light and dark theme widget examples." />
 
-**<a href="https://github.com/fabianwennink/IconCaptcha-Plugin-ASP.NET">Using ASP.NET instead? Try IconCaptcha for ASP.NET.</a>** _(not currently maintained - will continue in Q4 of 2023)_
+**[Using ASP.NET instead? Try IconCaptcha for ASP.NET](https://github.com/fabianwennink/IconCaptcha-ASP.NET)** _(not currently maintained - will continue in Q4 of 2023)_
 ___
 
 ## Installation
@@ -91,7 +91,7 @@ For instructions on installing, setting up, and configuring IconCaptcha, be sure
 * [Localization](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Localization) - Details on how to customize the localization strings.
 
 ## Credits
-The icons used in this project are made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
+The icons used in this project are made by [Streamline](https://streamlinehq.com).
 
 ## License
-This project is licensed under the <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/blob/master/LICENSE">MIT</a> license.
+This project is licensed under the [MIT](https://www.fabianwennink.nl/projects/IconCaptcha/license) license.
