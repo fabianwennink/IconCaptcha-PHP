@@ -83,7 +83,8 @@ Besides there being a lot of changes in the back-end, the JavaScript code initia
     - `security.enableInitialMessage` has been renamed to `security.displayInitialMessage`.
     - `security.initializeDelay` has been renamed to `security.initializationDelay`.
     - `security.selectionResetDelay` has been renamed to `security.incorrectSelectionResetDelay`.
-    - `security.invalidateTime` has been renamed to `security.loadingAnimationDuration`.
+    - `security.loadingAnimationDelay` has been renamed to `security.loadingAnimationDuration`.
+    - `security.invalidateTime` has been removed.
     - `messages` has been renamed to `locale`.
 
 After these changes, your IconCaptcha implementation should be updated to version 4. If you encounter any issues during this transition, refer to the [installation guide](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#installation) and the [implementation guide](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Implementation) for guidance, following the steps as if it were a fresh installation.
