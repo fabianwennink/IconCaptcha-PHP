@@ -13,22 +13,22 @@ use IconCaptcha\Session\Session;
 use IconCaptcha\Storage\KeyValueStorageInterface;
 use IconCaptcha\Utils;
 
-class ServerSession extends Session
+class KeyValueSession extends Session
 {
     /**
-     * @var string The key used to store the challenges at in the session.
+     * @var string The key used to store the challenges at in the storage container.
      */
-    private string $sessionKey = 'challenges';
+    private string $key = 'challenges';
 
     /**
-     * @var KeyValueStorageInterface The session storage container.
+     * @var KeyValueStorageInterface The storage container.
      */
     private KeyValueStorageInterface $storage;
 
     /**
      * Initializes a new server session instance.
      *
-     * @param KeyValueStorageInterface $storage The session storage container.
+     * @param KeyValueStorageInterface $storage The storage container.
      * @param array $options The captcha session options.
      * @param string $ipAddress The IP address of the visitor.
      * @param string $widgetId The captcha widget identifier.
@@ -55,7 +55,7 @@ class ServerSession extends Session
     {
         if ($this->exists($this->challengeId ?? '', $this->widgetId)) {
             $this->puzzle->fromArray(
-                $this->storage->read("$this->sessionKey.$this->widgetId:$this->challengeId")
+                $this->storage->read("$this->key.$this->widgetId:$this->challengeId")
             );
         } else {
             $this->challengeId = $this->challengeId ?? $this->generateUniqueId();
@@ -69,8 +69,8 @@ class ServerSession extends Session
      */
     public function save(): void
     {
-        // Write the data to the session.
-        $this->storage->write("$this->sessionKey.$this->widgetId:$this->challengeId", $this->puzzle->toArray());
+        // Write the session data to the storage container.
+        $this->storage->write("$this->key.$this->widgetId:$this->challengeId", $this->puzzle->toArray());
     }
 
     /**
@@ -78,7 +78,8 @@ class ServerSession extends Session
      */
     public function destroy(): void
     {
-        $this->storage->remove("$this->sessionKey.$this->widgetId:$this->challengeId");
+        // Clear all data linked to the current session.
+        $this->storage->remove("$this->key.$this->widgetId:$this->challengeId");
     }
 
     /**
@@ -86,15 +87,15 @@ class ServerSession extends Session
      */
     protected function purgeExpired(): void
     {
-        // If the session is not set yet, do nothing.
-        if (!$this->storage->exists($this->sessionKey)) {
+        // If no session is set yet, do nothing.
+        if (!$this->storage->exists($this->key)) {
             return;
         }
 
         // Check all existing sessions, deleting the ones which are expired.
-        foreach ($this->storage->read($this->sessionKey) as $id => $session) {
+        foreach ($this->storage->read($this->key) as $id => $session) {
             if ($session['expiresAt'] > 0 && $session['expiresAt'] < Utils::getCurrentTimeInMilliseconds()) {
-                $this->storage->remove("$this->sessionKey.$id");
+                $this->storage->remove("$this->key.$id");
             }
         }
     }
@@ -105,6 +106,6 @@ class ServerSession extends Session
     public function exists(string $challengeId, string $widgetId): bool
     {
         return !empty($challengeId) && !empty($widgetId)
-            && $this->storage->exists("$this->sessionKey.$widgetId:$challengeId");
+            && $this->storage->exists("$this->key.$widgetId:$challengeId");
     }
 }

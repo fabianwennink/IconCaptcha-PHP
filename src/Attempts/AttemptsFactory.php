@@ -11,7 +11,7 @@ namespace IconCaptcha\Attempts;
 
 use IconCaptcha\Attempts\Drivers\Database\PDOAttempts;
 use IconCaptcha\Attempts\Drivers\Database\Query\DefaultQuery;
-use IconCaptcha\Attempts\Drivers\SessionAttempts;
+use IconCaptcha\Attempts\Drivers\KeyValueAttempts;
 use InvalidArgumentException;
 
 class AttemptsFactory
@@ -24,7 +24,7 @@ class AttemptsFactory
      * @param array $options The attempts/timeout options.
      * @param string $ipAddress The IP address of the visitor.
      *
-     * @return PDOAttempts|SessionAttempts|AttemptsInterface|mixed The generated attempts/timeout manager instance.
+     * @return PDOAttempts|KeyValueAttempts|AttemptsInterface|mixed The generated attempts/timeout manager instance.
      * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */
     public static function create($storage, string $driver, array $options, string $ipAddress): AttemptsInterface
@@ -35,7 +35,7 @@ class AttemptsFactory
 
         switch ($driver) {
             case 'session':
-                return new SessionAttempts($storage, $options);
+                return new KeyValueAttempts($storage, $options);
             case 'mysql':
             case 'pgsql':
             case 'postgres':

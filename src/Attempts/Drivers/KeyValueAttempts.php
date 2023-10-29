@@ -13,22 +13,22 @@ use IconCaptcha\Attempts\Attempts;
 use IconCaptcha\Storage\KeyValueStorageInterface;
 use IconCaptcha\Utils;
 
-class SessionAttempts extends Attempts
+class KeyValueAttempts extends Attempts
 {
     /**
-     * @var string The key used to store the attempts at in the session.
+     * @var string The key used to store the attempts at in the storage container.
      */
-    private string $sessionKey = 'attempts';
+    private string $key = 'attempts';
 
     /**
-     * @var KeyValueStorageInterface The session storage wrapper.
+     * @var KeyValueStorageInterface The storage container.
      */
     private KeyValueStorageInterface $storage;
 
     /**
-     * Initializes a new instance of the attempts/timeout manager with session storage.
+     * Initializes a new instance of the attempts/timeout manager.
      *
-     * @param KeyValueStorageInterface $storage The session storage container.
+     * @param KeyValueStorageInterface $storage The storage container.
      * @param array $options The captcha storage options.
      */
     public function __construct(KeyValueStorageInterface $storage, array $options)
@@ -52,7 +52,7 @@ class SessionAttempts extends Attempts
         if ($updatedAttemptsCount >= $this->options['amount']) {
             $this->issueTimeout();
         } else {
-            $this->storage->write($this->sessionKey, [
+            $this->storage->write($this->key, [
                 'count' => $updatedAttemptsCount,
                 'valid' => $this->getNewValidityTimestamp(),
             ]);
@@ -64,8 +64,7 @@ class SessionAttempts extends Attempts
      */
     public function clearAttempts(): void
     {
-        // Remove the attempts key from the session.
-        $this->storage->remove($this->sessionKey);
+        $this->storage->remove($this->key);
     }
 
     /**
@@ -77,7 +76,7 @@ class SessionAttempts extends Attempts
         $timeoutTimestamp = $this->options['timeout'] + Utils::getCurrentTimeInSeconds();
 
         // Store the timeout in the session.
-        $this->storage->write($this->sessionKey, [
+        $this->storage->write($this->key, [
             'timeout' => $timeoutTimestamp,
             // Instead of setting a new timestamp, simply re-use the timeout timestamp.
             // This way the attempts will invalidate after the timeout has been lifted.
@@ -93,7 +92,7 @@ class SessionAttempts extends Attempts
     protected function getActiveTimeoutTimestamp(): ?int
     {
         if ($this->isAttemptsDataStillValid()) {
-            return $this->storage->read("$this->sessionKey.timeout");
+            return $this->storage->read("$this->key.timeout");
         }
 
         return null;
@@ -105,7 +104,7 @@ class SessionAttempts extends Attempts
     protected function getCurrentAttemptsCount(): ?int
     {
         if ($this->isAttemptsDataStillValid()) {
-            return $this->storage->read("$this->sessionKey.count");
+            return $this->storage->read("$this->key.count");
         }
 
         return null;
@@ -116,6 +115,6 @@ class SessionAttempts extends Attempts
      */
     protected function getAttemptsValidityTimestamp(): ?int
     {
-        return $this->storage->read("$this->sessionKey.valid");
+        return $this->storage->read("$this->key.valid");
     }
 }

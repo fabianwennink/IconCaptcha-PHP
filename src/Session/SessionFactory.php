@@ -12,7 +12,7 @@ namespace IconCaptcha\Session;
 use IconCaptcha\Session\Drivers\Database\PDOSession;
 use IconCaptcha\Session\Drivers\Database\Query\DefaultQuery;
 use IconCaptcha\Session\Drivers\Database\Query\SqlServerQuery;
-use IconCaptcha\Session\Drivers\ServerSession;
+use IconCaptcha\Session\Drivers\KeyValueSession;
 use InvalidArgumentException;
 
 class SessionFactory
@@ -27,7 +27,7 @@ class SessionFactory
      * @param string $widgetId The widget unique identifier.
      * @param string|null $challengeId The challenge unique identifier.
      *
-     * @return PDOSession|ServerSession|SessionInterface|mixed The generated session instance.
+     * @return PDOSession|KeyValueSession|SessionInterface|mixed The generated session instance.
      * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */
     public static function create($storage, string $driver, array $options, string $ipAddress, string $widgetId, string $challengeId = null): SessionInterface
@@ -38,7 +38,7 @@ class SessionFactory
 
         switch ($driver) {
             case 'session':
-                return new ServerSession($storage, $options, $ipAddress, $widgetId, $challengeId);
+                return new KeyValueSession($storage, $options, $ipAddress, $widgetId, $challengeId);
             case 'mysql':
             case 'pgsql':
             case 'postgres':
