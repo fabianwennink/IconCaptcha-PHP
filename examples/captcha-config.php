@@ -6,8 +6,7 @@
  * This array contains various configuration options that can be used to customize
  * the behavior of the IconCaptcha library. All options are optional and have default values.
  *
- * For more information on each option, please refer to the documentation on the GitHub wiki:
- * - https://github.com/fabianwennink/IconCaptcha-PHP/wiki
+ * For more information on each option, please refer to the documentation: https://github.com/fabianwennink/IconCaptcha-PHP/wiki
  */
 return [
     // Specifies the directory path where the icon files are located.
@@ -17,13 +16,16 @@ return [
 
     // Specifies a function that must return the IP address of the visitor.
     // Using Cloudflare? Ensure to return the visitor's original IP (HTTP_CF_CONNECTING_IP) and not the proxy IP.
+    // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Configuration#ipaddress
     'ipAddress' => static fn() => $_SERVER['REMOTE_ADDR'],
 
     // Specifies the token class to use for challenge CSRF tokens. Set to null to disable.
     // The default token class is \IconCaptcha\Token\IconCaptchaToken::class.
+    // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Token
     'token' => \IconCaptcha\Token\IconCaptchaToken::class,
 
     // Configurations for additional custom themes.
+    // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Themes
     'themes' => [
         'black' => [
             // Specifies which icon type should be used: light or dark.
@@ -40,6 +42,7 @@ return [
         'driver' => 'session',
         // Specifies the connection details for database session driver.
         // Alternatively, you can use an existing PDO object for the 'connection' key.
+        // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Database-Storage
         'connection' => [
             //'url' => 'mysql:host=127.0.0.1;port=3306;dbname=db', // You can use a DSN URL if your database requires a more complex connection.
             'host' => '127.0.0.1',
@@ -72,6 +75,7 @@ return [
         // Specifies whether to render a border between the icons in each challenge image.
         'border' => true,
         // Specifies the generator class to use for creating challenge images. Generators for 'GD' and 'Imagick' extensions are available.
+        // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Challenge-Generator
         'generator' => \IconCaptcha\Challenge\Generators\GD::class,
     ],
 
@@ -82,6 +86,7 @@ return [
         // Specifies the duration (in seconds) after a successful challenge before it's invalidated. Set to 0 to disable.
         'completionExpiration' => 300,
         // Specifies the options for challenge solving attempts.
+        // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Attempts-&-Timeouts
         'attempts' => [
             // Specifies whether to enable the attempts and timeout feature.
             'enabled' => true,
@@ -94,8 +99,11 @@ return [
             // Specifies the options for storing attempts and timeout data.
             'storage' => [
                 // Specifies the custom driver class to use for storing and retrieving attempts and timeout data.
-                // An internal driver compatible with the configured storage driver will be used by default.
-                // Required: Your custom driver must extend the '\IconCaptcha\Attempts\Attempts' class.
+                // An internal driver compatible with the configured storage driver will be used when set to NULL.
+                // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Attempts-&-Timeouts#custom-driver
+                // Required:
+                // - Your custom driver must extend the '\IconCaptcha\Attempts\Attempts' class.
+                // - Your custom driver must be compatible with the configured storage driver.
                 'driver' => null,
                 // Specifies the options passed on to the driver.
                 'options' => [
@@ -111,8 +119,11 @@ return [
     // Configuration for the session driver.
     'session' => [
         // Specifies the custom driver class to use for managing challenge data.
-        // An internal driver compatible with the configured storage driver will be used by default.
-        // Required: Your custom driver must extend the '\IconCaptcha\Session\Session' class.
+        // An internal driver compatible with the configured storage driver will be used when set to NULL.
+        // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Session#custom-driver
+        // Required:
+        // - Your custom driver must extend the '\IconCaptcha\Session\Session' class.
+        // - Your custom driver must be compatible with the configured storage driver.
         'driver' => null,
         // Specifies the options passed on to the driver.
         'options' => [
@@ -126,6 +137,7 @@ return [
     ],
 
     // Configuration for Cross-Origin Resource Sharing (CORS).
+    // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Configuration#cors
     'cors' => [
         // Specifies whether CORS is enabled.
         'enabled' => false,
@@ -139,6 +151,7 @@ return [
     ],
 
     // Configuration for hooks.
+    // For more information, see https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Hooks-&-Events#hooks
     'hooks' => [
         // Initialization hook, called when the challenge is requested.
         // Use case: To determine whether to serve a challenge, or complete immediately, e.g. based on IP or previously completed challenges.
