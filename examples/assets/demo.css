@@ -144,6 +144,10 @@ h2 {
     display: block;
 }
 
+.link-underline {
+    text-decoration: underline;
+}
+
 .corner-ribbon {
     width: 300px;
     background: #ffffff;

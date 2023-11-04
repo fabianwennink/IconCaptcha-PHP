@@ -20,7 +20,7 @@ Aside from being user-friendly, IconCaptcha is also developer-friendly. In just 
 Even developers new to JavaScript and PHP can easily install IconCaptcha. The included demo pages in this repository contain all the code required to make IconCaptcha work. 
 For more detailed information, please read the information written on this page.
 
-<img src="https://i.imgur.com/9RGFZSC.png" title="IconCaptcha" alt="IconCaptcha" />
+<img src="https://i.imgur.com/WsWdBRL.png" title="IconCaptcha" alt="IconCaptcha" />
 
 ___
 ### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View live demo</a>
@@ -44,14 +44,14 @@ ___
 
 ## New in v3
 In version 3 of IconCaptcha, the whole plugin got an overhaul - both client-side and server-side. With better security features, more customizations/options, new 
-themes, no more jQuery dependency and 180 icons, version 3 is the biggest change to IconCaptcha yet.
+themes, no more jQuery dependency and 250 icons, version 3 is the biggest change to IconCaptcha yet.
 
 * No longer required to use jQuery, although IconCaptcha can still be used with jQuery.
 * More captcha image generation options to increase the difficulty.
 * Automatic captcha invalidation after a period of no user interaction.
 * Automatic timeouts when too many incorrect selections were made by the user.
 * New light and dark themes with more modern designs, with improved support for custom themes.
-* Includes 180 new modern icons, created by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
+* Includes 250 new modern icons, created by [BlendIcons](https://blendicons.com/).
 * Better stability, general code improvements and bug fixes.
 
 # Wiki
@@ -74,7 +74,7 @@ For information on how to install, set up and configure IconCaptcha, please chec
     * [Custom Themes](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#custom-themes) - Details on how to implement and enable custom themes.
 
 ## Credits
-The icons used in this project are made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
+The icons used in this project are made by [BlendIcons](https://blendicons.com/).
 
 ## License
 This project is licensed under the <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/blob/master/LICENSE">MIT</a> license.

@@ -54,7 +54,7 @@ class IconCaptcha
             'form_token' => 'The form token was invalid.'
         ],
         'image' => [
-            'availableIcons' => 180,
+            'availableIcons' => 250,
             'amount' => [
                 'min' => 5,
                 'max' => 8
