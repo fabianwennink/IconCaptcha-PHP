@@ -58,8 +58,8 @@ return [
 
     // Configuration for the challenge generation.
     'challenge' => [
-        // Specifies the maximum number of unique icons available. By default, IconCaptcha ships with 180 icons.
-        'availableIcons' => 180,
+        // Specifies the maximum number of unique icons available. By default, IconCaptcha ships with 250 icons.
+        'availableIcons' => 250,
         // Specifies the minimum and maximum number of icons to use in each challenge image.
         'iconAmount' => [
             'min' => 5, // The lowest possible is 5 icons per challenge.

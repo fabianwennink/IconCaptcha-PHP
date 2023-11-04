@@ -33,6 +33,16 @@ For a full list of commits and changes, please refer to the [full commit changel
 
 ---
 
+## 3.1.3 - November 4, 2023
+Release: [View tag 3.1.3](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/3.1.3)
+
+## Changed
+- Updated included icons to v3.1.3 of the IconCaptcha widget package, replacing all icons with ones created by [BlendIcons](https://blendicons.com/).
+
+For a full list of commits and changes, please refer to the [full commit changelog](https://github.com/fabianwennink/IconCaptcha-PHP/compare/3.1.2...3.1.3).
+
+---
+
 ## 3.1.2 - April 3, 2023
 Release: [View tag 3.1.2](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/3.1.2)
 

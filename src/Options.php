@@ -37,7 +37,7 @@ class Options
             'datetimeFormat' => 'Y-m-d H:i:s',
         ],
         'challenge' => [
-            'availableIcons' => 180,
+            'availableIcons' => 250,
             'iconAmount' => [
                 'min' => 5,
                 'max' => 8

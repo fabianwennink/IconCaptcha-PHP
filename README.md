@@ -36,7 +36,7 @@ ___
 
 ### [▶ Try the live demo here!](https://www.fabianwennink.nl/projects/IconCaptcha/#!demonstration)
 
-<img src="https://i.imgur.com/9RGFZSC.png" title="IconCaptcha widget examples" alt="IconCaptcha light and dark theme widget examples." />
+<img src="https://i.imgur.com/WsWdBRL.png" title="IconCaptcha widget examples" alt="IconCaptcha light and dark theme widget examples." />
 
 **[Using ASP.NET instead? Try IconCaptcha for ASP.NET](https://github.com/fabianwennink/IconCaptcha-ASP.NET)** _(not currently maintained - will continue in Q4 of 2023)_
 ___
