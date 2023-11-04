@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v3.1.2
+     * IconCaptcha Plugin: v3.1.3
      * Copyright © 2023, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -9,7 +9,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>IconCaptcha v3.1.2 - By Fabian Wennink</title>
+        <title>IconCaptcha v3.1.3 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -28,7 +28,7 @@
             <div class="shields">
                 <div class="shields-row">
                     <a href="https://github.com/fabianwennink/IconCaptcha-PHP/releases" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/badge/Version-3.1.2-orange.svg?style=flat-square" alt="Version 3.1.2 Badge" />
+                        <img src="https://img.shields.io/badge/Version-3.1.3-orange.svg?style=flat-square" alt="Version 3.1.3 Badge" />
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
                         <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
