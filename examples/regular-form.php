@@ -1,6 +1,6 @@
 <?php
     /**
-     * IconCaptcha Plugin: v3.1.2
+     * IconCaptcha Plugin: v3.1.3
      * Copyright © 2023, Fabian Wennink (https://www.fabianwennink.nl)
      *
      * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -32,7 +32,7 @@ use IconCaptcha\IconCaptcha;
             'form_token' => 'The form token was invalid.'
         ],
         'image' => [
-            'availableIcons' => 180, // Number of unique icons available. By default, IconCaptcha ships with 180 icons.
+            'availableIcons' => 250, // Number of unique icons available. By default, IconCaptcha ships with 250 icons.
             'amount' => [
                 'min' => 5, // The lowest possible is 5 icons per challenge.
                 'max' => 8 // The highest possible is 8 icons per challenge.
@@ -63,7 +63,7 @@ use IconCaptcha\IconCaptcha;
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>IconCaptcha v3.1.2 - By Fabian Wennink</title>
+        <title>IconCaptcha v3.1.3 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=10" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -90,7 +90,7 @@ use IconCaptcha\IconCaptcha;
             <div class="shields">
                 <div class="shields-row">
                     <a href="https://github.com/fabianwennink/IconCaptcha-PHP/releases" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/badge/Version-3.1.2-orange.svg?style=flat-square" alt="Version 3.1.2 Badge" />
+                        <img src="https://img.shields.io/badge/Version-3.1.3-orange.svg?style=flat-square" alt="Version 3.1.3 Badge" />
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
                         <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License-MIT Badge" />
@@ -145,8 +145,12 @@ use IconCaptcha\IconCaptcha;
 
             <div class="copyright">
                 <p>Copyright &copy; <?= date('Y'); ?> Fabian Wennink - All rights reserved</p>
-                <p><small>IconCaptcha is licensed under <a href="https://github.com/fabianwennink/IconCaptcha-PHP/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>.
-				Icons made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow noopener">Streamline</a>.</small></p>
+                <p>
+                    <small>
+                        IconCaptcha is licensed under <a href="https://www.fabianwennink.nl/projects/IconCaptcha/license" class="link-underline" target="_blank" rel="noopener">MIT</a>.
+                        Icons made by <a href="https://blendicons.com" class="link-underline" target="_blank" rel="nofollow noopener">BlendIcons</a>.
+                    </small>
+                </p>
             </div>
         </div>
 

@@ -1,6 +1,6 @@
 # IconCaptcha - PHP & JavaScript
 
-![Version](https://img.shields.io/badge/Version-3.1.2-orange.svg?style=flat-square)
+![Version](https://img.shields.io/badge/Version-3.1.3-orange.svg?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
 [![Issues](https://img.shields.io/github/issues/fabianwennink/IconCaptcha-PHP?style=flat-square)](https://github.com/fabianwennink/IconCaptcha-PHP/issues)
 [![Support](https://img.shields.io/badge/Support-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
@@ -11,7 +11,13 @@
 [![Sonar Bugs](https://img.shields.io/sonar/bugs/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-PHP)
 [![Sonar Vulnerabilities](https://img.shields.io/sonar/vulnerabilities/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-PHP)
 
-<br><img src="http://i.imgur.com/RMUALSz.png" />
+<br>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://i.imgur.com/k8sIUQI.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://i.imgur.com/RMUALSz.png">
+  <img alt="IconCaptcha Logo" src="https://i.imgur.com/RMUALSz.png">
+</picture>
+<br><br>
 
 IconCaptcha is a self-hosted captcha which is faster, more user-friendly and more customizable than other captchas. Users no longer have to read any annoying 
 text images, solve difficult math equations or play any puzzle games. IconCaptcha is simple: Compare up to 8 icons and select the icon type shown the least amount of times.
@@ -20,7 +26,7 @@ Aside from being user-friendly, IconCaptcha is also developer-friendly. In just 
 Even developers new to JavaScript and PHP can easily install IconCaptcha. The included demo pages in this repository contain all the code required to make IconCaptcha work. 
 For more detailed information, please read the information written on this page.
 
-<img src="https://i.imgur.com/9RGFZSC.png" title="IconCaptcha" alt="IconCaptcha" />
+<img src="https://i.imgur.com/WsWdBRL.png" title="IconCaptcha" alt="IconCaptcha" />
 
 ___
 ### <a href="https://www.fabianwennink.nl/projects/IconCaptcha/v2/">View live demo</a>
@@ -44,20 +50,20 @@ ___
 
 ## New in v3
 In version 3 of IconCaptcha, the whole plugin got an overhaul - both client-side and server-side. With better security features, more customizations/options, new 
-themes, no more jQuery dependency and 180 icons, version 3 is the biggest change to IconCaptcha yet.
+themes, no more jQuery dependency and 250 icons, version 3 is the biggest change to IconCaptcha yet.
 
 * No longer required to use jQuery, although IconCaptcha can still be used with jQuery.
 * More captcha image generation options to increase the difficulty.
 * Automatic captcha invalidation after a period of no user interaction.
 * Automatic timeouts when too many incorrect selections were made by the user.
 * New light and dark themes with more modern designs, with improved support for custom themes.
-* Includes 180 new modern icons, created by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
+* Includes 250 new modern icons, created by [BlendIcons](https://blendicons.com/).
 * Better stability, general code improvements and bug fixes.
 
 # Wiki
 For information on how to install, set up and configure IconCaptcha, please check the Wiki pages:
 
-* [How To Use](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use) - A guide on how to setup and use IconCaptcha.
+* [How To Use](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use) - A guide on how to set up and use IconCaptcha.
     * [Requirements](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#requirements) - A list of requirements to get IconCaptcha working properly on your website.
     * [Download](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#download) - Information on how to download the required client-side and server-side packages.
     * [Usage](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#usage) - Details on how to implement IconCaptcha in both the client-side and server-side.
@@ -74,7 +80,7 @@ For information on how to install, set up and configure IconCaptcha, please chec
     * [Custom Themes](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/How-To-Use#custom-themes) - Details on how to implement and enable custom themes.
 
 ## Credits
-The icons used in this project are made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow">Streamline</a>.
+The icons used in this project are made by [BlendIcons](https://blendicons.com/).
 
 ## License
-This project is licensed under the <a href="https://github.com/fabianwennink/jQuery-Icon-Captcha-Plugin/blob/master/LICENSE">MIT</a> license.
+This project is licensed under the [MIT](https://www.fabianwennink.nl/projects/IconCaptcha/license) license.

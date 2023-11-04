@@ -1,7 +1,7 @@
 <?php
 
 /**
- * IconCaptcha Plugin: v3.1.2
+ * IconCaptcha Plugin: v3.1.3
  * Copyright © 2023, Fabian Wennink (https://www.fabianwennink.nl)
  *
  * Licensed under the MIT license: https://www.fabianwennink.nl/projects/IconCaptcha/license
@@ -54,7 +54,7 @@ class IconCaptcha
             'form_token' => 'The form token was invalid.'
         ],
         'image' => [
-            'availableIcons' => 180,
+            'availableIcons' => 250,
             'amount' => [
                 'min' => 5,
                 'max' => 8
