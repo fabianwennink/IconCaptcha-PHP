@@ -91,7 +91,7 @@ For instructions on installing, setting up, and configuring IconCaptcha, be sure
 * [Localization](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Localization) - Details on how to customize the localization strings.
 
 ## Credits
-The icons used in this project are made by [Streamline](https://streamlinehq.com).
+The icons used in this project are made by [BlendIcons](https://blendicons.com/).
 
 ## License
 This project is licensed under the [MIT](https://www.fabianwennink.nl/projects/IconCaptcha/license) license.

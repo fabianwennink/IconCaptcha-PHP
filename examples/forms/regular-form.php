@@ -113,8 +113,12 @@
 
             <div class="copyright">
                 <p>Copyright &copy; <?= date('Y'); ?> Fabian Wennink - All rights reserved</p>
-                <p><small>IconCaptcha is licensed under <a href="https://github.com/fabianwennink/IconCaptcha-PHP/blob/master/LICENSE" target="_blank" rel="noopener">MIT</a>.
-				Icons made by <a href="https://streamlinehq.com" target="_blank" rel="nofollow noopener">Streamline</a>.</small></p>
+                <p>
+                    <small>
+                        IconCaptcha is licensed under <a href="https://www.fabianwennink.nl/projects/IconCaptcha/license" class="link-underline" target="_blank" rel="noopener">MIT</a>.
+                        Icons made by <a href="https://blendicons.com" class="link-underline" target="_blank" rel="nofollow noopener">BlendIcons</a>.
+                    </small>
+                </p>
             </div>
         </div>
 

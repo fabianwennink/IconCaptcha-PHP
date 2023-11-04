@@ -1,4 +1,4 @@
-﻿// Theme selector.
+// Theme selector.
 document.addEventListener('DOMContentLoaded', function () {
     const elements = document.querySelectorAll('.theme > span:first-child');
     for (let element of elements) {
