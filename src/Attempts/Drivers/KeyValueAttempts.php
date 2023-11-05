@@ -26,7 +26,7 @@ class KeyValueAttempts extends Attempts
     private KeyValueStorageInterface $storage;
 
     /**
-     * Initializes a new instance of the attempts/timeout manager.
+     * Creates a new instance of the attempts and timeout manager.
      *
      * @param KeyValueStorageInterface $storage The storage container.
      * @param array $options The captcha storage options.

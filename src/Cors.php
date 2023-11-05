@@ -45,7 +45,7 @@ class Cors
     private array $vary = [];
 
     /**
-     * Initializes a new CORS handler instance.
+     * Creates a new CORS handler instance.
      *
      * @param array $origins All allowed origins.
      * @param bool $allowCredentials Whether to expose the credentials in the response.
@@ -60,7 +60,7 @@ class Cors
 
         // Store all request Vary header values.
         if (isset($_SERVER['HTTP_VARY'])) {
-            $this->vary = explode(',', str_replace(' ', '', (string)$_SERVER['HTTP_VARY']));
+            $this->vary = explode(',', str_replace(' ', '', $_SERVER['HTTP_VARY']));
         }
 
         // Prepare the wildcard URL patterns.

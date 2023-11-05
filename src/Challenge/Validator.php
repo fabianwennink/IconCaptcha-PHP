@@ -45,6 +45,12 @@ class Validator
      */
     private $storage;
 
+    /**
+     * Creates a new challenge validator instance.
+     *
+     * @param mixed $storage The storage container.
+     * @param array $options The captcha options.
+     */
     public function __construct($storage, array $options)
     {
         $this->storage = $storage;
@@ -56,7 +62,6 @@ class Validator
      * will set the global error variable and return FALSE, else TRUE.
      *
      * @param array $request The HTTP POST request variable ($_POST).
-     *
      * @return ValidationResult The validation response.
      */
     public function validate(array $request): ValidationResult
@@ -140,7 +145,6 @@ class Validator
      * as not every request will contain custom HTTP headers and thus this token should be able to be skipped. Default
      * value is NULL. When the value is set to anything else other than NULL, the given value will be checked against
      * the captcha session token.
-     *
      * @return bool TRUE if the captcha session token matches the given tokens or if the token option is disabled,
      * FALSE if the captcha session token does not match the given tokens.
      */

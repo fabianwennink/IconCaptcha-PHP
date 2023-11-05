@@ -9,6 +9,8 @@
 
 namespace IconCaptcha\Token;
 
+use Exception;
+
 abstract class AbstractToken
 {
     /**
@@ -32,7 +34,7 @@ abstract class AbstractToken
         // Create a secure captcha session token.
         try {
             $token = bin2hex(random_bytes(self::TOKEN_LENGTH));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Using a fallback in case of an exception.
             if (function_exists('openssl_random_pseudo_bytes')) {
                 // Only available when the OpenSSL extension is installed.

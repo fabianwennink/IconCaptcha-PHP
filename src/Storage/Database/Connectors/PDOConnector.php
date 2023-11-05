@@ -30,7 +30,7 @@ abstract class PDOConnector implements StorageConnectorInterface
     private array $options;
 
     /**
-     * Initializes a new PDOConnector instance.
+     * Creates a new PDO connector instance.
      *
      * @param array $options The database storage options.
      */

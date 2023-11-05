@@ -14,6 +14,7 @@ use IconCaptcha\Attempts\AttemptsFactory;
 use IconCaptcha\Attempts\AttemptsInterface;
 use IconCaptcha\Challenge\Hooks\Hook;
 use IconCaptcha\Challenge\Hooks\InitHookInterface;
+use IconCaptcha\Challenge\Hooks\InvalidHookException;
 use IconCaptcha\Challenge\Hooks\SelectionHookInterface;
 use IconCaptcha\Exceptions\FileNotFoundException;
 use IconCaptcha\Payload;
@@ -57,7 +58,7 @@ class Challenge
     private $storage;
 
     /**
-     * Initializes a new challenge generator/processor instance.
+     * Creates a new challenge processor instance.
      *
      * @param mixed $storage The storage container.
      * @param array $options The captcha options.
@@ -110,8 +111,10 @@ class Challenge
      * returned instead. This error message will also be a base64 encoded JSON string.
      *
      * @param string $theme The theme of the captcha.
-     *
      * @return string Captcha details required to initialize the client.
+     * @throws JsonException If a problem occurs when encoding the response payload.
+     * @throws InvalidHookException If an attempt was made to call a hook, but failed as it was configured incorrectly.
+     * @throws Exception If an unexpected error occurred while generating a challenge.
      */
     public function generate(string $theme): string
     {
@@ -221,6 +224,7 @@ class Challenge
      * @param int $width The width of the captcha element.
      * @return string The request payload, containing the completion status.
      * @throws JsonException If a problem occurs when encoding the response payload.
+     * @throws InvalidHookException If an attempt was made to call a hook, but failed as it was configured incorrectly.
      */
     public function makeSelection(int $x, int $y, int $width): string
     {

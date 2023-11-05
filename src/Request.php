@@ -36,7 +36,7 @@ class Request
     private Validator $validator;
 
     /**
-     * Initializes a new captcha request handler instance.
+     * Creates a new captcha request handler instance.
      *
      * @param Challenge $challenge The challenge generator.
      * @param Validator $validator The challenge validator.

@@ -36,7 +36,7 @@ class PDOSession extends Session
     private QueryInterface $queryStrategy;
 
     /**
-     * Initializes a new database (PDO) session instance.
+     * Creates a new database (PDO) session instance.
      *
      * @param PDOStorageInterface $storage The database storage container.
      * @param QueryInterface $queryStrategy The query strategy to use.

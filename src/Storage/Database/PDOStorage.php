@@ -23,6 +23,12 @@ class PDOStorage implements PDOStorageInterface
      */
     private string $datetimeFormat;
 
+    /**
+     * Creates a new database (PRO) storage instance.
+     *
+     * @param PDO $connection The connection to the database.
+     * @param string $datetimeFormat The format to be used when transforming time into a datetime string.
+     */
     public function __construct(PDO $connection, string $datetimeFormat)
     {
         $this->connection = $connection;

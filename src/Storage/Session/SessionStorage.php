@@ -19,7 +19,7 @@ class SessionStorage implements KeyValueStorageInterface
     private string $sessionName;
 
     /**
-     * Initializes a new session storage container instance.
+     * Creates a new session storage instance.
      *
      * @param string $sessionName The session name.
      */

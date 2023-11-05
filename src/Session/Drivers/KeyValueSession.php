@@ -26,7 +26,7 @@ class KeyValueSession extends Session
     private KeyValueStorageInterface $storage;
 
     /**
-     * Initializes a new server session instance.
+     * Creates a new server session instance.
      *
      * @param KeyValueStorageInterface $storage The storage container.
      * @param array $options The captcha session options.

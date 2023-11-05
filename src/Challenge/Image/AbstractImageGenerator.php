@@ -9,6 +9,7 @@
 
 namespace IconCaptcha\Challenge\Image;
 
+use Exception;
 use IconCaptcha\Challenge\Hooks\GenerationHookInterface;
 use IconCaptcha\Challenge\Hooks\Hook;
 use IconCaptcha\Exceptions\FileNotFoundException;
@@ -42,7 +43,7 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
     private array $options;
 
     /**
-     * Initializes a new image generator instance.
+     * Creates a new image generator instance.
      *
      * @param SessionInterface $session The session containing captcha information
      * @param array $options The captcha options.
@@ -61,7 +62,8 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
      * @param string $iconPath The path to the folder holding the icons.
      * @param string $placeholderPath The path to the placeholder image, with the name of the file included.
      * @return false|\GdImage|resource The generated image.
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException If an icon image could not be found.
+     * @throws Exception If an unexpected error occurred while generating a challenge.
      */
     public function generate(string $iconPath, string $placeholderPath)
     {

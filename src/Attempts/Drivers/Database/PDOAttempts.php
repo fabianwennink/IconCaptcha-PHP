@@ -38,7 +38,7 @@ class PDOAttempts extends Attempts
     protected string $ipAddress;
 
     /**
-     * Initializes a new database (PDO) attempts/timeout manager instance.
+     * Creates a new database (PDO) attempts/timeout manager instance.
      *
      * @param PDOStorageInterface $storage The database storage container.
      * @param QueryInterface $queryStrategy The query strategy to use.

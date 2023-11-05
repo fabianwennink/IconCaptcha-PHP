@@ -17,13 +17,12 @@ use InvalidArgumentException;
 class AttemptsFactory
 {
     /**
-     * Create a new attempts/timeout manager instance based on the configuration.
+     * Creates a new attempts and timeout manager instance.
      *
      * @param mixed $storage The storage container.
      * @param string $driver The feature driver.
      * @param array $options The attempts/timeout options.
      * @param string $ipAddress The IP address of the visitor.
-     *
      * @return PDOAttempts|KeyValueAttempts|AttemptsInterface|mixed The generated attempts/timeout manager instance.
      * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */

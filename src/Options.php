@@ -92,6 +92,7 @@ class Options
      * Set the options for the captcha. The given options will be merged together with the
      * default options and overwrite the default values. If any of the options are missing
      * in the given options array, they will be set with their default value.
+     *
      * @param array $options The array of options.
      */
     public static function prepare(array $options): array

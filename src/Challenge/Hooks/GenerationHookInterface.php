@@ -20,7 +20,6 @@ interface GenerationHookInterface
      * @param SessionInterface $session The session containing captcha information.
      * @param array $options The captcha options.
      * @param mixed $image The generated challenge image.
-     *
      * @return mixed The updated challenge image.
      */
     public function generate(array $request, SessionInterface $session, array $options, $image);

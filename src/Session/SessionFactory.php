@@ -18,7 +18,7 @@ use InvalidArgumentException;
 class SessionFactory
 {
     /**
-     * Create a new session instance based on the configuration.
+     * Creates a new session instance based on the configuration.
      *
      * @param mixed $storage The storage container.
      * @param string $driver The session driver.
@@ -26,7 +26,6 @@ class SessionFactory
      * @param string $ipAddress The IP address of the visitor.
      * @param string $widgetId The widget unique identifier.
      * @param string|null $challengeId The challenge unique identifier.
-     *
      * @return PDOSession|KeyValueSession|SessionInterface|mixed The generated session instance.
      * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */

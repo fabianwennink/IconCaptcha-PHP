@@ -58,9 +58,10 @@ abstract class Session implements SessionInterface
     private int $maxIdentifierTries;
 
     /**
-     * Creates or loads a captcha session. If the widget and challenge identifiers are
-     * given, an attempt will be made to load existing session data belonging to
-     * the session identifiers. Otherwise, a new session will be created.
+     * Creates a new challenge session instance.
+     *
+     * If the widget and challenge identifiers are given, an attempt will be made to load existing
+     * session data belonging to the session identifiers. Otherwise, a new session will be created.
      *
      * @param array $options The captcha session options.
      * @param string $ipAddress The IP address of the visitor.

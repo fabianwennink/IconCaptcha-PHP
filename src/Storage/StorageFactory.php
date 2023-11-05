@@ -19,10 +19,9 @@ use InvalidArgumentException;
 class StorageFactory
 {
     /**
-     * Create a new storage instance based on the driver configuration.
+     * Creates a new storage instance based on the configured storage driver.
      *
      * @param array $options The captcha storage options.
-     *
      * @return StorageConnectorInterface The generated storage instance.
      * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */

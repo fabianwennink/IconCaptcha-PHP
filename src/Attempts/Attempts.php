@@ -19,7 +19,7 @@ abstract class Attempts implements AttemptsInterface
     protected array $options;
 
     /**
-     * Create a new attempts/timeout manager instance.
+     * Creates a new attempts and timeout manager instance.
      *
      * @param array $options The captcha attempts/timeout options.
      */

@@ -42,7 +42,7 @@ class IconCaptcha
     private $storage;
 
     /**
-     * Initializes a new IconCaptcha instance.
+     * Creates a new instance of IconCaptcha.
      *
      * @param array $options The captcha options.
      */
@@ -57,7 +57,6 @@ class IconCaptcha
      * Sets the captcha configuration.
      *
      * @param array $options The captcha configuration.
-     *
      * @return array The newly configured options.
      */
     public function options(array $options): array

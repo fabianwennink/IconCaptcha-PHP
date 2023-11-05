@@ -24,9 +24,8 @@ class Hook
      * @param array $options The captcha options.
      * @param mixed $default The default value, which will be returned if the hook could not be called.
      * @param mixed ...$params Any additional data which has to be passed to the hook.
-     *
      * @return mixed The result of the hook, or the default value if no hook was called.
-     * @throws InvalidHookException If the hook is invalid/implemented incorrectly.
+     * @throws InvalidHookException If an attempt was made to call a hook, but failed as it was configured incorrectly.
      */
     public static function call(string $type, $class, string $action, SessionInterface $session, array $options, $default, ...$params)
     {
@@ -49,9 +48,8 @@ class Hook
      * @param string $action The name of the function defined in the interface, which should be called.
      * @param SessionInterface $session The session containing captcha information.
      * @param array $options The captcha options.
-     *
      * @param mixed ...$params Any additional data which has to be passed to the hook.
-     * @throws InvalidHookException If the hook is invalid/implemented incorrectly.
+     * @throws InvalidHookException If an attempt was made to call a hook, but failed as it was configured incorrectly.
      */
     public static function callVoid(string $type, $class, string $action, SessionInterface $session, array $options, ...$params): void
     {
@@ -70,9 +68,8 @@ class Hook
      * @param array $options The captcha options.
      * @param string $hookName The name of the hook in the options.
      * @param mixed $interface The interface which the hook has to implement in order to be called properly.
-     *
      * @return mixed|null The hook class instance, or NULL if no hook was defined for the current action.
-     * @throws InvalidHookException If the hook is invalid/implemented incorrectly.
+     * @throws InvalidHookException If an attempt was made to call a hook, but failed as it was configured incorrectly.
      */
     private static function getHook(array $options, string $hookName, $interface)
     {
