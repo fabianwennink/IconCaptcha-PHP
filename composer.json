@@ -1,0 +1,39 @@
+{
+    "name": "fabianwennink/iconcaptcha",
+    "description": "IconCaptcha is a self-hosted, fast, simple and user-friendly captcha.",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "iconcaptcha",
+        "captcha",
+        "anti-bot",
+        "bots",
+        "anti-spam",
+        "spam"
+    ],
+    "homepage": "https://github.com/fabianwennink/IconCaptcha-PHP",
+    "authors": [
+        {
+            "name": "Fabian Wennink",
+            "homepage": "https://www.fabianwennink.nl/en"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/fabianwennink/IconCaptcha-PHP/issues",
+        "wiki": "https://github.com/fabianwennink/IconCaptcha-PHP/wiki"
+    },
+    "require": {
+        "php": ">=7.4",
+        "ext-json": "*"
+    },
+    "suggest": {
+        "ext-gd": "Required if you wish to use the GD image generator.",
+        "ext-imagick": "Required if you wish to use the ImageMagick image generator.",
+        "ext-pdo": "Required if you wish to use the default PDOSession class."
+    },
+    "autoload": {
+        "psr-4": {
+            "IconCaptcha\\": "src/"
+        }
+    }
+}
