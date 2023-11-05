@@ -127,7 +127,6 @@
                     general: {
                         endpoint: '../captcha-request.php',
                         fontFamily: 'inherit',
-                        credits: 'show',
                     },
                     security: {
                         interactionDelay: 1000,

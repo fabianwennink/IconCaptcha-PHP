@@ -78,6 +78,7 @@ Besides there being a lot of changes in the back-end, the JavaScript code initia
 - If you've used the `legacy-light` or `legacy-dark` themes, replace them with `light` and `dark` respectively.
 - Update the JavaScript code which initialized the widget. Some option names have been changed, update them accordingly:
     - `general.validationPath` has been renamed to `general.endpoint`.
+    - `general.credits` has been renamed to `general.showCredits` and is now a boolean value.
     - `security.clickDelay` has been renamed to `security.interactionDelay`.
     - `security.hoverDetection` has been renamed to `security.hoverProtection`.
     - `security.enableInitialMessage` has been renamed to `security.displayInitialMessage`.
