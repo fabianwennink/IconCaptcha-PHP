@@ -2,7 +2,7 @@
 
 All notable changes will be documented in this file. Only changes starting at IconCaptcha 2.0.2 have been recorded.
 
-## 4.0.0 - Oct 30, 2023
+## 4.0.0 - Nov 5, 2023
 Release: [View tag 4.0.0](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/4.0.0)
 
 Version 4 of IconCaptcha introduces significant enhancements to the architecture and feature set, and offers greater flexibility and customization, alongside improved security.
