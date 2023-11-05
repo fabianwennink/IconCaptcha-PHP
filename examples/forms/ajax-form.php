@@ -23,7 +23,7 @@
         <!-- JUST FOR THE DEMO PAGE -->
         <link href="../assets/demo.css" rel="stylesheet" type="text/css">
         <script src="../assets/demo.js" type="text/javascript"></script>
-        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700" rel="stylesheet">
 
         <!-- Include IconCaptcha stylesheet - REQUIRED -->
         <link href="../../assets/client/css/iconcaptcha.min.css" rel="stylesheet" type="text/css">
@@ -79,7 +79,7 @@
                     <div class="iconcaptcha-widget" data-theme="light"></div>
 
                     <!-- Submit button to test your IconCaptcha input -->
-                    <input type="submit" value="Submit demo captcha" class="btn">
+                    <input type="submit" value="Submit demo captcha" class="btn btn-invert">
                 </form>
 
                 <!-- Theme selector - JUST FOR THE DEMO PAGE -->
@@ -87,7 +87,7 @@
                     <div class="theme theme--light"><span data-theme="light"></span><span>Light Theme</span></div>
                     <div class="theme theme--dark"><span data-theme="dark"></span><span>Dark Theme</span></div>
                 </div>
-                <small>(theme selector only works when the challenge has not been requested yet)</small>
+                <small class="smaller">- The theme selector only works when no challenge has been rendered yet -</small>
             </div>
 
             <div class="copyright">
@@ -113,7 +113,7 @@
 
         <!-- Buy Me A Coffee widget - JUST FOR THE DEMO PAGE -->
         <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="fabianwennink"
-                data-description="Support me on Buy me a coffee!" data-message="If you like IconCaptcha, consider buying me a coffee!"
+                data-description="Support me on Buy me a coffee!" data-message="If you like IconCaptcha, please consider supporting me with a coffee!"
                 data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
 
         <!-- Include jQuery Library -->

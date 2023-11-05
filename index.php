@@ -43,15 +43,15 @@
             </div>
 
             <div class="section">
-                <h2>Examples:</h2>
-                <a href="examples/forms/regular-form.php"><div class="btn">Regular Form <small>Plain JavaScript</small></div></a>
-                <a href="examples/forms/ajax-form.php"><div class="btn">AJAX Form <small>jQuery</small></div></a>
+                <h2>EXAMPLES:</h2>
+                <a href="examples/forms/regular-form.php"><div class="btn">Regular Form <small>With JavaScript</small></div></a>
+                <a href="examples/forms/ajax-form.php"><div class="btn">AJAX Form <small>With jQuery</small></div></a>
             </div>
 
             <div class="section">
-                <h2>Links:</h2>
+                <h2>LINKS:</h2>
                 <a href="https://github.com/fabianwennink/IconCaptcha-PHP/" target="_blank" rel="noopener"><div class="btn">GitHub repository <small>Star the project on GitHub</small></small></div></a>
-                <a href="https://buymeacoffee.com/fabianwennink" target="_blank" rel="nofollow noopener"><div class="btn">Buy me a coffee <small>Support the project</small></div></a>
+                <a href="https://buymeacoffee.com/fabianwennink" target="_blank" rel="nofollow noopener"><div class="btn">Support the project <small>Buy me a coffee</small></div></a>
                 <a href="https://fabianwennink.nl/en/" target="_blank" rel="noopener"><div class="btn">Fabian Wennink <small>Developer Website</small></div></a>
             </div>
 
@@ -74,10 +74,10 @@
 
         <!-- buy me a coffee -->
         <script data-name="BMC-Widget" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="fabianwennink"
-                data-description="Support me on Buy me a coffee!" data-message="If you like IconCaptcha, consider buying me a coffee!"
+                data-description="Support me on Buy me a coffee!" data-message="If you enjoy IconCaptcha, please consider supporting me with a coffee!"
                 data-color="#ffffff" data-position="right" data-x_margin="25" data-y_margin="25"></script>
         <!-- /buy me a coffee -->
 
-        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700" rel="stylesheet">
     </body>
 </html>
