@@ -60,6 +60,9 @@ class Request
      */
     public function process(): void
     {
+        // Always return as plain text.
+        header('Content-type: text/plain');
+
         // Validate the request.
         if (!$this->isCaptchaRequest()) {
             $this->badRequest();
@@ -113,7 +116,6 @@ class Request
                 $theme = (isset($payload['theme']) && is_string($payload['theme'])) ? $payload['theme'] : 'light';
 
                 http_response_code(200);
-                header('Content-type: text/plain');
                 exit($this->challenge->initialize($payload['widgetId'])->generate($theme));
             case 'SELECTION':
 
@@ -126,7 +128,6 @@ class Request
                 $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width']);
 
                 http_response_code(200);
-                header('Content-type: text/plain');
                 exit($result);
             default:
                 break;
@@ -153,7 +154,6 @@ class Request
     private function tokenError(): void
     {
         http_response_code(200);
-        header('Content-type: text/plain');
         exit(Payload::encode(['error' => 'invalid-form-token']));
     }
 
