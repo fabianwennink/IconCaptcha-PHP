@@ -168,7 +168,7 @@ class PDOAttempts extends Attempts
 
         $attemptsCount = $statement->fetchColumn();
 
-        return ($attemptsCount !== false) ? (int)$attemptsCount : null;
+        return $attemptsCount !== false ? (int)$attemptsCount : null;
     }
 
     /**
