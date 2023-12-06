@@ -29,7 +29,7 @@ Version 4 of IconCaptcha introduces significant enhancements to the architecture
 - Removed the `legacy-light` and `legacy-dark` themes.
 - Removed support for Internet Explorer now that it has been officially discontinued by Microsoft.
 
-For a full list of commits and changes, please refer to the [full commit changelog](https://github.com/fabianwennink/IconCaptcha-PHP/compare/3.1.2...4.0.0).
+For a full list of commits and changes, please refer to the [full commit changelog](https://github.com/fabianwennink/IconCaptcha-PHP/compare/3.1.3...4.0.0).
 
 ---
 
