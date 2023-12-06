@@ -2,6 +2,14 @@
 
 All notable changes will be documented in this file. Only changes starting at IconCaptcha 2.0.2 have been recorded.
 
+## 4.0.1 - Dec 7, 2023
+Release: [View tag 4.0.1](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/4.0.1)
+
+### Fixed
+- Fixed an issue regarding the challenge image width, which is received in the payload when processing the icon selection call.
+
+For a full list of commits and changes, please refer to the [full commit changelog](https://github.com/fabianwennink/IconCaptcha-PHP/compare/4.0.0...4.0.1).
+
 ## 4.0.0 - Nov 5, 2023
 Release: [View tag 4.0.0](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/4.0.0)
 
