@@ -1,6 +1,6 @@
 {
     "name": "fabianwennink/iconcaptcha",
-    "description": "IconCaptcha is a self-hosted, fast, simple and user-friendly captcha.",
+    "description": "IconCaptcha is a self-hosted, customizable, easy-to-implement and user-friendly captcha.",
     "license": "MIT",
     "type": "library",
     "keywords": [

@@ -124,8 +124,13 @@ class Request
                     $this->badRequest();
                 }
 
+                // Ensure the cursor position and width are integers.
+                if (!is_numeric($payload['x']) || !is_numeric($payload['y']) || !is_numeric($payload['width'])) {
+                    $this->badRequest();
+                }
+
                 $challenge = $this->challenge->initialize($payload['widgetId'], $payload['challengeId']);
-                $result = $challenge->makeSelection($payload['x'], $payload['y'], $payload['width']);
+                $result = $challenge->makeSelection(round($payload['x']), round($payload['y']), round($payload['width']));
 
                 http_response_code(200);
                 exit($result);
