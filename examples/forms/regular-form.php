@@ -31,7 +31,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>IconCaptcha v4.0.1 - By Fabian Wennink</title>
+        <title>IconCaptcha v4.0.2 - By Fabian Wennink</title>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=11" />
         <meta name="author" content="Fabian Wennink © <?= date('Y') ?>" />
@@ -58,7 +58,7 @@
             <div class="shields">
                 <div class="shields-row">
                     <a href="https://github.com/fabianwennink/IconCaptcha-PHP/releases" target="_blank" rel="noopener">
-                        <img src="https://img.shields.io/badge/version-4.0.1-orange.svg?style=flat-square" alt="Version 4.0.1" />
+                        <img src="https://img.shields.io/badge/version-4.0.2-orange.svg?style=flat-square" alt="Version 4.0.2" />
                     </a>
                     <a href="https://github.com/fabianwennink/IconCaptcha-PHP/blob/master/LICENSE" target="_blank" rel="noopener">
                         <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT license" />

@@ -92,8 +92,8 @@ class Validator
         }
 
         // Verify if the captcha token is correct.
-        $token = $request[AbstractToken::TOKEN_FIELD_NAME] ?? null;
-        if (!$this->validateToken($token)) {
+        $token = $request[AbstractToken::TOKEN_FIELD_NAME] ?? '';
+        if (!is_string($token) || !$this->validateToken($token)) {
             return $this->createFailedResponse('invalid-security-token');
         }
 
