@@ -95,20 +95,6 @@ class Request
             return;
         }
 
-        // Note: JS timestamps are in milliseconds.
-        $currentTimestamp = Utils::getCurrentTimeInMilliseconds();
-        $requestTimestamp = $payload['timestamp'];
-        $scriptTimestamp = $payload['initTimestamp'];
-
-        // Validate the payload timestamps.
-        if (
-            ($requestTimestamp > $currentTimestamp || $scriptTimestamp > $currentTimestamp) || // ensure the timestamps are older than the current time.
-            ($scriptTimestamp > $requestTimestamp) // ensure the script init timestamp is older than the request timestamp.
-        ) {
-            $this->badRequest();
-            return;
-        }
-
         switch ($payload['action']) {
             case 'LOAD':
 
