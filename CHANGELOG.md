@@ -2,6 +2,14 @@
 
 All notable changes will be documented in this file. Only changes starting at IconCaptcha 2.0.2 have been recorded.
 
+## 4.0.3 - Dec 19, 2023
+Release: [View tag 4.0.3](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/4.0.3)
+
+### Fixed
+- Removed the request timestamp check due to unreliability after multiple reports indicated false positives, e.g. when the browser or server clocks were out of sync.
+
+For a full list of commits and changes, please refer to the [full commit changelog](https://github.com/fabianwennink/IconCaptcha-PHP/compare/4.0.2...4.0.3).
+
 ## 4.0.2 - Dec 16, 2023
 Release: [View tag 4.0.2](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/4.0.2)
 
