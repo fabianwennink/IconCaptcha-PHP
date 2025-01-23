@@ -34,7 +34,7 @@ class KeyValueSession extends Session
      * @param string $widgetId The captcha widget identifier.
      * @param string|null $challengeId The captcha challenge identifier.
      */
-    public function __construct(KeyValueStorageInterface $storage, array $options, string $ipAddress, string $widgetId, string $challengeId = null)
+    public function __construct(KeyValueStorageInterface $storage, array $options, string $ipAddress, string $widgetId, ?string $challengeId = null)
     {
         parent::__construct($options, $ipAddress, $widgetId, $challengeId);
 

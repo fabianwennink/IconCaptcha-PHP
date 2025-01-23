@@ -57,7 +57,7 @@ class IconCaptchaToken extends AbstractToken implements TokenInterface
     /**
      * @inheritDoc
      */
-    public function validate(string $payloadToken, string $headerToken = null): bool
+    public function validate(string $payloadToken, ?string $headerToken = null): bool
     {
         $sessionToken = $this->retrieve();
 

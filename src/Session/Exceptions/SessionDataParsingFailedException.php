@@ -21,7 +21,7 @@ class SessionDataParsingFailedException extends Exception
      *
      * @inheritDoc
      */
-    public function __construct(Throwable $previous = null)
+    public function __construct(?Throwable $previous = null)
     {
         $message = 'Failed to parse the data of a SessionData instance.';
 
