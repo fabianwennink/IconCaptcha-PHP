@@ -148,12 +148,10 @@ abstract class AbstractImageGenerator implements ImageGeneratorInterface
         }
 
         // Call the image generation hook, if provided.
-        $placeholder = Hook::call(
+        return Hook::call(
             'generation', GenerationHookInterface::class, 'generate',
             $this->session, $this->options, $placeholder, $placeholder
         );
-
-        return $placeholder;
     }
 
     /**

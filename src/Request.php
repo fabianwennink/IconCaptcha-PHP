@@ -140,7 +140,7 @@ class Request
     }
 
     /**
-     * Create a error message string for the token validation error.
+     * Create an error message string for the token validation error.
      */
     private function tokenError(): void
     {
