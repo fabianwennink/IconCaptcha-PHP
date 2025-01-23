@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/fabianwennink/IconCaptcha-PHP/releases"><img src="https://img.shields.io/badge/version-4.0.3-orange.svg?style=flat-square" alt="Version" /></a>
+    <a href="https://github.com/fabianwennink/IconCaptcha-PHP/releases"><img src="https://img.shields.io/badge/version-4.0.4-orange.svg?style=flat-square" alt="Version" /></a>
     <a href="https://packagist.org/packages/fabianwennink/iconcaptcha"><img src="https://img.shields.io/packagist/v/fabianwennink/iconcaptcha.svg?style=flat-square" alt="Latest Version on Packagist" /></a>
     <a href="https://fabianwennink.nl/projects/IconCaptcha/license"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License" /></a>
     <a href="https://paypal.me/nlgamevideosnl"><img src="https://img.shields.io/badge/support-PayPal-lightblue.svg?style=flat-square" alt="Support via PayPal" /></a>

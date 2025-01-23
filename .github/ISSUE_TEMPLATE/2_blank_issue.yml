@@ -12,7 +12,7 @@ body:
     attributes:
       label: IconCaptcha version
       description: Please specify the version of the package that you are using.
-      placeholder: "e.g. 4.0.3"
+      placeholder: "e.g. 4.0.4"
     validations:
       required: true
   - type: input
@@ -20,7 +20,7 @@ body:
     attributes:
       label: PHP version
       description: Please specify the version of PHP you are using.
-      placeholder: e.g. 8.2.0
+      placeholder: e.g. 8.4.0
     validations:
       required: true
   - type: textarea
