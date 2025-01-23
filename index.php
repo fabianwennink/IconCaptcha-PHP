@@ -63,6 +63,7 @@
                         Icons made by <a href="https://blendicons.com" class="link-underline" target="_blank" rel="nofollow noopener">BlendIcons</a>.
                     </small>
                 </p>
+                <p><small>Running PHP <?= phpversion(); ?></small></p>
             </div>
         </div>
 
