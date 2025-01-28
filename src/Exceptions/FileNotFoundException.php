@@ -20,7 +20,7 @@ class FileNotFoundException extends Exception
      * @param string $path The path of the non-existing file.
      * @inheritDoc
      */
-    public function __construct(string $path, string $message = null, int $code = 0, Throwable $previous = null)
+    public function __construct(string $path, ?string $message = null, int $code = 0, ?Throwable $previous = null)
     {
         if ($message === null) {
             $message = "File \"$path\" could not be found.";

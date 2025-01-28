@@ -2,6 +2,14 @@
 
 All notable changes will be documented in this file. Only changes starting at IconCaptcha 2.0.2 have been recorded.
 
+## 4.0.4 - January 23, 2025
+Release: [View tag 4.0.4](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/4.0.4)
+
+### Fixed
+- Fixed a compatibility issue with PHP 8.4 caused by a deprecation warning for "implicitly marked nullable parameters", which was breaking the code.
+
+For a full list of commits and changes, please refer to the [full commit changelog](https://github.com/fabianwennink/IconCaptcha-PHP/compare/4.0.3...4.0.4).
+
 ## 4.0.3 - Dec 19, 2023
 Release: [View tag 4.0.3](https://github.com/fabianwennink/IconCaptcha-PHP/releases/tag/4.0.3)
 

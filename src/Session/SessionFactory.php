@@ -29,7 +29,7 @@ class SessionFactory
      * @return PDOSession|KeyValueSession|SessionInterface|mixed The generated session instance.
      * @throws InvalidArgumentException If the configuration contains an invalid driver.
      */
-    public static function create($storage, string $driver, array $options, string $ipAddress, string $widgetId, string $challengeId = null): SessionInterface
+    public static function create($storage, string $driver, array $options, string $ipAddress, string $widgetId, ?string $challengeId = null): SessionInterface
     {
         if (!isset($driver)) {
             throw new InvalidArgumentException('A session driver must be specified.');

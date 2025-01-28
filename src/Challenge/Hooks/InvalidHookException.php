@@ -20,7 +20,7 @@ class InvalidHookException extends Exception
      * @param string $path The path of the non-existing file.
      * @inheritDoc
      */
-    public function __construct(string $hook, string $message = null, int $code = 0, Throwable $previous = null)
+    public function __construct(string $hook, ?string $message = null, int $code = 0, ?Throwable $previous = null)
     {
         if ($message === null) {
             $message = "Hook \"$hook\" is invalid. A hook must be a class implementing the necessary interface.";

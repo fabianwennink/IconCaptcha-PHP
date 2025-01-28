@@ -68,7 +68,7 @@ abstract class Session implements SessionInterface
      * @param string $widgetId The widget unique identifier.
      * @param string|null $challengeId The challenge unique identifier.
      */
-    public function __construct(array $options, string $ipAddress, string $widgetId, string $challengeId = null)
+    public function __construct(array $options, string $ipAddress, string $widgetId, ?string $challengeId = null)
     {
         $this->options = $options;
         $this->maxIdentifierTries = (int)$options['options']['identifierTries'];

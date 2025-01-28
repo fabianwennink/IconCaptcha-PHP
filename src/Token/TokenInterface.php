@@ -36,5 +36,5 @@ interface TokenInterface
      * value will be checked against the captcha token.
      * @return bool TRUE if the captcha token matches the given tokens, FALSE if it does not match.
      */
-    public function validate(string $payloadToken, string $headerToken = null): bool;
+    public function validate(string $payloadToken, ?string $headerToken = null): bool;
 }

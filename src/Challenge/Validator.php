@@ -148,7 +148,7 @@ class Validator
      * @return bool TRUE if the captcha session token matches the given tokens or if the token option is disabled,
      * FALSE if the captcha session token does not match the given tokens.
      */
-    public function validateToken(string $payloadToken, string $headerToken = null): bool
+    public function validateToken(string $payloadToken, ?string $headerToken = null): bool
     {
         // Only validate if the token option is enabled.
         if (!empty($this->options['token'])) {

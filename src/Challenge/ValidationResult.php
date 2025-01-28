@@ -25,7 +25,7 @@ final class ValidationResult
      * @param bool $success
      * @param string|null $errorCode
      */
-    public function __construct(bool $success, string $errorCode = null)
+    public function __construct(bool $success, ?string $errorCode = null)
     {
         $this->success = $success;
         $this->errorCode = $errorCode;

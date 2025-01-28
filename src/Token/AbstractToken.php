@@ -57,7 +57,7 @@ abstract class AbstractToken
      * @param $headerToken string|null The token sent with the request as a header. Can be empty in certain requests.
      * @return bool TRUE if the token(s) match the stored token, FALSE if it/they don't.
      */
-    protected function compareToken(string $storedToken, string $payloadToken, string $headerToken = null): bool
+    protected function compareToken(string $storedToken, string $payloadToken, ?string $headerToken = null): bool
     {
         // If the token is empty, the token was never requested.
         if (empty($storedToken)) {

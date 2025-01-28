@@ -75,7 +75,7 @@ class Challenge
      * @param string $widgetId The widget identifier.
      * @param string|null $challengeId The challenge identifier.
      */
-    public function initialize(string $widgetId, string $challengeId = null): Challenge
+    public function initialize(string $widgetId, ?string $challengeId = null): Challenge
     {
         // Get the visitor's current IP address.
         $ipAddress = Utils::getIpAddress($this->options['ipAddress']);
