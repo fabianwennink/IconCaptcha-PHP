@@ -232,7 +232,7 @@ class Challenge
         $clickedPosition = $this->determineClickedIcon($x, $y, $width, count($this->session->icons));
 
         // Check if the selection matches the position from the session.
-        if ($this->session->icons[$clickedPosition] === $this->session->correctId) {
+        if (isset($this->session->icons[$clickedPosition]) && $this->session->icons[$clickedPosition] === $this->session->correctId) {
 
             // Mark the challenge as completed.
             $this->markChallengeCompleted();
