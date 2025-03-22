@@ -3,7 +3,6 @@
 ![Version](https://img.shields.io/badge/Version-3.1.3-orange.svg?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
 [![Issues](https://img.shields.io/github/issues/fabianwennink/IconCaptcha-PHP?style=flat-square)](https://github.com/fabianwennink/IconCaptcha-PHP/issues)
-[![Support](https://img.shields.io/badge/Support-PayPal-yellow.svg?style=flat-square)](https://paypal.me/nlgamevideosnl)
 [![Support](https://img.shields.io/badge/Support-Buy_Me_A_Coffee-yellow.svg?style=flat-square)](https://www.buymeacoffee.com/fabianwennink)
 
 [![Sonar Quality](https://img.shields.io/sonar/alert_status/fabianwennink_IconCaptcha-PHP?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud)](https://sonarcloud.io/dashboard?id=fabianwennink_IconCaptcha-PHP)
