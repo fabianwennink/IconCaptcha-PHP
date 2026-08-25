@@ -51,6 +51,15 @@ Once the package has been installed, continue with the remaining [installation i
 ### Manual Installation
 It is recommended to use Composer. However, if you are unable to, follow the [manual installation instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Getting-Started#manual-installation) and [setup instructions](https://github.com/fabianwennink/IconCaptcha-PHP/wiki/Implementation).
 
+## Framework Integrations
+IconCaptcha is framework-agnostic and works in any PHP project. Some frameworks, however, manage sessions, routing and form handling themselves, which takes a bit of glue code to bridge. The packages below provide that glue, so IconCaptcha can be used the way the framework expects:
+
+| Framework | Package | Maintainer |
+|-----------|---------|------------|
+| Symfony   | [tito10047/iconcaptcha-bundle](https://github.com/tito10047/icon-captcha-bundle) ([Packagist](https://packagist.org/packages/tito10047/iconcaptcha-bundle)) | [@tito10047](https://github.com/tito10047) |
+
+> These integrations are community-maintained and are not part of this repository. Please report issues with an integration to its own repository.
+
 ## Features
 * 🏠 __Self-Hosted:__ As a self-hosted solution, IconCaptcha eliminates reliance on third-party services, keeping things under your control.
 * 🚫 __No Data Sharing:__ Unlike other captchas, IconCaptcha's self-hosted nature ensures no user data is shared with third parties.
