@@ -56,7 +56,7 @@ IconCaptcha is framework-agnostic and works in any PHP project. Some frameworks,
 
 | Framework | Package | Maintainer |
 |-----------|---------|------------|
-| Symfony (6.4, 7.x, 8.x) | [tito10047/iconcaptcha-bundle](https://github.com/tito10047/icon-captcha-bundle) ([Packagist](https://packagist.org/packages/tito10047/iconcaptcha-bundle)) | [@tito10047](https://github.com/tito10047) |
+| Symfony   | [tito10047/iconcaptcha-bundle](https://github.com/tito10047/icon-captcha-bundle) ([Packagist](https://packagist.org/packages/tito10047/iconcaptcha-bundle)) | [@tito10047](https://github.com/tito10047) |
 
 > These integrations are community-maintained and are not part of this repository. Please report issues with an integration to its own repository.
 
